@@ -303,6 +303,19 @@ input,select,textarea{font:inherit;color:inherit}
 .toast{background:var(--ink);color:var(--bg);font-size:12.5px;padding:9px 15px;box-shadow:var(--shadow);animation:tin .2s ease;text-align:center}
 @keyframes tin{from{opacity:0;transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* v0.3 — Client View */
+body.client-mode .tabs, body.client-mode #menuBtn, body.client-mode .avatar,
+body.client-mode #addRoom, body.client-mode #addItem, body.client-mode .gact,
+body.client-mode .rowdel, body.client-mode .railbtns, body.client-mode .selbar,
+body.client-mode .stats .stat:nth-child(3), body.client-mode .stats .stat:nth-child(4){display:none!important}
+body.client-mode .stats{grid-template-columns:1fr 1fr}
+body.client-mode .ed{cursor:default;border-bottom:0!important;background:transparent!important;pointer-events:none}
+body.client-mode .cbox{visibility:hidden}
+body.client-mode .clientbadge{display:inline-flex}
+.clientbadge{display:none;align-items:center;padding:4px 8px;border:1px solid var(--wash-line);background:var(--wash);color:var(--wash-ink);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.clientviewbtn{font-size:11.5px;padding:5px 9px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.clientviewbtn:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 
 <div class="app" id="app"></div>
@@ -311,6 +324,8 @@ input,select,textarea{font:inherit;color:inherit}
 
 <script>
 "use strict";
+const CLIENT_MODE = new URLSearchParams(location.search).get("client") === "1";
+if(CLIENT_MODE) document.body.classList.add("client-mode");
 const $ = (s,r=document)=>r.querySelector(s);
 const num   = n => n==null ? "—" : Math.round(n).toLocaleString("vi-VN");
 const money = n => n==null ? "—" : Math.round(n).toLocaleString("vi-VN")+" ₫";
@@ -508,6 +523,8 @@ function topbar(){
       ${[["schedule","Bảng kê"],["budget","Ngân sách"],["orders","Đơn hàng"],["library","Nhà cung cấp"]].map(([t,l])=>
         `<button class="tab" data-tab="${t}" ${ui.tab===t?'aria-current="page"':""}>${l}</button>`).join("")}
     </nav>
+    <span class="clientbadge">Client view · Chỉ xem</span>
+    <button class="clientviewbtn" id="clientViewBtn">${CLIENT_MODE?"← Quay lại nội bộ":"Xem như khách hàng ↗"}</button>
     <button class="iconbtn" id="themeBtn" title="Sáng / tối" aria-label="Đổi giao diện">◑</button>
     <button class="iconbtn" id="menuBtn" aria-label="Thêm" aria-haspopup="true">⋯</button>
     <div class="avatar" title="Indust Design">ID</div>
@@ -1446,7 +1463,7 @@ function softRerender(){ clearTimeout(softTimer); softTimer=setTimeout(render,12
 
 document.addEventListener("click", e=>{
   const cell = e.target.closest(".ed");
-  if(cell && !cell.querySelector("input,select")){ e.stopPropagation(); e.preventDefault(); beginInline(cell); }
+  if(!CLIENT_MODE && cell && !cell.querySelector("input,select")){ e.stopPropagation(); e.preventDefault(); beginInline(cell); }
 }, true);
 document.addEventListener("keydown", detailKeys);
 document.addEventListener("paste", pasteImage);
@@ -1454,6 +1471,10 @@ document.addEventListener("paste", pasteImage);
 function wire(){
   document.querySelectorAll("[data-tab]").forEach(b=> b.onclick = ()=>{ ui.tab=b.dataset.tab; ui.menu=false; render(); });
   $("#themeBtn") && ($("#themeBtn").onclick = toggleTheme);
+  $("#clientViewBtn") && ($("#clientViewBtn").onclick = ()=>{
+    if(CLIENT_MODE){ location.href = location.pathname; }
+    else { window.open(location.pathname + "?client=1", "_blank"); }
+  });
   $("#menuBtn") && ($("#menuBtn").onclick = ()=>{ ui.menu=!ui.menu; render(); });
   if(ui.menu){
     document.querySelectorAll("#menu [data-act]").forEach(b=> b.onclick = ()=>{
