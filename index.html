@@ -96,8 +96,9 @@ input,select,textarea{font:inherit;color:inherit}
 .body{display:flex;align-items:stretch;flex:1;min-height:0}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .tablewrap{overflow-x:auto;flex:1}
-.tbl{min-width:940px}
-.thead,.trow{display:grid;grid-template-columns:24px 62px minmax(150px,1fr) 118px 40px 128px 130px 46px 104px 82px 26px;column-gap:9px;align-items:center}
+.tbl{min-width:1020px}
+.trow .stt,.thead .stt{color:var(--ink-4);font-size:10px;text-align:right;justify-self:end}
+.thead,.trow{display:grid;grid-template-columns:22px 28px 62px minmax(140px,1fr) 96px 104px 36px 112px 120px 44px 96px 66px 22px;column-gap:8px;align-items:center}
 .thead{padding:7px 16px;background:var(--panel);border-bottom:1px solid var(--line-2);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);position:sticky;top:0;z-index:2}
 .thead button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;display:inline-flex;gap:3px;align-items:center}
 .thead button:hover{color:var(--ink)}
@@ -175,7 +176,7 @@ input,select,textarea{font:inherit;color:inherit}
 .bp>i.tl{top:-5px;left:-5px}.bp>i.tr{top:-5px;right:-5px}.bp>i.bl{bottom:-5px;left:-5px}.bp>i.br{bottom:-5px;right:-5px}
 
 /* rail */
-.rail{width:272px;flex:none;border-left:1px solid var(--line-2);padding:14px 15px;overflow-y:auto}
+.rail{width:272px;flex:none;border-left:1px solid var(--line-2);padding:14px 15px;overflow-y:auto;position:sticky;top:0;align-self:flex-start;max-height:100vh}
 @media(max-width:920px){.rail{display:none}}
 .rail .kick{color:var(--accent);margin-bottom:8px}
 .rail h3{font-size:17px;margin-top:10px}
@@ -274,7 +275,14 @@ input,select,textarea{font:inherit;color:inherit}
 .dactions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
 .dnote{margin-top:10px;padding:9px;border:1px dashed var(--line-2);font-size:11.5px;color:var(--ink-2);white-space:pre-wrap}
 .dfiles{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--ink-2)}
-.dfiles span::before{content:"▸ ";color:var(--ink-4)}
+.dfile{display:flex;align-items:center;gap:8px;padding:5px 7px;border:1px solid var(--line);background:var(--panel)}
+.dfile .fn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;color:inherit;text-decoration:none}
+.dfile a.fn:hover{color:var(--accent);text-decoration:underline}
+.dfile .fs{font-size:10px;color:var(--ink-4);flex:none}
+.dfile .fx{flex:none;color:var(--ink-4);font-size:13px;line-height:1}
+.dfile .fx:hover{color:var(--danger)}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.82);display:grid;place-items:center;z-index:70;padding:24px;cursor:zoom-out}
+.lightbox img{max-width:100%;max-height:100%;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 
 .backdrop{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;padding:20px;z-index:40}
 .dialog{width:min(500px,100%);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow);max-height:90vh;overflow-y:auto}
@@ -299,23 +307,12 @@ input,select,textarea{font:inherit;color:inherit}
 .impbox{border:1px dashed var(--line-2);padding:16px;text-align:center;font-size:12px;color:var(--ink-3);margin:0 16px 14px}
 .impbox.drop{border-color:var(--accent);background:var(--wash)}
 
+.clientbar{display:flex;align-items:center;gap:8px;padding:6px 16px;background:var(--wash);color:var(--wash-ink);border-bottom:1px solid var(--wash-line);font-size:11.5px}
+.clientbar button{margin-left:auto;font-size:11px;text-decoration:underline;color:var(--wash-ink)}
 .toasts{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:60;align-items:center;max-width:90vw}
 .toast{background:var(--ink);color:var(--bg);font-size:12.5px;padding:9px 15px;box-shadow:var(--shadow);animation:tin .2s ease;text-align:center}
 @keyframes tin{from{opacity:0;transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-/* v0.3 — Client View */
-body.client-mode .tabs, body.client-mode #menuBtn, body.client-mode .avatar,
-body.client-mode #addRoom, body.client-mode #addItem, body.client-mode .gact,
-body.client-mode .rowdel, body.client-mode .railbtns, body.client-mode .selbar,
-body.client-mode .stats .stat:nth-child(3), body.client-mode .stats .stat:nth-child(4){display:none!important}
-body.client-mode .stats{grid-template-columns:1fr 1fr}
-body.client-mode .ed{cursor:default;border-bottom:0!important;background:transparent!important;pointer-events:none}
-body.client-mode .cbox{visibility:hidden}
-body.client-mode .clientbadge{display:inline-flex}
-.clientbadge{display:none;align-items:center;padding:4px 8px;border:1px solid var(--wash-line);background:var(--wash);color:var(--wash-ink);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
-.clientviewbtn{font-size:11.5px;padding:5px 9px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
-.clientviewbtn:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 
 <div class="app" id="app"></div>
@@ -324,8 +321,6 @@ body.client-mode .clientbadge{display:inline-flex}
 
 <script>
 "use strict";
-const CLIENT_MODE = new URLSearchParams(location.search).get("client") === "1";
-if(CLIENT_MODE) document.body.classList.add("client-mode");
 const $ = (s,r=document)=>r.querySelector(s);
 const num   = n => n==null ? "—" : Math.round(n).toLocaleString("vi-VN");
 const money = n => n==null ? "—" : Math.round(n).toLocaleString("vi-VN")+" ₫";
@@ -334,6 +329,19 @@ const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&l
 const STATUSES = ["Unspecified","Specified","Approved","Ordered"];
 const STATUS_LABEL = {Unspecified:"Chưa xác định",Specified:"Đã chốt",Approved:"Đã duyệt",Ordered:"Đã đặt"};
 const STAGE = ["Đã chốt","CĐT duyệt","Đã đặt hàng","Đang sản xuất","Về kho","Lắp đặt"];
+const CATEGORIES = ["Nội thất cố định","Nội thất rời","Chiếu sáng","Hoàn thiện","Thiết bị","Phụ kiện","Khác"];
+function guessCategory(it){
+  const s = ((it.name||"")+" "+(it.note||"")+" "+(it.model||"")).toLowerCase();
+  const has = re => re.test(s);
+  if(has(/đèn|chiếu sáng|sconce|pendant|\bled\b|spotlight|downlight|đèn gương|hắt sáng/)) return "Chiếu sáng";
+  if(has(/rèm|thảm|gạch|\bđá\b|sơn|giấy dán|sàn gỗ|ốp tường|laminate|veneer|hoàn thiện bề mặt|nẹp|len chân tường/)) return "Hoàn thiện";
+  if(has(/bồn cầu|bàn cầu|chậu|lavabo|\bsen\b|\bvòi\b|bộ xả|ống thải|ống xả|két nước|nắp bàn cầu|bồn tắm|bồn rửa|bidet|tiểu|vòi xịt|bát sen|van sen|củ sen|xả nhấn/)) return "Thiết bị";
+  if(has(/máy|bếp|hút mùi|\blò\b|tủ lạnh|điều hoà|máy giặt|bình nóng lạnh|quạt thông gió/)) return "Thiết bị";
+  if(has(/móc|kệ khăn|kệ góc|lô giấy|giá treo|hộp giấy|cút nối|thanh vắt|gương|khay|phụ kiện|vắt khăn|tay vịn|nút nhấn|nút xả/)) return "Phụ kiện";
+  if(has(/tủ bếp|tủ áo|tủ âm tường|vách|kệ tivi âm|lam gỗ|trần gỗ|ốp gỗ|bàn đá bếp|phản giường|tủ lavabo|kệ lavabo/)) return "Nội thất cố định";
+  if(has(/ghế|\bbàn\b|sofa|giường|\btủ\b|kệ sách|\bđôn\b|bench|stool|armchair|console|sideboard|đầu giường|táp/)) return "Nội thất rời";
+  return "Khác";
+}
 
 // ── dữ liệu gốc: FF&E thiết bị vệ sinh TOTO — Hà Đô Charm Villas ──
 // (trích Phụ lục 19, dự toán V4 20/06/2026 – CÔNG TY TNHH VIỆT CAO MINH; đơn giá đã gồm VAT)
@@ -431,15 +439,20 @@ let rooms, items, vendors;
   if(!Array.isArray(vendors)) vendors = [];
   // thứ tự thủ công (ord) — hạng mục mới luôn xuống cuối
   let n = 0;
-  items.forEach(it=>{ if(typeof it.ord!=="number") it.ord = ++n; else n = Math.max(n, it.ord); });
+  items.forEach(it=>{
+    if(typeof it.ord!=="number") it.ord = ++n; else n = Math.max(n, it.ord);
+    if(!it.category || !CATEGORIES.includes(it.category)) it.category = guessCategory(it);
+  });
 })();
 
 let ui = {
   tab:"schedule", view:"table",
-  q:"", room:"", status:"", vendor:"", leadOnly:false,
+  q:"", room:"", status:"", vendor:"", cat:"", leadOnly:false,
   sortKey:"ord", sortDir:1,
   selected:items[0]?.code||null, detail:null, picks:new Set(), menu:false, dialog:null,
+  mode:(()=>{ try{ return localStorage.getItem("ffe_mode")==="client" ? "client" : "admin"; }catch(e){ return "admin"; } })(),
 };
+const RO = () => ui.mode==="client";
 
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify({rooms,items,vendors})); return true; }catch(e){ return false; } }
 function lineTotal(it){ return it.unit==null ? null : it.qty*it.unit; }
@@ -474,9 +487,10 @@ function filtered(){
     if(ui.room && it.room!==ui.room) return false;
     if(ui.status && it.status!==ui.status) return false;
     if(ui.vendor && it.vendor!==ui.vendor) return false;
+    if(ui.cat && (it.category||"Khác")!==ui.cat) return false;
     if(ui.leadOnly && !(it.lead>8)) return false;
     if(ui.q){
-      const s = (it.code+" "+it.name+" "+(it.vendor||"")+" "+(it.model||"")+" "+(it.room||"")).toLowerCase();
+      const s = (it.code+" "+it.name+" "+(it.vendor||"")+" "+(it.model||"")+" "+(it.room||"")+" "+(it.category||"")).toLowerCase();
       if(!s.includes(ui.q.toLowerCase())) return false;
     }
     return true;
@@ -523,20 +537,24 @@ function topbar(){
       ${[["schedule","Bảng kê"],["budget","Ngân sách"],["orders","Đơn hàng"],["library","Nhà cung cấp"]].map(([t,l])=>
         `<button class="tab" data-tab="${t}" ${ui.tab===t?'aria-current="page"':""}>${l}</button>`).join("")}
     </nav>
-    <span class="clientbadge">Client view · Chỉ xem</span>
-    <button class="clientviewbtn" id="clientViewBtn">${CLIENT_MODE?"← Quay lại nội bộ":"Xem như khách hàng ↗"}</button>
     <button class="iconbtn" id="themeBtn" title="Sáng / tối" aria-label="Đổi giao diện">◑</button>
     <button class="iconbtn" id="menuBtn" aria-label="Thêm" aria-haspopup="true">⋯</button>
-    <div class="avatar" title="Indust Design">ID</div>
+    <div class="avatar" title="${RO()?"Chế độ khách hàng":"Indust Design"}">${RO()?"KH":"ID"}</div>
     ${ui.menu ? `<div class="menu" id="menu">
-      <button data-act="rooms">Quản lý phòng…</button>
-      <button data-act="vendors">Quản lý nhà cung cấp…</button>
-      <button data-act="excel">Nhập / xuất Excel…</button>
-      <hr>
-      <button data-act="csv">Chép bảng kê (CSV)</button>
-      <button data-act="reset">Khôi phục dữ liệu gốc</button>
+      ${RO() ? `<button data-act="admin">Chuyển sang chế độ quản trị</button>
+        <hr>
+        <button data-act="csv">Chép bảng kê (CSV)</button>`
+      : `<button data-act="rooms">Quản lý phòng…</button>
+        <button data-act="vendors">Quản lý nhà cung cấp…</button>
+        <button data-act="excel">Nhập / xuất Excel…</button>
+        <button data-act="autocat">Tự động phân nhóm lại</button>
+        <hr>
+        <button data-act="client">Xem như khách hàng</button>
+        <button data-act="csv">Chép bảng kê (CSV)</button>
+        <button data-act="reset">Khôi phục dữ liệu gốc</button>`}
     </div>`:""}
-  </div>`;
+  </div>
+  ${RO() ? `<div class="clientbar">👁 Chế độ khách hàng — chỉ xem, không sửa. <button id="exitClient">Thoát</button></div>` : ""}`;
 }
 
 function scheduleView(){
@@ -553,14 +571,17 @@ function scheduleView(){
     <span class="selfilter"><select id="fVendor" data-default="${ui.vendor?"0":"1"}">
       <option value="">NCC</option>${vendorList().map(r=>`<option ${ui.vendor===r?"selected":""}>${esc(r)}</option>`).join("")}
     </select></span>
+    <span class="selfilter"><select id="fCat" data-default="${ui.cat?"0":"1"}">
+      <option value="">Nhóm</option>${CATEGORIES.map(c=>`<option ${ui.cat===c?"selected":""}>${esc(c)}</option>`).join("")}
+    </select></span>
     ${ui.leadOnly
       ? `<span class="chip">Lead &gt; 8 tuần <button id="clearLead" aria-label="Bỏ lọc">×</button></span>`
       : `<button class="chip ghost" id="addLead">+ Lead &gt; 8 tuần</button>`}
     <div class="seg" role="group" aria-label="Kiểu xem">
       ${[["table","Bảng"],["cards","Thẻ"],["board","Bảng ảnh"]].map(([v,l])=>`<button data-view="${v}" aria-pressed="${ui.view===v}">${l}</button>`).join("")}
     </div>
-    <button class="btn btn-sm" id="addRoom">+ Phòng</button>
-    <button class="btn btn-primary btn-sm" id="addItem">+ Hạng mục</button>
+    ${RO()?"":`<button class="btn btn-sm" id="addRoom">+ Phòng</button>
+    <button class="btn btn-primary btn-sm" id="addItem">+ Hạng mục</button>`}
   </div>
 
   <div class="stats">
@@ -587,29 +608,33 @@ function sortBtn(key,label,right){
   const active = ui.sortKey===key;
   return `<button data-sort="${key}" class="${right?"r":""}">${label}${active?`<span class="sortmark">${ui.sortDir>0?"▲":"▼"}</span>`:""}</button>`;
 }
-const edCell = (code,field,html)=>`<span class="ed" data-ed="${field}" data-code="${code}">${html}</span>`;
+const edCell = (code,field,html)=> RO()
+  ? `<span>${html}</span>`
+  : `<span class="ed" data-ed="${field}" data-code="${code}">${html}</span>`;
+const anyFilterOn = () => ui.q||ui.room||ui.status||ui.vendor||ui.cat||ui.leadOnly;
 
 function tableView(){
   const list = filtered();
-  const anyFilter = ui.q||ui.room||ui.status||ui.vendor||ui.leadOnly;
-  let rows = "";
+  const anyFilter = anyFilterOn();
+  const ro = RO();
+  let rows = "", stt = 0;
   const groupBlock = (roomName, g, orphan)=>{
-    const editable = !orphan;
+    const editable = !orphan && !ro;
     const sub = g.reduce((a,i)=>a+(lineTotal(i)||0),0);
-    const budg = editable ? roomBudget(roomName) : 0;
+    const budg = (!orphan) ? roomBudget(roomName) : 0;
     let h = `<div class="grouphd">
       ${editable
         ? `<h4><span class="ed" data-ed="room.name" data-room="${esc(roomName)}">${esc(roomName)}</span></h4>`
         : `<h4>${esc(roomName)}</h4>`}
-      <span class="sub tnum">${g.length} hạng mục · ${money(sub)}${editable?` / <span class="ed" data-ed="room.budget" data-room="${esc(roomName)}">${num(budg)}</span> ₫`:""}</span>
-      ${editable && budg ? `<span class="gbar" title="${money(sub)} / ${money(budg)}"><i class="${sub>budg?"over":""}" style="width:${Math.min(100,sub/budg*100)}%"></i></span>`:""}
-      <span class="gact">
+      <span class="sub tnum">${g.length} hạng mục · ${money(sub)}${editable?` / <span class="ed" data-ed="room.budget" data-room="${esc(roomName)}">${num(budg)}</span> ₫` : (budg?` / ${money(budg)}`:"")}</span>
+      ${budg ? `<span class="gbar" title="${money(sub)} / ${money(budg)}"><i class="${sub>budg?"over":""}" style="width:${Math.min(100,sub/budg*100)}%"></i></span>`:""}
+      ${ro?"":`<span class="gact">
         <button data-addto="${esc(roomName)}">+ dòng</button>
         ${editable?`<button class="del" data-delroom="${esc(roomName)}" title="Xoá phòng">×</button>`:""}
-      </span>
+      </span>`}
     </div>`;
-    for(const it of g) h += tableRow(it);
-    if(!g.length) h += `<div class="addrow"><button data-addto="${esc(roomName)}">+ Thêm hạng mục vào phòng này</button>${anyFilter?` <span style="color:var(--ink-4)">(có thể đang bị ẩn bởi bộ lọc)</span>`:""}</div>`;
+    for(const it of g) h += tableRow(it, ++stt);
+    if(!g.length && !ro) h += `<div class="addrow"><button data-addto="${esc(roomName)}">+ Thêm hạng mục vào phòng này</button>${anyFilter?` <span style="color:var(--ink-4)">(có thể đang bị ẩn bởi bộ lọc)</span>`:""}</div>`;
     return h;
   };
 
@@ -620,8 +645,10 @@ function tableView(){
   <div class="tablewrap"><div class="tbl">
     <div class="thead">
       <span></span>
+      <span class="stt">STT</span>
       ${sortBtn("code","Mã")}
       ${sortBtn("name","Hạng mục")}
+      ${sortBtn("category","Nhóm")}
       ${sortBtn("vendor","NCC")}
       ${sortBtn("qty","SL",true)}
       ${sortBtn("unit","Đơn giá",true)}
@@ -639,36 +666,39 @@ function tableView(){
   </div>`;
 }
 
-function tableRow(it){
+function tableRow(it, stt){
   const t = lineTotal(it);
   const sel = ui.selected===it.code;
   const on = ui.picks.has(it.code);
+  const ro = RO();
   return `<div class="trow ${it.status==="Unspecified"?"unspec":""}" data-code="${it.code}" aria-selected="${sel}" tabindex="0">
-    <span class="cbox" data-pick="${it.code}" data-on="${on?1:0}" role="checkbox" aria-checked="${on}" tabindex="0"><svg viewBox="0 0 10 10"><path d="M1 5l3 3 5-7" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
-    <span class="code" data-open="${it.code}">${it.code}</span>
+    ${ro ? `<span></span>` : `<span class="cbox" data-pick="${it.code}" data-on="${on?1:0}" role="checkbox" aria-checked="${on}" tabindex="0"><svg viewBox="0 0 10 10"><path d="M1 5l3 3 5-7" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>`}
+    <span class="stt" data-open="${it.code}">${stt}</span>
+    <span class="cell-ell">${edCell(it.code,"code",`<span class="code">${esc(it.code)}</span>`)}</span>
     <span class="name cell-ell">${edCell(it.code,"name",`<b>${esc(it.name)}</b>`)}</span>
+    <span class="cell-ell">${edCell(it.code,"category",esc(it.category||"Khác"))}</span>
     <span class="cell-ell">${edCell(it.code,"vendor",esc(it.vendor||""))}</span>
     <span class="r tnum">${edCell(it.code,"qty",it.qty)}</span>
     <span class="r tnum">${edCell(it.code,"unit",it.unit==null?"":num(it.unit))}</span>
-    <span class="r tnum" data-open="${it.code}">${t==null?'<span class="ed-input" style="border:0;background:none">—</span>':num(t)}</span>
+    <span class="r tnum" data-open="${it.code}">${t==null?"—":num(t)}</span>
     <span class="r tnum">${edCell(it.code,"lead",it.lead==null?"":it.lead)}</span>
     <span>${edCell(it.code,"status",`<i class="dot ${it.status.toLowerCase()}"></i>${STATUS_LABEL[it.status]}`)}</span>
     <span class="cell-ell">${edCell(it.code,"po",esc(it.po||""))}</span>
-    <button class="rowdel" data-del="${it.code}" title="Xoá hạng mục" aria-label="Xoá">✕</button>
+    ${ro ? `<span></span>` : `<button class="rowdel" data-del="${it.code}" title="Xoá hạng mục" aria-label="Xoá">✕</button>`}
   </div>`;
 }
 
 function cardsView(){
   const list = filtered();
-  const anyFilter = ui.q||ui.room||ui.status||ui.vendor||ui.leadOnly;
+  const anyFilter = anyFilterOn();
   let out = "";
   for(const [room,g,orphan] of groupsForView(list)){
     if(!g.length && (anyFilter || orphan)) continue;
     const sub = g.reduce((a,i)=>a+(lineTotal(i)||0),0), b = roomBudget(room);
     out += `<div class="grouphd"><h4>${esc(room)}</h4><span class="sub tnum">${g.length} hạng mục · ${money(sub)}${b?` / ${money(b)}`:""}</span>
       ${b?`<span class="gbar"><i class="${sub>b?"over":""}" style="width:${Math.min(100,sub/b*100)}%"></i></span>`:""}
-      ${orphan?"":`<span class="gact"><button data-addto="${esc(room)}">+ dòng</button></span>`}</div>`;
-    if(!g.length){ out += `<div class="addrow"><button data-addto="${esc(room)}">+ Thêm hạng mục vào phòng này</button></div>`; continue; }
+      ${(orphan||RO())?"":`<span class="gact"><button data-addto="${esc(room)}">+ dòng</button></span>`}</div>`;
+    if(!g.length){ if(!RO()) out += `<div class="addrow"><button data-addto="${esc(room)}">+ Thêm hạng mục vào phòng này</button></div>`; continue; }
     for(const it of g){
       const t = lineTotal(it), img = it.images&&it.images[0];
       out += `<div class="cardrow" data-code="${it.code}" aria-selected="${ui.selected===it.code}" tabindex="0">
@@ -691,13 +721,13 @@ function cardsView(){
 
 function boardView(){
   const list = filtered();
-  const anyFilter = ui.q||ui.room||ui.status||ui.vendor||ui.leadOnly;
+  const anyFilter = anyFilterOn();
   let out = "";
   for(const [room,g,orphan] of groupsForView(list)){
     if(!g.length && (anyFilter || orphan)) continue;
     out += `<div class="grouphd"><h4>${esc(room)}</h4><span class="sub tnum">${g.length} hạng mục · ${money(g.reduce((a,i)=>a+(lineTotal(i)||0),0))}</span>
-      ${orphan?"":`<span class="gact"><button data-addto="${esc(room)}">+ dòng</button></span>`}</div>`;
-    if(!g.length){ out += `<div class="addrow"><button data-addto="${esc(room)}">+ Thêm hạng mục vào phòng này</button></div>`; continue; }
+      ${(orphan||RO())?"":`<span class="gact"><button data-addto="${esc(room)}">+ dòng</button></span>`}</div>`;
+    if(!g.length){ if(!RO()) out += `<div class="addrow"><button data-addto="${esc(room)}">+ Thêm hạng mục vào phòng này</button></div>`; continue; }
     out += `<div class="board">`;
     for(const it of g){
       const img = it.images&&it.images[0];
@@ -757,13 +787,17 @@ function rail(){
       <div class="plabels">${STAGE.map((s,i)=>`<span class="${i<=stage?"on":""}" title="${s}">${s}</span>`).join("")}</div>`:""}
     ${it.note?`<p class="railnote">${esc(it.note)}</p>`:""}
     <hr>
-    <div class="kick">Tệp đính kèm</div>
-    <div class="att">${(it.att&&it.att.length?it.att:["Chưa có tệp"]).map(a=>`<span>${esc(a)}</span>`).join("")}</div>
-    <div class="railbtns">
+    <div class="kick">Tệp đính kèm & liên kết</div>
+    <div class="att">
+      ${(it.files||[]).map(f=>`<span>${esc(f.name)}</span>`).join("")}
+      ${(it.links||[]).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">🔗 ${esc(l.label||l.url)}</a>`).join("")}
+      ${(!it.files||!it.files.length)&&(!it.links||!it.links.length)?`<span style="color:var(--ink-4)">Chưa có — thêm ở màn chi tiết</span>`:""}
+    </div>
+    ${RO()?"":`<div class="railbtns">
       <button class="btn" id="editSpec">Sửa thông số</button>
       <button class="btn btn-primary" id="addPo">${it.po?"Xem "+esc(it.po):"Đưa vào PO"}</button>
-    </div>
-    <button class="btn" id="openDetail" style="width:100%;justify-content:center;margin-top:6px">Mở chi tiết ›</button>
+    </div>`}
+    <button class="btn" id="openDetail" style="width:100%;justify-content:center;margin-top:${RO()?"12px":"6px"}">Mở chi tiết ›</button>
   </aside>`;
 }
 
@@ -797,6 +831,7 @@ function detailScreen(code){
   const stage = it.stage ?? -1;
   const stepDate = it.poDate ? {2:it.poDate} : {};
   const im = it.images||[];
+  const ro = RO();
   return `
   <div class="detail">
     <div class="dhead">
@@ -811,17 +846,27 @@ function detailScreen(code){
     <div class="dbody">
       <div class="dleft">
         ${im[0]
-          ? `<div class="dhero" data-pick-img="1" title="Đổi ảnh chính"><img src="${im[0]}" alt="${esc(it.name)}"><span class="hint">Bấm để đổi · kéo-thả / dán để thêm</span></div>`
-          : `<div class="dhero slot bp ph" data-pick-img="1"><i class="mk tl"></i><i class="mk tr"></i><i class="mk bl"></i><i class="mk br"></i><span class="phlabel">+ Thêm ảnh</span></div>`}
-        <div class="dthumbs">
-          ${im.map((src,i)=>`<div class="dthumb ${i===0?"active":""}" data-thumb="${i}" title="${i===0?"Ảnh chính":"Đặt làm ảnh chính"}"><img src="${src}" alt=""><button class="dthumb-x" data-rmimg="${i}" aria-label="Xoá ảnh">×</button></div>`).join("")}
-          ${im.length<6?`<button class="add" data-pick-img="1" aria-label="Thêm ảnh">+</button>`:""}
-        </div>
-        <div class="imghint">Bấm / kéo-thả / dán (Ctrl+V) ảnh vào đây. Bấm thumbnail để đặt làm ảnh chính. Ảnh lưu trong trình duyệt này.</div>
+          ? `<div class="dhero" ${ro?"":`data-pick-img="1"`} title="${ro?"":"Đổi ảnh chính"}"><img src="${im[0]}" alt="${esc(it.name)}">${ro?"":`<span class="hint">Bấm để đổi · kéo-thả / dán để thêm</span>`}</div>`
+          : (ro
+            ? `<div class="dhero slot bp ph"><i class="mk tl"></i><i class="mk tr"></i><i class="mk bl"></i><i class="mk br"></i><span class="phlabel">Chưa có ảnh</span></div>`
+            : `<div class="dhero slot bp ph" data-pick-img="1"><i class="mk tl"></i><i class="mk tr"></i><i class="mk bl"></i><i class="mk br"></i><span class="phlabel">+ Thêm ảnh</span></div>`)}
+        ${im.length ? `<div class="dthumbs">
+          ${im.map((src,i)=>`<div class="dthumb ${i===0?"active":""}" ${ro?"":`data-thumb="${i}"`} title="${i===0?"Ảnh chính":"Đặt làm ảnh chính"}"><img src="${src}" alt="">${ro?"":`<button class="dthumb-x" data-rmimg="${i}" aria-label="Xoá ảnh">×</button>`}</div>`).join("")}
+          ${!ro && im.length<6?`<button class="add" data-pick-img="1" aria-label="Thêm ảnh">+</button>`:""}
+        </div>` : ""}
+        ${ro?"":`<div class="imghint">Bấm / kéo-thả / dán (Ctrl+V) ảnh vào đây. Bấm thumbnail để đặt làm ảnh chính. Ảnh lưu trong trình duyệt này.</div>`}
         <div class="drule"></div>
         <div class="dsec mut">Tệp đính kèm</div>
-        <div class="dfiles">${(it.att&&it.att.length?it.att:["Chưa có tệp"]).map(a=>`<span>${esc(a)}</span>`).join("")}</div>
-        <div class="dsec mut" style="margin-top:14px">Ghi chú</div>
+        <div class="dfiles">
+          ${(it.files||[]).map((f,i)=>`<div class="dfile" data-file="${i}"><span class="fn">${f.type&&f.type.startsWith("image/")?"🖼":"📄"} ${esc(f.name)}</span><span class="fs">${fsize(f.size)}</span>${ro?"":`<button class="fx" data-rmfile="${i}" aria-label="Xoá">×</button>`}</div>`).join("") || `<div style="color:var(--ink-4)">Chưa có tệp</div>`}
+        </div>
+        ${ro?"":`<button class="btn btn-sm" data-pick-file style="margin-top:6px">+ Thêm tệp</button>`}
+        <div class="dsec mut" style="margin-top:16px">Liên kết sản phẩm</div>
+        <div class="dfiles">
+          ${(it.links||[]).map((l,i)=>`<div class="dfile"><a class="fn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">🔗 ${esc(l.label||l.url)}</a>${ro?"":`<button class="fx" data-rmlink="${i}" aria-label="Xoá">×</button>`}</div>`).join("") || `<div style="color:var(--ink-4)">Chưa có liên kết</div>`}
+        </div>
+        ${ro?"":`<button class="btn btn-sm" data-add-link style="margin-top:6px">+ Thêm liên kết</button>`}
+        <div class="dsec mut" style="margin-top:16px">Ghi chú</div>
         <div class="dnote">${it.note?esc(it.note):"—"}</div>
       </div>
       <div class="dright">
@@ -830,10 +875,12 @@ function detailScreen(code){
 
         <div class="dsec">Thông số</div>
         <dl class="dgrid">
+          <dt>Nhóm</dt><dd>${esc(it.category||"Khác")}</dd>
+          <dt>Mã / model</dt><dd>${esc(it.model||"—")}</dd>
           <dt>Kích thước</dt><dd>${esc(it.dims||"—")}</dd>
           <dt>ĐVT</dt><dd>${esc(it.uom||"—")}</dd>
-          <dt>Mã / model</dt><dd>${esc(it.model||"—")}</dd>
           <dt>Hoàn thiện</dt><dd>${esc(it.finish||"—")}</dd>
+          <dt>Mã hạng mục</dt><dd>${esc(it.code)}</dd>
         </dl>
 
         <div class="dsec">Thương mại</div>
@@ -852,14 +899,14 @@ function detailScreen(code){
         </div>
         ${stage<0?`<div style="font-size:11px;color:var(--ink-4);margin-top:6px">Chưa đặt hàng — tiến trình bắt đầu khi tạo PO.</div>`:""}
 
-        <div class="dactions">
+        ${ro ? (it.po ? `<div class="dactions"><button class="btn" data-viewpo>Xem ${esc(it.po)} ›</button></div>` : "") : `<div class="dactions">
           <button class="btn btn-primary" data-edit>Sửa thông số</button>
           <button class="btn" data-dup>Nhân bản sang phòng khác</button>
           ${it.po
             ? `<button class="btn" data-viewpo>Xem ${esc(it.po)} ›</button>`
             : `<button class="btn" data-quickpo>Tạo PO cho hạng mục này</button>`}
           <button class="btn btn-danger" data-deldetail style="margin-left:auto">Xoá hạng mục</button>
-        </div>
+        </div>`}
       </div>
     </div>
   </div>`;
@@ -964,6 +1011,7 @@ function openEdit(code){
     <div class="dform">
       <div class="full"><label>Tên hạng mục</label><input id="d_name" value="${esc(it.name)}"></div>
       <div><label>Phòng</label><select id="d_room">${roomOpts(it.room)}</select></div>
+      <div><label>Nhóm</label><select id="d_cat">${CATEGORIES.map(c=>`<option ${((it.category||"Khác")===c)?"selected":""}>${c}</option>`).join("")}</select></div>
       <div><label>Nhà cung cấp</label><input id="d_vendor" list="vendorlist" value="${esc(it.vendor||"")}"></div>
       <div><label>Mã / model</label><input id="d_model" value="${esc(it.model||"")}"></div>
       <div><label>ĐVT</label><input id="d_uom" value="${esc(it.uom||"")}" placeholder="chiếc"></div>
@@ -984,7 +1032,9 @@ function openEdit(code){
   $("#d_save").onclick = ()=>{
     it.name = $("#d_name").value.trim() || it.name;
     it.room = $("#d_room").value;
+    it.category = $("#d_cat").value;
     it.vendor = $("#d_vendor").value.trim() || null;
+    addVendor(it.vendor);
     it.model = $("#d_model").value.trim() || undefined;
     it.uom = $("#d_uom").value.trim() || undefined;
     it.qty = Math.max(1, +$("#d_qty").value || 1);
@@ -1005,6 +1055,7 @@ function openAdd(room){
     <div class="dform">
       <div><label>Mã</label><input id="a_code" value="${nextCode()}"></div>
       <div><label>Phòng</label><select id="a_room">${roomOpts(r)}</select></div>
+      <div><label>Nhóm</label><select id="a_cat">${CATEGORIES.map(c=>`<option ${c==="Khác"?"selected":""}>${c}</option>`).join("")}</select></div>
       <div class="full"><label>Tên hạng mục</label><input id="a_name" placeholder="vd. Vòi lavabo gắn tường"></div>
       <div><label>Nhà cung cấp</label><input id="a_vendor" list="vendorlist" placeholder="TOTO"></div>
       <div><label>Mã / model</label><input id="a_model"></div>
@@ -1023,7 +1074,7 @@ function openAdd(room){
     const u = $("#a_unit").value.trim(), l = $("#a_lead").value.trim();
     const vend = $("#a_vendor").value.trim() || null;
     addVendor(vend);
-    items.push({ code, name, room:$("#a_room").value, ord:nextOrd(),
+    items.push({ code, name, room:$("#a_room").value, category:$("#a_cat").value, ord:nextOrd(),
       vendor:vend, model:$("#a_model").value.trim()||undefined,
       uom:$("#a_uom").value.trim()||"chiếc", qty:Math.max(1,+$("#a_qty").value||1),
       unit:u===""?null:Math.max(0,+u), status:$("#a_status").value, lead:l===""?null:Math.max(0,+l) });
@@ -1113,9 +1164,54 @@ function openRooms(){
   paint();
 }
 
+function openVendors(){
+  ui.dialog = {type:"vendors"};
+  const draft = vendorList().map(name=>({name, _orig:name}));
+  const paint = ()=>{
+    paintDialog(`
+      <header><h3>Quản lý nhà cung cấp</h3><span class="kick">${draft.length} NCC</span></header>
+      <div style="padding:8px 0 4px">
+        ${draft.map((v,i)=>`
+          <div class="roomrow" style="grid-template-columns:1fr 52px auto">
+            <input data-vi="${i}" value="${esc(v.name)}">
+            <span class="rc tnum">${items.filter(x=>x.vendor===v.name).length}</span>
+            <span class="rx"><button class="del" data-dvm="${i}" title="Xoá">×</button></span>
+          </div>`).join("")}
+      </div>
+      <div style="padding:8px 16px"><button class="btn btn-sm" id="v_add">+ Thêm NCC</button></div>
+      <footer><button class="btn btn-sm" data-close>Huỷ</button><button class="btn btn-primary btn-sm" id="v_save">Lưu</button></footer>
+    `, true);
+    const bd = $("#backdrop");
+    bd.querySelectorAll("[data-vi]").forEach(inp=> inp.onchange = ()=>{ draft[+inp.dataset.vi].name = inp.value; });
+    bd.querySelectorAll("[data-dvm]").forEach(b=> b.onclick = ()=>{
+      const i=+b.dataset.dvm, cnt=items.filter(x=>x.vendor===draft[i].name).length;
+      if(cnt && !confirm(`“${draft[i].name}” đang gắn với ${cnt} hạng mục. Xoá NCC và bỏ trống NCC ở các hạng mục đó?`)) return;
+      draft.splice(i,1); paint();
+    });
+    $("#v_add").onclick = ()=>{ draft.push({name:"NCC mới", _orig:null}); paint(); };
+    $("#v_save").onclick = ()=>{
+      draft.forEach(v=> v.name = v.name.trim());
+      const names = draft.map(v=>v.name).filter(Boolean);
+      if(new Set(names).size !== names.length){ toast("Tên NCC bị trùng"); return; }
+      const renameMap = {};
+      draft.forEach(v=>{ if(v._orig && v._orig!==v.name && v.name) renameMap[v._orig] = v.name; });
+      const keep = new Set(draft.map(v=> renameMap[v._orig] || v._orig || v.name).filter(Boolean));
+      items.forEach(i=>{
+        if(renameMap[i.vendor]) i.vendor = renameMap[i.vendor];
+        else if(i.vendor && !names.includes(i.vendor)) i.vendor = null;
+      });
+      if(renameMap[ui.vendor]) ui.vendor = renameMap[ui.vendor];
+      else if(ui.vendor && !names.includes(ui.vendor)) ui.vendor = "";
+      vendors = names;
+      closeDialog(); save(); toast("Đã lưu NCC"); render();
+    };
+  };
+  paint();
+}
+
 // ── Excel nhập / xuất ─────────────────────────────────────────
 const XCOLS = [
-  ["Mã","code"],["Tên hạng mục","name"],["Phòng","room"],["Nhà cung cấp","vendor"],
+  ["Mã","code"],["Tên hạng mục","name"],["Phòng","room"],["Nhóm","category"],["Nhà cung cấp","vendor"],
   ["Mã/Model","model"],["ĐVT","uom"],["Số lượng","qty"],["Đơn giá","unit"],
   ["Thành tiền","_total"],["Lead (tuần)","lead"],["Trạng thái","status"],["PO","po"],
   ["Kích thước","dims"],["Ghi chú","note"],
@@ -1202,7 +1298,8 @@ function importFile(file){
     // map headers
     const keys = Object.keys(json[0]);
     const alias = {code:["mã","ma","code"],name:["tên hạng mục","tên","ten","name","hạng mục","item"],
-      room:["phòng","phong","room"],vendor:["nhà cung cấp","ncc","vendor","supplier"],
+      room:["phòng","phong","room"],category:["nhóm","nhom","category","phân loại"],
+      vendor:["nhà cung cấp","ncc","vendor","supplier"],
       model:["mã/model","model","vendor ref","ký mã hiệu"],uom:["đvt","đơn vị tính","đơn vị","uom","unit of measure"],
       qty:["số lượng","sl","qty","quantity"],unit:["đơn giá","don gia","unit price","giá","đơn giá (vnđ)","đơn giá (₫)"],
       lead:["lead","lead (tuần)","lead time","thời gian"],status:["trạng thái","status"],po:["po","đơn hàng"],
@@ -1224,10 +1321,12 @@ function importFile(file){
         else if(s.includes(",")) s = s.replace(",",".");                                    // 1200000,5
         const n = Number(s); return isFinite(n) ? n : null;
       };
-      return {
+      const catRaw = String(g("category")||"").trim();
+      const base = {
         code:String(g("code")||"").trim(),
         name:String(g("name")||"").trim(),
         room:String(g("room")||"").trim() || "(chưa phân phòng)",
+        category:CATEGORIES.includes(catRaw) ? catRaw : "",
         vendor:String(g("vendor")||"").trim() || null,
         model:String(g("model")||"").trim() || undefined,
         uom:String(g("uom")||"").trim() || "chiếc",
@@ -1239,6 +1338,8 @@ function importFile(file){
         dims:String(g("dims")||"").trim() || undefined,
         note:String(g("note")||"").trim() || undefined,
       };
+      if(!base.category) base.category = guessCategory(base);
+      return base;
     }).filter(x=>x.name);
     if(!parsed.length){ toast("Không có dòng hợp lệ"); return; }
     ui.dialog={type:"importConfirm"};
@@ -1257,7 +1358,8 @@ function importFile(file){
       </footer>
     `);
     $("#imp_replace").onclick = ()=>{
-      items = []; parsed.forEach((p,idx)=>{ if(!p.code) p.code = "TT-"+String(idx+1).padStart(3,"0"); items.push(p); });
+      items = []; parsed.forEach((p,idx)=>{ if(!p.code) p.code = "TT-"+String(idx+1).padStart(3,"0"); p.ord = idx+1; items.push(p); });
+      parsed.forEach(p=> addVendor(p.vendor));
       const allRooms = [...new Set(parsed.map(p=>p.room))].filter(r=>r!=="(chưa phân phòng)");
       rooms = allRooms.map(name=>{
         const ex = DEFAULT_ROOMS.find(d=>d.name===name);
@@ -1269,7 +1371,7 @@ function importFile(file){
     };
     $("#imp_append").onclick = ()=>{
       newRooms.forEach(r=> rooms.push({name:r, budget:0}));
-      parsed.forEach(p=>{ if(!p.code || items.some(i=>i.code===p.code)) p.code = nextCode(); items.push(p); });
+      parsed.forEach(p=>{ if(!p.code || items.some(i=>i.code===p.code)) p.code = nextCode(); p.ord = nextOrd(); addVendor(p.vendor); items.push(p); });
       closeDialog(); save(); toast("Đã thêm "+parsed.length+" hạng mục"); render();
     };
   };
@@ -1330,6 +1432,9 @@ function beginInline(cell){
   if(field==="status"){
     el = document.createElement("select");
     el.innerHTML = STATUSES.map(s=>`<option value="${s}" ${it.status===s?"selected":""}>${STATUS_LABEL[s]}</option>`).join("");
+  } else if(field==="category"){
+    el = document.createElement("select");
+    el.innerHTML = CATEGORIES.map(c=>`<option ${((it.category||"Khác")===c)?"selected":""}>${c}</option>`).join("");
   } else if(["qty","unit","lead","budget"].includes(field)){
     el = document.createElement("input"); el.type="number"; el.min="0";
     el.value = roomMode ? roomBudget(cell.dataset.room) : (it[field]??"");
@@ -1359,9 +1464,21 @@ function commitItem(code, field, raw){
   else if(field==="unit"){ it.unit = v==="" ? null : Math.max(0, Number(v.replace(/[^\d.-]/g,""))||0); it.priceOverridden = true; }
   else if(field==="lead") it.lead = v==="" ? null : Math.max(0, +v||0);
   else if(field==="status") it.status = STATUSES.includes(raw) ? raw : it.status;
-  else if(field==="vendor") it.vendor = v || null;
+  else if(field==="vendor"){ it.vendor = v || null; addVendor(it.vendor); }
   else if(field==="name") it.name = v || it.name;
+  else if(field==="category") it.category = CATEGORIES.includes(raw) ? raw : it.category;
   else if(field==="po"){ it.po = v || undefined; if(it.po && it.stage==null){ it.stage=2; if(it.status!=="Ordered") it.status="Ordered"; } }
+  else if(field==="code"){
+    const nc = v;
+    if(nc && nc!==it.code){
+      if(items.some(x=>x.code===nc)){ toast("Mã “"+nc+"” đã tồn tại"); render(); return; }
+      const old = it.code;
+      if(ui.selected===old) ui.selected = nc;
+      if(ui.detail===old) ui.detail = nc;
+      if(ui.picks.has(old)){ ui.picks.delete(old); ui.picks.add(nc); }
+      it.code = nc;
+    }
+  }
   save(); render();
 }
 function commitRoom(name, field, raw){
@@ -1424,9 +1541,86 @@ function pickImages(code){
   inp.click();
 }
 function pasteImage(e){
-  if(!ui.detail || ui.dialog) return;
+  if(!ui.detail || ui.dialog || RO()) return;
   const files = [...(e.clipboardData?.items||[])].filter(i=>i.type&&i.type.startsWith("image/")).map(i=>i.getAsFile()).filter(Boolean);
   if(files.length){ e.preventDefault(); addImages(ui.detail, files); }
+}
+
+// ── tệp đính kèm & liên kết ───────────────────────────────────
+function fsize(b){ b=+b||0; return b<1024?b+" B" : b<1048576?(b/1024).toFixed(0)+" KB" : (b/1048576).toFixed(1)+" MB"; }
+const readDataUrl = file => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); });
+async function addFiles(code, fileList){
+  const it = items.find(i=>i.code===code); if(!it) return;
+  const files = [...(fileList||[])].filter(f=>f && f.size!=null);
+  if(!files.length) return;
+  it.files = it.files || [];
+  let added = 0;
+  for(const f of files){
+    if(it.files.length >= 8){ toast("Tối đa 8 tệp mỗi hạng mục"); break; }
+    if(f.size > 5*1048576){ toast(`"${f.name}" quá lớn (> 5 MB) — bỏ qua`); continue; }
+    const cur = it.files.reduce((a,x)=>a+(x.size||0),0);
+    if(cur + f.size > 12*1048576){ toast("Tổng tệp mỗi hạng mục tối đa ~12 MB"); break; }
+    try{ it.files.push({name:f.name, type:f.type||"", size:f.size, data:await readDataUrl(f)}); added++; }
+    catch(e){ toast("Không đọc được "+f.name); }
+  }
+  if(added && !save()){
+    it.files.splice(it.files.length-added, added);
+    if(!it.files.length) delete it.files;
+    toast("Bộ nhớ trình duyệt đầy — xoá bớt tệp/ảnh hoặc dùng tệp nhỏ hơn");
+  } else if(added){
+    toast(added+(added>1?" tệp":" tệp")+" đã đính kèm");
+  }
+  render();
+}
+function pickFiles(code){
+  const inp = document.createElement("input");
+  inp.type="file"; inp.multiple=true; inp.style.display="none";
+  document.body.appendChild(inp);
+  inp.onchange = ()=>{ addFiles(code, inp.files).finally(()=> inp.remove()); };
+  inp.click();
+}
+function openFile(code, i){
+  const it = items.find(x=>x.code===code); if(!it || !it.files || !it.files[i]) return;
+  const f = it.files[i];
+  if(f.type && f.type.startsWith("image/")){
+    const lb = document.createElement("div"); lb.className="lightbox";
+    lb.innerHTML = `<img src="${f.data}" alt="${esc(f.name)}">`;
+    lb.onclick = ()=> lb.remove();
+    document.body.appendChild(lb);
+    return;
+  }
+  const w = window.open();
+  if(w){ w.document.write(`<title>${esc(f.name)}</title><iframe src="${f.data}" style="border:0;position:fixed;inset:0;width:100%;height:100%"></iframe>`); }
+  else toast("Trình duyệt chặn mở tệp ở đây — tải app chạy ngoài Artifact để mở/ tải tệp");
+}
+function removeFile(code, i){
+  const it = items.find(x=>x.code===code); if(!it || !it.files) return;
+  it.files.splice(i,1); if(!it.files.length) delete it.files;
+  save(); render(); toast("Đã xoá tệp");
+}
+function removeLink(code, i){
+  const it = items.find(x=>x.code===code); if(!it || !it.links) return;
+  it.links.splice(i,1); if(!it.links.length) delete it.links;
+  save(); render();
+}
+function openLinkDialog(code){
+  const it = items.find(i=>i.code===code); if(!it) return;
+  ui.dialog = {type:"link"};
+  paintDialog(`
+    <header><h3>Thêm liên kết sản phẩm</h3><span class="kick">${it.code}</span></header>
+    <div class="dform">
+      <div class="full"><label>URL</label><input id="lk_url" placeholder="https://…"></div>
+      <div class="full"><label>Nhãn (tuỳ chọn)</label><input id="lk_label" placeholder="vd. Trang sản phẩm TOTO"></div>
+    </div>
+    <footer><button class="btn btn-sm" data-close>Huỷ</button><button class="btn btn-primary btn-sm" id="lk_save">Thêm</button></footer>`);
+  $("#lk_save").onclick = ()=>{
+    let url = $("#lk_url").value.trim();
+    if(!url){ $("#lk_url").focus(); $("#lk_url").style.borderColor="var(--danger)"; return; }
+    if(!/^https?:\/\//i.test(url)) url = "https://"+url;
+    it.links = it.links || [];
+    it.links.push({url, label:$("#lk_label").value.trim()||""});
+    closeDialog(); save(); render(); toast("Đã thêm liên kết");
+  };
 }
 
 // ── misc ──────────────────────────────────────────────────────
@@ -1462,27 +1656,42 @@ let softTimer=null;
 function softRerender(){ clearTimeout(softTimer); softTimer=setTimeout(render,120); }
 
 document.addEventListener("click", e=>{
+  if(RO()) return;
   const cell = e.target.closest(".ed");
-  if(!CLIENT_MODE && cell && !cell.querySelector("input,select")){ e.stopPropagation(); e.preventDefault(); beginInline(cell); }
+  if(cell && !cell.querySelector("input,select")){ e.stopPropagation(); e.preventDefault(); beginInline(cell); }
 }, true);
+function autoClassifyAll(){
+  let n=0;
+  items.forEach(it=>{ const g=guessCategory(it); if(g!==it.category){ it.category=g; n++; } });
+  save(); render();
+  toast(n? `Đã phân nhóm lại ${n} hạng mục` : "Không có thay đổi");
+}
+function setMode(m){
+  ui.mode = m; ui.menu=false; ui.picks.clear();
+  try{ localStorage.setItem("ffe_mode", m); }catch(e){}
+  render();
+  toast(m==="client" ? "Đang xem như khách hàng" : "Đã về chế độ quản trị");
+}
 document.addEventListener("keydown", detailKeys);
 document.addEventListener("paste", pasteImage);
 
 function wire(){
   document.querySelectorAll("[data-tab]").forEach(b=> b.onclick = ()=>{ ui.tab=b.dataset.tab; ui.menu=false; render(); });
+  $("#homeBtn") && ($("#homeBtn").onclick = ()=>{ ui.tab="schedule"; ui.detail=null; ui.menu=false; ui.q="";ui.room="";ui.status="";ui.vendor="";ui.cat="";ui.leadOnly=false; ui.picks.clear(); render(); });
   $("#themeBtn") && ($("#themeBtn").onclick = toggleTheme);
-  $("#clientViewBtn") && ($("#clientViewBtn").onclick = ()=>{
-    if(CLIENT_MODE){ location.href = location.pathname; }
-    else { window.open(location.pathname + "?client=1", "_blank"); }
-  });
   $("#menuBtn") && ($("#menuBtn").onclick = ()=>{ ui.menu=!ui.menu; render(); });
+  $("#exitClient") && ($("#exitClient").onclick = ()=> setMode("admin"));
   if(ui.menu){
     document.querySelectorAll("#menu [data-act]").forEach(b=> b.onclick = ()=>{
       const a=b.dataset.act; ui.menu=false;
       if(a==="rooms") openRooms();
+      else if(a==="vendors") openVendors();
       else if(a==="excel") openExcel();
+      else if(a==="autocat"){ if(confirm("Tự động phân nhóm lại toàn bộ hạng mục dựa trên mô tả? Nhóm đã tự chỉnh sẽ bị ghi đè.")) autoClassifyAll(); else render(); }
+      else if(a==="client") setMode("client");
+      else if(a==="admin") setMode("admin");
       else if(a==="csv"){ exportCsv(); render(); }
-      else if(a==="reset"){ if(confirm("Khôi phục về bảng kê TOTO gốc? Mọi thay đổi & ảnh sẽ mất.")){ rooms=DEFAULT_ROOMS.map(r=>({...r})); items=DEFAULT_ITEMS.map(x=>({...x})); ui.picks.clear(); ui.selected=items[0].code; ui.detail=null; save(); } render(); }
+      else if(a==="reset"){ if(confirm("Khôi phục về bảng kê TOTO gốc? Mọi thay đổi & ảnh sẽ mất.")){ rooms=DEFAULT_ROOMS.map(r=>({...r})); items=DEFAULT_ITEMS.map(x=>({...x})); vendors=[...DEFAULT_VENDORS]; let n=0; items.forEach(it=>{it.ord=++n; it.category=guessCategory(it);}); ui.picks.clear(); ui.selected=items[0].code; ui.detail=null; save(); } render(); }
       else render();
     });
   }
@@ -1495,15 +1704,20 @@ function wire(){
   $("#fRoom") && ($("#fRoom").onchange = e=>{ ui.room=e.target.value; render(); });
   $("#fStatus") && ($("#fStatus").onchange = e=>{ ui.status=e.target.value; render(); });
   $("#fVendor") && ($("#fVendor").onchange = e=>{ ui.vendor=e.target.value; render(); });
+  $("#fCat") && ($("#fCat").onchange = e=>{ ui.cat=e.target.value; render(); });
   $("#clearLead") && ($("#clearLead").onclick = ()=>{ ui.leadOnly=false; render(); });
   $("#addLead") && ($("#addLead").onclick = ()=>{ ui.leadOnly=true; render(); });
-  $("#clearAll") && ($("#clearAll").onclick = ()=>{ ui.q="";ui.room="";ui.status="";ui.vendor="";ui.leadOnly=false; render(); });
+  $("#clearAll") && ($("#clearAll").onclick = ()=>{ ui.q="";ui.room="";ui.status="";ui.vendor="";ui.cat="";ui.leadOnly=false; render(); });
   document.querySelectorAll("[data-view]").forEach(b=> b.onclick = ()=>{ ui.view=b.dataset.view; render(); });
   $("#addItem") && ($("#addItem").onclick = ()=> openAdd());
   $("#addRoom") && ($("#addRoom").onclick = openRooms);
 
   document.querySelectorAll("[data-sort]").forEach(b=> b.onclick = ()=>{
-    const k=b.dataset.sort; if(ui.sortKey===k) ui.sortDir*=-1; else { ui.sortKey=k; ui.sortDir=1; } render();
+    const k=b.dataset.sort;
+    if(ui.sortKey!==k){ ui.sortKey=k; ui.sortDir=1; }
+    else if(ui.sortDir===1){ ui.sortDir=-1; }
+    else { ui.sortKey="ord"; ui.sortDir=1; }   // lần bấm thứ 3: về thứ tự thủ công
+    render();
   });
   document.querySelectorAll("[data-addto]").forEach(b=> b.onclick = e=>{ e.stopPropagation(); openAdd(b.dataset.addto); });
   document.querySelectorAll("[data-delroom]").forEach(b=> b.onclick = e=>{ e.stopPropagation(); deleteRoom(b.dataset.delroom); });
@@ -1567,11 +1781,28 @@ function wireDetail(){
     const i = +el.dataset.rmimg, it = items.find(x=>x.code===ui.detail);
     if(it && it.images){ it.images.splice(i,1); if(!it.images.length) delete it.images; save(); render(); toast("Đã xoá ảnh"); }
   });
+
+  $("[data-pick-file]") && ($("[data-pick-file]").onclick = ()=> pickFiles(ui.detail));
+  $("[data-add-link]") && ($("[data-add-link]").onclick = ()=> openLinkDialog(ui.detail));
+  document.querySelectorAll("[data-file]").forEach(el=> el.onclick = e=>{
+    if(e.target.closest("[data-rmfile]")) return;
+    openFile(ui.detail, +el.dataset.file);
+  });
+  document.querySelectorAll("[data-rmfile]").forEach(el=> el.onclick = e=>{ e.stopPropagation(); removeFile(ui.detail, +el.dataset.rmfile); });
+  document.querySelectorAll("[data-rmlink]").forEach(el=> el.onclick = e=>{ e.stopPropagation(); removeLink(ui.detail, +el.dataset.rmlink); });
+
   const dz = $(".dleft");
-  if(dz){
+  if(dz && !RO()){
     dz.ondragover = e=>{ e.preventDefault(); dz.classList.add("drop"); };
     dz.ondragleave = ()=> dz.classList.remove("drop");
-    dz.ondrop = e=>{ e.preventDefault(); dz.classList.remove("drop"); addImages(ui.detail, e.dataTransfer.files); };
+    dz.ondrop = e=>{
+      e.preventDefault(); dz.classList.remove("drop");
+      const all = [...(e.dataTransfer.files||[])];
+      const imgs = all.filter(f=>f.type && f.type.startsWith("image/"));
+      const rest = all.filter(f=>!(f.type && f.type.startsWith("image/")));
+      if(imgs.length) addImages(ui.detail, imgs);
+      if(rest.length) addFiles(ui.detail, rest);
+    };
   }
 }
 
