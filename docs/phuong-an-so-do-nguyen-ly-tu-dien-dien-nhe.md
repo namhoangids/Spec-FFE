@@ -1,18 +1,21 @@
 # Phương án tự động hóa thiết kế sơ đồ nguyên lý tủ điện & điện nhẹ
 
-> **Phiên bản:** 0.1 (đề xuất) · **Ngày:** 06/11/2026 · **Trạng thái:** chờ chốt các điểm ở [mục 14](#14-các-điểm-cần-chốt)
+> **Phiên bản:** 0.2 · **Ngày:** 07/11/2026 · **Trạng thái:** đã chốt phạm vi và nền tảng ([mục 14](#14-các-quyết-định-đã-chốt)), đang triển khai GĐ0
+>
+> **Thay đổi so với 0.1:** cập nhật theo 7 quyết định ngày 07/11/2026. Ưu tiên nhà ở/biệt thự và căn hộ; thiết bị Schneider, BOQ có đơn giá; **DWG là đầu ra bắt buộc** nên xuất DXF được đưa lên GĐ1; bóc khối từ AutoCAD đưa lên GĐ2; KNX nằm trong phạm vi điện nhẹ.
 
 ---
 
 ## 1. Tóm tắt
 
 - **Ý tưởng cốt lõi:** không vẽ sơ đồ bằng tay nữa. Người thiết kế nhập **dữ liệu** (bảng tủ, bảng phụ tải, bảng thiết bị điện nhẹ theo phòng), công cụ tự **tính toán → chọn thiết bị → kiểm tra → vẽ sơ đồ → xuất bảng tính & BOQ**. Sửa một phụ tải thì bản vẽ, bảng tính và BOQ cùng cập nhật, không lệch nhau.
-- **Công cụ đề xuất:** web app chạy trên trình duyệt, cùng nền tảng với app FF&E đang dùng (file HTML, nhập/xuất Excel). Xuất **PDF/SVG** để duyệt, **DXF** để mở và chỉnh trong AutoCAD, **Excel** cho bảng tính, BOQ và nhãn.
-- **Phạm vi:**
-  1. Tủ điện hạ áp: sơ đồ nguyên lý từng tủ và sơ đồ cấp điện tổng (cây tủ).
-  2. Điện nhẹ: LAN/Wi-Fi, CCTV, kiểm soát ra vào, chuông cửa hình, truyền hình, âm thanh. Đầu ra gồm sơ đồ nguyên lý dạng trục, sơ đồ tủ rack và bảng đấu nối.
-- **Lộ trình:** 4 giai đoạn chính, khoảng 8–12 tuần. **Có MVP sau khoảng 3–5 tuần**: tự sinh sơ đồ nguyên lý 1 tủ điện từ file Excel.
-- **Nguyên tắc an toàn:** công cụ là trợ lý tính toán. Kỹ sư điện vẫn rà soát, có quyền ghi đè (phải ghi lý do) và chịu trách nhiệm ký hồ sơ.
+- **Công cụ (đã chốt):** web app chạy trên trình duyệt, cùng nền tảng với app FF&E đang dùng (file HTML, nhập/xuất Excel). Xuất **DXF theo khung tên và chuẩn layer của công ty**, mở trong AutoCAD rồi lưu thành **DWG chỉnh sửa được**. Ngoài ra xuất **PDF/SVG** để duyệt và **Excel** cho bảng tính, BOQ có đơn giá Schneider, nhãn.
+- **Phạm vi (đã chốt):**
+  1. Tủ điện hạ áp cho **nhà ở/biệt thự và căn hộ**: sơ đồ nguyên lý từng tủ và sơ đồ cấp điện tổng (cây tủ). Thiết bị **Schneider**.
+  2. Điện nhẹ: LAN/Wi-Fi, CCTV, chuông cửa hình, kiểm soát ra vào, truyền hình, âm thanh, **nhà thông minh KNX**. Báo cháy chỉ thể hiện điểm giao tiếp. Đầu ra gồm sơ đồ nguyên lý dạng trục, sơ đồ tủ rack và bảng đấu nối.
+- **Đầu vào:** nhập Excel thủ công (MVP), sau đó bóc khối từ bản vẽ mặt bằng AutoCAD.
+- **Lộ trình:** 4 giai đoạn chính, khoảng 9–13 tuần. **Có MVP sau khoảng 4–6 tuần**: tự sinh sơ đồ nguyên lý 1 tủ điện từ file Excel, xuất DXF theo khung tên công ty.
+- **Nguyên tắc an toàn:** công cụ là trợ lý tính toán. Kỹ sư điện nội bộ duyệt bộ quy tắc ở GĐ0, rà soát từng hồ sơ, có quyền ghi đè (phải ghi lý do) và chịu trách nhiệm ký.
 
 ---
 
@@ -32,11 +35,12 @@
 
 | Trong phạm vi | Ngoài phạm vi giai đoạn đầu |
 |---|---|
+| Công trình **nhà ở/biệt thự** (thường 3 pha) và **căn hộ** (thường 1 pha, cấp từ tủ công tơ tầng) | Văn phòng, F&B–retail, khách sạn (bổ sung hồ sơ quy tắc sau) |
 | Tủ tổng (MDB), tủ tầng/căn/khu (DB), tủ chức năng (điều hòa, bếp, bơm, chiếu sáng ngoài nhà) | Tủ trung thế, máy biến áp |
 | Sơ đồ cấp điện tổng (cây tủ) | Vẽ mặt bằng đi dây tự động |
 | Bảng tính phụ tải, chọn CB, cáp, RCD; cân pha; chọn vỏ tủ | Mạch điều khiển chi tiết (contactor/PLC), sơ đồ đấu dây hàng kẹp |
-| Điện nhẹ: LAN/Wi-Fi, CCTV, ACS, chuông cửa hình, TV, âm thanh, (nhà thông minh) | Báo cháy/chữa cháy: chỉ thể hiện điểm giao tiếp (liên động cắt điện, mở khóa cửa thoát nạn) |
-| BOQ thiết bị tủ, cáp, thiết bị điện nhẹ; nhãn tủ, nhãn cáp | Tính ngắn mạch chi tiết và phối hợp chọn lọc theo bảng của hãng (đưa vào GĐ4) |
+| Điện nhẹ: LAN/Wi-Fi, CCTV, ACS, chuông cửa hình, TV, âm thanh, nhà thông minh KNX | Báo cháy/chữa cháy: chỉ thể hiện điểm giao tiếp (liên động cắt điện, mở khóa cửa thoát nạn) |
+| BOQ thiết bị tủ, cáp, thiết bị điện nhẹ **kèm đơn giá**; nhãn tủ, nhãn cáp | Tính ngắn mạch chi tiết và phối hợp chọn lọc theo bảng của Schneider (đưa vào GĐ4) |
 
 ---
 
@@ -57,7 +61,7 @@
 flowchart LR
   subgraph IN["Đầu vào"]
     X1["Excel mẫu<br/>bảng tủ · bảng mạch<br/>thiết bị điện nhẹ"]
-    X2["Bóc khối từ DWG / Revit<br/>(GĐ4)"]
+    X2["Bóc khối từ mặt bằng<br/>AutoCAD (GĐ2)"]
     X3["App FF&E<br/>thiết bị dùng điện (GĐ4)"]
   end
   X1 --> D
@@ -84,7 +88,7 @@ flowchart LR
 
 ### Quy trình người dùng
 
-1. Tạo dự án từ mẫu và chọn hồ sơ quy tắc (nhà ở / căn hộ / văn phòng / F&B–retail / khách sạn).
+1. Tạo dự án từ mẫu và chọn hồ sơ quy tắc (giai đoạn đầu có 2 hồ sơ: nhà ở/biệt thự và căn hộ).
 2. Nhập hoặc dán bảng tủ, bảng mạch (Excel mẫu), bảng thiết bị điện nhẹ theo phòng.
 3. Bấm **Tính**. Công cụ chọn CB, RCD, cáp, cân pha, chọn vỏ tủ và hiện danh sách lỗi/cảnh báo.
 4. Kỹ sư rà soát và ghi đè nếu cần, kèm lý do.
@@ -142,8 +146,8 @@ flowchart LR
 
 ### 5.5 Các nguồn nhập (mức tự động tăng dần)
 
-1. **Excel mẫu (MVP):** dán từ bảng có sẵn, ít phụ thuộc nhất.
-2. **Bóc khối từ bản vẽ mặt bằng:** trong AutoCAD dùng lệnh `DATAEXTRACTION` để đếm block (đèn, ổ cắm, camera, AP…) theo phòng và xuất CSV để nhập vào công cụ. Muốn làm được, block cần có thuộc tính (mã mạch, công suất, phòng). Với Revit thì xuất Schedule.
+1. **Excel mẫu (MVP):** dán từ bảng có sẵn, ít phụ thuộc nhất. File mẫu: `dien/mau/nhap-lieu-tu-dien.xlsx`.
+2. **Bóc khối từ bản vẽ mặt bằng AutoCAD (GĐ2):** dùng lệnh `DATAEXTRACTION` để đếm block (đèn, ổ cắm, camera, AP…) theo phòng và xuất CSV để nhập vào công cụ. Muốn làm được, block mặt bằng cần có thuộc tính thống nhất (ví dụ `MA_MACH`, `CONG_SUAT`, `PHONG`). Ở GĐ0 sẽ chuẩn hóa thư viện block mặt bằng hiện có của công ty theo quy ước này.
 3. **Liên kết app FF&E:** bổ sung các trường điện (điện áp, công suất, kiểu đấu nối ổ cắm/đấu cứng, có cần RCD) cho thiết bị như washlet, bình nóng lạnh, máy sấy khăn, gương sưởi, thiết bị bếp. Công cụ sẽ tự sinh dòng phụ tải tương ứng, tránh sót thiết bị cần cấp điện.
 
 ---
@@ -193,6 +197,10 @@ flowchart LR
 
 - Cơ sở cho quy tắc RCD 30 mA là IEC 60364-4-41 (bảo vệ bổ sung cho ổ cắm và thiết bị ngoài nhà) và IEC 60364-7-701 (mọi mạch trong khu vực có bồn tắm/vòi sen). Công cụ áp quy tắc theo **cả loại mạch lẫn phòng**: một mạch chiếu sáng đi qua WC cũng phải có RCD.
 - **Ks** (hệ số đồng thời): mặc định theo hồ sơ quy tắc (ví dụ nhà ở 0,7), hoặc theo số mạch: 2–3 mạch: 0,9; 4–5 mạch: 0,8; 6–9 mạch: 0,7; ≥ 10 mạch: 0,6. Kỹ sư chốt một trong hai cách.
+- **Hai hồ sơ quy tắc giai đoạn đầu** (giá trị cụ thể do kỹ sư điện nội bộ chốt ở GĐ0, xem sheet `Quy tac` trong file Excel mẫu):
+  - *Nhà ở / biệt thự:* nguồn 3 pha 380/220 V, cây tủ nhiều cấp (MDB → tủ tầng → tủ chức năng), SPD tại MDB, có tải 3 pha (bơm, thang máy gia đình, điều hòa trung tâm).
+  - *Căn hộ:* nguồn 1 pha 220 V cấp từ tủ công tơ tầng, một tủ căn hộ, CB tổng 2 cực (cắt cả dây N), Ik lấy theo thông số tòa nhà.
+- **Catalogue Schneider:** dòng sản phẩm cụ thể cho từng loại (MCB, RCBO, RCCB, MCCB, SPD, vỏ tủ) và bảng giá đang áp dụng được chốt ở GĐ0. Mỗi mã có số cực, In, Icu, đường cong, số module và đơn giá. BOQ tính giá theo bảng giá kèm tỷ lệ chiết khấu nhập được.
 - Dãy định mức tiêu chuẩn: 6 – 10 – 16 – 20 – 25 – 32 – 40 – 50 – 63 – 80 – 100 – 125 – 160 – 200 – 250 A…
 - **Icu** của thiết bị phải ≥ Ik tại tủ. MVP dùng Ik do người dùng nhập hoặc giá trị mặc định có gắn cờ; GĐ4 sẽ tính Ik theo tổng trở cáp.
 
@@ -284,7 +292,7 @@ Mỗi hệ thống đi theo cùng một luồng: **bảng thiết bị theo phò
 | **Chuông cửa hình** | Số màn hình mỗi nhánh theo giới hạn của hãng. Loại IP thì đi qua switch PoE | Sơ đồ nguyên lý |
 | **Truyền hình** | CATV: tính ngân sách suy hao bộ chia/tap để mức tín hiệu tại ổ nằm trong dải hãng khuyến cáo. IPTV tính như LAN | Sơ đồ phân phối |
 | **Âm thanh (BGM/PA)** | Công suất ampli ≥ 1,25 × Σ công suất tap loa của từng vùng (đường 100 V) | Sơ đồ nguyên lý theo vùng |
-| **Nhà thông minh** (tùy chọn) | KNX: ≤ 64 thiết bị mỗi đoạn line, ≤ 1.000 m dây bus mỗi line, chọn nguồn bus theo tổng dòng | Sơ đồ topology |
+| **Nhà thông minh KNX** | ≤ 64 thiết bị mỗi đoạn line, ≤ 1.000 m dây bus mỗi line, chọn nguồn bus theo tổng dòng tiêu thụ của thiết bị. Actuator đóng cắt/dimmer đặt trong tủ điện được tính vào số module của tủ đó | Sơ đồ topology KNX, danh sách thiết bị |
 | **Tủ rack** | Σ U thiết bị (switch, patch panel, quản lý cáp, NVR, router, UPS, PDU) × 1,3, rồi chọn rack 6/9/12/15/20/27/42U | Sơ đồ mặt đứng tủ rack |
 | **UPS** | VA ≥ ΣW / PF × 1,25, cộng thời gian lưu điện yêu cầu | Ghi chú trên sơ đồ rack |
 
@@ -355,7 +363,7 @@ Quy tắc bố cục:
 | Định dạng | Dùng để |
 |---|---|
 | SVG / PDF | Xem nhanh, in, gửi duyệt |
-| DXF | Mở trực tiếp trong AutoCAD rồi lưu DWG. **Cần thử ngay ở GĐ0 việc hiển thị tiếng Việt** (mã hóa Unicode, font) |
+| DXF → **DWG** (bắt buộc) | Dùng đúng tên layer, block và khung tên của công ty. Mở trong AutoCAD rồi `SAVEAS` DWG; nhiều file thì chuyển hàng loạt bằng AutoCAD Core Console (`accoreconsole.exe`, có sẵn khi cài AutoCAD) hoặc ODA File Converter (miễn phí). **Đang thử hiển thị tiếng Việt ở GĐ0**, xem file thử trong `dien/spike/` |
 | Excel | Bảng tính, BOQ, nhãn. Dùng thư viện SheetJS như app FF&E |
 | JSON | Dữ liệu dự án đầy đủ, để lưu trữ và so sánh giữa các revision |
 
@@ -373,12 +381,13 @@ Quy tắc bố cục:
 | Điện nhẹ | Yếu | Tốt | Tốt | Thường không có |
 | Chia sẻ trong team | Gửi file qua lại | Một file HTML hoặc link; dữ liệu là file Excel/JSON | Cần cài môi trường | Bản quyền theo máy |
 
-### Đề xuất: phương án B — web app, theo đúng mô hình app FF&E
+### Đã chốt: phương án B — web app, theo đúng mô hình app FF&E
 
 - **Giao diện:** bảng nhập liệu kiểu Excel (dán trực tiếp), cây tủ, khung xem trước sơ đồ, bảng lỗi/cảnh báo.
 - **Lõi tính toán** viết thành module JavaScript thuần, tách khỏi giao diện. Nhờ vậy có thể chạy bộ test tự động, và tái dùng được nếu sau này làm plugin AutoCAD/Revit.
 - **Thư viện quy tắc, catalogue thiết bị, bảng Iz** lưu dạng bảng để kỹ sư tự cập nhật, không phải sửa code.
 - **Lưu dữ liệu** thành file dự án (JSON/Excel) giống app FF&E. Kho dữ liệu chung cho cả team xem xét ở GĐ4.
+- **Xuất DWG theo chuẩn công ty:** từ khung tên và file chuẩn layer công ty gửi, dựng thư viện block tương thích (khung tên A3/A1 có thuộc tính, ký hiệu tủ điện, ký hiệu điện nhẹ). DXF xuất ra dùng đúng tên layer, màu, nét và tên block đó, nên khi mở trong AutoCAD là bản vẽ chuẩn công ty, chỉnh sửa như bản vẽ tay.
 - **Phương án dự phòng:** nếu DXF xuất từ JavaScript không đạt yêu cầu (block/attribute, tiếng Việt), thêm một script Python dùng `ezdxf` chỉ làm nhiệm vụ chuyển JSON → DXF.
 - **Kiểm chứng độc lập:** đối chiếu kết quả với Ecodial hoặc tính tay trên các dự án mẫu.
 
@@ -391,8 +400,9 @@ dien/
   render-svg.js           dựng sơ đồ SVG
   export-dxf.js           xuất DXF
   thu-vien/
-    quy-tac-nha-o.js      hồ sơ quy tắc theo loại công trình
-    catalogue-<hang>.js   catalogue thiết bị
+    quy-tac-nha-o.js      hồ sơ quy tắc nhà ở / biệt thự
+    quy-tac-can-ho.js     hồ sơ quy tắc căn hộ
+    catalogue-schneider.js  catalogue thiết bị + bảng giá
     iz-iec60364-5-52.js   bảng tra dòng cho phép
     ky-hieu/              thư viện ký hiệu SVG + DXF
   mau/
@@ -413,11 +423,11 @@ Khi phát hành có thể gộp tất cả thành một file HTML duy nhất.
 
 | Giai đoạn | Thời gian | Nội dung | Bàn giao | Tiêu chí nghiệm thu |
 |---|---|---|---|---|
-| **GĐ0 — Chuẩn hóa** | 1–2 tuần | Thu thập 3–5 bộ hồ sơ đã duyệt. Chốt quy tắc nội bộ (mục 6.3), hãng thiết bị, ký hiệu, layer, khung tên, mã bản vẽ. Thử xuất DXF tiếng Việt | "Quy định thiết kế điện nội bộ v1"; Excel nhập liệu mẫu; thư viện ký hiệu; 3 dự án mẫu ở dạng dữ liệu | Kỹ sư chủ trì duyệt quy định v1 |
-| **GĐ1 — MVP 1 tủ** | 2–3 tuần | Nhập Excel → tính → kiểm tra → sơ đồ SVG/PDF + bảng tính Excel | Web app v0.1 | Chạy lại các tủ trong dự án mẫu: chọn CB/cáp khớp với bản đã duyệt, hoặc giải thích được chênh lệch; ≤ 30 phút mỗi tủ |
-| **GĐ2 — Hệ thống tủ & DXF** | 2–3 tuần | Cây tủ nhiều cấp, tính từ dưới lên, ΔU cộng dồn, chọn vỏ tủ, sơ đồ cấp điện tổng, DXF có block và khung tên, BOQ, nhãn tủ | v0.2 | Phát hành hồ sơ điện của 1 dự án thật bằng công cụ (có kiểm tra tay song song) |
-| **GĐ3 — Điện nhẹ** | 3–4 tuần | LAN/Wi-Fi, CCTV, ACS, chuông cửa, TV, âm thanh. Sơ đồ trục, rack, bảng đấu nối, BOQ. Liên kết nguồn điện của thiết bị điện nhẹ vào tủ điện | v0.3 | Phát hành hồ sơ điện nhẹ của 1 dự án thật |
-| **GĐ4 — Tích hợp** (tùy chọn) | Theo nhu cầu | Bóc khối từ DWG/Revit; liên kết app FF&E; tính Ik theo tổng trở; bảng phối hợp chọn lọc của hãng; kho dữ liệu chung và quản lý revision; dự toán theo đơn giá | v1.0 | — |
+| **GĐ0 — Chuẩn hóa** (đang làm) | 1–2 tuần | Kỹ sư điện nội bộ duyệt bộ quy tắc cho nhà ở/biệt thự và căn hộ. Chốt dòng sản phẩm và bảng giá Schneider. Nhận khung tên và chuẩn layer công ty, dựng thư viện block tương thích. Chuẩn hóa thuộc tính block mặt bằng. Thử xuất DXF tiếng Việt trên AutoCAD của team | "Quy định thiết kế điện nội bộ v1"; Excel nhập liệu mẫu ✅ (bản nháp); file DXF thử tiếng Việt ✅ (chờ team mở thử); thư viện block; catalogue Schneider có giá; 3 dự án mẫu ở dạng dữ liệu | Kỹ sư điện nội bộ ký duyệt quy định v1; file DXF thử hiển thị đúng trên AutoCAD |
+| **GĐ1 — MVP 1 tủ** | 3–4 tuần | Nhập Excel → tính → kiểm tra → sơ đồ SVG/PDF + **DXF theo khung tên công ty** + bảng tính Excel | Web app v0.1 | Chạy lại các tủ trong dự án mẫu: chọn CB/cáp khớp với bản đã duyệt, hoặc giải thích được chênh lệch; DXF mở trong AutoCAD đúng layer/khung tên; ≤ 30 phút mỗi tủ |
+| **GĐ2 — Hệ thống tủ, BOQ, bóc khối** | 2–3 tuần | Cây tủ nhiều cấp, tính từ dưới lên, ΔU cộng dồn, chọn vỏ tủ, sơ đồ cấp điện tổng, **BOQ có đơn giá Schneider**, nhãn tủ, **nhập CSV bóc khối từ mặt bằng AutoCAD** | v0.2 | Phát hành hồ sơ điện của 1 dự án nhà ở và 1 căn hộ bằng công cụ (có kiểm tra tay song song) |
+| **GĐ3 — Điện nhẹ** | 3–4 tuần | LAN/Wi-Fi, CCTV, chuông cửa, ACS, TV, âm thanh, **KNX**. Sơ đồ trục, rack, topology KNX, bảng đấu nối, BOQ. Liên kết nguồn điện của thiết bị điện nhẹ vào tủ điện | v0.3 | Phát hành hồ sơ điện nhẹ của 1 dự án thật |
+| **GĐ4 — Tích hợp** (tùy chọn) | Theo nhu cầu | Liên kết app FF&E; tính Ik theo tổng trở; bảng phối hợp chọn lọc của Schneider; kho dữ liệu chung và quản lý revision; thêm hồ sơ quy tắc văn phòng, F&B, khách sạn | v1.0 | — |
 
 ---
 
@@ -440,28 +450,44 @@ Khi phát hành có thể gộp tất cả thành một file HTML duy nhất.
 | Tủ phức tạp (ATS, tụ bù, đo đếm, điều khiển) khó vẽ tự động | Làm mẫu module riêng cho từng loại; phần quá đặc thù cho phép vẽ tay sau khi xuất DXF, có ghi chú rõ |
 | Sửa tay trên DWG làm lệch với dữ liệu | Quy định sửa ở dữ liệu rồi xuất lại; DXF có ghi dấu phiên bản |
 | Tiếng Việt / font trong DXF hiển thị sai | Thử ngay ở GĐ0; có phương án dự phòng `ezdxf` |
-| Catalogue và mã thiết bị của hãng thay đổi | Tách catalogue riêng, ghi ngày cập nhật |
+| Catalogue, mã thiết bị và bảng giá Schneider thay đổi | Tách catalogue riêng; mỗi bảng giá ghi ngày áp dụng và tỷ lệ chiết khấu; BOQ ghi rõ bảng giá đã dùng |
+| Block mặt bằng cũ không có thuộc tính nên bóc khối sai | Chuẩn hóa thư viện block ở GĐ0; công cụ báo các block không nhận diện được thay vì bỏ qua |
 | Trách nhiệm pháp lý | Công cụ không thay kỹ sư; hồ sơ do người có chứng chỉ phù hợp ký |
 | Phụ thuộc một người duy trì code | Mã nguồn trên GitHub, có test và tài liệu |
 
 ---
 
-## 14. Các điểm cần chốt
+## 14. Các quyết định đã chốt
 
-1. **Loại công trình ưu tiên:** biệt thự / nhà ở, căn hộ, văn phòng, F&B–retail, hay khách sạn? Lựa chọn này quyết định hồ sơ quy tắc làm trước.
-2. **Hãng thiết bị chuẩn** (Schneider / ABB / LS / Panasonic / khác)? BOQ có cần kèm đơn giá không?
-3. **Đầu ra bắt buộc:** cần DWG chỉnh sửa được, hay PDF là đủ? Công ty đã có khung tên và chuẩn layer chưa?
-4. **Đầu vào:** nhập Excel thủ công là đủ, hay cần bóc từ bản vẽ mặt bằng? Team đang dùng AutoCAD hay Revit?
-5. **Người dùng và người ký:** kỹ sư điện nội bộ hay đối tác MEP? Ai duyệt bộ quy tắc ở GĐ0?
-6. **Nền tảng:** có đồng ý làm web app theo mô hình app FF&E (phương án B) không?
-7. **Phạm vi điện nhẹ ưu tiên:** LAN/Wi-Fi, CCTV, chuông cửa, ACS, TV, âm thanh, nhà thông minh (KNX?). Báo cháy chỉ thể hiện điểm giao tiếp.
+Chốt ngày 07/11/2026.
+
+| # | Nội dung | Quyết định | Ảnh hưởng tới phương án |
+|---|---|---|---|
+| 1 | Loại công trình ưu tiên | Nhà ở / biệt thự, căn hộ | Làm trước 2 hồ sơ quy tắc này (mục 6.3). Loại khác để GĐ4 |
+| 2 | Hãng thiết bị | Schneider; BOQ kèm đơn giá | Catalogue Schneider có giá và chiết khấu; BOQ có đơn giá đưa vào GĐ2 |
+| 3 | Đầu ra bắt buộc | DWG chỉnh sửa được; công ty đã có khung tên và chuẩn layer | Xuất DXF đưa lên GĐ1; DXF dùng đúng layer, block, khung tên công ty; lưu DWG trong AutoCAD |
+| 4 | Đầu vào | Excel thủ công là đủ, có thể bóc từ mặt bằng; team dùng AutoCAD | MVP nhập Excel; bóc khối `DATAEXTRACTION` đưa lên GĐ2; chuẩn hóa thuộc tính block ở GĐ0 |
+| 5 | Người duyệt | Kỹ sư điện nội bộ duyệt bộ quy tắc ở GĐ0 | Bảng quy tắc trong Excel mẫu có cột ý kiến và cột chốt cho kỹ sư |
+| 6 | Nền tảng | Web app theo mô hình app FF&E (phương án B) | Giữ nguyên mục 10 |
+| 7 | Phạm vi điện nhẹ | LAN/Wi-Fi, CCTV, chuông cửa, ACS, TV, âm thanh, KNX; báo cháy chỉ thể hiện điểm giao tiếp | KNX nằm trong GĐ3 |
 
 ## 15. Bước tiếp theo
 
-1. Chốt các điểm ở mục 14 (trả lời ngắn từng dòng là đủ).
-2. Gửi 3–5 bộ hồ sơ điện / điện nhẹ đã duyệt (DWG + PDF), kèm khung tên và chuẩn layer nếu có.
-3. Dựng file Excel nhập liệu mẫu và bảng quy tắc mặc định (dạng bảng để kỹ sư điện góp ý), đồng thời thử xuất DXF tiếng Việt.
-4. Bắt đầu MVP (GĐ1).
+**Đã làm (GĐ0):**
+
+- File Excel nhập liệu mẫu `dien/mau/nhap-lieu-tu-dien.xlsx`: thông tin dự án, bảng tủ, bảng mạch, thiết bị điện nhẹ, và sheet `Quy tac` với các giá trị mặc định để kỹ sư điện góp ý, chốt.
+- File DXF thử tiếng Việt trong `dien/spike/` (2 phiên bản định dạng) để team mở thử trên AutoCAD. Hướng dẫn thử nằm trong `dien/spike/README.md`.
+
+**Cần anh/team gửi:**
+
+1. Khung tên (DWG) và file chuẩn layer của công ty.
+2. 3–5 bộ hồ sơ điện / điện nhẹ đã duyệt của nhà ở/biệt thự và căn hộ (DWG + PDF).
+3. Bảng giá Schneider đang dùng (Excel/PDF) và tỷ lệ chiết khấu thường áp dụng.
+4. Thư viện block mặt bằng hiện tại (đèn, ổ cắm, công tắc, điều hòa, camera, ổ data…).
+5. Kết quả mở thử file DXF tiếng Việt trên AutoCAD của team (phiên bản AutoCAD, file nào hiển thị đúng).
+6. Kỹ sư điện nội bộ góp ý và chốt sheet `Quy tac`.
+
+**Sau khi có đủ:** dựng thư viện block theo chuẩn công ty, nhập catalogue Schneider, rồi bắt đầu MVP (GĐ1).
 
 ---
 
