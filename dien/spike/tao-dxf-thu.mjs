@@ -255,8 +255,8 @@ function ghiR12(path) {
   g(0, "ENDSEC");
   g(0, "EOF");
 
-  // R12: chỉ còn ký tự ASCII sau khi mã hóa; dùng CRLF như AutoCAD.
-  writeFileSync(path, out.join("\r\n") + "\r\n", "ascii");
+  // R12: chỉ còn ký tự ASCII sau khi mã hóa. Xuống dòng LF (AutoCAD đọc được cả LF và CRLF).
+  writeFileSync(path, out.join("\n") + "\n", "ascii");
 }
 
 ghiR2007("thu-tieng-viet-R2007-utf8.dxf");
