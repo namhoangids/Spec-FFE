@@ -13,6 +13,6 @@
     "xlsx": "0.18.5"
   },
   "devDependencies": {
-    "jszip": "^3.10.1"
+    "jszip": "3.10.1"
   }
 }

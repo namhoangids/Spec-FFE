@@ -64,6 +64,9 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
           if (cap.s + 1e-9 < sMin) bao("loi", t, m, `Tiết diện ${so(cap.s, 1)} mm² nhỏ hơn tối thiểu ${so(sMin, 1)} mm² của loại mạch`);
         }
       }
+      if (m.ghiDe?.cap && !/(^|[^A-Z])P?E\s*\(|\+\s*P?E\s*\d/i.test(m.ghiDe.cap)) {
+        bao("canhbao", t, m, `Cáp ghi đè "${m.ghiDe.cap}" không có dây bảo vệ PE — mọi mạch cần dây PE (IEC 60364-5-54)`);
+      }
       if (!duPhong && m.L > rule.lCanhBao) bao("canhbao", t, m, `Mạch dài ${so(m.L, 0)} m (> ${rule.lCanhBao} m) — kiểm tra lại sụt áp và Ik cuối đường dây`);
       if (m.lThieu) bao("canhbao", t, m, `Thiếu chiều dài — đang dùng mặc định ${rule.lMacDinh} m`);
 

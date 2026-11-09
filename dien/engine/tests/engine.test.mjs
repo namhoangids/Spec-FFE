@@ -143,6 +143,9 @@ test("ghi đè CB nhỏ hơn Ib → lỗi; cáp ghi đè quá nhỏ → lỗi Iz
   assert.equal(tim(kq, "loi", "Sụt áp cộng dồn").length, 1);
   assert.equal(tim(kq, "canhbao", "Mạch dài 80 m").length, 1);
   assert.equal(tim(kq, "ghichu", "Lý do: thử").length, 2);
+  assert.equal(tim(kq, "canhbao", "không có dây bảo vệ PE").length, 1);
+  const coPe = chay(motTu([{ ma: "S1", loai: "Ổ cắm thông thường", congSuat: 1000, ghiDeCap: "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", lyDo: "x" }]));
+  assert.equal(tim(coPe, "canhbao", "không có dây bảo vệ PE").length, 0);
 });
 
 test("Ik lớn hơn Icu của MCB → CB tổng chuyển MCCB, mạch nhánh báo lỗi Icu", () => {

@@ -8,8 +8,10 @@ Template tự vẽ tờ **sơ đồ nguyên lý tủ điện** theo đúng bố 
 - `out/<tên>-R12.dxf`: bản gọn (khoảng 2/3 số dòng), tạo bằng bộ ghi tự viết không cần thư viện. Màu dùng màu AutoCAD chuẩn (ACI) gần nhất; nền tô bằng SOLID; ghi chú nhiều dòng tách thành từng dòng chữ. Đây là bản em chép lên Dropbox.
 - `out/<tên>.svg`: xem nhanh trên trình duyệt.
 
-> Giai đoạn này chỉ bám **hình thức trình bày** của mẫu, **chưa xét đúng sai kỹ thuật**.
-> Dữ liệu ví dụ chép nguyên văn từ bản mẫu.
+> Template chỉ lo **hình thức trình bày**. Phần đúng sai kỹ thuật do lõi tính toán `dien/engine` làm:
+> `engine/sang-ban-ve.mjs` đổi kết quả tính sang đúng dạng JSON dưới đây, và lệnh `dien/tao-bo-ban-ve.mjs`
+> (hoặc web app `dien/app`) vẽ cả bộ tờ. File JSON trong `du-lieu/` là dữ liệu chép nguyên văn từ bản mẫu,
+> chỉ dùng để thử template.
 
 ## Cách chạy
 
@@ -106,7 +108,7 @@ rồi đổi sang mm trên khổ A3 ngang theo tỷ lệ 1 px = 0,3633 mm.
 
 ## Đã kiểm tra
 
-- ezdxf 1.4.5 đọc lại cả 4 file DXF (2007 và R12, tờ T1 và T2): `audit` 0 lỗi; thuộc tính block và khung tên đúng từng ký tự tiếng Việt.
+- ezdxf 1.4.5 đọc lại cả 4 file DXF (2007 và R12, tờ T1 và T2): `audit` 0 lỗi; thuộc tính block và khung tên đúng từng ký tự tiếng Việt. Bản 2007 có ghi `$DWGCODEPAGE` như AutoCAD, nên cả chế độ đọc khôi phục (`recover`) cũng nhận đúng UTF-8.
 - Đặt bản SVG cạnh ảnh mẫu E.601 ở cùng kích thước: bố cục, vị trí và độ dài chữ khớp.
 - **Chưa mở trên AutoCAD.** Cần team mở `out/E601-T1.dxf` để so với bản gốc.
 
