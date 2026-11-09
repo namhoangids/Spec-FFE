@@ -1,0 +1,16 @@
+GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
+GHI CHÚ	T1		In tổng 100 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
+GHI CHÚ	T1		Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)
+GHI CHÚ	T1		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T1		SPD loại 2 đã tính vào số module nhưng chưa vẽ trên sơ đồ (template chưa có ký hiệu SPD)
+GHI CHÚ	T1		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc; hệ số đồng thời 5 tủ con = 0,80 — chưa chốt
+GHI CHÚ	T2		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T2		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T3		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T3		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T4		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T4		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T5		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T5		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T6		Tủ có 1 CB dự phòng (quy tắc ≥ 2)
+GHI CHÚ	T6		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt

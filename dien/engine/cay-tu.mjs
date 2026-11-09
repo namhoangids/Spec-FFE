@@ -69,16 +69,14 @@ export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
 
   // --- Tính cáp từ tủ gốc xuống tủ lá ----------------------------------------
   for (const g of goc) {
-    let du = 0;
-    if (g.lCap) {
-      const cap = chonCapCap(g, g.cbTong.in, g.iMax, g.cosTb, g.lCap, 0);
-      g.capNguon = cap;
-      du = cap.duCongDon;
-    } else {
-      g.capNguon = null;
-      ghi("ghichu", g.ma, "", "Tủ gốc không có chiều dài cáp cấp — sụt áp tính từ thanh cái tủ này");
+    const cap = chonCapCap(g, g.cbTong.in, g.iMax, g.cosTb, g.lCap > 0 ? g.lCap : 0, 0);
+    if (!(g.lCap > 0)) {
+      cap.chuaCoL = true;
+      ghi("ghichu", g.ma, "", "Tủ gốc không có chiều dài cáp cấp — cáp nguồn chọn theo Iz′, chưa kiểm sụt áp; sụt áp tính từ thanh cái tủ này");
     }
-    tinhCapTu(g, du);
+    g.capNguon = cap;
+    g.ongNguon = cap.mang ? "MÁNG CÁP" : `ỐNG PVC  Ø ${cap.ong}`;
+    tinhCapTu(g, cap.duCongDon);
   }
 
   // --- Thứ tự tờ vẽ: tủ gốc trước, rồi lần lượt tủ con -----------------------

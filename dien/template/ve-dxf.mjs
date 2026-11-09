@@ -22,6 +22,9 @@ const STYLE = { normal: "IND-ARIAL", bold: "IND-ARIAL-DAM" };
 export function taoDxf() {
   const dxf = new DxfWriter();
   dxf.setUnits(Units.Millimeters);
+  // AutoCAD luôn ghi $DWGCODEPAGE; thiếu biến này một số trình đọc (ezdxf recover…) không nhận ra
+  // file R2007 là UTF-8.
+  dxf.setVariable("$DWGCODEPAGE", { 3: "ANSI_1252" });
   for (const [, [name, aci, [r, gg, b]]] of Object.entries(LAYERS)) {
     const layer = dxf.addLayer(name, aci, "CONTINUOUS");
     layer.trueColor = TrueColor.fromRGB(r, gg, b);

@@ -1,0 +1,107 @@
+// Xuất bảng tính kết quả: sheet Tong hop, mỗi tủ một sheet, Canh bao, Quy tac.
+// Chỉ ghi giá trị (không có công thức) — số liệu lấy thẳng từ lõi tính toán.
+
+import { chuCap, soBanVe } from "./sang-ban-ve.mjs";
+
+// Làm tròn giống chữ trên bản vẽ (toFixed) để bảng tính và bản vẽ ghi cùng một số
+const r = (x, d = 2) => (x == null || Number.isNaN(x) ? null : Number(Number(x).toFixed(d)));
+const v = (x, d = 2) => (x == null || Number.isNaN(x) ? "—" : Number(x).toFixed(d).replace(".", ","));
+const tb = (t) => (t ? `${t.loai} ${t.soCuc} ${t.in}A${t.curve ? ` ${t.curve}` : ""}${t.icu != null ? ` ${t.icu}kA` : ""}${t.idn ? ` ${t.idn}mA` : ""}` : "");
+const MUC = { loi: "LỖI", canhbao: "CẢNH BÁO", ghichu: "GHI CHÚ" };
+const tenSheet = (s, dung) => {
+  let base = String(s).replace(/[[\]:*?/\\]/g, "-").slice(0, 28) || "Tu";
+  let ten = base, k = 2;
+  while (dung.has(ten)) ten = `${base}~${k++}`;
+  dung.add(ten);
+  return ten;
+};
+
+/**
+ * @param {object} XLSX — SheetJS
+ * @param {object} kq — kết quả tinhDuAn
+ * @param {object} info — duAn.info
+ * @returns workbook SheetJS (ghi bằng XLSX.write / XLSX.writeFile)
+ */
+export function xuatExcel(XLSX, kq, info = {}) {
+  const wb = XLSX.utils.book_new();
+  const dung = new Set(["Tong hop", "Canh bao", "Quy tac"]);
+  const rule = kq.quyTac;
+  const dem = (ma, muc) => kq.canhBao.filter((c) => c.tu === ma && c.muc === muc).length;
+
+  // --- Tong hop --------------------------------------------------------------
+  const th = [
+    ["BẢNG TÍNH SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN"],
+    ["Dự án", info.project ?? ""], ["Chủ đầu tư", info.client ?? ""], ["Địa chỉ", info.address ?? ""],
+    ["Loại công trình", info.loaiCongTrinh ?? ""],
+    ["Bộ quy tắc", `${rule.trangThai} — phiên bản ${rule.phienBan}`],
+    ["Số lỗi / cảnh báo / ghi chú", ["loi", "canhbao", "ghichu"].map((m) => kq.canhBao.filter((c) => c.muc === m).length).join(" / ")],
+    [],
+    ["Số bản vẽ", "Mã tủ", "Tên", "Cấp từ", "Số pha", "Pđ (kW)", "Kđt", "Ptt (kW)", "cosφ TB", "I pha A (A)", "I pha B (A)",
+      "I pha C (A)", "Lệch pha (%)", "Ik (kA)", "CB tổng", "Cáp cấp", "Ống / máng cấp", "L cáp cấp (m)", "ΔU tới thanh cái (%)",
+      "Module", "Module cần (+dự phòng)", "Vỏ tủ (module)", "Lỗi", "Cảnh báo"],
+  ];
+  kq.tu.forEach((t, i) => th.push([
+    soBanVe(info.soBanVeDau || "E.601", i), t.ma, t.ten, t.cha ?? "", t.soPha === 3 ? "3P" : "1P", r(t.pd), r(t.ks), r(t.ptt),
+    r(t.cosTb), r(t.iPha.A, 1), r(t.iPha.B, 1), r(t.iPha.C, 1), r(t.lechPha, 1), r(t.ikTinh, 1), tb(t.cbTong),
+    chuCap(t.capNguon, { soPha: t.soPha }), t.capNguon ? t.ongNguon ?? "" : "", t.capNguon?.chuaCoL ? "" : r(t.lCap, 1),
+    r(t.duBus), t.module.tong, r(t.module.can, 1), t.module.voTu ?? "", dem(t.ma, "loi"), dem(t.ma, "canhbao"),
+  ]));
+  const wsTh = XLSX.utils.aoa_to_sheet(th);
+  wsTh["!cols"] = [10, 8, 12, 8, 6, 8, 6, 8, 7, 8, 8, 8, 8, 7, 22, 34, 16, 9, 9, 7, 9, 9, 6, 8].map((w) => ({ wch: w }));
+  XLSX.utils.book_append_sheet(wb, wsTh, "Tong hop");
+
+  // --- Từng tủ ---------------------------------------------------------------
+  const head = ["Mã lộ", "Phụ tải", "Loại mạch", "Loại khu vực", "P (W)", "cosφ", "Số pha", "Pha", "Ib (A)", "Thiết bị",
+    "In (A)", "Icu (kA)", "IΔn (mA)", "Nhóm RCD", "RCD bắt buộc", "Cáp", "S (mm²)", "PE (mm²)", "Iz′ (A)", "L (m)",
+    "ΔU mạch (%)", "ΔU cộng dồn (%)", "Giới hạn ΔU (%)", "Ống", "Ghi đè", "Kiểm tra"];
+  kq.tu.forEach((t, i) => {
+    const rows = [
+      [`SƠ ĐỒ NGUYÊN LÝ ĐIỆN ${t.ten} — ${soBanVe(info.soBanVeDau || "E.601", i)}`],
+      [`CB tổng: ${tb(t.cbTong)} · Cáp cấp: ${chuCap(t.capNguon, { soPha: t.soPha }) || "—"} · Pđ ${v(t.pd)} kW · Kđt ${v(t.ks)} · Ptt ${v(t.ptt)} kW · Itt ${v(t.itt, 1)} A · Ik ${v(t.ikTinh, 1)} kA (${t.ikNguon})`],
+      [`Vỏ tủ: ${t.module.voTu ?? "—"} module (thiết bị ${t.module.tong} module, cần ${v(t.module.can, 1)} gồm ${rule.duPhongVo}% dự phòng) · ΔU tới thanh cái ${v(t.duBus)}%`],
+      [],
+      head,
+    ];
+    for (const m of t.mach) {
+      const gd = m.ghiDe || {};
+      rows.push([
+        m.ma, m.phuTai, m.laCapTuCon ? "Cấp tủ con" : m.loai, m.khuVuc, r(m.P, 0), r(m.cos), m.soPha === 3 ? "3P" : "1P", m.pha,
+        r(m.Ib), tb(m.thietBi), m.thietBi?.in, m.thietBi?.icu, m.thietBi?.idn ?? "", m.nhomRcd ?? "", m.rcdBatBuoc ? "Có" : "",
+        chuCap(m.cap, { soPha: m.soPha, dongCo: m.kieu?.dongCo }), m.cap?.s ?? "", m.cap?.pe ?? "", r(m.cap?.izp, 1),
+        m.kieu?.duPhong ? "" : r(m.L, 1), r(m.cap?.du), r(m.cap?.duCongDon), m.cap ? r(m.cap.gioiHan ?? rule.duThanhCai, 1) : "",
+        m.ong ?? "", [gd.thietBi, gd.cap, gd.ong].filter(Boolean).join(" · ") + (gd.lyDo ? ` (lý do: ${gd.lyDo})` : ""),
+        (m.kiemTra || []).map((k) => `${MUC[k.muc]}: ${k.noiDung}`).join(" | "),
+      ]);
+    }
+    for (const g of t.nhomRcd || []) rows.push([`Nhóm ${g.ma}`, `RCBO chung cho ${g.mach.join(", ")}`, "", "", "", "", "", "", "", tb(g.thietBi)]);
+    const tuKt = (t.kiemTra || []).map((k) => `${MUC[k.muc]}: ${k.noiDung}`);
+    if (tuKt.length) { rows.push([]); rows.push(["Kiểm tra tủ"]); for (const s of tuKt) rows.push(["", s]); }
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"] = [8, 36, 22, 12, 8, 6, 6, 5, 7, 24, 6, 7, 7, 8, 8, 34, 7, 7, 7, 6, 8, 9, 9, 14, 24, 60].map((w) => ({ wch: w }));
+    XLSX.utils.book_append_sheet(wb, ws, tenSheet(t.ma, dung));
+  });
+
+  // --- Canh bao ----------------------------------------------------------------
+  const cb = [["Mức", "Tủ", "Mạch", "Nội dung"]];
+  for (const muc of ["loi", "canhbao", "ghichu"]) for (const c of kq.canhBao.filter((x) => x.muc === muc)) cb.push([MUC[muc], c.tu, c.mach, c.noiDung]);
+  const wsCb = XLSX.utils.aoa_to_sheet(cb);
+  wsCb["!cols"] = [{ wch: 10 }, { wch: 8 }, { wch: 14 }, { wch: 120 }];
+  XLSX.utils.book_append_sheet(wb, wsCb, "Canh bao");
+
+  // --- Quy tac -----------------------------------------------------------------
+  const qt = [
+    ["Bộ quy tắc", rule.trangThai, rule.phienBan], [],
+    ["Tham số", "Giá trị"],
+    ["Uf / Ud (V)", `${rule.uf} / ${rule.ud}`], ["ρ (Ω·mm²/m)", rule.rho], ["λ (Ω/m)", rule.lambda],
+    ["k1 PVC / XLPE", `${rule.k1.PVC} / ${rule.k1.XLPE}`], ["ΔU tối đa / chiếu sáng / tới thanh cái (%)", `${rule.duMax} / ${rule.duChieuSang} / ${rule.duThanhCai}`],
+    ["Kđt theo hồ sơ", JSON.stringify(rule.ks)], ["Hệ số đồng thời theo số tủ con", JSON.stringify(rule.ksTuCon)],
+    ["In ≥ k·Ib", rule.kIn], ["Tỷ số chọn lọc", rule.kChonLoc], ["In lớn nhất dùng MCB (A)", rule.inMaxMcb],
+    ["Lệch pha cho phép (%)", rule.lechPha], ["Dự phòng vỏ tủ (%)", rule.duPhongVo], ["Ống nhỏ nhất (mm) / lấp đầy (%)", `${rule.ongToiThieu} / ${rule.lapDay}`],
+    [], ["Loại mạch", "cosφ", "In tối thiểu (A)", "Đường cong", "RCD", "Tiết diện tối thiểu (mm²)"],
+    ...Object.entries(rule.loaiMach).map(([k, v]) => [k, v.cos, v.inMin, v.curve, v.rcd, v.sMin]),
+  ];
+  const wsQt = XLSX.utils.aoa_to_sheet(qt);
+  wsQt["!cols"] = [{ wch: 44 }, { wch: 22 }, { wch: 14 }, { wch: 10 }, { wch: 10 }, { wch: 12 }];
+  XLSX.utils.book_append_sheet(wb, wsQt, "Quy tac");
+  return wb;
+}

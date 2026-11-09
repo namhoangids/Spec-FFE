@@ -1,1 +1,4 @@
 node_modules/
+# Kết quả chạy lệnh tạo bộ bản vẽ — chỉ giữ bộ ví dụ HDMON trong repo
+out/*
+!out/vi-du-HDMON/
