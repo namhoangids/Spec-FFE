@@ -321,6 +321,8 @@ Mỗi hệ thống đi theo cùng một luồng: **bảng thiết bị theo phò
 
 ### 9.2 Bố cục sơ đồ nguyên lý tủ (mẫu)
 
+> **Cập nhật 09/11/2026:** đã có template dựng theo đúng bản vẽ mẫu của công ty (tờ E.601), nằm trong `dien/template/` (xem `dien/template/README.md`). Bố cục phác thảo dưới đây là bản đề xuất ban đầu, nay được thay bằng bố cục của mẫu: cột nhãn bên trái, CB tổng ở cột giữa, RCBO nhóm, hàng PHA / PHỤ TẢI ô xám.
+
 ```text
 TỦ ĐIỆN DB-T1 · Tầng 1 · 3P+N+PE 380/220V · Âm tường IP40 · Vỏ 36 module
 Cấp từ: MDB / F03 · Cu/XLPE/PVC 4×6 + E6 · L = 30 m
@@ -477,6 +479,7 @@ Chốt ngày 07/11/2026.
 
 - File Excel nhập liệu mẫu `dien/mau/nhap-lieu-tu-dien.xlsx`: thông tin dự án, bảng tủ, bảng mạch, thiết bị điện nhẹ, và sheet `Quy tac` với các giá trị mặc định để kỹ sư điện góp ý, chốt.
 - File DXF thử tiếng Việt trong `dien/spike/` (2 phiên bản định dạng) để team mở thử trên AutoCAD. Hướng dẫn thử nằm trong `dien/spike/README.md`.
+- Template sơ đồ nguyên lý tủ điện theo mẫu E.601 của công ty, trong `dien/template/`: từ dữ liệu JSON xuất DXF (block có thuộc tính, khung tên) và SVG; tự co giãn theo số mạch.
 
 **Cần anh/team gửi:**
 
