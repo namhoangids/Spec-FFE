@@ -3,13 +3,15 @@
 //   cd dien/template && npm install
 //   node tao-ban-ve.mjs du-lieu/E601-T1.json [du-lieu/E602-T2.json ...]
 //
-// Kết quả nằm trong thư mục out/: <tên>.dxf (mở bằng AutoCAD) và <tên>.svg (xem trước).
+// Kết quả nằm trong thư mục out/: <tên>.dxf (AutoCAD 2007, màu RGB), <tên>-R12.dxf (bản gọn,
+// màu AutoCAD chuẩn, không cần thư viện) và <tên>.svg (xem trước).
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { veSoDoTu } from "./mau-indust.mjs";
 import { taoDxf } from "./ve-dxf.mjs";
+import { taoDxfR12 } from "./ve-dxf-r12.mjs";
 import { taoSvg } from "./ve-svg.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -30,7 +32,10 @@ for (const file of files) {
   const dxf = taoDxf();
   veSoDoTu(dxf, data);
   writeFileSync(join(outDir, `${name}.svg`), svg.toString(), "utf8");
+  const r12 = taoDxfR12();
+  veSoDoTu(r12, data);
   writeFileSync(join(outDir, `${name}.dxf`), dxf.toString(), "utf8");
-  console.log(`✔ ${name}: ${data.circuits.length} mạch → out/${name}.dxf, out/${name}.svg`);
+  writeFileSync(join(outDir, `${name}-R12.dxf`), r12.toString(), "ascii");
+  console.log(`✔ ${name}: ${data.circuits.length} mạch → out/${name}.dxf, out/${name}-R12.dxf, out/${name}.svg`);
   for (const w of warnings) console.log(`  ⚠ ${w}`);
 }

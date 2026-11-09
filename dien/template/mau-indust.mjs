@@ -20,22 +20,22 @@ export const Y = (py) => SHEET.h - (py * PX + TOP_PAD);
 export const L = (px) => px * PX;        // độ dài
 
 // ---------------------------------------------------------------------------
-// Layer & màu (tạm — sẽ thay bằng chuẩn layer công ty). [tên, ACI gần nhất, RGB]
+// Layer & màu (tạm — sẽ thay bằng chuẩn layer công ty). [tên, màu ACI dùng cho bản R12, RGB đúng mẫu]
 // ---------------------------------------------------------------------------
 export const LAYERS = {
-  FRAME:    ["IND-KHUNG",      8,   [190, 190, 190]],  // viền giấy
-  LINE:     ["IND-SLD-NET",    5,   [40, 79, 128]],    // đường dây, thanh cái, ký hiệu, khung bảng
-  TEXT:     ["IND-SLD-CHU",    30,  [232, 86, 42]],    // chữ thông số (đỏ cam)
+  FRAME:    ["IND-KHUNG",      254,   [190, 190, 190]],  // viền giấy
+  LINE:     ["IND-SLD-NET",    154,   [40, 79, 128]],    // đường dây, thanh cái, ký hiệu, khung bảng
+  TEXT:     ["IND-SLD-CHU",    20,  [232, 86, 42]],    // chữ thông số (đỏ cam)
   CELL:     ["IND-SLD-O",      254, [238, 238, 238]],  // nền xám ô pha / phụ tải
   ARROW:    ["IND-SLD-MUITEN", 1,   [255, 0, 0]],      // mũi tên pha
   TITLE:    ["IND-TIEUDE",     7,   [0, 0, 0]],        // tiêu đề bản vẽ
-  ICON:     ["IND-TIEUDE-ICON",4,   [0, 179, 179]],    // dấu + xanh ngọc cạnh tiêu đề
+  ICON:     ["IND-TIEUDE-ICON",132,   [0, 179, 179]],    // dấu + xanh ngọc cạnh tiêu đề
   TB_LINE:  ["IND-KT-NET",     8,   [124, 124, 124]],  // khung tên: đường kẻ
-  TB_LABEL: ["IND-KT-NHAN",    8,   [149, 149, 149]],  // khung tên: nhãn (Client:, Date:…)
+  TB_LABEL: ["IND-KT-NHAN",    253,   [149, 149, 149]],  // khung tên: nhãn (Client:, Date:…)
   TB_VALUE: ["IND-KT-GIATRI",  250, [51, 51, 51]],     // khung tên: giá trị
   TB_HI:    ["IND-KT-NOIBAT",  40,  [255, 163, 31]],   // khung tên: Client / Project (cam đậm)
   TB_BOX:   ["IND-KT-SOBV",    8,   [127, 127, 127]],  // ô số bản vẽ (nền xám)
-  TB_BOXTX: ["IND-KT-SOBV-CHU",254, [229, 229, 229]],  // chữ số bản vẽ
+  TB_BOXTX: ["IND-KT-SOBV-CHU",255, [229, 229, 229]],  // chữ số bản vẽ
 };
 
 export const FONT = { normal: "arial.ttf", bold: "arialbd.ttf" };
@@ -277,6 +277,16 @@ export function veSoDoTu(g, d) {
     for (const i of idx) groupOf.set(i, grp);
   }
 
+  // --- Hàng PHA + PHỤ TẢI: nền xám chung + lưới kẻ dùng chung (không vẽ trùng nét) ---
+  const gx0 = X(firstX - pitch / 2), gx1 = X(lastX + pitch / 2);
+  g.fill("CELL", rectPts(gx0, Y(R.load), gx1, Y(R.phase)));
+  g.fill("CELL", rectPts(gx0, Y(R.bottom), gx1, Y(R.load)));
+  for (const r of [R.phase, R.load, R.bottom]) g.line("LINE", gx0, Y(r), gx1, Y(r));
+  for (let k = 0; k <= n; k++) {
+    const xk = X(firstX - pitch / 2 + pitch * k);
+    g.line("LINE", xk, Y(R.bottom), xk, Y(R.phase));
+  }
+
   // --- Các mạch ra ----------------------------------------------------------
   circuits.forEach((c, i) => {
     const x = colX(i);
@@ -290,12 +300,7 @@ export function veSoDoTu(g, d) {
       if (s) g.text("TEXT", X(x + dx), Y(P.cableText.bottom), fitH(s, H.cable, FIT.cableAvail, `cáp mạch ${c.code || i + 1}`, WF.cable), s, { rot: 90, wf: WF.cable });
     }
 
-    // Ô pha + ô phụ tải
-    const cx0 = X(x - pitch / 2), cx1 = X(x + pitch / 2);
-    g.fill("CELL", rectPts(cx0, Y(R.load), cx1, Y(R.phase)));
-    g.fill("CELL", rectPts(cx0, Y(R.bottom), cx1, Y(R.load)));
-    g.rect("LINE", cx0, Y(R.load), cx1, Y(R.phase));
-    g.rect("LINE", cx0, Y(R.bottom), cx1, Y(R.load));
+    // Chữ pha, mũi tên, tên phụ tải
     if (c.phase) g.text("TEXT", X(x), Y(P.phaseText.y), H.phase, c.phase, { ha: "center", va: "middle" });
     g.insert("IND_PHA_MUITEN", X(x), Y(P.arrow.y));
     if (c.load) veTenPhuTai(X(x), Y((R.load + R.bottom) / 2), L(pitch), c.load, c.code || i + 1);

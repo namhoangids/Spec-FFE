@@ -4,7 +4,8 @@ Template tự vẽ tờ **sơ đồ nguyên lý tủ điện** theo đúng bố 
 (`6.E601 Co Dien.pdf`, tờ E.601 "SƠ ĐỒ NGUYÊN LÝ ĐIỆN T1", dự án MR. TUẤN - HDMON).
 Đầu vào là một file dữ liệu JSON, đầu ra gồm:
 
-- `out/<tên>.dxf`: mở bằng AutoCAD rồi lưu DWG. Ký hiệu CB và khung tên là block có thuộc tính, sửa được.
+- `out/<tên>.dxf`: định dạng AutoCAD 2007, màu RGB đúng như mẫu. Mở bằng AutoCAD rồi lưu DWG. Ký hiệu CB và khung tên là block có thuộc tính, sửa được.
+- `out/<tên>-R12.dxf`: bản gọn (khoảng 2/3 số dòng), tạo bằng bộ ghi tự viết không cần thư viện. Màu dùng màu AutoCAD chuẩn (ACI) gần nhất; nền tô bằng SOLID; ghi chú nhiều dòng tách thành từng dòng chữ. Đây là bản em chép lên Dropbox.
 - `out/<tên>.svg`: xem nhanh trên trình duyệt.
 
 > Giai đoạn này chỉ bám **hình thức trình bày** của mẫu, **chưa xét đúng sai kỹ thuật**.
@@ -22,7 +23,8 @@ node tao-ban-ve.mjs du-lieu/E601-T1.json du-lieu/E602-T2.json
 |---|---|
 | `mau-indust.mjs` | **Template**: thông số bố cục, màu, cỡ chữ, layer, block; hàm `veSoDoTu()` dựng tờ vẽ từ dữ liệu |
 | `do-rong-chu.mjs` | Ước lượng độ rộng chữ Arial như AutoCAD hiển thị, dùng để tự co chữ hoặc xuống dòng |
-| `ve-dxf.mjs` | Bộ xuất DXF (AutoCAD 2007, UTF-8) |
+| `ve-dxf.mjs` | Bộ xuất DXF (AutoCAD 2007, UTF-8), dùng thư viện `@tarikjabiri/dxf` |
+| `ve-dxf-r12.mjs` | Bộ xuất DXF R12 tự viết, không cần thư viện (màu ACI, chữ `\U+XXXX`) |
 | `ve-svg.mjs` | Bộ xuất SVG (xem trước) |
 | `tao-ban-ve.mjs` | Lệnh tạo bản vẽ từ file JSON |
 | `du-lieu/E601-T1.json` | Dữ liệu tờ E.601, chép đúng bản mẫu (15 mạch) |
@@ -89,7 +91,8 @@ rồi đổi sang mm trên khổ A3 ngang theo tỷ lệ 1 px = 0,3633 mm.
   - `IND_KHUNG_TEN_GIATRI` (các trường thay đổi theo từng tờ): `CHU_DAU_TU`, `DIA_CHI`, `DU_AN`, `NGAY`, `TY_LE`, `TEN_BAN_VE`, `SO_BAN_VE`…
   - Trong AutoCAD, nhấp đúp vào block để sửa.
 - **Block không thuộc tính**: `IND_PHA_MUITEN` (mũi tên pha), `IND_TIEP_DIA` (tiếp địa).
-- **Layer** `IND-*`, màu theo layer (có cả mã ACI gần nhất lẫn màu RGB đúng như mẫu).
+- **Layer** `IND-*`, màu theo layer. Bản 2007 có màu RGB đúng như mẫu; bản R12 dùng màu ACI: đường dây 154 (xanh navy), chữ 20 (đỏ cam), ô nền 254 (xám), mũi tên 1 (đỏ).
+- **Hàng PHA và PHỤ TẢI** vẽ bằng một nền chung và lưới kẻ dùng chung, không có nét trùng.
 - **Kiểu chữ**: `IND-ARIAL` (arial.ttf) và `IND-ARIAL-DAM` (arialbd.ttf).
 
 ## Phần còn tạm — chờ file DWG của công ty
@@ -103,7 +106,7 @@ rồi đổi sang mm trên khổ A3 ngang theo tỷ lệ 1 px = 0,3633 mm.
 
 ## Đã kiểm tra
 
-- ezdxf 1.4.5 đọc lại cả hai file DXF: `audit` 0 lỗi; thuộc tính block và khung tên đúng từng ký tự tiếng Việt.
+- ezdxf 1.4.5 đọc lại cả 4 file DXF (2007 và R12, tờ T1 và T2): `audit` 0 lỗi; thuộc tính block và khung tên đúng từng ký tự tiếng Việt.
 - Đặt bản SVG cạnh ảnh mẫu E.601 ở cùng kích thước: bố cục, vị trí và độ dài chữ khớp.
 - **Chưa mở trên AutoCAD.** Cần team mở `out/E601-T1.dxf` để so với bản gốc.
 
