@@ -14,7 +14,7 @@ import { chonCbTong, demModule, tongHopTu } from "./tu.mjs";
  * @param {object} [ghiDeQuyTac] — ghi đè thông số quy tắc
  * @returns {{ quyTac, tu: object[], canhBao: object[] }}
  */
-export function tinhDuAn(duAn, ghiDeQuyTac = {}) {
+export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
   const info = duAn.info || {};
   const rule = taoQuyTac({
     ...ghiDeQuyTac,
@@ -174,9 +174,14 @@ export function tinhDuAn(duAn, ghiDeQuyTac = {}) {
   }
 
   function chonCapCap(con, In, Ib, cos, L, duTruoc) {
+    let pp = con.phuongPhap ? String(con.phuongPhap).trim().toUpperCase() : "B1";
+    if (!rule.iz.XLPE[pp]) {
+      ghi("canhbao", con.ma, "", `Không có bảng Iz cho phương pháp lắp đặt "${con.phuongPhap}" — tính theo B1`);
+      pp = "B1";
+    }
     const cap = chonCap({
-      In, Ib, cos, L, soPha: con.soPha, duTruoc, gioiHan: rule.duMax, sMin: 1.5,
-      cachDien: "XLPE", phuongPhap: con.phuongPhap || "B1", nhom: 1,
+      In, Ib, cos, L, soPha: con.soPha, duTruoc, gioiHan: rule.duThanhCai, sMin: 1.5,
+      cachDien: "XLPE", phuongPhap: pp, nhom: 1,
     }, rule);
     const mang = /máng/i.test(con.kieuDi || "");
     return { ...cap, kieu: "nhieuLoi", soLoi: con.soPha === 3 ? 4 : 2, ong: mang ? null : chonOng({ capNhieuLoi: [cap.s], dayDon: [cap.pe] }, rule), mang };

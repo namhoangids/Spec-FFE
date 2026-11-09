@@ -16,6 +16,7 @@ export const QUY_TAC = {
   k1: { PVC: 0.94, XLPE: 0.96 },   // hệ số nhiệt độ ở 35 °C (IEC 60364-5-52 B.52.14)
   duMax: 5,                // % — sụt áp cộng dồn tối đa
   duChieuSang: 3,          // % — sụt áp cộng dồn tối đa cho mạch chiếu sáng
+  duThanhCai: 2,           // % — sụt áp cộng dồn tối đa tới thanh cái mỗi tủ (chọn cáp cấp tủ, chừa phần cho mạch nhánh)
   ks: { "Nhà ở / biệt thự": 0.7, "Căn hộ": 0.7 },
   // Hệ số đồng thời giữa các tủ con cấp từ một tủ, theo số tủ con (bảng hệ số đồng thời cho tủ phân phối,
   // IEC 61439 / Schneider Electrical Installation Guide): 1 → 1; 2–3 → 0,9; 4–5 → 0,8; 6–9 → 0,7; ≥ 10 → 0,6
@@ -25,6 +26,7 @@ export const QUY_TAC = {
   lechPha: 15,             // % — độ lệch pha cho phép
   duPhongVo: 20,           // % — chỗ trống dự phòng trong vỏ tủ
   cbDuPhong: 2,            // số CB dự phòng tối thiểu (ghi chú nếu thiếu)
+  ctNguong: 63,            // A — In tổng từ ngưỡng này cần đồng hồ đa năng + CT
   lCanhBao: 50,            // m — mạch dài hơn thì cảnh báo
   ibIn: 90,                // % — Ib/In vượt thì cảnh báo
   lMacDinh: 20,            // m — chiều dài dùng khi thiếu số liệu (có gắn cờ)
@@ -91,7 +93,13 @@ export const QUY_TAC = {
 
 /** Gộp quy tắc mặc định với thông số ghi đè (từ sheet Du an / Quy tac). */
 export function taoQuyTac(ghiDe = {}) {
-  return { ...QUY_TAC, ...ghiDe, k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) } };
+  const loaiMach = { ...QUY_TAC.loaiMach };
+  for (const [k, v] of Object.entries(ghiDe.loaiMach || {})) loaiMach[k] = { ...(QUY_TAC.loaiMach[k] || { cos: 0.9, inMin: 16, curve: "C", rcd: "khong", sMin: 2.5 }), ...v };
+  return {
+    ...QUY_TAC, ...ghiDe, loaiMach,
+    k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) },
+    ks: { ...QUY_TAC.ks, ...(ghiDe.ks || {}) },
+  };
 }
 
 /** Định mức tiêu chuẩn nhỏ nhất ≥ x. */

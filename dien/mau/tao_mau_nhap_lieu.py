@@ -1,12 +1,15 @@
-"""Tạo file Excel nhập liệu mẫu cho công cụ sơ đồ nguyên lý tủ điện & điện nhẹ.
+"""Tạo file Excel nhập liệu (v2) cho công cụ sơ đồ nguyên lý tủ điện & điện nhẹ.
 
-Chạy:  python3 dien/mau/tao_mau_nhap_lieu.py  [đường_dẫn_xuất.xlsx]
-Mặc định ghi ra dien/mau/nhap-lieu-tu-dien.xlsx (cùng thư mục với script).
+Chạy:  python3 dien/mau/tao_mau_nhap_lieu.py
+Ghi ra (cùng thư mục với script):
+  - nhap-lieu-tu-dien.xlsx : file mẫu để nhập, ví dụ là tủ DB-T1 trong tài liệu phương án (mục 7)
+  - vi-du-HDMON.xlsx       : ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON);
+                             công suất và chiều dài là SỐ GIẢ ĐỊNH
 
+Công cụ đọc file theo TÊN SHEET và TIÊU ĐỀ CỘT (dien/engine/doc-excel.mjs), không theo vị trí cột.
 Các giá trị trong sheet "Quy tac" là MẶC ĐỊNH ĐỀ XUẤT, chờ kỹ sư điện nội bộ duyệt (GĐ0).
 """
 import os
-import sys
 
 from openpyxl import Workbook
 from openpyxl.comments import Comment
@@ -29,15 +32,15 @@ F_HEAD = Font(name=FONT, size=10, bold=True, color="FFFFFF")
 F_TITLE = Font(name=FONT, size=14, bold=True, color=C_HEAD)
 F_SUB = Font(name=FONT, size=11, bold=True, color=C_HEAD)
 F_NOTE = Font(name=FONT, size=9, italic=True, color="595959")
+F_BOLD = Font(name=FONT, size=10, bold=True)
 FILL_HEAD = PatternFill("solid", fgColor=C_HEAD)
 FILL_INPUT = PatternFill("solid", fgColor=C_INPUT)
 FILL_CALC = PatternFill("solid", fgColor=C_CALC)
 FILL_REVIEW = PatternFill("solid", fgColor=C_REVIEW)
-WRAP = Alignment(wrap_text=True, vertical="top")
 CENTER = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
 # ---------------------------------------------------------------------------
-# Danh mục (dùng cho danh sách chọn)
+# Danh mục (dùng cho danh sách chọn) — phải khớp dien/engine/quy-tac.mjs
 # ---------------------------------------------------------------------------
 LOAI_CONG_TRINH = ["Nhà ở / biệt thự", "Căn hộ"]
 LOAI_MACH = [
@@ -54,10 +57,9 @@ LOAI_MACH = [
 LOAI_KHU_VUC = ["Khô", "Ướt (WC, tắm)", "Ngoài nhà", "Bếp"]
 SO_PHA_TU = ["1P+N+PE", "3P+N+PE"]
 SO_PHA_MACH = ["1P", "3P"]
-PHA = ["L1", "L2", "L3"]
+PHA = ["A", "B", "C"]
 NOI_DAT = ["TN-S", "TN-C-S", "TT"]
-LOAI_CAP = ["Cu/PVC", "Cu/XLPE/PVC"]
-KIEU_LAP = ["Âm tường", "Nổi tường", "Đặt sàn"]
+KIEU_DI = ["Ống", "Máng cáp"]
 CO_KHONG = ["Theo quy tắc", "Có", "Không"]
 PP_LAP_DAT = [
     ("A1", "Dây đơn trong ống, trong tường cách nhiệt"),
@@ -65,9 +67,7 @@ PP_LAP_DAT = [
     ("B1", "Dây đơn / cáp một lõi trong ống, âm hoặc nổi tường"),
     ("B2", "Cáp nhiều lõi trong ống, âm hoặc nổi tường"),
     ("C", "Cáp đi trực tiếp trên tường / trần"),
-    ("D", "Cáp chôn đất trong ống"),
     ("E", "Cáp nhiều lõi trên máng/khay đục lỗ, không khí tự do"),
-    ("F", "Cáp một lõi trên máng/khay đục lỗ, không khí tự do"),
 ]
 DINH_MUC_CB = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250]
 
@@ -107,12 +107,137 @@ def add_list_validation(ws, rng, source, allow_blank=True):
     dv.add(rng)
 
 
-def build(path):
+# ---------------------------------------------------------------------------
+# Cấu trúc cột (tên cột là "khóa" để công cụ đọc — không đổi tên)
+# ---------------------------------------------------------------------------
+# (tiêu đề, độ rộng, ghi chú ô tiêu đề)
+COT_TU = [
+    ("Mã tủ", 8, "Mã duy nhất của tủ, ví dụ T1, T2, MDB."),
+    ("Tên trên bản vẽ", 11, "Tên hiện trên bản vẽ: tiêu đề 'SƠ ĐỒ NGUYÊN LÝ ĐIỆN …' và nhãn 'CẤP ĐIỆN …' ở tủ trên. Trống = lấy Mã tủ."),
+    ("Vị trí", 26, None),
+    ("Cấp từ tủ", 9, "Mã tủ cấp nguồn cho tủ này. Trống = tủ gốc (cấp từ công tơ / nguồn)."),
+    ("Mã lộ cấp", 9, "Mã lộ ra ở tủ trên cấp cho tủ này, ví dụ S5. Trống = công cụ đặt C-<mã tủ>."),
+    ("Đặt sau lộ", 9, "Vị trí lộ cấp trên sơ đồ tủ trên: đặt ngay sau lộ có mã này. Trống = cuối tủ."),
+    ("Số pha", 10, None),
+    ("Chiều dài cáp cấp (m)", 10, "Tủ gốc: chiều dài cáp từ nguồn tới tủ (trống = sụt áp tính từ thanh cái tủ gốc)."),
+    ("Kiểu đi cáp cấp", 10, None),
+    ("Phương pháp lắp đặt", 10, "Phương pháp lắp đặt cáp cấp theo IEC 60364-5-52 (trống = B1)."),
+    ("Ik tại tủ (kA)", 8, "Dòng ngắn mạch tại tủ. Trống = lấy theo tủ trên / Ik nguồn (sheet Du an)."),
+    ("Kđt (trống = theo quy tắc)", 10, "Hệ số đồng thời của tủ. Trống = hồ sơ quy tắc (mạch cuối) và bảng hệ số theo số tủ con."),
+    ("SPD", 12, None),
+    ("Ghi chú", 30, None),
+]
+COT_MACH = [
+    ("Mã tủ", 7, None),
+    ("Mã lộ", 8, "Mã lộ trên bản vẽ: L1, S1, AC1, WH1, R1…"),
+    ("Loại mạch", 28, "Quyết định cosφ, In tối thiểu, RCD, tiết diện tối thiểu (sheet Quy tac)."),
+    ("Phụ tải (chữ trên bản vẽ)", 34, "Chữ hiện ở hàng PHỤ TẢI, ví dụ CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI."),
+    ("Loại khu vực", 13, "'Ướt (WC, tắm)' hoặc 'Ngoài nhà' → bắt buộc RCD 30 mA cho mọi mạch."),
+    ("Số lượng", 7, "Trống = 1."),
+    ("Công suất / đv (W)", 9, None),
+    ("P (W)", 8, None),
+    ("cosφ (trống = mặc định)", 9, None),
+    ("cosφ áp dụng", 8, None),
+    ("Số pha", 6, None),
+    ("Pha (trống = tự cân)", 8, "Nhập A/B/C để khóa pha. Trống = công cụ tự cân pha."),
+    ("Chiều dài (m)", 8, "Trống = dùng chiều dài mặc định và gắn cảnh báo."),
+    ("Số mạch chung ống", 8, "Số mạch đi chung một ống/máng — dùng tính hệ số nhóm k2. Trống = 1."),
+    ("Nhóm RCD (ghi đè)", 8, "GHI ĐÈ: các mạch cùng mã nhóm dùng chung 1 RCBO (như bản vẽ mẫu). Công cụ sẽ cảnh báo vì quy tắc yêu cầu RCBO riêng từng mạch."),
+    ("Ghi đè thiết bị", 16, "Ví dụ: MCB 1P 20A · RCBO 1P+N 25A 30mA · MCB 3P 32A C 6kA. Trống = công cụ tự chọn."),
+    ("Ghi đè cáp", 16, "Ví dụ: Cu/PVC 2(1x4)mm2. Công cụ vẫn kiểm Iz′ và sụt áp."),
+    ("Ghi đè ống", 10, "Ví dụ: ỐNG PVC  Ø 25"),
+    ("Lý do ghi đè", 22, "Bắt buộc khi có ghi đè — hiện trong danh sách ghi chú."),
+    ("Ib tham khảo (A)", 8, "Chỉ để tham khảo. Công cụ tự tính lại Ib, chọn CB, cáp, RCD theo bộ quy tắc."),
+    ("Ghi chú", 22, None),
+]
+COL = {}  # tên cột sheet Mach → chữ cột
+for i, (h, _, _) in enumerate(COT_MACH, start=1):
+    COL[h] = get_column_letter(i)
+
+# Mã → (thông tin, ghi chú)
+DU_AN = [
+    ("MA_DA", "Số dự án (Project no)", ""),
+    ("TEN_DA", "Tên dự án (Project)", "Hiện trong khung tên"),
+    ("CHU_DAU_TU", "Chủ đầu tư (Client)", ""),
+    ("DIA_CHI", "Địa chỉ công trình (Address)", ""),
+    ("CONG_TY", "Thông tin công ty (Company info)", ""),
+    ("LOAI_CT", "Loại công trình", "Chọn trong danh sách — quyết định hồ sơ quy tắc"),
+    ("GIAM_DOC", "Giám đốc (Director)", ""),
+    ("THIET_KE", "Thiết kế (Design)", "Kỹ sư điện chủ trì"),
+    ("KIEM_TRA", "Kiểm tra (Check by)", ""),
+    ("NGUOI_VE", "Người vẽ (Made by)", ""),
+    ("NGAY", "Ngày (Date)", "Ghi đúng như muốn hiện trên khung tên"),
+    ("TY_LE", "Tỷ lệ (Scale)", ""),
+    ("SO_BV_DAU", "Số bản vẽ tờ đầu tiên", "Các tờ sau tăng dần theo thứ tự tủ: E.601, E.602…"),
+    ("REV", "Revision", ""),
+    ("UF", "Điện áp pha Uf (V)", "Trống = theo sheet Quy tac"),
+    ("UD", "Điện áp dây Ud (V)", "Trống = theo sheet Quy tac"),
+    ("NOI_DAT", "Sơ đồ nối đất", ""),
+    ("IK_NGUON", "Ik tại điểm đấu nối (kA)", "Lấy từ điện lực / tòa nhà"),
+    ("DU_MAX", "Sụt áp cộng dồn tối đa (%)", "Trống = theo sheet Quy tac"),
+    ("BANG_GIA", "Bảng giá Schneider áp dụng", "Tên/ngày bảng giá, dùng cho BOQ (GĐ2)"),
+    ("CHIET_KHAU", "Chiết khấu (%)", "Dùng cho BOQ (GĐ2)"),
+]
+
+QUY_TAC_A = [
+    ("UF", "Điện áp pha Uf", 220, "V", "Lưới hạ áp Việt Nam (có thể chọn 230)"),
+    ("UD", "Điện áp dây Ud", 380, "V", "Có thể chọn 400"),
+    ("RHO", "Điện trở suất đồng ρ (ở nhiệt độ làm việc)", 0.0225, "Ω·mm²/m", "Dùng tính sụt áp"),
+    ("LAMBDA", "Điện kháng đơn vị dây λ", 0.08, "mΩ/m", "Dùng tính sụt áp"),
+    ("K1_PVC", "Hệ số nhiệt độ k1 — cách điện PVC", 0.94, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
+    ("K1_XLPE", "Hệ số nhiệt độ k1 — cách điện XLPE", 0.96, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
+    ("DU_MAX", "Sụt áp cộng dồn tối đa (từ nguồn)", 5, "%", "Đề xuất nội bộ"),
+    ("DU_CS", "Sụt áp tối đa — mạch chiếu sáng", 3, "%", "Đề xuất nội bộ"),
+    ("DU_TU", "Sụt áp cộng dồn tối đa tới thanh cái mỗi tủ", 2, "%",
+     "Dùng chọn cáp cấp tủ, chừa phần cho mạch nhánh"),
+    ("KS_NHA", "Kđt mạch cuối — hồ sơ nhà ở / biệt thự", 0.7, "", "Hoặc dùng bảng Ks theo số mạch (mục 6.3)"),
+    ("KS_CANHO", "Kđt mạch cuối — hồ sơ căn hộ", 0.7, "", "Kỹ sư chốt"),
+    ("K_IN", "Hệ số chọn In (In ≥ k·Ib)", 1.25, "", "Đề xuất nội bộ"),
+    ("K_CHONLOC", "Tỷ số chọn lọc sơ bộ (In tổng ≥ k·In mạch ra lớn nhất)", 1.6, "",
+     "Sơ bộ; kiểm tra lại theo bảng phối hợp Schneider"),
+    ("IN_MCB_MAX", "In lớn nhất dùng MCB (lớn hơn dùng MCCB)", 63, "A", ""),
+    ("LECH_PHA", "Độ lệch pha tối đa (Smax − Smin)/Smax", 15, "%", "Vượt thì cảnh báo"),
+    ("DP_VO", "Chỗ trống dự phòng trong vỏ tủ", 20, "%", "Tính trên tổng module"),
+    ("DP_CB", "Số CB dự phòng tối thiểu mỗi tủ", 2, "cái", "Thiếu thì ghi chú"),
+    ("CT_NGUONG", "Ngưỡng In tổng dùng đồng hồ đa năng + CT", 63, "A", "Đề xuất nội bộ"),
+    ("IK_MD", "Ik mặc định khi chưa có số liệu", 6, "kA", "Giá trị gắn cờ, phải xác nhận"),
+    ("L_MD", "Chiều dài mạch dùng khi thiếu số liệu", 20, "m", "Gắn cờ cảnh báo"),
+    ("LAP_DAY", "Hệ số lấp đầy ống tối đa", 40, "%", "Chọn đường kính ống"),
+    ("ONG_MIN", "Đường kính ống nhỏ nhất", 20, "mm", "Bản vẽ mẫu E.601 dùng Ø20 cho mạch nhánh"),
+    ("L_CANHBAO", "Chiều dài mạch cần kiểm tra lại", 50, "m", "Cảnh báo"),
+    ("IB_IN", "Ngưỡng cảnh báo Ib/In", 90, "%", "Cảnh báo"),
+    # Điện nhẹ (GĐ3)
+    ("ELV_DP_CONG", "Điện nhẹ — dự phòng cổng switch", 20, "%", ""),
+    ("ELV_POE_AP", "Điện nhẹ — công suất PoE mỗi AP", 20, "W", "Thường 15–25 W, theo thiết bị chọn"),
+    ("ELV_POE_CAM", "Điện nhẹ — công suất PoE mỗi camera", 10, "W", "Thường 5–13 W, theo thiết bị chọn"),
+    ("ELV_POE_K", "Điện nhẹ — hệ số dự trữ ngân sách PoE", 1.2, "", ""),
+    ("ELV_CAT6", "Điện nhẹ — chiều dài tối đa cáp Cat6 (link cố định)", 90, "m", "TIA-568"),
+    ("ELV_BITRATE", "CCTV — bitrate mỗi camera", 4, "Mbps", "4 MP, H.265"),
+    ("ELV_NGAY_LUU", "CCTV — số ngày lưu", 30, "ngày", ""),
+    ("ELV_AMPLI_K", "Âm thanh — hệ số công suất ampli", 1.25, "", "Ampli ≥ k · Σ công suất tap loa"),
+    ("ELV_RACK_K", "Tủ rack — hệ số dự phòng U", 1.3, "", ""),
+    ("ELV_UPS_K", "UPS — hệ số dự phòng", 1.25, "", "VA ≥ ΣW / PF · k"),
+    ("KNX_MAX", "KNX — số thiết bị tối đa mỗi đoạn line", 64, "thiết bị", "Theo chuẩn KNX"),
+]
+QUY_TAC_B = [
+    # loại mạch, cosφ, In tối thiểu, đường cong, RCD, tiết diện tối thiểu
+    ("Chiếu sáng trong nhà", 0.90, 10, "C", "Không (khu ướt: 30 mA)", 1.5),
+    ("Chiếu sáng ngoài nhà", 0.90, 10, "C", "30 mA", 1.5),
+    ("Ổ cắm thông thường", 0.85, 16, "C", "30 mA", 2.5),
+    ("Khu ướt (WC, bình nóng lạnh)", 1.00, 16, "C", "30 mA", 2.5),
+    ("Bếp từ, lò nướng", 0.95, 16, "C", "30 mA", 2.5),
+    ("Điều hòa", 0.90, 16, "C", "Tùy chọn", 2.5),
+    ("Động cơ (bơm, quạt)", 0.80, 10, "C", "Không", 2.5),
+    ("Thiết bị điện nhẹ (rack, NVR, KNX)", 0.90, 10, "C", "Tùy chọn", 1.5),
+    ("Dự phòng", 0.90, 16, "C", "Không", 2.5),
+]
+assert [r[0] for r in QUY_TAC_B] == LOAI_MACH
+
+
+def build(path, du_lieu):
     wb = Workbook()
 
-    # -----------------------------------------------------------------------
-    # Danh muc
-    # -----------------------------------------------------------------------
+    # --- Danh muc --------------------------------------------------------------
     dm = wb.active
     dm.title = "Danh muc"
     lists = [
@@ -123,9 +248,8 @@ def build(path):
         ("Số pha mạch", SO_PHA_MACH),
         ("Pha", PHA),
         ("Sơ đồ nối đất", NOI_DAT),
-        ("Loại cáp", LOAI_CAP),
-        ("Kiểu lắp", KIEU_LAP),
-        ("Có / Không", CO_KHONG),
+        ("Kiểu đi cáp", KIEU_DI),
+        ("SPD", CO_KHONG),
         ("Phương pháp lắp đặt", [k for k, _ in PP_LAP_DAT]),
         ("Mô tả phương pháp", [v for _, v in PP_LAP_DAT]),
         ("Định mức CB (A)", DINH_MUC_CB),
@@ -138,66 +262,25 @@ def build(path):
         letter = get_column_letter(col)
         ref[name] = f"='Danh muc'!${letter}$2:${letter}${len(values) + 1}"
     style_header(dm, 1, len(lists))
-    set_widths(dm, [18, 34, 16, 12, 12, 8, 14, 14, 12, 14, 12, 52, 14])
+    set_widths(dm, [18, 34, 16, 12, 12, 8, 14, 12, 14, 12, 52, 14])
     dm.freeze_panes = "A2"
 
-    # -----------------------------------------------------------------------
-    # Quy tac
-    # -----------------------------------------------------------------------
+    # --- Quy tac ---------------------------------------------------------------
     qt = wb.create_sheet("Quy tac")
     qt["A1"] = "BỘ QUY TẮC MẶC ĐỊNH — CHỜ KỸ SƯ ĐIỆN NỘI BỘ DUYỆT (GĐ0)"
     qt["A1"].font = F_TITLE
-    qt["A2"] = ("Giá trị trong cột 'Đề xuất' là mặc định do công cụ đề xuất. Kỹ sư điện ghi ý kiến "
-                "và đánh dấu cột 'Chốt'. Công cụ chỉ dùng bộ quy tắc sau khi được chốt.")
+    qt["A2"] = ("Công cụ đọc cột 'Đề xuất' của bảng A và các cột của bảng B khi tính. Kỹ sư điện ghi ý kiến "
+                "và đánh dấu ✔ ở cột 'Chốt'; khi mọi dòng đã chốt, bảng tính ghi bộ quy tắc là ĐÃ DUYỆT.")
     qt["A2"].font = F_NOTE
-
-    # Bảng A — thông số chung
     qt["A4"] = "A. Thông số chung"
     qt["A4"].font = F_SUB
     head_a = ["Mã", "Tham số", "Đề xuất", "Đơn vị", "Căn cứ / ghi chú", "Ý kiến KS điện", "Chốt (✔)"]
     for c, h in enumerate(head_a, start=1):
         qt.cell(row=5, column=c, value=h)
     style_header(qt, 5, len(head_a))
-    params = [
-        ("UF", "Điện áp pha Uf", 220, "V", "Lưới hạ áp Việt Nam (có thể chọn 230)"),
-        ("UD", "Điện áp dây Ud", 380, "V", "Có thể chọn 400"),
-        ("RHO", "Điện trở suất đồng ρ (ở nhiệt độ làm việc)", 0.0225, "Ω·mm²/m", "Dùng tính sụt áp"),
-        ("LAMBDA", "Điện kháng đơn vị dây λ", 0.08, "mΩ/m", "Dùng tính sụt áp"),
-        ("T_MT", "Nhiệt độ môi trường thiết kế", 35, "°C", "Khí hậu Việt Nam"),
-        ("K1_PVC", "Hệ số nhiệt độ k1 — cách điện PVC", 0.94, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
-        ("K1_XLPE", "Hệ số nhiệt độ k1 — cách điện XLPE", 0.96, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
-        ("DU_MAX", "Sụt áp cộng dồn tối đa (từ nguồn)", 5, "%", "Đề xuất nội bộ"),
-        ("DU_CS", "Sụt áp tối đa — mạch chiếu sáng", 3, "%", "Đề xuất nội bộ, có thể bỏ"),
-        ("KS_NHA", "Ks — hồ sơ nhà ở / biệt thự", 0.7, "", "Hoặc dùng bảng Ks theo số mạch (mục 6.3)"),
-        ("KS_CANHO", "Ks — hồ sơ căn hộ", 0.7, "", "Kỹ sư chốt"),
-        ("K_IN", "Hệ số chọn In mạch nhánh (In ≥ k·Ib)", 1.25, "", "Đề xuất nội bộ"),
-        ("K_CHONLOC", "Tỷ số chọn lọc sơ bộ (In tổng ≥ k·In mạch ra lớn nhất)", 1.6, "",
-         "Sơ bộ; kiểm tra lại theo bảng phối hợp Schneider"),
-        ("LECH_PHA", "Độ lệch pha tối đa (Smax − Smin)/Smax", 15, "%", "Vượt thì cảnh báo"),
-        ("DP_VO", "Chỗ trống dự phòng trong vỏ tủ", 20, "%", "Tính trên tổng module"),
-        ("DP_CB", "Số CB dự phòng tối thiểu mỗi tủ", 2, "cái", "Đề xuất nội bộ"),
-        ("CT_NGUONG", "Ngưỡng In tổng dùng đồng hồ đa năng + CT", 63, "A", "Đề xuất nội bộ"),
-        ("SPD_KC", "Khoảng cách tới SPD tủ tổng để thêm SPD tủ con", 10, "m", "Tham chiếu IEC 60364-5-53"),
-        ("IK_CANHO", "Ik mặc định tủ căn hộ (khi chưa có số liệu tòa nhà)", 6, "kA", "Giá trị gắn cờ, phải xác nhận"),
-        ("LAP_DAY", "Hệ số lấp đầy ống tối đa", 40, "%", "Chọn đường kính ống"),
-        ("L_CANHBAO", "Chiều dài mạch cần kiểm tra lại", 50, "m", "Cảnh báo"),
-        ("IB_IN", "Ngưỡng cảnh báo Ib/In", 90, "%", "Cảnh báo"),
-        # Điện nhẹ
-        ("ELV_DP_CONG", "Điện nhẹ — dự phòng cổng switch", 20, "%", ""),
-        ("ELV_POE_AP", "Điện nhẹ — công suất PoE mỗi AP", 20, "W", "Thường 15–25 W, theo thiết bị chọn"),
-        ("ELV_POE_CAM", "Điện nhẹ — công suất PoE mỗi camera", 10, "W", "Thường 5–13 W, theo thiết bị chọn"),
-        ("ELV_POE_K", "Điện nhẹ — hệ số dự trữ ngân sách PoE", 1.2, "", ""),
-        ("ELV_CAT6", "Điện nhẹ — chiều dài tối đa cáp Cat6 (link cố định)", 90, "m", "TIA-568"),
-        ("ELV_BITRATE", "CCTV — bitrate mỗi camera", 4, "Mbps", "4 MP, H.265"),
-        ("ELV_NGAY_LUU", "CCTV — số ngày lưu", 30, "ngày", ""),
-        ("ELV_AMPLI_K", "Âm thanh — hệ số công suất ampli", 1.25, "", "Ampli ≥ k · Σ công suất tap loa"),
-        ("ELV_RACK_K", "Tủ rack — hệ số dự phòng U", 1.3, "", ""),
-        ("ELV_UPS_K", "UPS — hệ số dự phòng", 1.25, "", "VA ≥ ΣW / PF · k"),
-        ("KNX_MAX", "KNX — số thiết bị tối đa mỗi đoạn line", 64, "thiết bị", "Theo chuẩn KNX"),
-    ]
     row = 6
-    param_row = {}
-    for code, name, val, unit, note in params:
+    qt_row = {}
+    for code, name, val, unit, note in QUY_TAC_A:
         put(qt, row, 1, code)
         put(qt, row, 2, name)
         put(qt, row, 3, val, font=F_INPUT, fill=FILL_INPUT)
@@ -205,196 +288,120 @@ def build(path):
         put(qt, row, 5, note)
         put(qt, row, 6, None, fill=FILL_REVIEW)
         put(qt, row, 7, None, fill=FILL_REVIEW, align=CENTER)
-        param_row[code] = row
+        qt_row[code] = row
         row += 1
-
-    # Bảng B — theo loại mạch
     row += 1
     qt.cell(row=row, column=1, value="B. Quy tắc theo loại mạch").font = F_SUB
     row += 1
-    head_b = ["Loại mạch", "cosφ", "Hệ số chọn In", "In tối thiểu (A)", "Đường cong",
-              "RCD", "Tiết diện tối thiểu Cu (mm²)", "Dòng sản phẩm Schneider (KS chốt)",
-              "Ý kiến KS điện", "Chốt (✔)"]
+    head_b = ["Loại mạch", "cosφ", "In tối thiểu (A)", "Đường cong", "RCD",
+              "Tiết diện tối thiểu Cu (mm²)", "Dòng sản phẩm Schneider (KS chốt)", "Ý kiến KS điện", "Chốt (✔)"]
     for c, h in enumerate(head_b, start=1):
         qt.cell(row=row, column=c, value=h)
     style_header(qt, row, len(head_b))
-    rules_head_row = row
-    rules = [
-        ("Chiếu sáng trong nhà", 0.90, 1.25, 10, "C", "Không (khu ướt: 30 mA)", 1.5),
-        ("Chiếu sáng ngoài nhà", 0.90, 1.25, 10, "C", "30 mA", 1.5),
-        ("Ổ cắm thông thường", 0.85, 1.25, 16, "C", "30 mA", 2.5),
-        ("Khu ướt (WC, bình nóng lạnh)", 1.00, 1.25, 16, "C", "30 mA", 2.5),
-        ("Bếp từ, lò nướng", 0.95, 1.25, 16, "C", "30 mA", 2.5),
-        ("Điều hòa", 0.90, 1.25, 16, "C", "Tùy chọn", 2.5),
-        ("Động cơ (bơm, quạt)", 0.80, 1.25, 10, "C hoặc D", "Không", 2.5),
-        ("Thiết bị điện nhẹ (rack, NVR, KNX)", 0.90, 1.25, 10, "C", "Tùy chọn", 1.5),
-        ("Dự phòng", None, None, None, "C", "—", None),
-    ]
-    assert [r[0] for r in rules] == LOAI_MACH
     row += 1
     rules_first = row
-    for rule in rules:
+    for rule in QUY_TAC_B:
         for c, v in enumerate(rule, start=1):
             if c == 1:
                 put(qt, row, c, v)
             else:
-                put(qt, row, c, v, font=F_INPUT, fill=FILL_INPUT,
-                    fmt="0.00" if c in (2, 3) else None)
-        put(qt, row, 8, None, fill=FILL_INPUT)
-        put(qt, row, 9, None, fill=FILL_REVIEW)
-        put(qt, row, 10, None, fill=FILL_REVIEW, align=CENTER)
+                put(qt, row, c, v, font=F_INPUT, fill=FILL_INPUT, fmt="0.00" if c == 2 else None)
+        put(qt, row, 7, None, fill=FILL_INPUT)
+        put(qt, row, 8, None, fill=FILL_REVIEW)
+        put(qt, row, 9, None, fill=FILL_REVIEW, align=CENTER)
         row += 1
     rules_last = row - 1
+    add_list_validation(qt, f"E{rules_first}:E{rules_last}", '"30 mA,Không,Không (khu ướt: 30 mA),Tùy chọn"')
     row += 1
     qt.cell(row=row, column=1, value=(
         "Căn cứ RCD 30 mA: IEC 60364-4-41 (ổ cắm, thiết bị ngoài nhà) và IEC 60364-7-701 "
         "(mọi mạch trong khu vực có bồn tắm/vòi sen). Công cụ áp theo cả loại mạch lẫn 'Loại khu vực' "
-        "trong sheet Mach.")).font = F_NOTE
-    set_widths(qt, [30, 46, 14, 12, 40, 28, 30, 30, 28, 10])
+        "trong sheet Mach. Bảng Iz, hệ số nhóm k2, cỡ vỏ tủ, số module thiết bị: xem dien/engine/quy-tac.mjs.")).font = F_NOTE
+    set_widths(qt, [30, 46, 14, 12, 40, 28, 30, 28, 10])
     qt.freeze_panes = "A6"
-
-    # Tham chiếu dùng trong công thức
     rng_loai = f"'Quy tac'!$A${rules_first}:$A${rules_last}"
     rng_cos = f"'Quy tac'!$B${rules_first}:$B${rules_last}"
 
-    # -----------------------------------------------------------------------
-    # Du an
-    # -----------------------------------------------------------------------
+    # --- Du an -----------------------------------------------------------------
     da = wb.create_sheet("Du an", 0)
     da["A1"] = "THÔNG TIN DỰ ÁN & NGUỒN"
     da["A1"].font = F_TITLE
     for c, h in enumerate(["Mã", "Thông tin", "Giá trị", "Ghi chú"], start=1):
         da.cell(row=3, column=c, value=h)
     style_header(da, 3, 4)
-    project = [
-        ("MA_DA", "Mã dự án", "VD-2026-01", ""),
-        ("TEN_DA", "Tên dự án", "Biệt thự mẫu", ""),
-        ("DIA_CHI", "Địa chỉ", "Hà Nội", ""),
-        ("LOAI_CT", "Loại công trình", "Nhà ở / biệt thự", "Chọn trong danh sách — quyết định hồ sơ quy tắc"),
-        ("CHU_TRI", "Chủ trì thiết kế điện", "", "Kỹ sư điện nội bộ"),
-        ("KIEM_TRA", "Người kiểm tra", "", ""),
-        ("REV", "Revision", "A", ""),
-        ("UF", "Điện áp pha Uf (V)", 220, "Để trống thì lấy theo sheet Quy tac"),
-        ("UD", "Điện áp dây Ud (V)", 380, "Để trống thì lấy theo sheet Quy tac"),
-        ("NOI_DAT", "Sơ đồ nối đất", "TN-S", ""),
-        ("IK_NGUON", "Ik tại điểm đấu nối (kA)", 10, "Lấy từ điện lực / tòa nhà; giá trị ví dụ"),
-        ("T_MT", "Nhiệt độ môi trường (°C)", 35, ""),
-        ("DU_MAX", "Sụt áp cộng dồn tối đa (%)", 5, ""),
-        ("BANG_GIA", "Bảng giá Schneider áp dụng", "", "Tên/ngày bảng giá, dùng cho BOQ"),
-        ("CHIET_KHAU", "Chiết khấu (%)", "", "Dùng cho BOQ"),
-    ]
     da_row = {}
-    for i, (code, name, val, note) in enumerate(project, start=4):
+    for i, (code, name, note) in enumerate(DU_AN, start=4):
+        val = du_lieu["du_an"].get(code)
         put(da, i, 1, code)
         put(da, i, 2, name)
-        put(da, i, 3, val if val != "" else None, font=F_INPUT, fill=FILL_INPUT)
+        put(da, i, 3, val, font=F_INPUT, fill=FILL_INPUT)
         put(da, i, 4, note, font=F_NOTE)
         da_row[code] = i
     add_list_validation(da, f"C{da_row['LOAI_CT']}", ref["Loại công trình"])
     add_list_validation(da, f"C{da_row['NOI_DAT']}", ref["Sơ đồ nối đất"])
-    set_widths(da, [14, 34, 26, 52])
-    uf = f"'Du an'!$C${da_row['UF']}"
-    ud = f"'Du an'!$C${da_row['UD']}"
+    set_widths(da, [14, 34, 34, 52])
+    uf = f"IF('Du an'!$C${da_row['UF']}=\"\",'Quy tac'!$C${qt_row['UF']},'Du an'!$C${da_row['UF']})"
+    ud = f"IF('Du an'!$C${da_row['UD']}=\"\",'Quy tac'!$C${qt_row['UD']},'Du an'!$C${da_row['UD']})"
 
-    # -----------------------------------------------------------------------
-    # Tu dien
-    # -----------------------------------------------------------------------
+    # --- Tu dien ---------------------------------------------------------------
     td = wb.create_sheet("Tu dien", 1)
-    head_td = ["Mã tủ", "Tên / vị trí", "Cấp từ tủ", "Mạch cấp ở tủ trên", "Số pha",
-               "Chiều dài cáp cấp (m)", "Phương pháp lắp đặt", "Loại cáp cấp", "Kiểu lắp", "IP",
-               "Ik tại tủ (kA)", "Ks (trống = theo quy tắc)", "SPD", "Ghi chú"]
-    for c, h in enumerate(head_td, start=1):
-        td.cell(row=1, column=c, value=h)
-    style_header(td, 1, len(head_td), height=42)
-    panels = [
-        ["MDB", "Tủ điện tổng – phòng kỹ thuật tầng 1", "Công tơ EVN", "", "3P+N+PE", 15, "D",
-         "Cu/XLPE/PVC", "Nổi tường", "IP54", 10, "", "Có", "Mạch cấp tủ con do công cụ tự tạo"],
-        ["DB-T1", "Tủ điện tầng 1 – gầm cầu thang", "MDB", "F03", "3P+N+PE", 30, "B1",
-         "Cu/XLPE/PVC", "Âm tường", "IP40", 6, 0.7, "Theo quy tắc", "Ví dụ trong tài liệu phương án, mục 7"],
-    ]
-    for r, p in enumerate(panels, start=2):
-        for c, v in enumerate(p, start=1):
-            put(td, r, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT)
-    last = 200
-    add_list_validation(td, f"E2:E{last}", ref["Số pha tủ"])
-    add_list_validation(td, f"G2:G{last}", ref["Phương pháp lắp đặt"])
-    add_list_validation(td, f"H2:H{last}", ref["Loại cáp"])
-    add_list_validation(td, f"I2:I{last}", ref["Kiểu lắp"])
-    add_list_validation(td, f"M2:M{last}", ref["Có / Không"])
-    set_widths(td, [10, 34, 12, 12, 11, 12, 12, 14, 12, 7, 10, 12, 13, 36])
+    for c, (h, _, cm) in enumerate(COT_TU, start=1):
+        cell = td.cell(row=1, column=c, value=h)
+        if cm:
+            cell.comment = Comment(cm, "Công cụ")
+    style_header(td, 1, len(COT_TU), height=42)
+    n_tu = 60
+    for i in range(n_tu):
+        r = 2 + i
+        data = du_lieu["tu"][i] if i < len(du_lieu["tu"]) else {}
+        for c, (h, _, _) in enumerate(COT_TU, start=1):
+            put(td, r, c, data.get(h), font=F_INPUT, fill=FILL_INPUT)
+    last = 1 + n_tu
+    add_list_validation(td, f"G2:G{last}", ref["Số pha tủ"])
+    add_list_validation(td, f"I2:I{last}", ref["Kiểu đi cáp"])
+    add_list_validation(td, f"J2:J{last}", ref["Phương pháp lắp đặt"])
+    add_list_validation(td, f"M2:M{last}", ref["SPD"])
+    set_widths(td, [w for _, w, _ in COT_TU])
     td.freeze_panes = "B2"
-    td.auto_filter.ref = f"A1:{get_column_letter(len(head_td))}1"
 
-    # -----------------------------------------------------------------------
-    # Mach
-    # -----------------------------------------------------------------------
+    # --- Mach ------------------------------------------------------------------
     mc = wb.create_sheet("Mach", 2)
-    head_mc = ["Mã tủ", "Mã mạch", "Loại mạch", "Mô tả phụ tải", "Phòng / khu vực", "Loại khu vực",
-               "Số lượng", "Công suất / đv (W)", "P (W)", "cosφ (trống = mặc định)", "cosφ áp dụng",
-               "Số pha", "Pha (trống = tự cân)", "Chiều dài (m)", "Số mạch chung ống",
-               "Ghi đè thiết bị", "Ghi đè cáp", "Lý do ghi đè", "Ib tham khảo (A)", "Ghi chú"]
-    for c, h in enumerate(head_mc, start=1):
-        mc.cell(row=1, column=c, value=h)
-    style_header(mc, 1, len(head_mc), height=42)
-    circuits = [
-        # tủ, mạch, loại, mô tả, phòng, khu vực, SL, W/đv, cosφ, số pha, pha, L, chung ống, ghi đè TB, ghi đè cáp, lý do
-        ["DB-T1", "C01", "Chiếu sáng trong nhà", "Chiếu sáng P.khách, sảnh", "P.khách, sảnh", "Khô", 1, 450, None, "1P", None, 25, 1],
-        ["DB-T1", "C02", "Chiếu sáng trong nhà", "Chiếu sáng bếp, P.ăn, hành lang", "Bếp, P.ăn, hành lang", "Bếp", 1, 350, None, "1P", None, 30, 1],
-        ["DB-T1", "C03", "Chiếu sáng ngoài nhà", "Chiếu sáng sân vườn, ngoài nhà", "Sân vườn", "Ngoài nhà", 1, 600, None, "1P", None, 40, 1],
-        ["DB-T1", "C04", "Ổ cắm thông thường", "Ổ cắm P.khách, sảnh", "P.khách, sảnh", "Khô", 8, 225, None, "1P", None, 25, 1],
-        ["DB-T1", "C05", "Ổ cắm thông thường", "Ổ cắm bếp (tủ lạnh, lò vi sóng, máy rửa bát)", "Bếp", "Bếp", 1, 3000, 0.9, "1P", None, 15, 1],
-        ["DB-T1", "C06", "Bếp từ, lò nướng", "Bếp từ", "Bếp", "Bếp", 1, 4000, None, "1P", None, 12, 1],
-        ["DB-T1", "C07", "Khu ướt (WC, bình nóng lạnh)", "Bình nóng lạnh WC1", "WC1", "Ướt (WC, tắm)", 1, 2500, None, "1P", None, 20, 1],
-        ["DB-T1", "C08", "Ổ cắm thông thường", "Ổ cắm WC1 (washlet, máy sấy tóc)", "WC1", "Ướt (WC, tắm)", 1, 1400, 0.95, "1P", None, 20, 1],
-        ["DB-T1", "C09", "Điều hòa", "Điều hòa P.khách 24.000 BTU", "P.khách", "Khô", 1, 2400, None, "1P", None, 18, 1],
-        ["DB-T1", "C10", "Điều hòa", "Điều hòa P.ăn 18.000 BTU", "P.ăn", "Khô", 1, 1700, None, "1P", None, 15, 1],
-        ["DB-T1", "C11", "Động cơ (bơm, quạt)", "Bơm tăng áp 3 pha 1,5 kW", "Phòng kỹ thuật", "Khô", 1, 1500, None, "3P", None, 20, 1],
-        ["DB-T1", "DP1", "Dự phòng", "Dự phòng", None, None, None, None, None, "1P", None, None, None, "MCB 1P 16A C", None, "CB dự phòng lắp sẵn"],
-        ["DB-T1", "DP2", "Dự phòng", "Dự phòng", None, None, None, None, None, "1P", None, None, None, "MCB 1P 20A C", None, "CB dự phòng lắp sẵn"],
-    ]
-    input_cols = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18, 20]
-    first_data, n_rows = 2, 200
+    for c, (h, _, cm) in enumerate(COT_MACH, start=1):
+        cell = mc.cell(row=1, column=c, value=h)
+        if cm:
+            cell.comment = Comment(cm, "Công cụ")
+    style_header(mc, 1, len(COT_MACH), height=48)
+    calc = {"P (W)", "cosφ áp dụng", "Ib tham khảo (A)"}
+    n_rows = max(200, len(du_lieu["mach"]) + 50)
+    k = {h: COL[h] for h in COL}
     for i in range(n_rows):
-        r = first_data + i
-        data = circuits[i] if i < len(circuits) else None
-        vals = {}
-        if data:
-            keys = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18]
-            for k, v in zip(keys, data):
-                vals[k] = v
-        for c in input_cols:
-            v = vals.get(c)
-            put(mc, r, c, v, font=F_INPUT, fill=FILL_INPUT,
-                fmt="0.00" if c == 10 else None)
-        # P (W) = Số lượng × Công suất / đv
-        put(mc, r, 9, f'=IF(OR(G{r}="",H{r}=""),"",G{r}*H{r})', fill=FILL_CALC, fmt="#,##0")
-        # cosφ áp dụng = nhập tay, nếu trống lấy mặc định theo loại mạch
-        put(mc, r, 11,
-            f'=IF(J{r}<>"",J{r},IF(C{r}="","",IF(N(IFERROR(INDEX({rng_cos},MATCH(C{r},{rng_loai},0)),0))=0,"",'
-            f'INDEX({rng_cos},MATCH(C{r},{rng_loai},0)))))',
+        r = 2 + i
+        data = du_lieu["mach"][i] if i < len(du_lieu["mach"]) else {}
+        for c, (h, _, _) in enumerate(COT_MACH, start=1):
+            if h in calc:
+                continue
+            put(mc, r, c, data.get(h), font=F_INPUT, fill=FILL_INPUT,
+                fmt="0.00" if h.startswith("cosφ") else None)
+        sl, w, cos_n, loai, so_pha = (f"{k['Số lượng']}{r}", f"{k['Công suất / đv (W)']}{r}",
+                                      f"{k['cosφ (trống = mặc định)']}{r}", f"{k['Loại mạch']}{r}", f"{k['Số pha']}{r}")
+        p, cos_a = f"{k['P (W)']}{r}", f"{k['cosφ áp dụng']}{r}"
+        put(mc, r, COT_MACH.index(("P (W)", 8, None)) + 1,
+            f'=IF({w}="","",IF({sl}="",1,{sl})*{w})', fill=FILL_CALC, fmt="#,##0")
+        put(mc, r, [h for h, _, _ in COT_MACH].index("cosφ áp dụng") + 1,
+            f'=IF({cos_n}<>"",{cos_n},IF({loai}="","",IFERROR(INDEX({rng_cos},MATCH({loai},{rng_loai},0)),"")))',
             fill=FILL_CALC, fmt="0.00")
-        # Ib tham khảo
-        put(mc, r, 19,
-            f'=IF(OR(I{r}="",K{r}="",K{r}=0),"",IF(L{r}="3P",I{r}/(SQRT(3)*{ud}*K{r}),I{r}/({uf}*K{r})))',
+        put(mc, r, [h for h, _, _ in COT_MACH].index("Ib tham khảo (A)") + 1,
+            f'=IF(OR({p}="",{cos_a}="",{cos_a}=0),"",IF({so_pha}="3P",{p}/(SQRT(3)*{ud}*{cos_a}),{p}/({uf}*{cos_a})))',
             fill=FILL_CALC, fmt="0.0")
-    last = first_data + n_rows - 1
-    add_list_validation(mc, f"C2:C{last}", ref["Loại mạch"])
-    add_list_validation(mc, f"F2:F{last}", ref["Loại khu vực"])
-    add_list_validation(mc, f"L2:L{last}", ref["Số pha mạch"])
-    add_list_validation(mc, f"M2:M{last}", ref["Pha"])
-    mc.cell(row=1, column=19).comment = Comment(
-        "Chỉ để tham khảo khi nhập liệu. Công cụ tự tính lại Ib, chọn CB, cáp, RCD theo bộ quy tắc đã chốt.",
-        "Công cụ")
-    mc.cell(row=1, column=15).comment = Comment(
-        "Số mạch đi chung một ống/máng — dùng để tính hệ số nhóm k2. Mặc định 1 (mỗi mạch một ống).",
-        "Công cụ")
-    set_widths(mc, [8, 8, 30, 40, 20, 14, 8, 11, 9, 11, 9, 7, 9, 9, 9, 18, 16, 22, 10, 24])
-    mc.freeze_panes = "E2"
-    mc.auto_filter.ref = f"A1:{get_column_letter(len(head_mc))}1"
+    last = 1 + n_rows
+    add_list_validation(mc, f"{k['Loại mạch']}2:{k['Loại mạch']}{last}", ref["Loại mạch"])
+    add_list_validation(mc, f"{k['Loại khu vực']}2:{k['Loại khu vực']}{last}", ref["Loại khu vực"])
+    add_list_validation(mc, f"{k['Số pha']}2:{k['Số pha']}{last}", ref["Số pha mạch"])
+    add_list_validation(mc, f"{k['Pha (trống = tự cân)']}2:{k['Pha (trống = tự cân)']}{last}", ref["Pha"])
+    set_widths(mc, [w for _, w, _ in COT_MACH])
+    mc.freeze_panes = "C2"
 
-    # -----------------------------------------------------------------------
-    # Dien nhe
-    # -----------------------------------------------------------------------
+    # --- Dien nhe (GĐ3) --------------------------------------------------------
     dn = wb.create_sheet("Dien nhe", 3)
     head_dn = ["Tầng", "Phòng / khu vực", "Ổ data", "Ổ TV", "AP Wi-Fi", "Camera trong nhà",
                "Camera ngoài trời", "Cửa kiểm soát (ACS)", "Nút gọi chuông cửa (ngoài)",
@@ -403,14 +410,7 @@ def build(path):
     for c, h in enumerate(head_dn, start=1):
         dn.cell(row=1, column=c, value=h)
     style_header(dn, 1, len(head_dn), height=48)
-    elv = [
-        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", ""],
-        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", ""],
-        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", ""],
-        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", "AP và loa loại ngoài trời"],
-        ["T2", "P.ngủ master", 2, 1, 1, 0, 0, 0, 0, 1, 2, 6, "Vùng 4", 6, "R1", ""],
-        ["T2", "Hành lang, sảnh thang", 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, None, 2, "R1", ""],
-    ]
+    elv = du_lieu.get("dien_nhe", [])
     n_elv = 60
     for i in range(n_elv):
         r = 2 + i
@@ -420,67 +420,69 @@ def build(path):
             put(dn, r, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT,
                 align=CENTER if 3 <= c <= 12 or c == 14 else None)
     tot = 2 + n_elv
-    put(dn, tot, 1, "Tổng", font=Font(name=FONT, size=10, bold=True), fill=FILL_CALC)
+    put(dn, tot, 1, "Tổng", font=F_BOLD, fill=FILL_CALC)
     put(dn, tot, 2, None, fill=FILL_CALC)
     for c in list(range(3, 12)) + [14]:
         L = get_column_letter(c)
-        put(dn, tot, c, f"=SUM({L}2:{L}{tot - 1})", font=Font(name=FONT, size=10, bold=True),
-            fill=FILL_CALC, align=CENTER)
+        put(dn, tot, c, f"=SUM({L}2:{L}{tot - 1})", font=F_BOLD, fill=FILL_CALC, align=CENTER)
     put(dn, tot, 12, None, fill=FILL_CALC)
-    put(dn, tot + 1, 1, "Tổng công suất loa (W)", font=Font(name=FONT, size=10, bold=True), fill=FILL_CALC)
+    put(dn, tot + 1, 1, "Tổng công suất loa (W)", font=F_BOLD, fill=FILL_CALC)
     put(dn, tot + 1, 2, None, fill=FILL_CALC)
-    put(dn, tot + 1, 3, f"=SUMPRODUCT(K2:K{tot - 1},L2:L{tot - 1})",
-        font=Font(name=FONT, size=10, bold=True), fill=FILL_CALC, align=CENTER)
+    put(dn, tot + 1, 3, f"=SUMPRODUCT(K2:K{tot - 1},L2:L{tot - 1})", font=F_BOLD, fill=FILL_CALC, align=CENTER)
     dn.merge_cells(start_row=tot, start_column=1, end_row=tot, end_column=2)
     dn.merge_cells(start_row=tot + 1, start_column=1, end_row=tot + 1, end_column=2)
     set_widths(dn, [6, 24, 8, 7, 8, 10, 10, 11, 12, 12, 9, 11, 11, 11, 10, 28])
     dn.freeze_panes = "C2"
 
-    # -----------------------------------------------------------------------
-    # Huong dan
-    # -----------------------------------------------------------------------
+    # --- Huong dan -------------------------------------------------------------
     hd = wb.create_sheet("Huong dan", 0)
-    hd["A1"] = "FILE NHẬP LIỆU — SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN & ĐIỆN NHẸ"
+    hd["A1"] = "FILE NHẬP LIỆU — SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN & ĐIỆN NHẸ (v2)"
     hd["A1"].font = F_TITLE
-    hd["A2"] = "Bản nháp GĐ0 · dùng cho công cụ web (phương án B) · hồ sơ quy tắc: nhà ở/biệt thự, căn hộ · thiết bị Schneider"
+    hd["A2"] = du_lieu["mo_ta"]
     hd["A2"].font = F_NOTE
     lines = [
         ("Quy ước màu", None),
-        ("Ô nền vàng, chữ xanh", "Ô cần nhập. Giá trị đang có là ví dụ (tủ DB-T1 trong tài liệu phương án) — sửa hoặc xóa khi dùng cho dự án thật."),
+        ("Ô nền vàng, chữ xanh", "Ô cần nhập. Giá trị đang có là ví dụ — sửa hoặc xóa khi dùng cho dự án thật."),
         ("Ô nền xám", "Công thức, không nhập. Chỉ để tham khảo khi nhập liệu."),
         ("Ô nền xanh lá", "Dành cho kỹ sư điện góp ý và chốt (sheet Quy tac)."),
         ("Các sheet", None),
-        ("Du an", "Thông tin dự án và nguồn điện. Loại công trình quyết định hồ sơ quy tắc được dùng."),
-        ("Tu dien", "Mỗi dòng là một tủ. Cột 'Cấp từ tủ' và 'Mạch cấp ở tủ trên' dựng cây tủ; công cụ tự tạo mạch cấp tủ con ở tủ trên."),
-        ("Mach", "Mỗi dòng là một mạch nhánh. Bắt buộc: Mã tủ, Loại mạch, Mô tả, Công suất, Chiều dài. Để trống cột Pha thì công cụ tự cân pha."),
-        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng. Công cụ tự tính switch, PoE, NVR, ampli, rack, KNX."),
-        ("Quy tac", "Bộ quy tắc mặc định đề xuất. Kỹ sư điện nội bộ ghi ý kiến và chốt trước khi công cụ được dùng."),
-        ("Danh muc", "Các danh sách chọn. Không đổi tên cột hay thứ tự sheet."),
+        ("Du an", "Thông tin khung tên, số bản vẽ đầu tiên, nguồn điện. Loại công trình quyết định hồ sơ quy tắc."),
+        ("Tu dien", "Mỗi dòng là một tủ = một tờ sơ đồ. 'Cấp từ tủ' dựng cây tủ; công cụ tự tạo lộ cấp tủ con ở tủ trên "
+                    "(mã theo cột 'Mã lộ cấp', vị trí theo cột 'Đặt sau lộ')."),
+        ("Mach", "Mỗi dòng là một lộ ra. Bắt buộc: Mã tủ, Mã lộ, Loại mạch, Phụ tải, Công suất, Chiều dài. "
+                 "Để trống Pha thì công cụ tự cân pha."),
+        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng (dùng ở GĐ3)."),
+        ("Quy tac", "Bộ quy tắc mặc định đề xuất. Công cụ dùng các giá trị trong sheet này khi tính."),
+        ("Danh muc", "Các danh sách chọn."),
+        ("Công cụ tự làm", None),
+        ("1", "Tính Ib, chọn CB/RCBO (loại, số cực, In, đường cong, Icu), cáp (Iz′, sụt áp cộng dồn, tiết diện tối thiểu, PE), ống."),
+        ("2", "Cân pha A/B/C; tổng hợp Pđ, Kđt, Ptt, dòng từng pha; chọn CB tổng, cáp cấp, đếm module và chọn vỏ tủ."),
+        ("3", "Tính cả cây tủ: lộ cấp tủ con ≥ CB tổng tủ con, sụt áp cộng dồn từ nguồn xuống từng mạch."),
+        ("4", "Xuất danh sách lỗi / cảnh báo / ghi chú, bảng tính và bộ bản vẽ DXF/SVG theo template E.601."),
         ("Lưu ý", None),
-        ("1", "Không đổi tên sheet và tiêu đề cột — công cụ đọc file theo đúng tên này."),
-        ("2", "Loại khu vực 'Ướt (WC, tắm)' hoặc 'Ngoài nhà' sẽ bắt buộc RCD 30 mA cho mọi mạch thuộc khu vực đó."),
-        ("3", "Cột 'Ghi đè thiết bị' / 'Ghi đè cáp' chỉ dùng khi cần khác kết quả công cụ; luôn ghi lý do."),
-        ("4", "Ib trong sheet Mach chỉ là số tham khảo. Công cụ tự tính lại toàn bộ theo bộ quy tắc đã chốt."),
+        ("1", "Không đổi tên sheet và tiêu đề cột — công cụ đọc file theo đúng tên này (thứ tự cột đổi được)."),
+        ("2", "Loại khu vực 'Ướt (WC, tắm)' hoặc 'Ngoài nhà' bắt buộc RCD 30 mA cho mọi mạch thuộc khu vực đó."),
+        ("3", "Các cột ghi đè chỉ dùng khi cần khác kết quả công cụ; luôn ghi lý do. Công cụ vẫn kiểm tra giá trị ghi đè."),
+        ("4", "Ib trong sheet Mach chỉ là số tham khảo. Công cụ tự tính lại toàn bộ theo bộ quy tắc."),
     ]
     r = 4
-    for k, v in lines:
+    for key, v in lines:
         if v is None:
-            hd.cell(row=r, column=1, value=k).font = F_SUB
+            hd.cell(row=r, column=1, value=key).font = F_SUB
             r += 1
             continue
-        a = put(hd, r, 1, k)
-        b = put(hd, r, 2, v)
-        if k == "Ô nền vàng, chữ xanh":
+        a = put(hd, r, 1, key)
+        put(hd, r, 2, v)
+        if key == "Ô nền vàng, chữ xanh":
             a.fill, a.font = FILL_INPUT, F_INPUT
-        elif k == "Ô nền xám":
+        elif key == "Ô nền xám":
             a.fill = FILL_CALC
-        elif k == "Ô nền xanh lá":
+        elif key == "Ô nền xanh lá":
             a.fill = FILL_REVIEW
         r += 1
     set_widths(hd, [24, 110])
 
     for ws in wb.worksheets:
-        ws.sheet_view.zoomScale = 100
         ws.page_setup.orientation = "landscape"
         ws.page_setup.paperSize = ws.PAPERSIZE_A4
         ws.sheet_properties.pageSetUpPr.fitToPage = True
@@ -491,7 +493,153 @@ def build(path):
     return path
 
 
+# ---------------------------------------------------------------------------
+# Dữ liệu ví dụ
+# ---------------------------------------------------------------------------
+def tu(**kw):
+    ten = {"ma": "Mã tủ", "ten": "Tên trên bản vẽ", "vi_tri": "Vị trí", "cap_tu": "Cấp từ tủ",
+           "lo": "Mã lộ cấp", "sau": "Đặt sau lộ", "pha": "Số pha", "l": "Chiều dài cáp cấp (m)",
+           "di": "Kiểu đi cáp cấp", "pp": "Phương pháp lắp đặt", "ik": "Ik tại tủ (kA)",
+           "ks": "Kđt (trống = theo quy tắc)", "spd": "SPD", "gc": "Ghi chú"}
+    return {ten[k]: v for k, v in kw.items()}
+
+
+def mach(t, ma, loai, phu_tai, w, l, kv="Khô", sl=None, cos=None, pha3=False, **kw):
+    d = {"Mã tủ": t, "Mã lộ": ma, "Loại mạch": loai, "Phụ tải (chữ trên bản vẽ)": phu_tai,
+         "Loại khu vực": kv, "Số lượng": sl, "Công suất / đv (W)": w, "cosφ (trống = mặc định)": cos,
+         "Số pha": "3P" if pha3 else "1P", "Chiều dài (m)": l}
+    ten = {"pha": "Pha (trống = tự cân)", "chung": "Số mạch chung ống", "nhom": "Nhóm RCD (ghi đè)",
+           "tb": "Ghi đè thiết bị", "cap": "Ghi đè cáp", "ong": "Ghi đè ống", "ly_do": "Lý do ghi đè",
+           "gc": "Ghi chú"}
+    d.update({ten[k]: v for k, v in kw.items()})
+    return d
+
+
+DB_T1 = {
+    "mo_ta": ("Mẫu nhập liệu v2 · ví dụ là tủ DB-T1 trong tài liệu phương án (mục 7), số liệu giả định · "
+              "hồ sơ quy tắc: nhà ở/biệt thự, căn hộ · thiết bị Schneider"),
+    "du_an": {
+        "MA_DA": "VD-2026-01", "TEN_DA": "BIỆT THỰ MẪU", "CHU_DAU_TU": "", "DIA_CHI": "Hà Nội",
+        "CONG_TY": "22 Thanh Cong, Ba Dinh, Ha Noi", "LOAI_CT": "Nhà ở / biệt thự", "NGAY": "09/11/2026",
+        "TY_LE": "1:50", "SO_BV_DAU": "E.601", "REV": "A", "UF": 220, "UD": 380, "NOI_DAT": "TN-S",
+        "IK_NGUON": 6, "DU_MAX": 5,
+    },
+    "tu": [
+        tu(ma="MDB", ten="MDB", vi_tri="Tủ điện tổng – phòng kỹ thuật tầng 1", pha="3P+N+PE", di="Ống", ik=6,
+           spd="Theo quy tắc", gc="Chưa có chiều dài cáp từ công tơ — sụt áp tính từ thanh cái MDB"),
+        tu(ma="DB-T1", ten="DB-T1", vi_tri="Tủ điện tầng 1 – gầm cầu thang", cap_tu="MDB", lo="F01", pha="3P+N+PE",
+           l=30, di="Ống", pp="B1", ik=6, gc="Ví dụ trong tài liệu phương án, mục 7"),
+    ],
+    "mach": [
+        mach("DB-T1", "C01", "Chiếu sáng trong nhà", "CHIẾU SÁNG P.KHÁCH, SẢNH", 450, 25),
+        mach("DB-T1", "C02", "Chiếu sáng trong nhà", "CHIẾU SÁNG BẾP, P.ĂN, HÀNH LANG", 350, 30),
+        mach("DB-T1", "C03", "Chiếu sáng ngoài nhà", "CHIẾU SÁNG SÂN VƯỜN", 600, 40, kv="Ngoài nhà"),
+        mach("DB-T1", "C04", "Ổ cắm thông thường", "Ổ CẮM P.KHÁCH, SẢNH", 225, 25, sl=8),
+        mach("DB-T1", "C05", "Ổ cắm thông thường", "Ổ CẮM BẾP", 3000, 15, kv="Bếp", cos=0.9),
+        mach("DB-T1", "C06", "Bếp từ, lò nướng", "BẾP TỪ", 4000, 12, kv="Bếp"),
+        mach("DB-T1", "C07", "Khu ướt (WC, bình nóng lạnh)", "BÌNH NÓNG LẠNH WC1", 2500, 20, kv="Ướt (WC, tắm)"),
+        mach("DB-T1", "C08", "Khu ướt (WC, bình nóng lạnh)", "Ổ CẮM WC1", 1400, 20, kv="Ướt (WC, tắm)", cos=0.95),
+        mach("DB-T1", "C09", "Điều hòa", "ĐIỀU HÒA P.KHÁCH 24.000 BTU", 2400, 18),
+        mach("DB-T1", "C10", "Điều hòa", "ĐIỀU HÒA P.ĂN 18.000 BTU", 1700, 15),
+        mach("DB-T1", "C11", "Động cơ (bơm, quạt)", "BƠM TĂNG ÁP", 1500, 20, pha3=True),
+        mach("DB-T1", "DP1", "Dự phòng", "DỰ PHÒNG", None, None),
+        mach("DB-T1", "DP2", "Dự phòng", "DỰ PHÒNG", None, None, tb="MCB 1P 20A", ly_do="Dự phòng cho ổ cắm bếp"),
+    ],
+    "dien_nhe": [
+        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", ""],
+        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", ""],
+        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", ""],
+        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", "AP và loa loại ngoài trời"],
+    ],
+}
+
+# Ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON): tủ T1 ở tầng 1 cấp cho các tủ tầng
+# T2–T6 (lộ S5–S9, đặt sau lộ thang máy TM). Tên lộ và chữ phụ tải lấy theo bản vẽ mẫu.
+# Các tủ tầng trong mẫu có mọi mạch cùng một pha và cáp cấp 2 lõi → khai báo tủ 1 pha.
+# CÔNG SUẤT VÀ CHIỀU DÀI LÀ SỐ GIẢ ĐỊNH — thay bằng số liệu thật của dự án khi có.
+GD = "giả định"
+
+
+def tang(t, so, ds):
+    return [mach(t, *x[:5], **(x[5] if len(x) > 5 else {})) for x in ds]
+
+
+HDMON = {
+    "mo_ta": ("Ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON) · "
+              "CÔNG SUẤT VÀ CHIỀU DÀI LÀ SỐ GIẢ ĐỊNH, chỉ để chạy thử công cụ"),
+    "du_an": {
+        "MA_DA": "", "TEN_DA": "MR. TUẤN - HDMON", "CHU_DAU_TU": "Mr. Tuấn", "DIA_CHI": "Long Biên - Hà Nội",
+        "CONG_TY": "22 Thanh Cong, Ba Dinh, Ha Noi", "LOAI_CT": "Nhà ở / biệt thự", "NGAY": "November 09/11/2026",
+        "TY_LE": "1:50", "SO_BV_DAU": "E.601", "REV": "A", "UF": 220, "UD": 380, "NOI_DAT": "TN-S",
+        "IK_NGUON": 6, "DU_MAX": 5,
+    },
+    "tu": [
+        tu(ma="T1", ten="T1", vi_tri="Tầng 1", pha="3P+N+PE", l=25, di="Máng cáp", pp="E", spd="Theo quy tắc",
+           gc=f"Tủ gốc. Chiều dài cáp từ công tơ {GD}"),
+        tu(ma="T2", ten="T2", vi_tri="Tầng 2", cap_tu="T1", lo="S5", sau="TM", pha="1P+N+PE", l=10, di="Ống", gc=GD),
+        tu(ma="T3", ten="T3", vi_tri="Tầng 3", cap_tu="T1", lo="S6", sau="S5", pha="1P+N+PE", l=14, di="Ống", gc=GD),
+        tu(ma="T4", ten="T4", vi_tri="Tầng 4", cap_tu="T1", lo="S7", sau="S6", pha="1P+N+PE", l=18, di="Ống", gc=GD),
+        tu(ma="T5", ten="T5", vi_tri="Tầng 5", cap_tu="T1", lo="S8", sau="S7", pha="1P+N+PE", l=22, di="Ống", gc=GD),
+        tu(ma="T6", ten="T6", vi_tri="Tầng 6", cap_tu="T1", lo="S9", sau="S8", pha="1P+N+PE", l=26, di="Ống", gc=GD),
+    ],
+    "mach": [
+        *tang("T1", 1, [
+            ("L1", "Chiếu sáng ngoài nhà", "CHIẾU SÁNG NGOÀI NHÀ", 500, 30, {"kv": "Ngoài nhà"}),
+            ("L2", "Chiếu sáng trong nhà", "CHIẾU SÁNG TRONG NHÀ", 600, 25),
+            ("S1", "Ổ cắm thông thường", "Ổ CẮM TRONG NHÀ , CAMERA, WIFI", 200, 25, {"sl": 10}),
+            ("S2", "Ổ cắm thông thường", "Ổ CẮM ĐIỆN NGOÀI NHÀ", 1000, 30, {"kv": "Ngoài nhà"}),
+            ("ACT", "Điều hòa", "CẤP ĐIỆN DÀN NÓNG ĐIỀU HOÀ", 12000, 15, {"pha3": True}),
+            ("AC1", "Điều hòa", "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T1", 100, 25, {"sl": 4}),
+            ("WH1", "Khu ướt (WC, bình nóng lạnh)", "CẤP ĐIỆN BÌNH NÓNG LẠNH T1", 2500, 15, {"kv": "Ướt (WC, tắm)"}),
+            ("TM", "Động cơ (bơm, quạt)", "CẤP ĐIỆN THANG MÁY", 5500, 20, {"pha3": True}),
+            ("R1", "Động cơ (bơm, quạt)", "CẤP ĐIỆN RÈM", 300, 20),
+            ("TB", "Động cơ (bơm, quạt)", "CẤP ĐIỆN NGUỒN TỦ BƠM", 1500, 15),
+        ]),
+        *tang("T2", 2, [
+            ("L1", "Chiếu sáng trong nhà", "CẤP ĐIÊN CHIẾU SÁNG PHÒNG NGỦ", 400, 20),
+            ("L2", "Chiếu sáng trong nhà", "CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC", 300, 20, {"kv": "Ướt (WC, tắm)"}),
+            ("S1", "Ổ cắm thông thường", "CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI", 200, 20, {"sl": 8}),
+            ("S2", "Ổ cắm thông thường", "CẤP ĐIỆN Ổ CẮM CLOSET", 800, 15),
+            ("AC2", "Điều hòa", "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T2", 100, 20, {"sl": 3}),
+            ("WH2", "Khu ướt (WC, bình nóng lạnh)", "BÌNH NÓNG LẠNH WC", 2500, 15, {"kv": "Ướt (WC, tắm)"}),
+            ("R2", "Động cơ (bơm, quạt)", "CẤP NGUỒN RÈM", 200, 20),
+        ]),
+        *[m for so in (3, 4) for m in tang(f"T{so}", so, [
+            ("L1", "Chiếu sáng trong nhà", f"CẤP ĐIÊN CHIẾU SÁNG P. NGỦ {so}-1", 300, 18),
+            ("L2", "Chiếu sáng trong nhà", f"CẤP ĐIỆN CHIẾU SÁNG P. NGỦ {so}-2", 300, 22),
+            ("L3", "Chiếu sáng trong nhà", "CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC", 250, 15, {"kv": "Ướt (WC, tắm)"}),
+            ("S1", "Ổ cắm thông thường", f"CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI {so}-1", 200, 18, {"sl": 6}),
+            ("S2", "Ổ cắm thông thường", f"CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI {so}-2", 200, 22, {"sl": 6}),
+            (f"AC{so}-1", "Điều hòa", f"CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T{so}-1", 100, 18),
+            (f"AC{so}-2", "Điều hòa", f"CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T{so}-2", 100, 22),
+            (f"WH{so}-1", "Khu ướt (WC, bình nóng lạnh)", f"BÌNH NÓNG LẠNH WC{so}-1", 2500, 15, {"kv": "Ướt (WC, tắm)"}),
+            (f"WH{so}-2", "Khu ướt (WC, bình nóng lạnh)", f"BÌNH NÓNG LẠNH WC{so}-2", 2500, 20, {"kv": "Ướt (WC, tắm)"}),
+            (f"R{so}", "Động cơ (bơm, quạt)", "CẤP NGUỒN RÈM", 200, 20),
+        ])],
+        *tang("T5", 5, [
+            ("L1", "Chiếu sáng trong nhà", "CẤP ĐIÊN CHIẾU SÁNG P.BẾP + ĂN", 400, 18),
+            ("L2", "Chiếu sáng trong nhà", "CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC", 250, 15, {"kv": "Ướt (WC, tắm)"}),
+            ("S1", "Ổ cắm thông thường", "CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI", 200, 18, {"sl": 8}),
+            ("S2", "Bếp từ, lò nướng", "CẤP ĐIỆN BẾP TỪ", 4000, 12, {"kv": "Bếp"}),
+            ("AC5", "Điều hòa", "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T5", 100, 18, {"sl": 2}),
+            ("WH5", "Khu ướt (WC, bình nóng lạnh)", "BÌNH NÓNG LẠNH WC T5", 2500, 15, {"kv": "Ướt (WC, tắm)"}),
+            ("R5", "Động cơ (bơm, quạt)", "CẤP NGUỒN RÈM T5", 200, 18),
+        ]),
+        *tang("T6", 6, [
+            ("L1", "Chiếu sáng trong nhà", "CẤP ĐIÊN CHIẾU SÁNG", 300, 18),
+            ("L2", "Chiếu sáng ngoài nhà", "CẤP ĐIỆN SÂN TRƯỚC", 300, 20, {"kv": "Ngoài nhà"}),
+            ("S1", "Ổ cắm thông thường", "CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI", 200, 18, {"sl": 6}),
+            ("S2", "Ổ cắm thông thường", "CẤP ĐIỆN Ổ CẮM NGOÀI TRỜI", 1000, 20, {"kv": "Ngoài nhà"}),
+            ("S3", "Ổ cắm thông thường", "Ổ CẮM MÁY GIẶT, BƠM TĂNG ÁP", 2500, 15),
+            ("AC6", "Điều hòa", "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T6", 100, 18),
+            ("R6", "Động cơ (bơm, quạt)", "CẤP NGUỒN RÈM T6", 200, 18),
+            ("DP", "Dự phòng", "DỰ PHÒNG", None, None),
+        ]),
+    ],
+}
+
+
 if __name__ == "__main__":
     here = os.path.dirname(os.path.abspath(__file__))
-    out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(here, "nhap-lieu-tu-dien.xlsx")
-    print(build(out))
+    print(build(os.path.join(here, "nhap-lieu-tu-dien.xlsx"), DB_T1))
+    print(build(os.path.join(here, "vi-du-HDMON.xlsx"), HDMON))

@@ -60,15 +60,21 @@ export function chonCap(o, rule) {
   const bang = rule.iz[cachDien]?.[phuongPhap]?.[soDayTai];
   if (!bang) throw new Error(`Không có bảng Iz cho ${cachDien} / ${phuongPhap} / ${soDayTai} dây`);
   const k = rule.k1[cachDien] * heSoNhom(nhom, rule);
-  let chon = null;
+  // Tiết diện nhỏ nhất đạt cả Iz′ và sụt áp. Nếu không có, giữ tiết diện nhỏ nhất đạt Iz′ (bộ kiểm tra sẽ báo
+  // lỗi sụt áp) thay vì nhảy lên tiết diện lớn nhất bảng.
+  let chon = null, datIz = null;
   for (let i = 0; i < rule.tietDien.length; i++) {
     const s = rule.tietDien[i];
     if (s < sMin) continue;
     const izp = bang[i] * k;
     const du = sutAp(Ib, L, s, cos, soPha, rule);
-    chon = { s, izp, du, duCongDon: duTruoc + du, dat: izp >= In - 1e-9 && duTruoc + du <= gioiHan + 1e-9 };
-    if (chon.dat) break;
+    const c = { s, izp, du, duCongDon: duTruoc + du };
+    c.dat = izp >= In - 1e-9 && c.duCongDon <= gioiHan + 1e-9;
+    if (c.dat) { chon = c; break; }
+    if (!datIz && izp >= In - 1e-9) datIz = c;
+    chon = c;
   }
+  if (!chon.dat && datIz) chon = datIz;
   return { ...chon, pe: tietDienPE(chon.s, rule), cachDien, phuongPhap, soDayTai, k };
 }
 

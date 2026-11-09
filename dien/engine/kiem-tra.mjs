@@ -19,7 +19,7 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
     if (dich) (dich.kiemTra ||= []).push({ muc, noiDung });
   };
 
-  if (rule.trangThai && rule.trangThai !== "ĐÃ DUYỆT") {
+  if (rule.trangThai && !rule.trangThai.startsWith("ĐÃ DUYỆT")) {
     ghi("ghichu", "", "", `Bộ quy tắc ${rule.trangThai} (phiên bản ${rule.phienBan}) — kỹ sư điện cần kiểm tra trước khi phát hành`);
   }
 
@@ -93,7 +93,7 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
       } else if (inTheoTai != null && cb.in > inTheoTai) {
         bao("canhbao", t, null, `CB tổng được nâng từ ${inTheoTai} A lên ${cb.in} A để giữ tỷ số chọn lọc ${so(rule.kChonLoc, 1)} với mạch ra ${maxRa} A — kỹ sư xác nhận theo bảng phối hợp của hãng`);
       }
-      if (cb.in >= 63) bao("ghichu", t, null, `In tổng ${cb.in} A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)`);
+      if (cb.in >= rule.ctNguong) bao("ghichu", t, null, `In tổng ${cb.in} A ≥ ${rule.ctNguong} A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)`);
     }
     if (t.soPha === 3 && t.lechPha > rule.lechPha + 1e-9) {
       bao("canhbao", t, null, `Lệch pha ${so(t.lechPha)}% (> ${rule.lechPha}%) — I pha A/B/C = ${so(t.iPha.A)}/${so(t.iPha.B)}/${so(t.iPha.C)} A; nên đổi pha một số mạch`);
@@ -114,6 +114,10 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
       if (coRieng) phan.push(`Kđt mạch cuối = ${so(t.ksRieng, 2)} theo hồ sơ quy tắc`);
       if (t.ksCon != null) phan.push(`hệ số đồng thời ${t.soCon} tủ con = ${so(t.ksCon, 2)}`);
       if (phan.length) bao("ghichu", t, null, `${phan.join("; ")} — chưa chốt`);
+    }
+
+    if (t.duBus > rule.duThanhCai + 1e-9) {
+      bao("canhbao", t, null, `Sụt áp tới thanh cái tủ ${so(t.duBus, 2)}% vượt mức phân bổ ${so(rule.duThanhCai, 1)}% — mạch nhánh còn ít dư địa`);
     }
 
     // Cáp cấp tủ gốc (nếu có chiều dài)
