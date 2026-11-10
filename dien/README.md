@@ -9,6 +9,26 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
+## AI Agent vẽ sơ đồ (skill Claude Code)
+
+Trong Claude Code mở repo này, anh mô tả nhu cầu hoặc gửi ảnh/PDF mặt bằng. Có thể gõ `/so-do-nguyen-ly` hoặc nói thẳng, ví dụ "vẽ sơ đồ nguyên lý cho biệt thự 4 tầng…". Agent sẽ:
+1. hỏi vài điểm chính;
+2. gợi ý danh sách tủ và mạch, kèm các giả định;
+3. chạy công cụ ra cả bộ bản vẽ, bảng tính, nhãn và file Excel;
+4. sửa tiếp theo lời anh.
+
+| File | Nội dung |
+|---|---|
+| [`.claude/skills/so-do-nguyen-ly/SKILL.md`](../.claude/skills/so-do-nguyen-ly/SKILL.md) | Quy trình của agent |
+| [`.claude/skills/so-do-nguyen-ly/tham-khao.md`](../.claude/skills/so-do-nguyen-ly/tham-khao.md) | Dạng file mô tả, loại phòng, cách sửa lỗi |
+| `agent/goi-y-dau-vao.mjs` | Mô tả công trình (tầng, phòng, thiết bị) → danh sách tủ và mạch. Tự chia mạch, ước phụ tải, ghi "giả định" |
+| `agent/phu-tai-dien-hinh.mjs` | Bảng phụ tải điển hình (W/m², số ổ cắm, BTU điều hòa, công suất thiết bị, chiều dài) — kỹ sư sửa được |
+| `agent/xem-truoc.mjs` | Chụp các tờ SVG thành PNG để xem nhanh |
+| `agent/vi-du/` | Ví dụ mô tả: biệt thự 4 tầng; căn hộ đọc từ ảnh mặt bằng |
+| `agent/huong-dan-api-key.md` | Hướng dẫn tạo API key, chỉ cần khi muốn làm khung chat trên web |
+
+Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge vào main**. Trước đó chỉ có trong phiên mở nhánh `claude/tu-dien-so-do-nguyen-ly-4ynx0d`.
+
 ## Dùng thế nào
 
 **Web app:** mở `/dien/app/` trên bản triển khai Vercel của repo. Có thể tải file Excel lên, hoặc bấm "Chạy ví dụ HDMON". Các bước tiếp theo:
@@ -26,7 +46,10 @@ Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt*
 ```bash
 cd dien && npm install
 node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx            # → out/vi-du-HDMON/
-npm test                                               # 29 test lõi tính toán
+node tao-bo-ban-ve.mjs du-an.json                       # đầu vào JSON (dữ liệu dự án) cũng được
+node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
+python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
+npm test                                               # 33 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```

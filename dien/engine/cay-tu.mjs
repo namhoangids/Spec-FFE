@@ -6,7 +6,7 @@ import { kiemTra } from "./kiem-tra.mjs";
 import {
   canRcd, chonCap, chonIcu, chonOng, chonThietBi, docThietBi, docTietDien, dongLamViec, kiemCap,
 } from "./mach.mjs";
-import { dinhMucToiThieu, taoQuyTac } from "./quy-tac.mjs";
+import { dinhMucToiThieu, heSoTuCon, taoQuyTac } from "./quy-tac.mjs";
 import { chonCbTong, demModule, tongHopTu } from "./tu.mjs";
 
 /**
@@ -125,7 +125,12 @@ export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
     }
 
     // Cân pha
-    if (t.soPha === 3) canPha(t.mach);
+    if (t.soPha === 3) {
+      // Cân theo đúng hệ số sẽ dùng khi tính dòng pha (tongHopTu): Kđt cho mạch cuối, hệ số đồng thời cho lộ cấp tủ con
+      const kRieng = t.ksNhap ?? ksMacDinh;
+      const kCon = t.ksNhap ?? heSoTuCon(t.con.length, rule);
+      canPha(t.mach, (m) => (m.laCapTuCon ? kCon : kRieng));
+    }
     else for (const m of t.mach) m.pha = "A";
 
     // Thiết bị bảo vệ từng mạch

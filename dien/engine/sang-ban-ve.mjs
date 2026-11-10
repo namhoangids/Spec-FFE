@@ -97,7 +97,7 @@ export function sangBanVe(t, info = {}, i = 0) {
 }
 
 /**
- * Chia các mạch của tủ thành từng tờ, tối đa `toiDa` lộ mỗi tờ, giữ nguyên thứ tự.
+ * Chia các mạch của tủ thành từng tờ, tối đa `toiDa` lộ mỗi tờ, giữ nguyên thứ tự, số lộ các tờ gần đều nhau.
  * Các mạch chung một nhóm RCBO (và mọi cột nằm giữa chúng) luôn ở cùng một tờ.
  * @returns {{ phan: number[][], canhBao: string[] }}
  */
@@ -128,14 +128,20 @@ export function chiaTo(mach, nhomRcd = [], toiDa = 18) {
       donVi.push([i++]);
     }
   }
-  const phan = [];
-  let hienTai = [];
-  for (const u of donVi) {
-    if (hienTai.length && hienTai.length + u.length > toiDa) { phan.push(hienTai); hienTai = []; }
-    hienTai = hienTai.concat(u);
-  }
-  if (hienTai.length) phan.push(hienTai);
-  return { phan, canhBao };
+  // Chia đều các tờ (20 lộ → 10 + 10, không phải 18 + 2); nếu chia đều làm tăng số tờ thì xếp đầy theo toiDa
+  const xep = (tran) => {
+    const phan = [];
+    let hienTai = [];
+    for (const u of donVi) {
+      if (hienTai.length && hienTai.length + u.length > tran) { phan.push(hienTai); hienTai = []; }
+      hienTai = hienTai.concat(u);
+    }
+    if (hienTai.length) phan.push(hienTai);
+    return phan;
+  };
+  const day = xep(toiDa);
+  const deu = xep(Math.ceil(n / day.length));
+  return { phan: deu.length <= day.length ? deu : day, canhBao };
 }
 
 /** Số bản vẽ của tờ sơ đồ tổng: theo SO_BV_TONG, hoặc liền trước tờ tủ đầu (E.601 → E.600). */

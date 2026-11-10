@@ -1,6 +1,7 @@
 """Tạo file Excel nhập liệu (v2) cho công cụ sơ đồ nguyên lý tủ điện & điện nhẹ.
 
 Chạy:  python3 dien/mau/tao_mau_nhap_lieu.py
+       python3 dien/mau/tao_mau_nhap_lieu.py --tu-json du-an.json [ra.xlsx]   (dữ liệu dự án JSON → Excel)
 Ghi ra (cùng thư mục với script):
   - nhap-lieu-tu-dien.xlsx : file mẫu để nhập, ví dụ là tủ DB-T1 trong tài liệu phương án (mục 7)
   - vi-du-HDMON.xlsx       : ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON);
@@ -640,7 +641,64 @@ HDMON = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Dữ liệu dự án JSON (dạng engine/doc-excel.mjs trả về) → file Excel nhập liệu
+# ---------------------------------------------------------------------------
+_INFO_SANG_MA = {
+    "projectNo": "MA_DA", "project": "TEN_DA", "client": "CHU_DAU_TU", "address": "DIA_CHI",
+    "companyInfo": "CONG_TY", "loaiCongTrinh": "LOAI_CT", "director": "GIAM_DOC", "design": "THIET_KE",
+    "checkBy": "KIEM_TRA", "madeBy": "NGUOI_VE", "date": "NGAY", "scale": "TY_LE", "soBanVeTong": "SO_BV_TONG",
+    "soBanVeDau": "SO_BV_DAU", "rev": "REV", "uf": "UF", "ud": "UD", "noiDat": "NOI_DAT", "ikNguon": "IK_NGUON",
+    "duMax": "DU_MAX", "bangGia": "BANG_GIA", "chietKhau": "CHIET_KHAU",
+}
+_TU_SANG_COT = {
+    "ma": "Mã tủ", "ten": "Tên trên bản vẽ", "viTri": "Vị trí", "capTu": "Cấp từ tủ", "maLoCap": "Mã lộ cấp",
+    "datSauLo": "Đặt sau lộ", "lCap": "Chiều dài cáp cấp (m)", "kieuDi": "Kiểu đi cáp cấp",
+    "phuongPhap": "Phương pháp lắp đặt", "ik": "Ik tại tủ (kA)", "ks": "Kđt (trống = theo quy tắc)", "spd": "SPD",
+    "ghiChu": "Ghi chú",
+}
+_MACH_SANG_COT = {
+    "tu": "Mã tủ", "ma": "Mã lộ", "loai": "Loại mạch", "phuTai": "Phụ tải (chữ trên bản vẽ)", "khuVuc": "Loại khu vực",
+    "soLuong": "Số lượng", "congSuat": "Công suất / đv (W)", "cos": "cosφ (trống = mặc định)",
+    "pha": "Pha (trống = tự cân)", "L": "Chiều dài (m)", "nhomOng": "Số mạch chung ống", "nhomRcd": "Nhóm RCD (ghi đè)",
+    "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè",
+    "ghiChu": "Ghi chú",
+}
+
+
+def tu_json(du_an):
+    """Đổi dữ liệu dự án JSON sang dạng du_lieu của build(). Sheet Quy tac luôn ghi bộ mặc định."""
+    info = du_an.get("info", {})
+    tu = []
+    for p in du_an.get("panels", []):
+        d = {_TU_SANG_COT[k]: v for k, v in p.items() if k in _TU_SANG_COT and v not in (None, "")}
+        d["Số pha"] = "1P+N+PE" if p.get("soPha") == 1 else "3P+N+PE"
+        tu.append(d)
+    mach = []
+    for c in du_an.get("circuits", []):
+        d = {_MACH_SANG_COT[k]: v for k, v in c.items() if k in _MACH_SANG_COT and v not in (None, "")}
+        d["Số pha"] = "3P" if c.get("soPha") == 3 else "1P"
+        mach.append(d)
+    return {
+        "mo_ta": f"Tạo từ dữ liệu dự án JSON — {info.get('project', '')} · số liệu ghi 'giả định' ở cột Ghi chú cần kỹ sư rà lại",
+        "du_an": {_INFO_SANG_MA[k]: v for k, v in info.items() if k in _INFO_SANG_MA},
+        "tu": tu,
+        "mach": mach,
+        "dien_nhe": [],
+    }
+
+
 if __name__ == "__main__":
-    here = os.path.dirname(os.path.abspath(__file__))
-    print(build(os.path.join(here, "nhap-lieu-tu-dien.xlsx"), DB_T1))
-    print(build(os.path.join(here, "vi-du-HDMON.xlsx"), HDMON))
+    import json
+    import sys
+
+    if len(sys.argv) >= 3 and sys.argv[1] == "--tu-json":
+        # python3 tao_mau_nhap_lieu.py --tu-json du-an.json [ra.xlsx]
+        vao = sys.argv[2]
+        ra = sys.argv[3] if len(sys.argv) > 3 else os.path.splitext(vao)[0] + ".xlsx"
+        with open(vao, encoding="utf-8") as f:
+            print(build(ra, tu_json(json.load(f))))
+    else:
+        here = os.path.dirname(os.path.abspath(__file__))
+        print(build(os.path.join(here, "nhap-lieu-tu-dien.xlsx"), DB_T1))
+        print(build(os.path.join(here, "vi-du-HDMON.xlsx"), HDMON))

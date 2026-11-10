@@ -10,18 +10,21 @@ import { DB_T1 } from "./du-lieu-db-t1.mjs";
 const mach = (n) => Array.from({ length: n }, (_, i) => ({ ma: `C${i + 1}` }));
 const nhom = (ma, tu, den) => ({ ma, mach: Array.from({ length: den - tu + 1 }, (_, k) => `C${tu + k}`) });
 
-test("chiaTo: 25 mạch → 18 + 7, giữ thứ tự", () => {
+test("chiaTo: 25 mạch → 2 tờ chia đều 13 + 12, giữ thứ tự", () => {
   const { phan, canhBao } = chiaTo(mach(25), [], 18);
-  assert.deepEqual(phan.map((p) => p.length), [18, 7]);
+  assert.deepEqual(phan.map((p) => p.length), [13, 12]);
+  assert.deepEqual(chiaTo(mach(20), [], 18).phan.map((p) => p.length), [10, 10]);
   assert.deepEqual(phan.flat(), [...Array(25).keys()]);
   assert.deepEqual(canhBao, []);
   assert.equal(chiaTo(mach(18), [], 18).phan.length, 1);
 });
 
 test("chiaTo: nhóm RCBO vắt qua ranh giới tờ → cả nhóm sang tờ sau", () => {
-  const { phan } = chiaTo(mach(25), [nhom("R1", 16, 20)], 18);
-  assert.deepEqual(phan.map((p) => p.length), [15, 10]);
-  assert.equal(phan[1][0], 15);   // C16 mở đầu tờ 2
+  const { phan } = chiaTo(mach(25), [nhom("R1", 12, 16)], 18);
+  assert.equal(phan.length, 2);
+  const toCua = (i) => phan.findIndex((p) => p.includes(i));
+  assert.equal(new Set([11, 12, 13, 14, 15].map(toCua)).size, 1, "C12–C16 cùng một tờ");
+  assert.ok(phan.every((p) => p.length <= 18));
 });
 
 test("chiaTo: nhóm dài hơn 18 lộ → giữ trên một tờ và cảnh báo", () => {
@@ -46,6 +49,7 @@ test("đánh số: tờ tổng E.600, tủ bị ngắt làm tủ sau lùi số, 
   assert.deepEqual(b.du.noiTiep, { truoc: "E.601", sau: null });
   assert.ok(a.du.panel.incomer && !b.du.panel.incomer, "chỉ tờ đầu có CB tổng");
   assert.equal(a.du.circuits.length + b.du.circuits.length, 26);   // 25 mạch + lộ cấp T2
+  assert.deepEqual([a.du.circuits.length, b.du.circuits.length], [13, 13]);
   assert.equal(soBanVeTong({ soBanVeTong: "E.599" }), "E.599");
 });
 

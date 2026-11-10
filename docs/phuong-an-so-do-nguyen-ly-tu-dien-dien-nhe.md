@@ -506,6 +506,12 @@ Chốt ngày 07/11/2026.
 5. **Bảng giá Schneider** đang dùng và tỷ lệ chiết khấu (cho GĐ2: mã hàng, BOQ).
 6. 3–5 bộ hồ sơ điện đã duyệt (DWG + PDF) để đối chiếu thêm, và thư viện block mặt bằng (cho bóc khối GĐ2).
 
+- **AI Agent (10/11/2026):** skill Claude Code `so-do-nguyen-ly` (`.claude/skills/`).
+  - Nhận mô tả bằng chữ hoặc ảnh/PDF mặt bằng, hỏi vài điểm chính.
+  - Gợi ý đầu vào (`dien/agent/goi-y-dau-vao.mjs`): tự chia mạch, ước phụ tải theo bảng điển hình, ghi rõ giả định.
+  - Chạy công cụ ra cả bộ bản vẽ, rồi sửa tiếp theo lời người dùng.
+  - Cùng đợt: bộ cân pha tính theo đúng hệ số đồng thời của từng mạch; tủ nhiều tờ chia đều số lộ giữa các tờ.
+
 **Tiếp theo (GĐ2 đợt 2):**
 - **BOQ:** dựng khung trước; khi có file bảng giá Schneider (Excel) thì nạp vào để tự điền mã hàng và đơn giá.
 - **Bóc khối:** nhập CSV `DATAEXTRACTION` từ mặt bằng AutoCAD. Đọc được cả block chỉ có tên (dùng bảng quy đổi tên block → loại phụ tải) lẫn block có thuộc tính chuẩn.

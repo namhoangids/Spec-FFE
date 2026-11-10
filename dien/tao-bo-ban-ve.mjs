@@ -2,6 +2,7 @@
 //
 //   cd dien && npm install
 //   node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx [thư-mục-ra]
+//   node tao-bo-ban-ve.mjs du-an.json [thư-mục-ra]          (dữ liệu dự án dạng JSON)
 //
 // Thư mục ra (mặc định out/<tên file>):
 //   E.601-T1.dxf      AutoCAD 2007 (màu RGB, block có thuộc tính); tủ quá 18 lộ tự ngắt thêm tờ
@@ -26,13 +27,16 @@ import { xuatExcel } from "./engine/xuat-excel.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 const [input, outArg] = process.argv.slice(2);
 if (!input) {
-  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx> [thư mục ra]");
+  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx | du-an.json> [thư mục ra]");
   process.exit(1);
 }
 const outDir = outArg || join(here, "out", basename(input, extname(input)));
 mkdirSync(outDir, { recursive: true });
 
-const duAn = docExcel(XLSX, readFileSync(input));
+// Đầu vào: file Excel nhập liệu, hoặc file JSON dữ liệu dự án (dạng docExcel trả về, ví dụ do agent/goi-y-dau-vao.mjs tạo)
+const duAn = extname(input).toLowerCase() === ".json"
+  ? { loiDoc: [], quyTac: {}, ...JSON.parse(readFileSync(input, "utf8")) }
+  : docExcel(XLSX, readFileSync(input));
 for (const s of duAn.loiDoc) console.log(`⚠ Đọc file: ${s}`);
 const bo = taoBoBanVe(duAn);
 const { kq, to } = bo;
