@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sơ đồ nguyên lý tủ điện</title>
+<!-- Trang chuyển hướng: /dien → /dien/app/ (web app sơ đồ nguyên lý).
+     JS tính đường dẫn theo vị trí trang, nên mở /dien hay /dien/ đều đúng.
+     Không có JS thì meta refresh chuyển sau 1 giây; vẫn còn link bấm tay. -->
+<meta http-equiv="refresh" content="1; url=/dien/app/">
+<script>
+  location.replace(location.pathname.replace(/\/?(index\.html)?$/, "/") + "app/" + location.search + location.hash);
+</script>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #fff; color: #222;
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: 0 16px; }
+  a { color: #0b5cad; }
+  @media (prefers-color-scheme: dark) { body { background: #16181b; color: #e6e6e6; } a { color: #7ab8ff; } }
+</style>
+<p>Đang mở app sơ đồ nguyên lý tủ điện… Nếu trang không tự chuyển, bấm <a href="/dien/app/">vào đây</a>.</p>
+</html>

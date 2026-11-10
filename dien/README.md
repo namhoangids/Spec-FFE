@@ -31,7 +31,7 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 
 ## Dùng thế nào
 
-**Web app:** mở `/dien/app/` trên bản triển khai Vercel của repo. Có thể tải file Excel lên, hoặc bấm "Chạy ví dụ HDMON". Các bước tiếp theo:
+**Web app:** mở `/dien/app/` trên bản triển khai Vercel của repo (gõ `/dien` cũng được, trang `dien/index.html` tự chuyển sang). Trang gốc `/` là app FF&E, không phải app này. Có thể tải file Excel lên, hoặc bấm "Chạy ví dụ HDMON". Các bước tiếp theo:
 
 1. Xem cây tờ. Đầu tiên là sơ đồ tổng E.600, sau đó là các tờ tủ; tủ nhiều tờ hiện (1/2), (2/2).
 2. Xem bản vẽ từng tờ, bảng tính từng mạch và danh sách lỗi/cảnh báo.
