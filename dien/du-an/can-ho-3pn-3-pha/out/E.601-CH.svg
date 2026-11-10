@@ -36,14 +36,14 @@
 <circle cx="204.877" cy="70.931" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <circle cx="204.877" cy="76.926" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="204.546" y1="76.383" x2="201.88" y2="72.021" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<text x="206.149" y="68.611" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCCB</text>
+<text x="206.149" y="68.611" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
 <text x="206.149" y="71.881" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">4P</text>
-<text x="206.149" y="76.059" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">80A</text>
-<text x="206.149" y="79.511" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">15kA</text>
+<text x="206.149" y="76.059" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">63A</text>
+<text x="206.149" y="79.511" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
 <line x1="204.877" y1="77.562" x2="204.877" y2="88.189" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="149.166" y1="55.672" x2="204.877" y2="55.672" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <polygon points="204.877,55.672 202.334,54.945 202.334,56.398" fill="rgb(40,79,128)" stroke="none"/>
-<text x="149.166" y="54.492" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x16)mm2 + E(1x16)mm2</text>
+<text x="149.166" y="54.492" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x10)mm2 + E(1x10)mm2</text>
 <text x="149.166" y="58.488" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">ỐNG PVC  Ø 40</text>
 <line x1="108.088" y1="88.189" x2="289.567" y2="88.189" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="180.68" y1="88.189" x2="180.68" y2="92.73" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -91,8 +91,7 @@
 <text x="110.45" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">L1</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(107.725 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(111.176 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="108.088" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="105.545,202.853 108.343,202.853 108.343,203.907 110.631,202.09 108.343,200.274 108.343,201.327 105.545,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="108.088" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="108.088" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">0,66</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.552" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(109.002 229.521) rotate(-90)">CHIẾU SÁNG P.KHÁCH, BẾP +2 PHÒNG</text>
 <line x1="120.187" y1="88.189" x2="120.187" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -107,8 +106,7 @@
 <text x="122.548" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">L2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(119.824 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(123.275 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="120.187" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="117.644,202.853 120.441,202.853 120.441,203.907 122.73,202.09 120.441,200.274 120.441,201.327 117.644,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="120.187" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="120.187" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">0,13</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(121.187 229.521) rotate(-90)">CHIẾU SÁNG P.NGỦ 3</text>
 <line x1="132.285" y1="88.189" x2="132.285" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -123,8 +121,7 @@
 <text x="134.647" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">L3</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(131.922 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(135.374 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="132.285" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="129.742,202.853 132.54,202.853 132.54,203.907 134.829,202.09 132.54,200.274 132.54,201.327 129.742,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="132.285" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="132.285" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">0,10</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(133.285 229.521) rotate(-90)">CHIẾU SÁNG WC1, WC2</text>
 <line x1="144.384" y1="104.175" x2="144.384" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -139,8 +136,7 @@
 <text x="146.746" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">S1</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(144.021 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(147.472 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="144.384" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
-<polygon points="141.841,202.853 144.638,202.853 144.638,203.907 146.927,202.09 144.638,200.274 144.638,201.327 141.841,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="144.384" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
 <text x="144.384" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">1,20</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(145.384 229.521) rotate(-90)">Ổ CẮM P.KHÁCH</text>
 <line x1="156.483" y1="104.175" x2="156.483" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -155,8 +151,7 @@
 <text x="158.844" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">S2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(156.119 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(159.571 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="156.483" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="153.939,202.853 156.737,202.853 156.737,203.907 159.026,202.09 156.737,200.274 156.737,201.327 153.939,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="156.483" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="156.483" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">2,00</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(157.483 229.521) rotate(-90)">Ổ CẮM P.NGỦ MASTER, P.NGỦ 2</text>
 <line x1="168.581" y1="104.175" x2="168.581" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -171,8 +166,7 @@
 <text x="170.943" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">S3</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(168.218 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(171.67 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="168.581" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
-<polygon points="166.038,202.853 168.836,202.853 168.836,203.907 171.125,202.09 168.836,200.274 168.836,201.327 166.038,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="168.581" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
 <text x="168.581" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">1,00</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(169.581 229.521) rotate(-90)">Ổ CẮM P.NGỦ 3</text>
 <line x1="180.68" y1="104.175" x2="180.68" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -187,8 +181,7 @@
 <text x="183.042" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">S5</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(180.317 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(183.768 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="180.68" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
-<polygon points="178.137,202.853 180.934,202.853 180.934,203.907 183.223,202.09 180.934,200.274 180.934,201.327 178.137,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="180.68" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
 <text x="180.68" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">3,00</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(181.68 229.521) rotate(-90)">Ổ CẮM BẾP</text>
 <line x1="192.779" y1="88.189" x2="192.779" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -203,8 +196,7 @@
 <text x="195.14" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">S4</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(192.415 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(195.867 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="192.779" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
-<polygon points="190.235,202.853 193.033,202.853 193.033,203.907 195.322,202.09 193.033,200.274 193.033,201.327 190.235,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="192.779" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
 <text x="192.779" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">0,40</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(193.779 229.521) rotate(-90)">Ổ CẮM WC1, WC2</text>
 <line x1="204.877" y1="88.189" x2="204.877" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -213,14 +205,13 @@
 <line x1="204.546" y1="118.529" x2="201.88" y2="114.166" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="206.149" y="110.757" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">RCBO</text>
 <text x="206.149" y="114.026" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">1P+N</text>
-<text x="206.149" y="118.205" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">50A</text>
+<text x="206.149" y="118.205" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
 <text x="206.149" y="121.656" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">30mA</text>
 <line x1="204.877" y1="119.707" x2="204.877" y2="194.461" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="207.239" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">BT</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(204.514 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x10)mm2 + E(1x10)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(207.965 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 25</text>
-<text x="204.877" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
-<polygon points="202.334,202.853 205.131,202.853 205.131,203.907 207.42,202.09 205.131,200.274 205.131,201.327 202.334,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="204.877" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
 <text x="204.877" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">7,20</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(205.877 229.521) rotate(-90)">BẾP TỪ</text>
 <line x1="216.976" y1="88.189" x2="216.976" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -235,8 +226,7 @@
 <text x="219.337" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">AC</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(216.612 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(220.064 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="216.976" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
-<polygon points="214.433,202.853 217.23,202.853 217.23,203.907 219.519,202.09 217.23,200.274 217.23,201.327 214.433,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="216.976" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">A</text>
 <text x="216.976" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">0,40</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(217.976 229.521) rotate(-90)">CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ</text>
 <line x1="229.074" y1="88.189" x2="229.074" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -251,8 +241,7 @@
 <text x="231.436" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">WH1</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(228.711 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(232.163 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="229.074" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="226.531,202.853 229.329,202.853 229.329,203.907 231.618,202.09 229.329,200.274 229.329,201.327 226.531,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="229.074" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="229.074" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">2,50</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(230.074 229.521) rotate(-90)">BÌNH NÓNG LẠNH WC1</text>
 <line x1="241.173" y1="88.189" x2="241.173" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -267,8 +256,7 @@
 <text x="243.535" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">WH2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(240.81 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(244.261 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="241.173" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="238.63,202.853 241.427,202.853 241.427,203.907 243.716,202.09 241.427,200.274 241.427,201.327 238.63,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="241.173" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="241.173" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">2,50</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(242.173 229.521) rotate(-90)">BÌNH NÓNG LẠNH WC2</text>
 <line x1="253.272" y1="88.189" x2="253.272" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -283,8 +271,7 @@
 <text x="255.633" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">WH3</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(252.908 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(256.36 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="253.272" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
-<polygon points="250.728,202.853 253.526,202.853 253.526,203.907 255.815,202.09 253.526,200.274 253.526,201.327 250.728,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="253.272" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">B</text>
 <text x="253.272" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">2,50</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(254.272 229.521) rotate(-90)">BÌNH NÓNG LẠNH BẾP</text>
 <line x1="265.37" y1="88.189" x2="265.37" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -299,8 +286,7 @@
 <text x="267.732" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">ACT</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(265.007 189.737) rotate(-90) scale(0.85 1)">Cu/PVC 4(1x4)mm2 + E(1x4)mm2</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(268.458 189.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 20</text>
-<text x="265.37" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">ABC</text>
-<polygon points="262.827,202.853 265.625,202.853 265.625,203.907 267.913,202.09 265.625,200.274 265.625,201.327 262.827,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="265.37" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">ABC</text>
 <text x="265.37" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">8,40</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(264.87 229.521) rotate(-90)">CẤP ĐIỆN DÀN NÓNG</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(267.87 229.521) rotate(-90)">ĐIỀU HÒA 100.000 BTU</text>
@@ -314,8 +300,7 @@
 <text x="278.74" y="121.656" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
 <line x1="277.469" y1="119.707" x2="277.469" y2="194.461" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="279.83" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">DP1</text>
-<text x="277.469" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="274.926,202.853 277.723,202.853 277.723,203.907 280.012,202.09 277.723,200.274 277.723,201.327 274.926,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="277.469" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="277.469" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">—</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(278.469 229.521) rotate(-90)">DỰ PHÒNG</text>
 <line x1="289.567" y1="88.189" x2="289.567" y2="113.076" stroke="rgb(40,79,128)" stroke-width="0.25"/>
@@ -328,8 +313,7 @@
 <text x="290.839" y="121.656" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
 <line x1="289.567" y1="119.707" x2="289.567" y2="194.461" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="291.929" y="140.236" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">DP2</text>
-<text x="289.567" y="199.457" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
-<polygon points="287.024,202.853 289.822,202.853 289.822,203.907 292.111,202.09 289.822,200.274 289.822,201.327 287.024,201.327" fill="rgb(255,0,0)" stroke="none"/>
+<text x="289.567" y="200.456" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">C</text>
 <text x="289.567" y="259.587" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)">—</text>
 <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(232,86,42)" transform="translate(290.567 229.521) rotate(-90)">DỰ PHÒNG</text>
 <circle cx="301.194" cy="128.154" r="0.908" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>

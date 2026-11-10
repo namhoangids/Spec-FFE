@@ -189,6 +189,17 @@ export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
     Object.assign(t, tongHopTu(t, t.mach, rule, ksMacDinh));
     t.laGoc = !t.cha;
     t.cbTong = chonCbTong(t, t, t.mach, rule, { laGoc: t.laGoc, ik });
+    // Ghi đè CB tổng ở tủ: t.ghiDeCbTong = { thietBi: "MCB 4P 63A C", lyDo }
+    if (t.ghiDeCbTong?.thietBi) {
+      const tb = docThietBi(t.ghiDeCbTong.thietBi, rule);
+      if (!tb) ghi("canhbao", t.ma, "", `Không đọc được CB tổng ghi đè "${t.ghiDeCbTong.thietBi}" — dùng CB tự chọn`);
+      else {
+        const tuChon = t.cbTong;
+        const dsIcu = tb.loai === "MCCB" ? rule.icu.mccb : rule.icu.tongMcb;
+        t.cbTong = { ...tb, icu: tb.icu ?? chonIcu(dsIcu, ik), maxRa: tuChon.maxRa, ghiDe: true };
+        ghi("canhbao", t.ma, "", `CB tổng ghi đè ${tb.loai} ${tb.soCuc} ${tb.in}A (tự chọn ${tuChon.loai} ${tuChon.in}A). Lý do: ${t.ghiDeCbTong.lyDo || "chưa ghi lý do"}`);
+      }
+    }
     t.coSpd = t.spd === "Có" || (t.spd !== "Không" && t.laGoc && rule.spdTuGoc);
     t.module = demModule(t, t.mach, nhom, t.cbTong, rule, { coSpd: t.coSpd });
   }

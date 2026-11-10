@@ -328,9 +328,8 @@ export function veSoDoTu(g, d) {
       if (s) g.text("TEXT", X(x + dx), Y(P.cableText.bottom), fitH(s, H.cable, FIT.cableAvail, `cáp mạch ${c.code || i + 1}`, WF.cable), s, { rot: 90, wf: WF.cable });
     }
 
-    // Chữ pha, mũi tên, tên phụ tải
-    if (c.phase) g.text("TEXT", X(x), Y(P.phaseText.y), H.phase, c.phase, { ha: "center", va: "middle" });
-    g.insert("IND_PHA_MUITEN", X(x), Y(P.arrow.y));
+    // Chữ pha (giữa ô, không vẽ mũi tên), tên phụ tải
+    if (c.phase) g.text("TEXT", X(x), Y((R.phase + R.load) / 2), H.phase, c.phase, { ha: "center", va: "middle" });
     if (c.power) g.text("TEXT", X(x), Y(R.bottom + R.power / 2), fitH(c.power, H.load, L(pitch) - 1, `công suất mạch ${c.code}`), c.power, { ha: "center", va: "middle" });
     if (c.load) veTenPhuTai(X(x), Y((R.load + R.bottom) / 2), L(pitch), c.load, c.code || i + 1);
   });
