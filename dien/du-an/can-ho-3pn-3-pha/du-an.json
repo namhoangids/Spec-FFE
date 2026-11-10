@@ -1,0 +1,218 @@
+{
+  "info": {
+    "project": "CĂN HỘ 3PN",
+    "client": "",
+    "address": "",
+    "companyInfo": "22 Thanh Cong, Ba Dinh, Ha Noi",
+    "loaiCongTrinh": "Căn hộ",
+    "projectNo": "",
+    "date": "",
+    "scale": "1:50",
+    "design": "",
+    "checkBy": "",
+    "madeBy": "",
+    "director": "",
+    "soBanVeDau": "E.601",
+    "soBanVeTong": "E.600"
+  },
+  "panels": [
+    {
+      "ma": "CH",
+      "ten": "TỦ CĂN HỘ",
+      "viTri": "Tầng CH",
+      "soPha": 3,
+      "kieuDi": "Ống",
+      "spd": "Theo quy tắc",
+      "nguonDuPhong": {
+        "ten": "MÁY PHÁT DỰ PHÒNG TÒA NHÀ",
+        "tenChinh": "NGUỒN LƯỚI (TỦ TẦNG)"
+      }
+    }
+  ],
+  "circuits": [
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "L1",
+      "loai": "Chiếu sáng trong nhà",
+      "phuTai": "CHIẾU SÁNG P.KHÁCH, BẾP +2 PHÒNG",
+      "congSuat": 660,
+      "L": 30,
+      "ghiChu": "giả định: 25 m²×10 W/m² + 15 m²×10 W/m² + 16 m²×8 W/m² + 16 m²×8 W/m²"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "L2",
+      "loai": "Chiếu sáng trong nhà",
+      "phuTai": "CHIẾU SÁNG P.NGỦ 3",
+      "congSuat": 130,
+      "L": 18,
+      "ghiChu": "giả định: 16 m²×8 W/m²"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Ướt (WC, tắm)",
+      "soPha": 1,
+      "ma": "L3",
+      "loai": "Chiếu sáng trong nhà",
+      "phuTai": "CHIẾU SÁNG WC1, WC2",
+      "congSuat": 100,
+      "L": 22,
+      "ghiChu": "giả định: 5 m²×10 W/m² + 5 m²×10 W/m²"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "S1",
+      "loai": "Ổ cắm thông thường",
+      "phuTai": "Ổ CẮM P.KHÁCH",
+      "soLuong": 6,
+      "congSuat": 200,
+      "L": 18,
+      "ghiChu": "giả định: 6 ổ × 200 W",
+      "nhomRcd": "RC1",
+      "lyDo": "Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "S2",
+      "loai": "Ổ cắm thông thường",
+      "phuTai": "Ổ CẮM P.NGỦ MASTER, P.NGỦ 2",
+      "soLuong": 10,
+      "congSuat": 200,
+      "L": 22,
+      "ghiChu": "giả định: 10 ổ × 200 W",
+      "nhomRcd": "RC1",
+      "lyDo": "Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "S3",
+      "loai": "Ổ cắm thông thường",
+      "phuTai": "Ổ CẮM P.NGỦ 3",
+      "soLuong": 5,
+      "congSuat": 200,
+      "L": 18,
+      "ghiChu": "giả định: 5 ổ × 200 W",
+      "nhomRcd": "RC1",
+      "lyDo": "Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Bếp",
+      "soPha": 1,
+      "ma": "S5",
+      "loai": "Ổ cắm thông thường",
+      "phuTai": "Ổ CẮM BẾP",
+      "congSuat": 3000,
+      "cos": 0.9,
+      "L": 12,
+      "ghiChu": "giả định: tủ lạnh, lò vi sóng, máy rửa bát 3 kW",
+      "nhomRcd": "RC1",
+      "lyDo": "Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Ướt (WC, tắm)",
+      "soPha": 1,
+      "ma": "S4",
+      "loai": "Ổ cắm thông thường",
+      "phuTai": "Ổ CẮM WC1, WC2",
+      "soLuong": 2,
+      "congSuat": 200,
+      "L": 22,
+      "ghiChu": "giả định: 2 ổ × 200 W"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Bếp",
+      "soPha": 1,
+      "ma": "BT",
+      "loai": "Bếp từ, lò nướng",
+      "phuTai": "BẾP TỪ",
+      "congSuat": 7200,
+      "L": 12,
+      "ghiChu": ""
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "AC",
+      "loai": "Điều hòa",
+      "phuTai": "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ",
+      "soLuong": 4,
+      "congSuat": 100,
+      "L": 15,
+      "ghiChu": "giả định: 4 dàn lạnh × 100 W"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Ướt (WC, tắm)",
+      "soPha": 1,
+      "ma": "WH1",
+      "loai": "Khu ướt (WC, bình nóng lạnh)",
+      "phuTai": "BÌNH NÓNG LẠNH WC1",
+      "congSuat": 2500,
+      "L": 15,
+      "ghiChu": "giả định: 2,5 kW"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Ướt (WC, tắm)",
+      "soPha": 1,
+      "ma": "WH2",
+      "loai": "Khu ướt (WC, bình nóng lạnh)",
+      "phuTai": "BÌNH NÓNG LẠNH WC2",
+      "congSuat": 2500,
+      "L": 15,
+      "ghiChu": "giả định: 2,5 kW"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Ướt (WC, tắm)",
+      "soPha": 1,
+      "ma": "WH3",
+      "loai": "Khu ướt (WC, bình nóng lạnh)",
+      "phuTai": "BÌNH NÓNG LẠNH BẾP",
+      "congSuat": 2500,
+      "L": 15,
+      "ghiChu": "giả định: bình nóng lạnh bếp 2,5 kW (thường 15–20 L)"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 3,
+      "ma": "ACT",
+      "loai": "Điều hòa",
+      "phuTai": "CẤP ĐIỆN DÀN NÓNG ĐIỀU HÒA",
+      "congSuat": 4500,
+      "L": 20,
+      "ghiChu": "giả định: dàn nóng VRV"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "DP1",
+      "loai": "Dự phòng",
+      "phuTai": "DỰ PHÒNG"
+    },
+    {
+      "tu": "CH",
+      "khuVuc": "Khô",
+      "soPha": 1,
+      "ma": "DP2",
+      "loai": "Dự phòng",
+      "phuTai": "DỰ PHÒNG"
+    }
+  ]
+}

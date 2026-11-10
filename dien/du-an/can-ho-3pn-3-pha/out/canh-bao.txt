@@ -1,0 +1,9 @@
+CẢNH BÁO	CH		Thiếu Ik — dùng mặc định 6 kA
+CẢNH BÁO	CH	S1, S2, S3, S5	Nhóm RCD RC1: dùng chung 1 RCBO 50A 30mA cho 4 mạch — quy tắc yêu cầu RCBO riêng cho từng mạch ổ cắm/khu ướt/ngoài nhà. Lý do: Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật
+CẢNH BÁO	CH		CB tổng được nâng từ 50 A lên 80 A để giữ tỷ số chọn lọc 1,6 với mạch ra 50 A — kỹ sư xác nhận theo bảng phối hợp của hãng
+GHI CHÚ	CH		Tủ gốc không có chiều dài cáp cấp — cáp nguồn chọn theo Iz′, chưa kiểm sụt áp; sụt áp tính từ thanh cái tủ này
+GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
+GHI CHÚ	CH		In tổng 80 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
+GHI CHÚ	CH		Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)
+GHI CHÚ	CH		SPD loại 2 đã tính vào số module nhưng chưa vẽ trên sơ đồ (template chưa có ký hiệu SPD)
+GHI CHÚ	CH		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt

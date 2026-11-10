@@ -19,6 +19,7 @@ const K = {
   cbTren: 9,                // chấm tròn CB tổng tủ nằm trên đỉnh khung
   cbThan: -(CB.ocDy - CB.ocR),   // chiều dài thân ký hiệu CB (≈ 6,6 mm)
   nguon: 16,                // đoạn đường nguồn phía trên CB tổng tủ gốc
+  ats: { them: 34, w: 36, h: 10, lech: 34 },   // có nguồn dự phòng: thêm chiều cao, khung ATS, khoảng lệch 2 nguồn
   chan: 6,                  // từ đáy khung tủ cha xuống thanh cái nhánh
   cbLo: 6,                  // từ thanh cái nhánh xuống chấm tròn CB lộ cấp (nhãn CB không chạm thanh cái)
   cap: { dai: 52, min: 18 },     // đoạn cáp giữa CB lộ cấp và CB tổng tủ con (tự rút ngắn khi cây sâu)
@@ -70,14 +71,16 @@ export function veSoDoTong(g, d) {
   const sau = (n) => 1 + Math.max(0, ...n.children.map(sau));
   const doSau = Math.max(1, ...goc.map(sau));
   const yTop = VUNG_VE.yDuoiTieuDe - 4;
+  const coAts = (d.nguon || []).some((ng) => ng?.duPhong);
+  const kNguon = K.nguon + (coAts ? K.ats.them : 0);
   const yDay = ybTop + B.tieuDe + 8;
   const capTang = () => K.hop.h + K.chan + K.cbLo + K.cbThan + capDai + K.cbTren;
   let capDai = K.cap.dai;
-  const can = K.nguon + K.cbTren + K.hop.h + (doSau - 1) * capTang();
+  const can = kNguon + K.cbTren + K.hop.h + (doSau - 1) * capTang();
   const co = yTop - yDay;
   if (can > co && doSau > 1) {
     capDai = Math.max(K.cap.min, capDai - (can - co) / (doSau - 1));
-    if (K.nguon + K.cbTren + K.hop.h + (doSau - 1) * capTang() > co) warnings.push(`Cây tủ sâu ${doSau} cấp — không đủ chỗ trên một tờ A3, các cấp có thể chồng lên bảng tổng hợp.`);
+    if (kNguon + K.cbTren + K.hop.h + (doSau - 1) * capTang() > co) warnings.push(`Cây tủ sâu ${doSau} cấp — không đủ chỗ trên một tờ A3, các cấp có thể chồng lên bảng tổng hợp.`);
   }
 
   // Toạ độ ngang: các tủ lá chia đều, tủ cha nằm giữa các con
@@ -96,21 +99,48 @@ export function veSoDoTong(g, d) {
   goc.forEach(ganX);
 
   // --- Vẽ ---------------------------------------------------------------------------
-  const yHopGoc = yTop - K.nguon - K.cbTren;      // đỉnh khung tủ gốc
+  const yHopGoc = yTop - kNguon - K.cbTren;       // đỉnh khung tủ gốc
   goc.forEach((n, i) => {
     const x = n._x;
     const ng = (d.nguon || [])[i] || {};
-    // Đường nguồn + mũi tên + chữ cáp nguồn bên phải
-    g.line("LINE", x, yTop, x, yHopGoc + K.cbTren);
-    g.fill("LINE", [[x, yTop - 5.5], [x - 0.73, yTop - 3], [x + 0.73, yTop - 3]]);   // mũi tên hướng xuống
-    g.text("TEXT", x + 2, yTop + 1.2, H.label, "NGUỒN ĐIỆN", { va: "middle", bold: true });
-    [ng.cable, ng.conduit].filter(Boolean).forEach((s, k) =>
-      g.text("TEXT", x + 2, yTop - 4 - k * 3.6, vuaChu(s, H.label, buoc / 2 + 60, "cáp nguồn"), s, { va: "middle" }));
+    if (ng.duPhong) veAts(x, ng);
+    else {
+      // Đường nguồn + mũi tên + chữ cáp nguồn bên phải
+      g.line("LINE", x, yTop, x, yHopGoc + K.cbTren);
+      g.fill("LINE", [[x, yTop - 5.5], [x - 0.73, yTop - 3], [x + 0.73, yTop - 3]]);   // mũi tên hướng xuống
+      g.text("TEXT", x + 2, yTop + 1.2, H.label, "NGUỒN ĐIỆN", { va: "middle", bold: true });
+      [ng.cable, ng.conduit].filter(Boolean).forEach((s, k) =>
+        g.text("TEXT", x + 2, yTop - 4 - k * 3.6, vuaChu(s, H.label, buoc / 2 + 60, "cáp nguồn"), s, { va: "middle" }));
+    }
     veNut(n, yHopGoc);
   });
 
   veKhungTen(g, d.sheet);
   return warnings;
+
+  // Hai nguồn (lưới bên trái, dự phòng bên phải) → khung ATS → CB tổng tủ gốc
+  function veAts(x, ng) {
+    const A = K.ats, dp = ng.duPhong;
+    const xL = x - A.lech, xR = x + A.lech;
+    const yAtsTren = yTop - 22, yAtsDuoi = yAtsTren - A.h;
+    const xVaoL = x - A.w / 4, xVaoR = x + A.w / 4;
+    const nguonVao = (xs, xVao, ten, caps, phai) => {
+      g.line("LINE", xs, yTop, xs, yAtsTren + 5);
+      g.line("LINE", xs, yAtsTren + 5, xVao, yAtsTren + 5);
+      g.line("LINE", xVao, yAtsTren + 5, xVao, yAtsTren);
+      g.fill("LINE", [[xs, yTop - 5.5], [xs - 0.73, yTop - 3], [xs + 0.73, yTop - 3]]);
+      const tx = phai ? xs + 2 : xs - 2, ha = phai ? "left" : "right";
+      g.text("TEXT", tx, yTop + 1.2, H.label, ten, { ha, va: "middle", bold: true });
+      caps.filter(Boolean).forEach((s, k) =>
+        g.text("TEXT", tx, yTop - 4 - k * 3.6, vuaChu(s, H.label, 80, "cáp nguồn"), s, { ha, va: "middle" }));
+    };
+    nguonVao(xL, xVaoL, ng.duPhong.chinh, [ng.cable, ng.conduit], false);
+    nguonVao(xR, xVaoR, dp.ten, [dp.cable, ng.conduit], true);
+    g.rect("LINE", x - A.w / 2, yAtsDuoi, x + A.w / 2, yAtsTren);
+    g.text("TEXT", x, yAtsTren - 3.6, vuaChu(dp.ats, 2.2, A.w - 2, "ATS", { bold: true }), dp.ats, { ha: "center", va: "middle", bold: true });
+    g.text("TEXT", x, yAtsTren - 7.4, 1.6, "TỰ ĐỘNG CHUYỂN NGUỒN", { ha: "center", va: "middle" });
+    g.line("LINE", x, yAtsDuoi, x, yHopGoc + K.cbTren);
+  }
 
   // Khung tủ có đỉnh ở yHop; CB tổng của tủ nằm ngay trên đỉnh; rồi các nhánh con bên dưới
   function veNut(n, yHop) {

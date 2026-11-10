@@ -1,0 +1,18 @@
+{
+  "duAn": { "ten": "CĂN HỘ 3PN", "loaiCongTrinh": "Căn hộ", "congTy": "22 Thanh Cong, Ba Dinh, Ha Noi", "tyLe": "1:50", "soBanVeDau": "E.601", "soBanVeTong": "E.600" },
+  "nguon": { "soPha": 3 },
+  "tuTong": { "ma": "CH", "ten": "TỦ CĂN HỘ", "tang": "CH" },
+  "dieuHoa": "VRV",
+  "duPhong": 2,
+  "tang": [
+    { "ten": "CH", "phong": [
+      { "loai": "phòng khách", "ten": "P.KHÁCH" },
+      { "loai": "bếp", "ten": "BẾP", "bepTu": true, "bepTuW": 7200 },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ MASTER" },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 2" },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 3" },
+      { "loai": "wc", "ten": "WC1", "tam": true },
+      { "loai": "wc", "ten": "WC2", "tam": true }
+    ] }
+  ]
+}

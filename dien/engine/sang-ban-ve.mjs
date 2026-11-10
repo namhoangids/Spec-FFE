@@ -223,10 +223,17 @@ export function sangSoDoTong(kq, info = {}, o = {}) {
     cable: chuCap(g.capNguon, { soPha: g.soPha }),
     conduit: g.capNguon ? g.ongNguon || "" : "",
     chuaCoL: !!g.capNguon?.chuaCoL,
+    // Nguồn dự phòng qua ATS: { ten, ats } — ATS mặc định 4P/2P theo số pha, dòng = CB tổng
+    duPhong: g.nguonDuPhong ? {
+      ten: hoa(g.nguonDuPhong.ten || "MÁY PHÁT DỰ PHÒNG"),
+      chinh: hoa(g.nguonDuPhong.tenChinh || "NGUỒN LƯỚI"),
+      ats: g.nguonDuPhong.ats || `ATS ${g.soPha === 3 ? "4P" : "2P"} ${g.cbTong?.in ?? ""}A`,
+      cable: g.nguonDuPhong.cap || chuCap(g.capNguon, { soPha: g.soPha }),
+    } : null,
   }));
   const bang = kq.tu.map((t) => ({
     ten: hoa(t.ten),
-    capTu: t.cha ? `${hoa(theoMa.get(t.cha)?.ten ?? t.cha)} / ${loCap.get(t.ma)?.ma ?? ""}` : "NGUỒN",
+    capTu: t.cha ? `${hoa(theoMa.get(t.cha)?.ten ?? t.cha)} / ${loCap.get(t.ma)?.ma ?? ""}` : t.nguonDuPhong ? "ATS (LƯỚI/DP)" : "NGUỒN",
     soPha: t.soPha === 3 ? "3P" : "1P",
     pd: so(t.pd), ks: so(t.ks), ptt: so(t.ptt), itt: so(t.itt, 1),
     cbTong: (({ type, poles, rating, breaking }) => `${type} ${poles} ${rating} ${breaking}`)(chuThietBi(t.cbTong)),
