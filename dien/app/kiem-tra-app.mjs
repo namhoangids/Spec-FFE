@@ -54,13 +54,25 @@ try {
   await page.click("#vidu");
   await page.waitForSelector("#tree .node");
   const nodes = await page.locator("#tree .node").allInnerTexts();
-  assert.equal(nodes.length, 6, "đủ 6 tờ");
-  assert.match(nodes[0], /E\.601\s+T1/);
+  assert.equal(nodes.length, 7, "đủ 7 tờ: sơ đồ tổng + 6 tủ");
+  assert.match(nodes[0], /E\.600\s+Sơ đồ tổng/);
+  assert.match(nodes[1], /E\.601\s+T1/);
   assert.match(await page.locator("#stats").innerText(), /lỗi\s+0/i);
   assert.equal(await page.locator("#pane svg").count(), 1, "có bản vẽ SVG");
-  if (anh) { mkdirSync(anh, { recursive: true }); await page.screenshot({ path: join(anh, "app-ban-ve.png") }); }
+  assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG/);
+  if (anh) { mkdirSync(anh, { recursive: true }); await page.screenshot({ path: join(anh, "app-so-do-tong.png") }); }
+  await page.click("[data-view=bang]");
+  assert.equal(await page.locator("#pane tbody tr").count(), 6, "bảng tổng hợp 6 tủ");
+  await page.click("[data-view=ve]");
 
-  await page.click("#tree .node >> nth=2");
+  // In nhãn: mở tab mới có 6 trang danh mục mạch
+  const [popup] = await Promise.all([page.waitForEvent("popup"), page.click("#nhan")]);
+  await popup.waitForLoadState();
+  assert.equal(await popup.locator("section.trang").count(), 6, "6 trang danh mục mạch");
+  assert.ok(await popup.locator(".nhan").count() > 0, "có nhãn cáp");
+  await popup.close();
+
+  await page.click("#tree .node >> nth=3");
   assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ NGUYÊN LÝ ĐIỆN T3/);
   await page.click("[data-view=bang]");
   assert.equal(await page.locator("#pane tbody tr").count(), 10, "T3 có 10 lộ ra");
@@ -71,9 +83,9 @@ try {
   const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#zip")]);
   const zip = await JSZip.loadAsync(readFileSync(await dl.path()));
   const ten = Object.keys(zip.files).sort();
-  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 12);
-  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 6);
-  for (const f of ["bang-tinh.xlsx", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
+  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 14);
+  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 7);
+  for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
   const r12 = await zip.file("E.603-T3-R12.dxf").async("string");
   assert.match(r12, /AC1009/);
   const wb = XLSX.read(await zip.file("bang-tinh.xlsx").async("uint8array"));
@@ -90,7 +102,7 @@ try {
   if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai.png") });
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 6 tờ, ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

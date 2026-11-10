@@ -22,7 +22,12 @@ const tenSheet = (s, dung) => {
  * @param {object} info — duAn.info
  * @returns workbook SheetJS (ghi bằng XLSX.write / XLSX.writeFile)
  */
-export function xuatExcel(XLSX, kq, info = {}) {
+export function xuatExcel(XLSX, kq, info = {}, { soTheoTu = null } = {}) {
+  // Số bản vẽ từng tủ: theo cách đánh số của bộ tờ (tủ nhiều tờ ghi "E.602–E.603"); thiếu thì mỗi tủ một tờ
+  const soTo = (t, i) => {
+    const s = soTheoTu?.get(t.ma);
+    return s?.length ? (s.length > 1 ? `${s[0]}–${s.at(-1)}` : s[0]) : soBanVe(info.soBanVeDau || "E.601", i);
+  };
   const wb = XLSX.utils.book_new();
   const dung = new Set(["Tong hop", "Canh bao", "Quy tac"]);
   const rule = kq.quyTac;
@@ -41,7 +46,7 @@ export function xuatExcel(XLSX, kq, info = {}) {
       "Module", "Module cần (+dự phòng)", "Vỏ tủ (module)", "Lỗi", "Cảnh báo"],
   ];
   kq.tu.forEach((t, i) => th.push([
-    soBanVe(info.soBanVeDau || "E.601", i), t.ma, t.ten, t.cha ?? "", t.soPha === 3 ? "3P" : "1P", r(t.pd), r(t.ks), r(t.ptt),
+    soTo(t, i), t.ma, t.ten, t.cha ?? "", t.soPha === 3 ? "3P" : "1P", r(t.pd), r(t.ks), r(t.ptt),
     r(t.cosTb), r(t.iPha.A, 1), r(t.iPha.B, 1), r(t.iPha.C, 1), r(t.lechPha, 1), r(t.ikTinh, 1), tb(t.cbTong),
     chuCap(t.capNguon, { soPha: t.soPha }), t.capNguon ? t.ongNguon ?? "" : "", t.capNguon?.chuaCoL ? "" : r(t.lCap, 1),
     r(t.duBus), t.module.tong, r(t.module.can, 1), t.module.voTu ?? "", dem(t.ma, "loi"), dem(t.ma, "canhbao"),
@@ -56,7 +61,7 @@ export function xuatExcel(XLSX, kq, info = {}) {
     "ΔU mạch (%)", "ΔU cộng dồn (%)", "Giới hạn ΔU (%)", "Ống", "Ghi đè", "Kiểm tra"];
   kq.tu.forEach((t, i) => {
     const rows = [
-      [`SƠ ĐỒ NGUYÊN LÝ ĐIỆN ${t.ten} — ${soBanVe(info.soBanVeDau || "E.601", i)}`],
+      [`SƠ ĐỒ NGUYÊN LÝ ĐIỆN ${t.ten} — ${soTo(t, i)}`],
       [`CB tổng: ${tb(t.cbTong)} · Cáp cấp: ${chuCap(t.capNguon, { soPha: t.soPha }) || "—"} · Pđ ${v(t.pd)} kW · Kđt ${v(t.ks)} · Ptt ${v(t.ptt)} kW · Itt ${v(t.itt, 1)} A · Ik ${v(t.ikTinh, 1)} kA (${t.ikNguon})`],
       [`Vỏ tủ: ${t.module.voTu ?? "—"} module (thiết bị ${t.module.tong} module, cần ${v(t.module.can, 1)} gồm ${rule.duPhongVo}% dự phòng) · ΔU tới thanh cái ${v(t.duBus)}%`],
       [],

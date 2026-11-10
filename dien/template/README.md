@@ -32,6 +32,24 @@ node tao-ban-ve.mjs du-lieu/E601-T1.json du-lieu/E602-T2.json
 | `du-lieu/E601-T1.json` | Dữ liệu tờ E.601, chép đúng bản mẫu (15 mạch) |
 | `du-lieu/E602-T2.json` | Dữ liệu tờ E.602 lấy từ phần chữ của PDF (7 mạch). Thứ tự cột là suy luận vì không có ảnh tờ này |
 
+## Tờ sơ đồ cấp điện tổng và tủ nhiều tờ (GĐ2)
+
+**`so-do-tong.mjs` — `veSoDoTong(g, d)`:** vẽ tờ "SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG", cùng khung tên và màu với tờ tủ.
+- Cây tủ vẽ từ trên xuống: nguồn → CB tổng → khung tủ (tên, cỡ vỏ, Ptt, số bản vẽ của tủ).
+- Mỗi nhánh đi xuống tủ con gồm:
+  - CB lộ cấp: block `IND_CB`, kèm mã lộ và pha;
+  - chữ cáp và ống viết dọc đường nối; thiếu chỗ thì ghi ngắn `4x10 + E10`, `Ø 40`;
+  - CB tổng tủ con.
+- Dưới cây là bảng tổng hợp phụ tải.
+
+**Tủ nhiều mạch:** `veSoDoTu` nhận thêm `d.noiTiep = { truoc, sau }`.
+- Thanh cái kéo tới mép vỏ tủ, có mũi tên và chữ "TIẾP TỜ E.60x" / "TỪ TỜ E.60x".
+- Tờ sau không có CB tổng, cáp nguồn và Pđ/Ptt.
+- Mỗi tờ tối đa `SO_COT_TOI_DA` = 18 lộ, là số cột vừa tờ mà không co bước.
+- Tên bản vẽ dài, ví dụ "(1/2)", tự thu nhỏ cho vừa ô khung tên.
+
+**Dùng chung giữa hai loại tờ** (export từ `mau-indust.mjs`): `veKhungTo`, `veKhungTen`, `defineBlocks`, `cbAttribs`, `rectPts`, `arrowHead`, `VUNG_VE`.
+
 ## Bố cục lấy từ mẫu
 
 Toạ độ trong `mau-indust.mjs` ghi theo **pixel của ảnh mẫu** (1156 × 807 px) để dễ đối chiếu,

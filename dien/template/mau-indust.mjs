@@ -77,10 +77,11 @@ const P = {
   arrow: { y: 551, w: 14, h: 10 },
 
   earth: { y: 347.5, dx: 33, yBottom: 404, w: 17, tri: 8.5 },
+  noiTiep: { dy: 7 },               // chữ "TỪ TỜ / TIẾP TỜ" nằm trên thanh cái chính
 };
 
 // Ký hiệu aptomat (mm), gốc tại chấm tròn đặc (tiếp điểm tĩnh), thân đi xuống
-const CB = {
+export const CB = {
   dotR: L(2.0),
   ocR: L(1.75),
   ocDy: -L(16.5),                       // tâm vòng tròn hở
@@ -91,13 +92,22 @@ const CB = {
 };
 
 // Chiều cao chữ (mm) quy đổi về Arial theo độ dài chữ đo trên mẫu (xem README)
-const H = { label: 2.0, row: 2.0, cable: 2.0, load: 2.0, code: 2.0, phase: 2.0, min: 1.3 };
-const WF = { cable: 0.85 };          // hệ số rộng chữ cáp (chữ cao nhưng hẹp như mẫu)
+export const H = { label: 2.0, row: 2.0, cable: 2.0, load: 2.0, code: 2.0, phase: 2.0, min: 1.3 };
+export const WF = { cable: 0.85 };          // hệ số rộng chữ cáp (chữ cao nhưng hẹp như mẫu)
 const FIT = {
   loadAvail: L(695.5 - 557.5) - 2,   // chiều dài dành cho tên phụ tải trong ô (mm)
   shrinkFirst: 0.85,                 // tên phụ tải: thu nhỏ tới 85% trước khi xuống dòng
   cableAvail: L(517 - 395),          // chiều dài dành cho chữ cáp/ống trong hàng cáp (mm)
   gapIncomer: L(10),                 // khoảng hở giữa ghi chú cáp nguồn và đường cấp nguồn
+};
+
+/** Số lộ ra tối đa trên một tờ mà không phải co bước cột (18 với bố cục mẫu). */
+export const SO_COT_TOI_DA = Math.floor((P.col.maxRight - P.col.first) / P.col.pitch + 1e-9) + 1;
+
+/** Vùng vẽ (mm) bên trái khung tên, dưới dòng tiêu đề — cho các tờ khác dùng chung khung. */
+export const VUNG_VE = {
+  x0: X(P.frame.x0), x1: X(P.frame.split), y0: Y(P.frame.y1), y1: Y(P.frame.y0),
+  yDuoiTieuDe: Y(P.title.iconY + P.title.iconSize / 2 + 8),
 };
 
 // ---------------------------------------------------------------------------
@@ -137,7 +147,7 @@ export const GHI_CHU_MAC_DINH = [
 // ---------------------------------------------------------------------------
 // Block dùng chung
 // ---------------------------------------------------------------------------
-function defineBlocks(g) {
+export function defineBlocks(g) {
   // Aptomat: chấm tròn đặc + lưỡi dao + vòng tròn hở, 4 thuộc tính nhãn bên phải
   g.defineBlock("IND_CB", (b) => {
     b.circle("LINE", 0, 0, CB.dotR, { fill: true });
@@ -195,10 +205,8 @@ export function veSoDoTu(g, d) {
   const byCode = new Map(circuits.map((c, i) => [c.code || `#${i}`, i]));
 
   // --- Khung giấy & tiêu đề -------------------------------------------------
-  g.rect("FRAME", X(P.frame.x0), Y(P.frame.y1), X(P.frame.x1), Y(P.frame.y0));
-  g.line("FRAME", X(P.frame.split), Y(P.frame.y0), X(P.frame.split), Y(P.frame.y1));
-  drawIcon(g);
-  g.text("TITLE", X(P.title.textX), Y(P.title.textY), P.title.h, d.sheet.title, { bold: true });
+  veKhungTo(g, d.sheet);
+  const noiTiep = d.noiTiep || {};
 
   // --- Cột nhãn bên trái ----------------------------------------------------
   const lx0 = X(P.labels.x0), lxd = X(P.labels.xDiv), lx1 = X(P.labels.x1);
@@ -237,22 +245,26 @@ export function veSoDoTu(g, d) {
 
   // --- Nguồn cấp + CB tổng ---------------------------------------------------
   // Mặc định đặt ở cột giữa (như mẫu E.601); tránh cột đang đặt RCBO nhóm.
-  let inIdx;
-  if (d.panel.incomerColumn != null) {
-    inIdx = resolveCol(d.panel.incomerColumn);
-  } else {
-    const mid = Math.floor(n / 2);
-    const order = [...Array(n).keys()].sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid) || b - a);
-    inIdx = order.find((i) => !groupCols.has(i)) ?? mid;
+  // Tờ nối tiếp (noiTiep.truoc) không có CB tổng: thanh cái đi tiếp từ tờ trước.
+  let ix = null;
+  if (d.panel.incomer) {
+    let inIdx;
+    if (d.panel.incomerColumn != null) {
+      inIdx = resolveCol(d.panel.incomerColumn);
+    } else {
+      const mid = Math.floor(n / 2);
+      const order = [...Array(n).keys()].sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid) || b - a);
+      inIdx = order.find((i) => !groupCols.has(i)) ?? mid;
+    }
+    if (groupCols.has(inIdx)) warnings.push("CB tổng trùng cột với RCBO nhóm — nên chọn cột khác (panel.incomerColumn).");
+    ix = colX(inIdx);
+    g.line("LINE", X(ix), Y(R.top), X(ix), Y(P.incomer.dot));
+    g.insert("IND_CB", X(ix), Y(P.incomer.dot), cbAttribs(d.panel.incomer));
+    g.line("LINE", X(ix), Y(P.incomer.dot) + CB.ocDy - CB.ocR, X(ix), Y(P.bus));
   }
-  if (groupCols.has(inIdx)) warnings.push("CB tổng trùng cột với RCBO nhóm — nên chọn cột khác (panel.incomerColumn).");
-  const ix = colX(inIdx);
-  g.line("LINE", X(ix), Y(R.top), X(ix), Y(P.incomer.dot));
-  g.insert("IND_CB", X(ix), Y(P.incomer.dot), cbAttribs(d.panel.incomer));
-  g.line("LINE", X(ix), Y(P.incomer.dot) + CB.ocDy - CB.ocR, X(ix), Y(P.bus));
 
   // Ghi chú cáp nguồn + mũi tên: đặt bên trái đường cấp nguồn như mẫu; thiếu chỗ thì sang phải
-  const sups = (d.panel.supplyCable || []).filter(Boolean);
+  const sups = ix == null ? [] : (d.panel.supplyCable || []).filter(Boolean);
   if (sups.length) {
     const tw = Math.max(...sups.map((s) => doRongChu(s, H.label)));
     let tx = X(ix) - FIT.gapIncomer - tw;
@@ -265,7 +277,18 @@ export function veSoDoTu(g, d) {
   }
 
   // --- Thanh cái chính ------------------------------------------------------
-  g.line("LINE", X(firstX), Y(P.bus), X(lastX), Y(P.bus));
+  // Tủ nhiều tờ: thanh cái kéo tới mép vỏ tủ, mũi tên và ghi số tờ nối tiếp
+  const busX0 = noiTiep.truoc ? px0 : firstX, busX1 = noiTiep.sau ? px1 : lastX;
+  g.line("LINE", X(busX0), Y(P.bus), X(busX1), Y(P.bus));
+  const yNoi = Y(P.bus - P.noiTiep.dy);
+  if (noiTiep.truoc) {
+    g.fill("LINE", arrowHead(X(px0) + L(7), Y(P.bus), 1));
+    g.text("TEXT", X(px0) + L(3), yNoi, H.label, `TỪ TỜ ${noiTiep.truoc}`, { va: "middle" });
+  }
+  if (noiTiep.sau) {
+    g.fill("LINE", arrowHead(X(px1), Y(P.bus), 1));
+    g.text("TEXT", X(px1) - L(3), yNoi, H.label, `TIẾP TỜ ${noiTiep.sau}`, { ha: "right", va: "middle" });
+  }
 
   const groupOf = new Map();
   for (const { grp, idx, at } of groups) {
@@ -315,7 +338,7 @@ export function veSoDoTu(g, d) {
   g.text("TEXT", X(ex + 15), Y(P.earth.yBottom + 1), H.label, "TIẾP ĐỊA", { va: "middle", bold: true });
 
   // --- Khung tên ------------------------------------------------------------
-  drawTitleBlock(g, d.sheet);
+  veKhungTen(g, d.sheet);
 
   return warnings;
 
@@ -363,15 +386,28 @@ export function veSoDoTu(g, d) {
   }
 }
 
-function cbAttribs(dev) {
+/** Khung giấy, đường chia vùng khung tên, biểu tượng và dòng tiêu đề của tờ. */
+export function veKhungTo(g, sheet) {
+  g.rect("FRAME", X(P.frame.x0), Y(P.frame.y1), X(P.frame.x1), Y(P.frame.y0));
+  g.line("FRAME", X(P.frame.split), Y(P.frame.y0), X(P.frame.split), Y(P.frame.y1));
+  drawIcon(g);
+  g.text("TITLE", X(P.title.textX), Y(P.title.textY), P.title.h, sheet.title, { bold: true });
+}
+
+/** Khung tên bên phải (block có thuộc tính). */
+export function veKhungTen(g, sheet) {
+  drawTitleBlock(g, sheet);
+}
+
+export function cbAttribs(dev) {
   return { LOAI: dev.type, SO_CUC: dev.poles, DONG_DM: dev.rating, DONG_CAT: dev.breaking };
 }
 
-function rectPts(x0, y0, x1, y1) {
+export function rectPts(x0, y0, x1, y1) {
   return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
 }
 
-function arrowHead(x, y, dir = 1) {
+export function arrowHead(x, y, dir = 1) {
   const len = L(7) * dir, half = L(2);
   return [[x, y], [x - len, y + half], [x - len, y - half]];
 }
@@ -399,9 +435,11 @@ function drawTitleBlock(g, s) {
     g.text("TB_LABEL", x0, Y(yl), TB.labelH, label, { va: "middle" });
     if (yline != null) g.line("TB_LINE", x0, Y(yline), x1, Y(yline));
     if (tag && kind !== "none") {
+      // Tên bản vẽ dài (tủ nhiều tờ "(1/2)") thì thu nhỏ cho vừa ô khung tên
+      const hTen = Math.min(TB.titleH, (TB.titleH * (x1 - x0 - 1)) / Math.max(1e-9, doRongChu(s.title || "", TB.titleH)));
       attdefs.push({
         tag, layer: kind === "hi" ? "TB_HI" : "TB_VALUE", dx: xm, dy: Y(yv),
-        h: kind === "hi" ? TB.hiH : tag === "TEN_BAN_VE" ? TB.titleH : TB.valueH,
+        h: kind === "hi" ? TB.hiH : tag === "TEN_BAN_VE" ? hTen : TB.valueH,
         ha: "center", va: "middle", bold: kind === "hi",
       });
     }

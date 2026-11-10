@@ -149,6 +149,8 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
     <span class="sp"></span>
     <button class="btn" id="zip" disabled>Tải cả bộ (ZIP)</button>
     <button class="btn" id="xlsx" disabled>Bảng tính Excel</button>
+    <button class="btn" id="nhan" disabled>In nhãn</button>
+    <button class="btn" id="nhanxlsx" disabled>Nhãn Excel</button>
     <button class="btn" id="json" disabled>JSON dự án</button>
   </div>
 
@@ -161,7 +163,8 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
       <ol>
         <li>Chọn CB/RCBO, cáp, ống cho từng mạch; cân pha A/B/C.</li>
         <li>Tổng hợp từng tủ, chọn CB tổng, cáp cấp, vỏ tủ; tính cả cây tủ từ tủ tầng lên tủ tổng.</li>
-        <li>Vẽ mỗi tủ một tờ theo template E.601, kèm danh sách lỗi / cảnh báo.</li>
+        <li>Vẽ sơ đồ cấp điện tổng và mỗi tủ một tờ theo template E.601 (tủ quá 18 lộ tự ngắt tờ), kèm danh sách lỗi / cảnh báo.</li>
+        <li>In nhãn: danh mục mạch dán cánh tủ và nhãn cáp.</li>
       </ol>
       <div class="drop" id="drop">
         <label class="btn btn-primary" for="file">Chọn file Excel…</label>

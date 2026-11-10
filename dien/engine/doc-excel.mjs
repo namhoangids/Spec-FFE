@@ -47,7 +47,7 @@ const SO_MACH = new Set(["soLuong", "congSuat", "cos", "L", "nhomOng"]);
 const DU_AN = {
   MA_DA: "projectNo", TEN_DA: "project", CHU_DAU_TU: "client", DIA_CHI: "address", CONG_TY: "companyInfo",
   LOAI_CT: "loaiCongTrinh", GIAM_DOC: "director", THIET_KE: "design", CHU_TRI: "design", KIEM_TRA: "checkBy",
-  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", REV: "rev",
+  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", REV: "rev",
   UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
 };
 const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "duMax", "chietKhau"]);
