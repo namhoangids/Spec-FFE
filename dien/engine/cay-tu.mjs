@@ -161,10 +161,27 @@ export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
       const In = Math.max(dinhMucToiThieu(rule.kIn * ib, rule) ?? 0, ...tv.map((m) => m.thietBi.in));
       const ba = tv.some((m) => m.soPha === 3);
       const soCuc = ba ? "3P+N" : "1P+N";
-      nhom.push({ ma, mach: tv.map((m) => m.ma), thietBi: { loai: "RCBO", soCuc, in: In, curve: "C", icu: chonIcu(rule.icu.mach, ik), idn: 30, module: rule.module[`RCBO-${soCuc}`] } });
+      let thietBi = { loai: "RCBO", soCuc, in: In, curve: "C", icu: chonIcu(rule.icu.mach, ik), idn: 30, module: rule.module[`RCBO-${soCuc}`] };
+      // Ghi đè thiết bị nhóm ở tủ: t.ghiDeNhomRcd = { RC1: { thietBi: "RCBO 1P+N 40A 30mA", lyDo } }
+      const gdn = (t.ghiDeNhomRcd || {})[ma];
+      if (gdn?.thietBi) {
+        const tb = docThietBi(gdn.thietBi, rule);
+        if (!tb) ghi("canhbao", t.ma, ma, `Không đọc được thiết bị ghi đè nhóm "${gdn.thietBi}" — dùng thiết bị tự chọn`);
+        else {
+          thietBi = { ...tb, icu: tb.icu ?? chonIcu(rule.icu.mach, ik), ghiDe: true };
+          const ks = t.ksNhap ?? ksMacDinh;
+          const ibKs = ib * ks;
+          ghi(ibKs > tb.in + 1e-9 ? "loi" : "canhbao", t.ma, ma,
+            `RCBO nhóm ${ma} ghi đè ${tb.in}A (tự chọn ${In}A): ΣIb = ${ib.toFixed(1)} A, ΣIb×Kđt(${ks}) = ${ibKs.toFixed(1)} A` +
+            `${ib > tb.in ? " — ΣIb vượt In, dựa vào hệ số đồng thời" : ""}. Lý do: ${gdn.lyDo || "chưa ghi lý do"}`);
+          const lon = tv.filter((m) => m.thietBi.in > tb.in);
+          if (lon.length) ghi("loi", t.ma, lon.map((m) => m.ma).join(", "), `MCB trong nhóm ${ma} lớn hơn RCBO nhóm ${tb.in}A`);
+        }
+      }
+      nhom.push({ ma, mach: tv.map((m) => m.ma), thietBi });
       const lyDo = tv.map((m) => m.ghiDe.lyDo).find(Boolean);
       ghi("canhbao", t.ma, tv.map((m) => m.ma).join(", "),
-        `Nhóm RCD ${ma}: dùng chung 1 RCBO ${In}A 30mA cho ${tv.length} mạch — quy tắc yêu cầu RCBO riêng cho từng mạch ổ cắm/khu ướt/ngoài nhà.${lyDo ? ` Lý do: ${lyDo}` : " Chưa ghi lý do."}`);
+        `Nhóm RCD ${ma}: dùng chung 1 RCBO ${thietBi.in}A 30mA cho ${tv.length} mạch — quy tắc yêu cầu RCBO riêng cho từng mạch ổ cắm/khu ướt/ngoài nhà.${lyDo ? ` Lý do: ${lyDo}` : " Chưa ghi lý do."}`);
     }
     t.nhomRcd = nhom;
 

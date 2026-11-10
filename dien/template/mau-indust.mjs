@@ -59,6 +59,7 @@ const P = {
     phase: 530,      // trên "PHA" (đường mạch dừng ở đây)
     load: 557.5,     // trên "PHỤ TẢI"
     bottom: 695.5,
+    power: 22,       // cao hàng "CÔNG SUẤT" (thêm dưới PHỤ TẢI khi có số liệu)
   },
 
   // Cột mạch
@@ -210,7 +211,10 @@ export function veSoDoTu(g, d) {
 
   // --- Cột nhãn bên trái ----------------------------------------------------
   const lx0 = X(P.labels.x0), lxd = X(P.labels.xDiv), lx1 = X(P.labels.x1);
-  g.line("LINE", lx0, Y(R.top), lx0, Y(R.bottom));
+  const coCs = circuits.some((c) => c.power);
+  const yDay = coCs ? R.bottom + R.power : R.bottom;      // đáy bảng (px)
+  g.line("LINE", lx0, Y(R.top), lx0, Y(yDay));
+  if (coCs) g.line("LINE", lx0, Y(yDay), lx1, Y(yDay));
   for (const r of [R.top, R.panelTop, R.panelBot, R.cable, R.phase, R.load, R.bottom]) {
     g.line("LINE", lx0, Y(r), lx1, Y(r));
   }
@@ -228,6 +232,7 @@ export function veSoDoTu(g, d) {
   lab("CÁP ĐIỆN/LẮP ĐẶT", X(P.labels.textX), Y(405));
   lab("PHA", X(P.labels.textX), Y((R.phase + R.load) / 2));
   lab("PHỤ TẢI", X(P.labels.textX), Y(571.5));
+  if (coCs) lab("CÔNG SUẤT (kW)", X(P.labels.textX), Y(R.bottom + R.power / 2));
 
   // --- Vỏ tủ ----------------------------------------------------------------
   const px0 = firstX - P.panel.padLeft, px1 = lastX + P.panel.padRight;
@@ -304,10 +309,10 @@ export function veSoDoTu(g, d) {
   const gx0 = X(firstX - pitch / 2), gx1 = X(lastX + pitch / 2);
   g.fill("CELL", rectPts(gx0, Y(R.load), gx1, Y(R.phase)));
   g.fill("CELL", rectPts(gx0, Y(R.bottom), gx1, Y(R.load)));
-  for (const r of [R.phase, R.load, R.bottom]) g.line("LINE", gx0, Y(r), gx1, Y(r));
+  for (const r of [R.phase, R.load, R.bottom, ...(coCs ? [yDay] : [])]) g.line("LINE", gx0, Y(r), gx1, Y(r));
   for (let k = 0; k <= n; k++) {
     const xk = X(firstX - pitch / 2 + pitch * k);
-    g.line("LINE", xk, Y(R.bottom), xk, Y(R.phase));
+    g.line("LINE", xk, Y(yDay), xk, Y(R.phase));
   }
 
   // --- Các mạch ra ----------------------------------------------------------
@@ -326,6 +331,7 @@ export function veSoDoTu(g, d) {
     // Chữ pha, mũi tên, tên phụ tải
     if (c.phase) g.text("TEXT", X(x), Y(P.phaseText.y), H.phase, c.phase, { ha: "center", va: "middle" });
     g.insert("IND_PHA_MUITEN", X(x), Y(P.arrow.y));
+    if (c.power) g.text("TEXT", X(x), Y(R.bottom + R.power / 2), fitH(c.power, H.load, L(pitch) - 1, `công suất mạch ${c.code}`), c.power, { ha: "center", va: "middle" });
     if (c.load) veTenPhuTai(X(x), Y((R.load + R.bottom) / 2), L(pitch), c.load, c.code || i + 1);
   });
 

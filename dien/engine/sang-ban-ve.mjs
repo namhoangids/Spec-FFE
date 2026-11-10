@@ -83,6 +83,7 @@ export function sangToTu(t, info = {}, o = {}) {
     conduit: m.ong || "",
     phase: m.soPha === 3 ? "ABC" : m.pha || "",
     load: hoa(m.phuTai),
+    power: m.P > 0 ? so(m.P / 1000) : m.kieu?.duPhong ? "—" : "",
   }));
   const groups = (t.nhomRcd || []).filter((g) => g.mach.every((x) => ma.has(x)))
     .map((g) => ({ device: chuThietBi(g.thietBi), circuits: g.mach }));

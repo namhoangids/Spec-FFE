@@ -37,10 +37,10 @@
 <text x="57.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ CĂN HỘ</text>
 <text x="79.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">ATS (LƯỚI/DP)</text>
 <text x="99.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3P</text>
-<text x="114.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">28,09</text>
+<text x="114.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">31,99</text>
 <text x="128.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
-<text x="142.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">19,66</text>
-<text x="157.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">32,2</text>
+<text x="142.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">22,39</text>
+<text x="157.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">36,8</text>
 <text x="184.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCCB 4P 80A 15kA</text>
 <text x="239.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x16)mm2 + E(1x16)mm2</text>
 <text x="281.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">—</text>
@@ -74,7 +74,7 @@
 <polygon points="160.208,110.876 200.208,110.876 200.208,92.876 160.208,92.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="180.208" y="99.126" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">TỦ CĂN HỘ</text>
 <text x="180.208" y="102.776" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 48 MODULE</text>
-<text x="180.208" y="106.376" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=19,66 kW</text>
+<text x="180.208" y="106.376" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=22,39 kW</text>
 <text x="180.208" y="109.676" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.601</text>
 <text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
 <text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>

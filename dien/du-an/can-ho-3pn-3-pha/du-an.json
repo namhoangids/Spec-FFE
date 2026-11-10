@@ -26,6 +26,12 @@
       "nguonDuPhong": {
         "ten": "MÁY PHÁT DỰ PHÒNG TÒA NHÀ",
         "tenChinh": "NGUỒN LƯỚI (TỦ TẦNG)"
+      },
+      "ghiDeNhomRcd": {
+        "RC1": {
+          "thietBi": "RCBO 1P+N 40A 30mA",
+          "lyDo": "Theo yêu cầu chủ nhà: hạ RCBO nhóm ổ cắm xuống 40A để giảm CB tổng; ổ cắm không dùng đồng thời toàn bộ"
+        }
       }
     }
   ],
@@ -193,10 +199,10 @@
       "soPha": 3,
       "ma": "ACT",
       "loai": "Điều hòa",
-      "phuTai": "CẤP ĐIỆN DÀN NÓNG ĐIỀU HÒA",
-      "congSuat": 4500,
+      "phuTai": "CẤP ĐIỆN DÀN NÓNG ĐIỀU HÒA 100.000 BTU",
+      "congSuat": 8400,
       "L": 20,
-      "ghiChu": "giả định: dàn nóng VRV"
+      "ghiChu": "100.000 BTU ≈ 29,3 kW lạnh / COP 3,5 ≈ 8,4 kW điện, 3 pha — cần kiểm lại theo catalogue dàn nóng"
     },
     {
       "tu": "CH",
