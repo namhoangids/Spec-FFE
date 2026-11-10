@@ -2,6 +2,8 @@
 // Chỉ ghi giá trị (không có công thức) — số liệu lấy thẳng từ lõi tính toán.
 
 import { chuCap, soBanVe } from "./sang-ban-ve.mjs";
+import { sutAp } from "./mach.mjs";
+import { heSoNhom } from "./quy-tac.mjs";
 
 // Làm tròn giống chữ trên bản vẽ (toFixed) để bảng tính và bản vẽ ghi cùng một số
 const r = (x, d = 2) => (x == null || Number.isNaN(x) ? null : Number(Number(x).toFixed(d)));
@@ -29,7 +31,7 @@ export function xuatExcel(XLSX, kq, info = {}, { soTheoTu = null } = {}) {
     return s?.length ? (s.length > 1 ? `${s[0]}–${s.at(-1)}` : s[0]) : soBanVe(info.soBanVeDau || "E.601", i);
   };
   const wb = XLSX.utils.book_new();
-  const dung = new Set(["Tong hop", "Canh bao", "Quy tac"]);
+  const dung = new Set(["Tong hop", "Cap va ong", "Canh bao", "Quy tac"]);
   const rule = kq.quyTac;
   const dem = (ma, muc) => kq.canhBao.filter((c) => c.tu === ma && c.muc === muc).length;
 
@@ -86,6 +88,8 @@ export function xuatExcel(XLSX, kq, info = {}, { soTheoTu = null } = {}) {
     XLSX.utils.book_append_sheet(wb, ws, tenSheet(t.ma, dung));
   });
 
+  XLSX.utils.book_append_sheet(wb, sheetCapOng(XLSX, kq), "Cap va ong");
+
   // --- Canh bao ----------------------------------------------------------------
   const cb = [["Mức", "Tủ", "Mạch", "Nội dung"]];
   for (const muc of ["loi", "canhbao", "ghichu"]) for (const c of kq.canhBao.filter((x) => x.muc === muc)) cb.push([MUC[muc], c.tu, c.mach, c.noiDung]);
@@ -109,4 +113,94 @@ export function xuatExcel(XLSX, kq, info = {}, { soTheoTu = null } = {}) {
   wsQt["!cols"] = [{ wch: 44 }, { wch: 22 }, { wch: 14 }, { wch: 10 }, { wch: 10 }, { wch: 12 }];
   XLSX.utils.book_append_sheet(wb, wsQt, "Quy tac");
   return wb;
+}
+
+// --- Cap va ong: diễn giải từng bước chọn tiết diện rồi suy ra đường kính ống ------------------
+const vn = (x, d = 1) => (x == null ? "—" : Number(x).toFixed(d).replace(".", ","));
+const dt = (d) => (Math.PI * d * d) / 4;
+
+/** Các tiết diện đã thử: Iz′ và ΔU từng cỡ, dừng ở cỡ được chọn. */
+function chuoiTietDien(m, cap, rule, duTruoc) {
+  const bang = rule.iz[cap.cachDien]?.[cap.phuongPhap]?.[cap.soDayTai];
+  if (!bang) return { buoc: "", quyetDinh: "" };
+  const k = rule.k1[cap.cachDien] * heSoNhom(m.nhomOng || 1, rule);
+  const sMin = m.kieu?.sMin ?? 1.5;
+  const buoc = [];
+  let truotIz = false, truotDu = false;
+  for (let i = 0; i < rule.tietDien.length; i++) {
+    const s = rule.tietDien[i];
+    if (s > cap.s) break;
+    if (s < sMin) continue;
+    const izp = bang[i] * k, du = duTruoc + sutAp(m.Ib, m.L, s, m.cos, m.soPha, rule);
+    const okIz = izp >= m.thietBi.in - 1e-9, okDu = du <= (cap.gioiHan ?? rule.duMax) + 1e-9;
+    buoc.push(`${vn(s, s % 1 ? 1 : 0)}: Iz′ ${vn(izp)} ${okIz ? "≥" : "<"} In ${m.thietBi.in}; ΔU ${vn(du, 2)}% ${okDu ? "✓" : "✗"}`);
+    if (s < cap.s) { truotIz ||= !okIz; truotDu ||= !okDu; }
+  }
+  const quyetDinh = cap.ghiDe ? "Cáp ghi đè"
+    : truotIz ? `Tăng cỡ vì cỡ nhỏ hơn có Iz′ < In ${m.thietBi.in} A`
+    : truotDu ? "Tăng cỡ vì sụt áp vượt giới hạn"
+    : `Tiết diện tối thiểu loại mạch (${vn(sMin, sMin % 1 ? 1 : 0)} mm²) đã đạt Iz′ và ΔU`;
+  return { buoc: buoc.join(" | "), quyetDinh };
+}
+
+/** Ống: các cỡ thử và hệ số lấp đầy. */
+function chuoiOng(dayDon, capNhieuLoi, rule) {
+  const cacDay = [
+    ...dayDon.map((s) => ({ s, d: rule.dkDayDon[s] ?? 4, ten: `dây đơn ${vn(s, s % 1 ? 1 : 0)} mm²` })),
+    ...capNhieuLoi.map((s) => ({ s, d: rule.dkCap4Loi[s] ?? 15, ten: `cáp nhiều lõi ${vn(s, s % 1 ? 1 : 0)} mm²` })),
+  ];
+  const tong = cacDay.reduce((a, x) => a + dt(x.d), 0);
+  const thu = [];
+  let chon = rule.ong.at(-1);
+  for (const o of rule.ong) {
+    if (o[0] < (rule.ongToiThieu || 0)) continue;
+    const pct = (tong / dt(o[1])) * 100;
+    thu.push(`Ø${o[0]} (trong ${vn(o[1])}): ${vn(pct)}%`);
+    if (pct <= rule.lapDay + 1e-9) { chon = o; break; }
+  }
+  const nhom = {};
+  for (const x of cacDay) nhom[x.ten] = { n: (nhom[x.ten]?.n || 0) + 1, d: x.d };
+  return {
+    moTa: Object.entries(nhom).map(([t, x]) => `${x.n}×${t} (Ø${vn(x.d)})`).join(" + "),
+    tong, thu: thu.join(" | "), d: chon[0], dTrong: chon[1], pct: (tong / dt(chon[1])) * 100,
+  };
+}
+
+function sheetCapOng(XLSX, kq) {
+  const rule = kq.quyTac;
+  const rows = [
+    ["TÍNH TIẾT DIỆN DÂY → ĐƯỜNG KÍNH ỐNG LUỒN"],
+    [`B1: Ib = P/(U·cosφ) (1 pha U=${rule.uf} V; 3 pha √3·${rule.ud} V). B2: In ≥ ${rule.kIn}·Ib. ` +
+      `B3: chọn S nhỏ nhất ≥ S tối thiểu của loại mạch, có Iz′ = Iz(bảng IEC 60364-5-52, ${"PVC B1"} cho mạch nhánh) × k1(${rule.k1.PVC}, 35 °C) × k2(nhóm) ≥ In ` +
+      `và ΔU cộng dồn ≤ ${rule.duMax}% (chiếu sáng ${rule.duChieuSang}%). B4: PE theo S. ` +
+      `B5: tổng diện tích dây (gồm cách điện) ≤ ${rule.lapDay}% diện tích trong ống; ống nhỏ nhất Ø${rule.ongToiThieu}.`],
+    [],
+    ["Tủ", "Mã", "Phụ tải", "Pha", "P (kW)", "cosφ", "Ib (A)", "In (A)", "Cách điện / PP lắp", "Số dây mang tải", "S tối thiểu (mm²)",
+      "k1×k2", "Các cỡ đã thử", "S chọn (mm²)", "PE (mm²)", "Iz′ (A)", "L (m)", "ΔU cộng dồn (%)", "Lý do chọn",
+      "Dây trong ống", "Tổng diện tích dây (mm²)", "Các cỡ ống đã thử (lấp đầy)", "Ống chọn", "Ø trong (mm)", "Lấp đầy (%)"],
+  ];
+  for (const t of kq.tu) {
+    if (t.capNguon) {
+      const c = t.capNguon;
+      const o = c.mang ? null : chuoiOng([c.pe], [c.s], rule);
+      rows.push([t.ma, "Nguồn", `CÁP CẤP ${t.ten}`, t.soPha === 3 ? "3P" : "1P", r(t.ptt), r(t.cosTb), r(t.iMax, 1), t.cbTong?.in,
+        `${c.cachDien} / ${c.phuongPhap}`, c.soDayTai, "", r(c.k, 2), "", c.s, c.pe, r(c.izp, 1), c.chuaCoL ? "chưa có" : r(t.lCap, 1),
+        c.chuaCoL ? "chưa kiểm" : r(c.duCongDon), "Iz′ ≥ In CB tổng" + (c.chuaCoL ? "; chưa có L nên chưa kiểm ΔU" : ""),
+        o?.moTa ?? "MÁNG CÁP", o ? r(o.tong, 1) : "", o?.thu ?? "", o ? `Ø${o.d}` : "MÁNG CÁP", o ? o.dTrong : "", o ? r(o.pct, 1) : ""]);
+    }
+    for (const m of t.mach) {
+      if (!m.cap?.s || m.laCapTuCon) continue;
+      const c = m.cap;
+      const { buoc, quyetDinh } = chuoiTietDien(m, c, rule, t.duBus || 0);
+      const o = chuoiOng([...Array(c.soDay).fill(c.s), c.pe], [], rule);
+      rows.push([t.ma, m.ma, m.phuTai, m.soPha === 3 ? "3P" : m.pha ?? "1P", r(m.P / 1000), r(m.cos), r(m.Ib, 1), m.thietBi?.in,
+        `${c.cachDien} / ${c.phuongPhap}`, c.soDayTai, m.kieu?.sMin ?? "", r(c.k ?? rule.k1[c.cachDien], 2), buoc, c.s, c.pe, r(c.izp, 1),
+        r(m.L, 1), r(c.duCongDon), quyetDinh, o.moTa, r(o.tong, 1), o.thu, `Ø${o.d}`, o.dTrong, r(o.pct, 1)]);
+    }
+  }
+  rows.push([], ["Đường kính ngoài dây đơn Cu/PVC (mm)", ...Object.entries(rule.dkDayDon).map(([s, d]) => `${s}: ${d}`)]);
+  rows.push(["Ống PVC Ø ngoài: Ø trong (mm)", ...rule.ong.map(([d, i]) => `Ø${d}: ${i}`)]);
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"] = [6, 7, 34, 5, 7, 6, 7, 6, 12, 8, 9, 7, 70, 8, 8, 8, 6, 9, 30, 40, 10, 44, 8, 8, 8].map((w) => ({ wch: w }));
+  return ws;
 }
