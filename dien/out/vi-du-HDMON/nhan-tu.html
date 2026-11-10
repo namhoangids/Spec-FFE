@@ -4,9 +4,10 @@
 <style>
   @page { size: A4; margin: 12mm; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #1d1f20; background: #ececed; }
-  .in { position: sticky; top: 0; padding: 10px 16px; background: #33506c; color: #fff; display: flex; gap: 12px; align-items: center; }
-  .in button { font: inherit; padding: 6px 14px; border: 0; cursor: pointer; }
+  /* Thanh nút và nền màn hình theo bộ nhận diện measure&make; phần nhãn in ra giữ đen trắng, Arial. */
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #22333B; background: #F4F3F0; }
+  .in { position: sticky; top: 0; padding: 10px 16px; background: #22333B; color: #fff; display: flex; gap: 12px; align-items: center; }
+  .in button { font: inherit; padding: 6px 14px; border: 0; cursor: pointer; background: #F15A22; color: #fff; }
   .trang, .luoi { background: #fff; max-width: 186mm; margin: 16px auto; padding: 10mm; }
   .trang { page-break-after: always; break-after: page; }
   h1 { font-size: 20pt; margin: 0 0 4px; } h2 { font-size: 14pt; margin: 0 0 8px; }
@@ -20,7 +21,7 @@
   .nhan { border: 0.3mm dashed #444; padding: 2mm; min-height: 20mm; display: flex; flex-direction: column; gap: 1mm; break-inside: avoid; }
   .nhan b { font-size: 13pt; } .nhan span { font-size: 8.5pt; } .nhan small { font-size: 7.5pt; color: #444; }
   @media (max-width: 720px) { .trang, .luoi { margin: 8px; padding: 12px; } .luoi { grid-template-columns: repeat(2, 1fr); } table { font-size: 8.5pt; } }
-  @media print { body { background: #fff; } .in { display: none; } .trang, .luoi { margin: 0; padding: 0; max-width: none; } }
+  @media print { body { background: #fff; color: #000; } .in { display: none; } .trang, .luoi { margin: 0; padding: 0; max-width: none; } }
 </style></head>
 <body>
 <div class="in"><b>Nhãn tủ điện — MR. TUẤN - HDMON</b><button onclick="print()">In</button></div>

@@ -5,46 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sơ đồ nguyên lý tủ điện</title>
 <meta name="description" content="Tải file Excel phụ tải, công cụ tự chọn CB, RCBO, cáp, ống, cân pha, tổng hợp tủ và vẽ cả bộ sơ đồ nguyên lý theo template E.601 — xuất DXF, SVG, bảng tính.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script type="importmap">
 { "imports": { "@tarikjabiri/dxf": "https://cdn.jsdelivr.net/npm/@tarikjabiri/dxf@2.10.0/+esm" } }
 </script>
 <style>
-/* Token màu và chữ lấy từ app FF&E (/index.html) */
+/* Bộ nhận diện measure&make: chữ xanh than #22333B, điểm nhấn cam #F15A22, font Montserrat.
+   Cùng bộ token với FF&E trong repo measure-and-make-apps; màu trạng thái (ok/warn/danger) theo trang Báo giá M&M. */
 :root{
-  --bg:#ececed; --surface:#ffffff; --panel:#f4f4f7; --panel-2:#eeeef1;
-  --ink:#1d1f20; --ink-2:#5a5a5d; --ink-3:#7a7a7d; --ink-4:#9a9a9d;
-  --line:#e4e4e7; --line-2:#d2d2d6;
-  --accent:#5980a6; --accent-strong:#456a8e; --accent-deep:#33506c; --accent-ink:#f4f6f8;
-  --wash:#e9f1fa; --wash-line:#bcd4ea; --wash-ink:#2c455d; --sel:#e4eef8;
-  --ok:#2f7d55; --warn:#9a6a24; --warn-bg:#fbf3e4; --danger:#a5514b; --danger-bg:#f8eceb;
-  --shadow:0 1px 2px rgba(29,31,32,.12), 0 8px 26px -12px rgba(29,31,32,.22);
+  --bg:#F4F3F0; --surface:#ffffff; --panel:#F7F6F3; --panel-2:#F1EFEB;
+  --ink:#22333B; --ink-2:#4F5F68; --ink-3:#6F7C84; --ink-4:#9AA3A9;
+  --line:#E6E2DC; --line-2:#D5D0C8;
+  --accent:#F15A22; --accent-strong:#D94A15; --accent-deep:#B93B0C; --accent-ink:#ffffff;
+  --wash:#FDEDE5; --wash-line:#F8C9B3; --wash-ink:#7A2A0B; --sel:#FDF1EA;
+  --ok:#2f7d55; --warn:#a8722f; --warn-bg:#f3e6d3; --danger:#a5514b; --danger-bg:#f8eceb;
+  --shadow:0 1px 2px rgba(34,51,59,.12), 0 8px 26px -12px rgba(34,51,59,.22);
   color-scheme:light;
 }
 :root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){ color-scheme:dark;
-  --bg:#131517; --surface:#1b1e21; --panel:#202327; --panel-2:#25292e;
-  --ink:#e9e9ea; --ink-2:#b6b6b9; --ink-3:#96969a; --ink-4:#74747a;
-  --line:#2c3035; --line-2:#3a3f45;
-  --accent:#7ba5cd; --accent-strong:#94b8db; --accent-deep:#a7c6e6; --accent-ink:#10161c;
-  --wash:#1e2a35; --wash-line:#33475a; --wash-ink:#bdd6ef; --sel:#1d2933;
-  --ok:#6db98a; --warn:#d9a95a; --warn-bg:#2b2416; --danger:#d98b84; --danger-bg:#2e1d1c;
+  --bg:#12191D; --surface:#1A2328; --panel:#1F2A30; --panel-2:#26333A;
+  --ink:#EAEEF0; --ink-2:#B4BFC5; --ink-3:#8E9BA3; --ink-4:#6E7C85;
+  --line:#2B383F; --line-2:#3A4A52;
+  --accent:#FF7A45; --accent-strong:#FF9364; --accent-deep:#FFB08C; --accent-ink:#1A1008;
+  --wash:#3A2216; --wash-line:#6B3A22; --wash-ink:#FFCDB5; --sel:#2E2019;
+  --ok:#6db98a; --warn:#d4a35f; --warn-bg:#382c19; --danger:#d98b84; --danger-bg:#2e1d1c;
   --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.7);
 }}
 :root[data-theme="dark"]{ color-scheme:dark;
-  --bg:#131517; --surface:#1b1e21; --panel:#202327; --panel-2:#25292e;
-  --ink:#e9e9ea; --ink-2:#b6b6b9; --ink-3:#96969a; --ink-4:#74747a;
-  --line:#2c3035; --line-2:#3a3f45;
-  --accent:#7ba5cd; --accent-strong:#94b8db; --accent-deep:#a7c6e6; --accent-ink:#10161c;
-  --wash:#1e2a35; --wash-line:#33475a; --wash-ink:#bdd6ef; --sel:#1d2933;
-  --ok:#6db98a; --warn:#d9a95a; --warn-bg:#2b2416; --danger:#d98b84; --danger-bg:#2e1d1c;
+  --bg:#12191D; --surface:#1A2328; --panel:#1F2A30; --panel-2:#26333A;
+  --ink:#EAEEF0; --ink-2:#B4BFC5; --ink-3:#8E9BA3; --ink-4:#6E7C85;
+  --line:#2B383F; --line-2:#3A4A52;
+  --accent:#FF7A45; --accent-strong:#FF9364; --accent-deep:#FFB08C; --accent-ink:#1A1008;
+  --wash:#3A2216; --wash-line:#6B3A22; --wash-ink:#FFCDB5; --sel:#2E2019;
+  --ok:#6db98a; --warn:#d4a35f; --warn-bg:#382c19; --danger:#d98b84; --danger-bg:#2e1d1c;
   --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 30px -14px rgba(0,0,0,.7);
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Barlow,system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:"Barlow Condensed",Barlow,system-ui,sans-serif;font-weight:600;margin:0;line-height:1.1}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Montserrat',system-ui,sans-serif;font-weight:600;margin:0;line-height:1.1}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .tnum{font-variant-numeric:tabular-nums}
@@ -53,11 +54,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 @media(max-width:1300px){.app{border-inline:0}}
 
 .topbar{display:flex;align-items:center;gap:13px;padding:11px 16px;border-bottom:1px solid var(--line-2);flex-wrap:wrap}
-.brand{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em}
+.brand{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em}
 .crumb{font-size:12px;color:var(--ink-3)}
 .toolbar{display:flex;align-items:center;gap:8px;padding:9px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .toolbar .sp{flex:1}
-.btn{display:inline-flex;align-items:center;gap:6px;font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:13px;padding:6px 12px;border:1px solid var(--line-2);white-space:nowrap;text-decoration:none;color:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;padding:6px 12px;border:1px solid var(--line-2);white-space:nowrap;text-decoration:none;color:inherit}
 .btn:hover{border-color:var(--ink-4)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -71,7 +72,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}
 .stat{padding:9px 16px;border-right:1px solid var(--line);min-width:0}
 .stat:last-child{border-right:0}
-.stat .v{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:18px;margin-top:1px}
+.stat .v{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;margin-top:1px}
 .stat .v.loi{color:var(--danger)} .stat .v.canhbao{color:var(--warn)}
 .banner{padding:8px 16px;font-size:12.5px;background:var(--warn-bg);color:var(--warn);border-bottom:1px solid var(--line)}
 
@@ -81,7 +82,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .node{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:7px 16px;font-size:13px;border-left:2px solid transparent}
 .node:hover{background:var(--panel)}
 .node[aria-current="true"]{background:var(--sel);border-left-color:var(--accent)}
-.node .no{font-family:"Barlow Condensed",sans-serif;font-weight:600;color:var(--ink-3);font-size:12px;min-width:38px}
+.node .no{font-family:'Montserrat',sans-serif;font-weight:600;color:var(--ink-3);font-size:12px;min-width:38px}
 .node .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dot{min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:10.5px;font-weight:600;display:inline-grid;place-items:center}
 .dot.loi{background:var(--danger);color:#fff} .dot.canhbao{background:var(--warn);color:#fff}
@@ -106,7 +107,7 @@ td.nw{white-space:nowrap}
 tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
 .tblwrap{overflow-x:auto}
 .tag{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
-.tag.loi{color:var(--danger)} .tag.canhbao{color:var(--warn)} .tag.ghichu{color:var(--accent)}
+.tag.loi{color:var(--danger)} .tag.canhbao{color:var(--warn)} .tag.ghichu{color:var(--ink-2)}
 .msg{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
 .msg .w{min-width:74px}
 .msg .src{color:var(--ink-3);min-width:90px;font-size:12px}
@@ -131,7 +132,13 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
   .node .nm{max-width:110px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat{border-bottom:1px solid var(--line)}
+  /* Montserrat rộng hơn Barlow Condensed: thu nhỏ chút cho thanh nút và tiêu đề khỏi xuống quá nhiều dòng */
+  .btn{font-size:12px;padding:5px 9px}
+  .btn-sm{font-size:11.5px;padding:4px 8px}
+  .phead h2{font-size:20px}
+  .stat .v{font-size:16px}
 }
+@media(max-width:700px){ .topbar .crumb{display:none} }
 </style>
 </head>
 <body>
