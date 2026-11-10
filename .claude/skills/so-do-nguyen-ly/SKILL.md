@@ -119,12 +119,16 @@ Sau đó chạy lại bước 3 và báo **phần thay đổi**: CB, cáp, tờ 
 
 **Nếu phải dựng lại từ `mo-ta.json`:** liệt kê cho anh các sửa tay sẽ mất, rồi áp lại.
 
+**Lưu ý khi hạ CB để giảm CB tổng:** CB tổng tự chọn ≥ 1,6 × In lộ ra lớn nhất (chọn lọc). Ví dụ lộ lớn nhất 40 A → tự chọn 80 A (vì 64 A không có cấp chuẩn). Muốn 63 A phải ghi đè `ghiDeCbTong` — báo anh trước là tỷ số chỉ còn 1,58 và kỹ sư cần xác nhận theo bảng phối hợp của hãng.
+
 ## 6. Lưu và chia sẻ
 
 - **Phiên cloud bị xóa khi hết hạn.** Đề nghị anh commit + push thư mục `dien/du-an/<ma>/`. Chỉ làm khi anh đồng ý, và theo đúng nhánh của phiên.
 - **Dropbox:** chép khi anh đã dặn và connector Dropbox có trong phiên. Chép được file chữ (DXF R12, SVG, HTML, MD); file Excel/ZIP không chép được qua connector. Kiểm kích thước file sau khi chép.
-
-**Lưu ý khi hạ CB để giảm CB tổng:** CB tổng tự chọn ≥ 1,6 × In lộ ra lớn nhất (chọn lọc). Ví dụ lộ lớn nhất 40 A → tự chọn 80 A (vì 64 A không có cấp chuẩn). Muốn 63 A phải ghi đè `ghiDeCbTong` — báo anh trước là tỷ số chỉ còn 1,58 và kỹ sư cần xác nhận theo bảng phối hợp của hãng.
+- **Bản skill trên Dropbox của anh:** `/Claude/6. So do nguyen ly tu dien/AI Agent ve so do/Skill/` chứa `SKILL.md` và `tham-khao.md` — bản dùng chung giữa các phiên.
+  - **Đầu phiên** (có connector Dropbox): đọc 2 file này bằng `fetch`. Nếu khác bản trong repo (`.claude/skills/so-do-nguyen-ly/`), báo anh chỗ khác và hỏi lấy bản nào; bản trên Dropbox mới hơn thì chép vào repo.
+  - **Khi sửa skill** (thêm quy tắc, bài học): sửa trong repo, commit + push, rồi ghi lên Dropbox. Connector không ghi đè được file, nên làm 2 bước: `move` file cũ vào `Skill/cu/<ten>-<yyyy-mm-dd-hhmm>.md`, rồi `create_file` bản mới cùng tên. Kiểm kích thước file sau khi ghi, và cập nhật dòng "Cập nhật" trong `Skill/NHAT-KY.md` (cũng theo cách move + create).
+  - Không xóa bản cũ trong `cu/` khi anh chưa dặn.
 
 ## Nguyên tắc
 
