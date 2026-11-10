@@ -193,6 +193,11 @@ function sheetCapOng(XLSX, kq) {
       const c = m.cap;
       const { buoc, quyetDinh } = chuoiTietDien(m, c, rule, t.duBus || 0);
       const o = chuoiOng([...Array(c.soDay).fill(c.s), c.pe], [], rule);
+      // Ống ghi đè: ghi cỡ ghi đè và lấp đầy theo cỡ đó
+      const dGhiDe = m.ghiDe?.ong ? Number(String(m.ghiDe.ong).match(/(\d+)\s*$/)?.[1]) : null;
+      const oGd = dGhiDe ? rule.ong.find(([d]) => d === dGhiDe) : null;
+      if (oGd) Object.assign(o, { d: `${oGd[0]} (ghi đè)`, dTrong: oGd[1], pct: (o.tong / dt(oGd[1])) * 100 });
+      else if (m.ghiDe?.ong) Object.assign(o, { d: `${m.ghiDe.ong} (ghi đè)`, dTrong: "", pct: null });
       rows.push([t.ma, m.ma, m.phuTai, m.soPha === 3 ? "3P" : m.pha ?? "1P", r(m.P / 1000), r(m.cos), r(m.Ib, 1), m.thietBi?.in,
         `${c.cachDien} / ${c.phuongPhap}`, c.soDayTai, m.kieu?.sMin ?? "", r(c.k ?? rule.k1[c.cachDien], 2), buoc, c.s, c.pe, r(c.izp, 1),
         r(m.L, 1), r(c.duCongDon), quyetDinh, o.moTa, r(o.tong, 1), o.thu, `Ø${o.d}`, o.dTrong, r(o.pct, 1)]);

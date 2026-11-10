@@ -78,6 +78,12 @@ python3 mau/tao_mau_nhap_lieu.py --tu-json du-an/<ma>/du-an.json du-an/<ma>/nhap
 
 **Xem ảnh trong `out/xem-truoc/`** (Read) để tự soát bố cục: chữ chồng, cột quá hẹp, tờ bị ngắt.
 
+**Soát cáp và ống** trong sheet "Cap va ong" của `out/bang-tinh.xlsx` theo [`tham-khao.md`](tham-khao.md) § 6–7:
+- mạch nào phải tăng tiết diện (vì Iz′ hay vì sụt áp) — nêu cho anh;
+- ống nào lấp đầy > 33 % hoặc có ≥ 5 dây — đề xuất nâng 1 cỡ (`ghiDeOng` + `lyDo`), chờ anh đồng ý.
+
+Khi anh hỏi "tính tiết diện / chọn ống thế nào": trình bày theo § 6–7 và bảng của sheet "Cap va ong" (Ib → In → các cỡ đã thử → S chọn → số dây → lấp đầy → ống). Không tự nhẩm số khác với công cụ.
+
 ## 4. Báo kết quả
 
 Báo ngắn, theo thứ tự:
@@ -105,7 +111,8 @@ python3 -c "import shutil; shutil.make_archive('du-an/<ma>/bo-ban-ve', 'zip', 'd
 **Sau khi anh xác nhận:** `du-an.json` là bản gốc. Sửa trực tiếp vào đó:
 - đổi công suất, chiều dài;
 - khóa pha;
-- ghi đè CB/cáp, luôn kèm `lyDo`;
+- ghi đè CB/cáp/ống, luôn kèm `lyDo`;
+- ghi đè RCBO nhóm (`ghiDeNhomRcd`), CB tổng (`ghiDeCbTong`), nguồn dự phòng qua ATS (`nguonDuPhong`) ở cấp tủ — xem `tham-khao.md` § 3;
 - thêm hoặc bớt mạch.
 
 Sau đó chạy lại bước 3 và báo **phần thay đổi**: CB, cáp, tờ nào đổi.
@@ -116,6 +123,8 @@ Sau đó chạy lại bước 3 và báo **phần thay đổi**: CB, cáp, tờ 
 
 - **Phiên cloud bị xóa khi hết hạn.** Đề nghị anh commit + push thư mục `dien/du-an/<ma>/`. Chỉ làm khi anh đồng ý, và theo đúng nhánh của phiên.
 - **Dropbox:** chép khi anh đã dặn và connector Dropbox có trong phiên. Chép được file chữ (DXF R12, SVG, HTML, MD); file Excel/ZIP không chép được qua connector. Kiểm kích thước file sau khi chép.
+
+**Lưu ý khi hạ CB để giảm CB tổng:** CB tổng tự chọn ≥ 1,6 × In lộ ra lớn nhất (chọn lọc). Ví dụ lộ lớn nhất 40 A → tự chọn 80 A (vì 64 A không có cấp chuẩn). Muốn 63 A phải ghi đè `ghiDeCbTong` — báo anh trước là tỷ số chỉ còn 1,58 và kỹ sư cần xác nhận theo bảng phối hợp của hãng.
 
 ## Nguyên tắc
 

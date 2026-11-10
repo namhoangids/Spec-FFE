@@ -66,7 +66,13 @@ Chỉ cần ghi những gì đã biết. Trường nào bỏ trống thì bộ g
 
 ## 3. Dữ liệu dự án (`du-an.json`) — để sửa tay sau khi anh xác nhận
 
-**Tủ (`panels`):** `ma`, `ten`, `capTu`, `maLoCap`, `datSauLo`, `soPha` (1|3), `lCap`, `kieuDi`, `phuongPhap`, `ik`, `ks`, `spd`.
+**Tủ (`panels`):** `ma`, `ten`, `capTu`, `maLoCap`, `datSauLo`, `soPha` (1|3), `lCap`, `kieuDi`, `phuongPhap`, `ik`, `ks`, `spd`, và các ghi đè cấp tủ:
+
+| Trường của tủ | Ví dụ | Tác dụng |
+|---|---|---|
+| `nguonDuPhong` | `{ "ten": "MÁY PHÁT DỰ PHÒNG TÒA NHÀ", "tenChinh": "NGUỒN LƯỚI (TỦ TẦNG)" }` | E.600 vẽ 2 nguồn vào khung ATS trước CB tổng; ATS mặc định 4P (3 pha) / 2P, dòng = CB tổng. Thêm `ats`, `cap` nếu muốn ghi khác |
+| `ghiDeNhomRcd` | `{ "RC1": { "thietBi": "RCBO 1P+N 40A 30mA", "lyDo": "…" } }` | Ghi đè RCBO của nhóm `nhomRcd`. Công cụ báo ΣIb, ΣIb×Kđt; LỖI nếu ΣIb×Kđt > In hoặc có MCB trong nhóm lớn hơn RCBO |
+| `ghiDeCbTong` | `{ "thietBi": "MCB 4P 63A C", "lyDo": "…" }` | Ghi đè CB tổng. Vẫn kiểm Icu, dòng pha và tỷ số chọn lọc (cảnh báo nếu < 1,6) |
 
 **Mạch (`circuits`):** `tu`, `ma`, `loai`, `phuTai`, `khuVuc`, `soLuong`, `congSuat` (W/đơn vị), `cos`, `soPha` (1|3), `pha` ("A"/"B"/"C" để khóa pha), `L`, `nhomOng`, `nhomRcd`, `ghiDeThietBi`, `ghiDeCap`, `ghiDeOng`, `lyDo`, `ghiChu`.
 
@@ -125,3 +131,38 @@ Mỗi dòng gồm: mức, tủ, mạch, nội dung.
 - **Ban công, lô gia, sân, sân thượng** → `ngoài nhà`. **Thang máy** trên mặt bằng → thêm vào `thietBi`.
 - **Một tầng nhiều trang** → gộp vào một mục `tang`.
 - **Không chắc** (ví dụ phòng không ghi tên) → liệt kê cho anh và hỏi lại trong cùng lượt với các câu chính.
+
+## 6. Quy tắc chọn tiết diện dây dẫn
+
+Công cụ làm theo đúng trình tự này (`engine/mach.mjs` → `chonCap`). Em dùng để **giải thích** và **soát**, không tự tính thay.
+
+1. **Dòng làm việc** Ib = P / (220·cosφ) (1 pha) · Ib = P / (√3·380·cosφ) (3 pha). cosφ theo loại mạch: chiếu sáng 0,9; ổ cắm 0,85; khu ướt 1,0; bếp từ 0,95; điều hòa 0,9; động cơ 0,8.
+2. **CB:** In ≥ 1,25·Ib, lấy cấp chuẩn 6–10–16–20–25–32–40–50–63–80–100 A, không nhỏ hơn In tối thiểu của loại mạch (chiếu sáng 10 A, ổ cắm / khu ướt / bếp / điều hòa 16 A).
+3. **Tiết diện tối thiểu** theo loại mạch: chiếu sáng 1,5 mm²; ổ cắm, bình nóng lạnh, bếp, điều hòa, động cơ 2,5 mm².
+4. **Dòng cho phép** Iz′ = Iz(bảng IEC 60364-5-52) × k1 × k2 ≥ In:
+   - Mạch nhánh: dây đơn Cu/PVC luồn ống âm tường, phương pháp **B1**; 1 pha = 2 dây mang tải, 3 pha = 3 dây.
+   - Cáp cấp tủ: Cu/XLPE/PVC nhiều lõi, B1 (hoặc theo `phuongPhap`).
+   - k1 (35 °C) = 0,94 PVC / 0,96 XLPE. k2 (nhiều mạch chung ống, `nhomOng`) = 1 / 0,8 / 0,7 / 0,65 cho 1 / 2 / 3 / 4 mạch.
+   - Mốc nhớ nhanh (PVC B1, 1 pha, ×0,94): 1,5 → 16,4 A · 2,5 → 22,6 · 4 → 30,1 · 6 → 38,5 · 10 → 53,6 · 16 → 71,4. (3 pha: 2,5 → 19,7 · 4 → 26,3 · 6 → 33,8 · 10 → 47,0.)
+5. **Sụt áp cộng dồn** từ nguồn tới cuối mạch ≤ 5 % (chiếu sáng ≤ 3 %; tới thanh cái tủ ≤ 2 %). ΔU = 2·Ib·L·(ρ/S·cosφ + λ·sinφ)/Uf (1 pha), ρ = 0,0225 Ω·mm²/m.
+6. **Chọn S nhỏ nhất** thỏa cả 3, 4, 5. **PE** = S khi S ≤ 16; 16 khi S = 25–35; S/2 khi lớn hơn.
+7. **Ghi trên bản vẽ:** `Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2` (1 pha), `Cu/PVC 4(1x4)mm2 + E(1x4)mm2` (3 pha có N), cáp nguồn `Cu/XLPE/PVC (4x10)mm2 + E(1x10)mm2`.
+
+**Điểm hay gặp khi soát:**
+- CB 40 A trên 1 pha → dây 6 mm² chỉ đạt 38,5 A → **phải 10 mm²** (ví dụ bếp từ 7,2 kW).
+- CB 20 A trên 3 pha → 2,5 mm² chỉ đạt 19,7 A → **4 mm²** (ví dụ dàn nóng VRV 8–10 kW).
+- Hạ CB để giảm cáp là hợp lệ nếu In vẫn ≥ Ib; luôn ghi `lyDo` và báo anh việc mất hệ số 1,25.
+- Nhiều mạch chung một ống (`nhomOng` > 1) làm giảm Iz′ — hỏi anh nếu mặt bằng đi chung ống.
+- Điều hòa ghi theo BTU: kW lạnh = BTU / 3412; kW điện ≈ kW lạnh / 3,5 (COP). Luôn ghi "kiểm theo catalogue".
+
+## 7. Quy tắc chọn ống luồn dây
+
+Công cụ: `chonOng` trong `engine/mach.mjs`. Bảng diễn giải từng mạch: sheet **"Cap va ong"** trong `out/bang-tinh.xlsx`.
+
+1. **Đếm dây trong ống:** 1 pha = 2 dây + PE = 3 dây; 3 pha có N = 4 dây + PE = 5 dây; cáp nhiều lõi = 1 cáp (+ PE rời nếu có).
+2. **Đường kính ngoài** (kể cả cách điện), dây đơn Cu/PVC: 1,5 → Ø3,0 · 2,5 → Ø3,6 · 4 → Ø4,2 · 6 → Ø4,8 · 10 → Ø6,1 · 16 → Ø7,2 · 25 → Ø8,9 mm. Cáp 4 lõi Cu/XLPE/PVC: 4 → Ø12,8 · 6 → Ø14,0 · 10 → Ø16,6 · 16 → Ø19,6 · 25 → Ø23,8 mm.
+3. **Ống PVC (Ø ngoài → Ø trong):** 16 → 12,2 · 20 → 15,8 · 25 → 20,6 · 32 → 26,6 · 40 → 34,4 · 50 → 43,2 mm.
+4. **Hệ số lấp đầy** = Σ(π·d²/4) / (π·D_trong²/4) ≤ **40 %**. Chọn ống nhỏ nhất đạt; **không dùng ống nhỏ hơn Ø20** cho mạch nhánh.
+5. **Quy tắc thi công (em tự soát sau khi chạy):** nếu lấp đầy **> 33 %**, hoặc ống có **≥ 5 dây**, hoặc tuyến dài / nhiều co → **đề xuất anh nâng 1 cỡ ống** bằng `ghiDeOng` (ví dụ `"ỐNG PVC  Ø 25"`, hai dấu cách trước Ø như công cụ) kèm `lyDo`. Không tự nâng khi anh chưa đồng ý.
+6. **Mốc nhớ nhanh:** 3 dây 1,5–2,5 mm² → Ø20 (11–16 %); 3 dây 10 mm² → Ø25 (26 %); 5 dây 4 mm² → Ø20 đạt 35 % nhưng nên Ø25 (21 %); cáp 4x10 + E10 → Ø40 (26 %), cáp 4x16 + E16 → Ø40.
+7. Cáp cấp đi máng (`kieuDi: "Máng cáp"`) thì không chọn ống, ghi "MÁNG CÁP".

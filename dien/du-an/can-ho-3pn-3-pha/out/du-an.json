@@ -210,7 +210,9 @@
       "phuTai": "CẤP ĐIỆN DÀN NÓNG ĐIỀU HÒA 100.000 BTU",
       "congSuat": 8400,
       "L": 20,
-      "ghiChu": "100.000 BTU ≈ 29,3 kW lạnh / COP 3,5 ≈ 8,4 kW điện, 3 pha — cần kiểm lại theo catalogue dàn nóng"
+      "ghiChu": "100.000 BTU ≈ 29,3 kW lạnh / COP 3,5 ≈ 8,4 kW điện, 3 pha — cần kiểm lại theo catalogue dàn nóng",
+      "ghiDeOng": "ỐNG PVC  Ø 25",
+      "lyDo": "Theo yêu cầu chủ nhà: 5 dây 4 mm² lấp 35,3% ống Ø20 — nâng Ø25 (≈21%) cho dễ kéo dây"
     },
     {
       "tu": "CH",
