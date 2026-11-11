@@ -14,6 +14,7 @@ const NHOM = [
   ["phuKien", "B", "VỎ TỦ VÀ PHỤ KIỆN TỦ"],
   ["day", "C", "DÂY VÀ CÁP ĐIỆN"],
   ["ong", "D", "ỐNG LUỒN DÂY, MÁNG CÁP"],
+  ["thietBiDien", "E", "THIẾT BỊ ĐIỆN (THEO BÓC KHỐI MẶT BẰNG)"],
 ];
 const tdText = (s) => String(s).replace(".", ",");          // 2.5 → "2,5"
 const ongKhoa = (o) => {
@@ -23,12 +24,13 @@ const ongKhoa = (o) => {
 
 /**
  * @param {object} kq — kết quả tinhDuAn
- * @param {{ haoHut?: number }} opt — hao hụt dây, cáp, ống (%), mặc định 5
+ * @param {{ haoHut?: number, bocKhoi?: object }} opt — hao hụt dây, cáp, ống (%), mặc định 5;
+ *   bocKhoi: duAn.bocKhoi (engine/boc-khoi.mjs) → thêm nhóm E đèn, ổ cắm, công tắc theo bản vẽ
  * @returns {{ haoHut: number, dong: object[], chiTiet: object[], thieuL: string[] }}
  *   dong: { nhom, khoa, dvt, kl, ghiChu }, gộp theo khóa, đã cộng hao hụt và làm tròn lên;
  *   chiTiet: từng nguồn đóng góp (tủ, mạch, số lượng / chiều dài gốc, cách tính) để kiểm lại.
  */
-export function tinhBoq(kq, { haoHut = 5 } = {}) {
+export function tinhBoq(kq, { haoHut = 5, bocKhoi = null } = {}) {
   const map = new Map();
   const chiTiet = [];
   const thieuL = [];
@@ -89,6 +91,11 @@ export function tinhBoq(kq, { haoHut = 5 } = {}) {
       if (t.capNguon.chuaCoL || !(t.lCap > 0)) thieuL.push(`${t.ma}/cáp nguồn`);
       else capVaOng(t, "Cáp nguồn", t.capNguon, t.lCap, t.capNguon.mang ? "MÁNG CÁP" : t.ongNguon, t.soPha, false);
     }
+  }
+
+  // Thiết bị điện theo bóc khối mặt bằng (đèn, ổ cắm, công tắc…)
+  for (const t of bocKhoi?.theoLoai ?? []) {
+    cong("thietBiDien", t.moTa, t.dvt || "cái", t.sl, { tu: "", mach: "", cach: `bóc khối${bocKhoi.nguon ? ` ${bocKhoi.nguon}` : ""} (${t.nhom})` });
   }
 
   const he = 1 + haoHut / 100;

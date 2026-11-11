@@ -166,3 +166,34 @@ Công cụ: `chonOng` trong `engine/mach.mjs`. Bảng diễn giải từng mạc
 5. **Quy tắc thi công (em tự soát sau khi chạy):** nếu lấp đầy **> 33 %**, hoặc ống có **≥ 5 dây**, hoặc tuyến dài / nhiều co → **đề xuất anh nâng 1 cỡ ống** bằng `ghiDeOng` (ví dụ `"ỐNG PVC  Ø 25"`, hai dấu cách trước Ø như công cụ) kèm `lyDo`. Không tự nâng khi anh chưa đồng ý.
 6. **Mốc nhớ nhanh:** 3 dây 1,5–2,5 mm² → Ø20 (11–16 %); 3 dây 10 mm² → Ø25 (26 %); 5 dây 4 mm² → Ø20 đạt 35 % nhưng nên Ø25 (21 %); cáp 4x10 + E10 → Ø40 (26 %), cáp 4x16 + E16 → Ø40.
 7. Cáp cấp đi máng (`kieuDi: "Máng cáp"`) thì không chọn ống, ghi "MÁNG CÁP".
+
+## 8. Bóc khối từ mặt bằng AutoCAD (DATAEXTRACTION)
+
+Code: `dien/engine/boc-khoi.mjs`. Bảng quy đổi tên block mẫu: `dien/engine/quy-doi-block.mjs`. File thử: `dien/mau/vi-du-boc-khoi/`.
+
+**Chuẩn hóa block (đề xuất cho thư viện block của công ty):**
+
+| Thuộc tính | Ý nghĩa | Ví dụ |
+|---|---|---|
+| `TU` | Mã tủ cấp điện | `T2`, `CH` |
+| `MACH` | Mã lộ trên sơ đồ | `L1`, `S3`, `AC2-1` |
+| `CS` | Công suất mỗi cái (W), bỏ trống thì lấy theo bảng quy đổi | `9`, `750` |
+| `PHONG` | Phòng (không bắt buộc) | `P.KHÁCH` |
+
+- Block **có** `MACH`: công suất mạch = Σ số lượng × W, ghi thẳng vào mạch. Thiếu `TU` thì công cụ tự tìm tủ duy nhất có mạch đó.
+- Block **chỉ có tên**: chỉ đếm số lượng theo loại / layer / phòng (nên đặt layer theo phòng hoặc tầng), không sửa mạch.
+- Block không có trong bảng quy đổi: công cụ liệt kê riêng trong `boc-khoi.xlsx` (sheet `Khong nhan dien`) và cảnh báo. Bổ sung vào `quy-doi-block.mjs` hoặc file `--quy-doi`.
+
+**Xuất trong AutoCAD:**
+1. Gõ `DATAEXTRACTION` → Create a new data extraction → chọn bản vẽ mặt bằng điện.
+2. Chỉ chọn **Blocks**, bỏ chọn non-blocks; chọn các block điện.
+3. Thuộc tính: tick **Name**, **Count**, **Layer** và các thuộc tính `TU`, `MACH`, `CS`, `PHONG` (nếu block có).
+4. Bật **Combine identical rows**; xuất ra **Excel (.xlsx)** — CSV của AutoCAD có thể hỏng dấu tiếng Việt.
+
+**Chạy:**
+```bash
+node tao-bo-ban-ve.mjs du-an/<ma>/du-an.json du-an/<ma>/out --boc-khoi mat-bang.xlsx [--quy-doi quy-doi-cong-ty.xlsx]
+```
+- `out/du-an.json` là dữ liệu **đã** áp bóc khối; `out/boc-khoi.xlsx` ghi công suất mạch cũ → mới, số lượng theo loại, block lạ.
+- Mạch mới tạo từ bóc khối chưa có chiều dài và loại khu vực — hỏi anh rồi sửa `du-an.json`.
+- BOQ (`out/boq.xlsx`) có thêm nhóm **E. Thiết bị điện** (đèn, ổ cắm, công tắc) theo bóc khối.

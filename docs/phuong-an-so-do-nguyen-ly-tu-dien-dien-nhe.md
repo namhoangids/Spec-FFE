@@ -523,9 +523,15 @@ Chốt ngày 07/11/2026.
   - Cáp cấp tủ con chỉ tính một lần ở lộ cấp của tủ trên. Tủ gốc chưa có chiều dài cáp nguồn thì BOQ ghi rõ "chưa tính".
   - Khung đơn giá: sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu); sheet `BOQ` tra giá bằng công thức nên điền giá là thành tiền tự tính. Lệnh tạo bộ nhận `--bang-gia file.xlsx` để nạp bảng giá có sẵn.
 
+- **Khung bóc khối (11/11/2026):** `dien/engine/boc-khoi.mjs`, đọc bảng DATAEXTRACTION (.csv/.xlsx) từ mặt bằng AutoCAD.
+  - Block có thuộc tính `TU` / `MACH` / `CS`: công suất mạch = Σ số lượng × W, mạch chưa có thì tạo mới kèm cảnh báo cần chiều dài.
+  - Block chỉ có tên: quy đổi qua bảng `quy-doi-block.mjs` (bảng mẫu, ký tự `*`), đếm số lượng theo loại / layer / phòng.
+  - Block lạ được liệt kê và cảnh báo, không bỏ qua. Báo cáo `boc-khoi.xlsx`; BOQ thêm nhóm E thiết bị điện.
+  - Có trong lệnh tạo bộ (`--boc-khoi`, `--quy-doi`) và web app (nút **Nạp bóc khối…**). Còn chờ file DATAEXTRACTION thật và thư viện block của team để chỉnh bảng quy đổi.
+
 **Tiếp theo (GĐ2 đợt 2):**
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
-- **Bóc khối:** nhập CSV `DATAEXTRACTION` từ mặt bằng AutoCAD. Đọc được cả block chỉ có tên (dùng bảng quy đổi tên block → loại phụ tải) lẫn block có thuộc tính chuẩn.
+- **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.
 
 ---

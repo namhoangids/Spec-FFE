@@ -49,9 +49,9 @@ export function taoBoBanVe(duAn) {
     /** docx: thư viện npm "docx" — đóng gói bằng docx.Packer.toBuffer (Node) / toBlob (trình duyệt) */
     thuyetMinhDocx: (docx) => thuyetMinhDocx(docx, thuyetMinh()),
     /** BOQ điện: khối lượng thiết bị, phụ kiện, dây/cáp, ống. opt: { haoHut } (%) */
-    boq: (opt) => tinhBoq(kq, opt),
+    boq: (opt) => tinhBoq(kq, { bocKhoi: duAn.bocKhoi, ...opt }),
     /** BOQ ra Excel (sheet BOQ, Bang gia, Chi tiet). opt: { haoHut, bangGia } — bangGia từ engine/boq.mjs docBangGia */
-    boqExcel: (XLSX, { haoHut, bangGia } = {}) => xuatBoqExcel(XLSX, tinhBoq(kq, { haoHut }), duAn.info, { bangGia }),
+    boqExcel: (XLSX, { haoHut, bangGia } = {}) => xuatBoqExcel(XLSX, tinhBoq(kq, { haoHut, bocKhoi: duAn.bocKhoi }), duAn.info, { bangGia }),
   };
 }
 

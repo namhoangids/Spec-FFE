@@ -5,6 +5,9 @@
 //   node tao-bo-ban-ve.mjs du-an.json [thư-mục-ra]          (dữ liệu dự án dạng JSON)
 //   Tùy chọn: --bang-gia <file.xlsx>  nạp bảng giá cho BOQ (sheet "Bang gia": Khóa | Mã hàng | Đơn giá | Chiết khấu)
 //             --hao-hut <số %>        hao hụt dây, cáp, ống trong BOQ (mặc định 5)
+//             --boc-khoi <file>       bảng DATAEXTRACTION từ mặt bằng AutoCAD (.csv / .xlsx / .xls): block có thuộc tính
+//                                     TU/MACH/CS thì cập nhật công suất mạch; block chỉ có tên thì đếm số lượng (engine/boc-khoi.mjs)
+//             --quy-doi <file.xlsx>   bảng quy đổi tên block riêng (sheet "Quy doi block"), đặt trước bảng mẫu
 //
 // Thư mục ra (mặc định out/<tên file>):
 //   E.601-T1.dxf      AutoCAD 2007 (màu RGB, block có thuộc tính); tủ quá 18 lộ tự ngắt thêm tờ
@@ -17,7 +20,9 @@
 //   thuyet-minh.docx  thuyết minh tính toán (Word, sửa được) — cùng nội dung với thuyet-minh.html
 //   thuyet-minh.html  thuyết minh tính toán, mở trình duyệt để xem / in PDF
 //   boq.xlsx          BOQ điện: khối lượng thiết bị, phụ kiện, dây/cáp, ống + khung đơn giá (sheet Bang gia)
-//   du-an.json        dữ liệu đã đọc từ Excel (tính lại được bằng engine/tinhDuAn)
+//   boc-khoi.xlsx     báo cáo bóc khối (khi có --boc-khoi): công suất mạch cũ → mới, số lượng theo loại, block lạ
+//   du-an.json        dữ liệu đã đọc từ Excel, đã áp bóc khối nếu có (tính lại được bằng engine/tinhDuAn;
+//                     python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json ra.xlsx để ra Excel nhập liệu mới)
 //   canh-bao.txt      danh sách lỗi/cảnh báo/ghi chú
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -27,31 +32,44 @@ import * as docx from "docx";
 import XLSX from "xlsx";
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "./bo-ban-ve.mjs";
+import { apDungBocKhoi, docBocKhoi, docQuyDoi, xuatBaoCaoBocKhoi } from "./engine/boc-khoi.mjs";
 import { docBangGia } from "./engine/boq.mjs";
 import { docExcel } from "./engine/doc-excel.mjs";
 import { xuatExcel } from "./engine/xuat-excel.mjs";
+import { QUY_DOI_BLOCK } from "./engine/quy-doi-block.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-// Tham số: <đầu vào> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5]
+// Tham số: <đầu vào> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5] [--boc-khoi file] [--quy-doi file.xlsx]
 const args = process.argv.slice(2);
 const tuyChon = (ten) => { const i = args.indexOf(ten); return i < 0 ? null : args.splice(i, 2)[1]; };
 const fileGia = tuyChon("--bang-gia");
 const haoHut = tuyChon("--hao-hut");
+const fileBk = tuyChon("--boc-khoi");
+const fileQd = tuyChon("--quy-doi");
 const [input, outArg] = args;
 if (!input) {
-  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx | du-an.json> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5]");
+  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx | du-an.json> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5] [--boc-khoi file.csv] [--quy-doi file.xlsx]");
   process.exit(1);
 }
 const outDir = outArg || join(here, "out", basename(input, extname(input)));
 mkdirSync(outDir, { recursive: true });
 
 // Đầu vào: file Excel nhập liệu, hoặc file JSON dữ liệu dự án (dạng docExcel trả về, ví dụ do agent/goi-y-dau-vao.mjs tạo)
-const duAn = extname(input).toLowerCase() === ".json"
+let duAn = extname(input).toLowerCase() === ".json"
   ? { loiDoc: [], quyTac: {}, ...JSON.parse(readFileSync(input, "utf8")) }
   : docExcel(XLSX, readFileSync(input));
 for (const s of duAn.loiDoc) console.log(`⚠ Đọc file: ${s}`);
+
+// Bóc khối từ mặt bằng AutoCAD: áp vào dữ liệu trước khi tính
+let bocKhoi = null;
+if (fileBk) {
+  const quyDoi = fileQd ? [...docQuyDoi(XLSX, readFileSync(fileQd)), ...QUY_DOI_BLOCK] : QUY_DOI_BLOCK;
+  bocKhoi = apDungBocKhoi(duAn, docBocKhoi(XLSX, readFileSync(fileBk)).dong, { quyDoi, tenFile: basename(fileBk) });
+  duAn = bocKhoi.duAn;
+}
 const bo = taoBoBanVe(duAn);
 const { kq, to } = bo;
+if (bocKhoi) kq.canhBao.push(...bocKhoi.baoCao.canhBao);
 
 for (const t of to) {
   writeFileSync(join(outDir, `${t.tenFile}.svg`), t.svg, "utf8");
@@ -74,11 +92,18 @@ const bangGia = fileGia ? docBangGia(XLSX, readFileSync(fileGia)) : null;
 const boqOpt = { bangGia, haoHut: haoHut == null ? undefined : Number(haoHut) };
 writeFileSync(join(outDir, "boq.xlsx"), XLSX.write(bo.boqExcel(XLSX, boqOpt), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "du-an.json"), JSON.stringify(duAn, null, 2), "utf8");
+if (bocKhoi) writeFileSync(join(outDir, "boc-khoi.xlsx"), XLSX.write(xuatBaoCaoBocKhoi(XLSX, bocKhoi.baoCao), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "canh-bao.txt"), vanBanCanhBao(kq), "utf8");
 
 const dem = (m) => kq.canhBao.filter((c) => c.muc === m).length;
 console.log(`\n${to.length} tờ → ${outDir}`);
 console.log(`Lỗi ${dem("loi")} · Cảnh báo ${dem("canhbao")} · Ghi chú ${dem("ghichu")} (xem canh-bao.txt / bang-tinh.xlsx)`);
+if (bocKhoi) {
+  const b = bocKhoi.baoCao;
+  console.log(`Bóc khối ${b.tenFile}: ${b.soDong} dòng (kiểu ${b.cheDo}) · ${b.theoMach.length} mạch cập nhật công suất` +
+    `${b.theoMach.some((m) => m.moi) ? ` (mới: ${b.theoMach.filter((m) => m.moi).map((m) => m.mach).join(", ")})` : ""}` +
+    `${b.khongNhanDien.length ? ` · block lạ: ${b.khongNhanDien.map((k) => `${k.ten} ×${k.sl}`).join(", ")}` : ""} — xem boc-khoi.xlsx`);
+}
 const boq = bo.boq(boqOpt);
 const coGia = bangGia ? boq.dong.filter((d) => bangGia.gia.get(d.khoa)?.donGia > 0).length : 0;
 console.log(`BOQ: ${boq.dong.length} dòng${bangGia ? ` · bảng giá "${bangGia.ten || fileGia}": ${coGia}/${boq.dong.length} dòng có giá` : " · chưa nạp bảng giá (điền ở sheet Bang gia của boq.xlsx)"}${boq.thieuL.length ? ` · chưa có chiều dài: ${boq.thieuL.join(", ")}` : ""}`);

@@ -3,6 +3,7 @@
 // Toàn bộ chạy trong trình duyệt; SheetJS và JSZip nạp từ cdnjs, thư viện DXF và docx qua import map.
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "../bo-ban-ve.mjs";
+import { apDungBocKhoi, docBocKhoi, xuatBaoCaoBocKhoi } from "../engine/boc-khoi.mjs";
 import { docExcel } from "../engine/doc-excel.mjs";
 import { chuCap } from "../engine/sang-ban-ve.mjs";
 import { xuatExcel } from "../engine/xuat-excel.mjs";
@@ -12,7 +13,8 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const so = (x, d = 1) => (x == null || Number.isNaN(x) ? "—" : Number(x).toFixed(d).replace(".", ","));
 const tb = (t) => (t ? `${t.loai} ${t.soCuc} ${t.in}A${t.idn ? ` ${t.idn}mA` : t.icu != null ? ` ${t.icu}kA` : ""}` : "—");
 
-const S = { ten: "", duAn: null, kq: null, bo: null, to: [], chon: 0, view: "ve" };
+// duAnGoc: dữ liệu đọc từ Excel (chưa áp bóc khối) — nạp bóc khối lần nữa thì áp lại từ bản gốc, không cộng dồn
+const S = { ten: "", duAnGoc: null, duAn: null, kq: null, bo: null, to: [], chon: 0, view: "ve", bocKhoi: null };
 
 // --- Nạp file -------------------------------------------------------------------
 async function napFile(buf, ten) {
@@ -21,19 +23,42 @@ async function napFile(buf, ten) {
     if (!window.XLSX) throw new Error("Chưa tải được thư viện đọc Excel (SheetJS) — kiểm tra kết nối mạng.");
     const duAn = docExcel(window.XLSX, new Uint8Array(buf));
     if (!duAn.panels.length) throw new Error(`Không đọc được tủ nào từ "${ten}". ${duAn.loiDoc.join("; ")}`);
-    const bo = taoBoBanVe(duAn);
-    const { kq, to } = bo;
-    for (const s of duAn.loiDoc) kq.canhBao.unshift({ muc: "canhbao", tu: "", mach: "", noiDung: `Đọc file: ${s}` });
-    Object.assign(S, { ten: ten.replace(/\.[^.]+$/, ""), duAn, kq, bo, to, chon: 0 });
-    $("empty").classList.add("hide");
-    $("result").classList.remove("hide");
-    for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx", "tmword", "tmxem", "boq"]) $(id).disabled = false;
-    veTatCa();
+    Object.assign(S, { ten: ten.replace(/\.[^.]+$/, ""), duAnGoc: duAn, bocKhoi: null });
+    tinhVaVe(duAn);
   } catch (e) {
     console.error(e);
     loi(e.message || String(e));
   }
 }
+/** Tính cả bộ từ dữ liệu dự án rồi vẽ lại; thêm cảnh báo đọc file và cảnh báo bóc khối (nếu có) vào danh sách kiểm tra. */
+function tinhVaVe(duAn) {
+  const bo = taoBoBanVe(duAn);
+  const { kq, to } = bo;
+  for (const s of duAn.loiDoc || []) kq.canhBao.unshift({ muc: "canhbao", tu: "", mach: "", noiDung: `Đọc file: ${s}` });
+  if (S.bocKhoi) kq.canhBao.push(...S.bocKhoi.canhBao);
+  Object.assign(S, { duAn, kq, bo, to, chon: 0 });
+  $("empty").classList.add("hide");
+  $("result").classList.remove("hide");
+  for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx", "tmword", "tmxem", "boq", "bk"]) $(id).disabled = false;
+  $("bkxlsx").classList.toggle("hide", !S.bocKhoi);
+  veTatCa();
+}
+
+// Bóc khối: bảng DATAEXTRACTION từ mặt bằng AutoCAD → công suất mạch (block có TU/MACH/CS), số lượng thiết bị cho BOQ
+$("bk").addEventListener("click", () => $("bkfile").click());
+$("bkfile").addEventListener("change", async (e) => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  if (!f || !S.duAnGoc) return;
+  try {
+    loi("");
+    const { dong } = docBocKhoi(window.XLSX, new Uint8Array(await f.arrayBuffer()));
+    const r = apDungBocKhoi(S.duAnGoc, dong, { tenFile: f.name });
+    S.bocKhoi = r.baoCao;
+    tinhVaVe(r.duAn);
+  } catch (err) { console.error(err); loi(err.message || String(err)); }
+});
+
 function loi(s) {
   $("err").textContent = s;
   $("err").classList.toggle("hide", !s);
@@ -223,6 +248,8 @@ $("dl-svg").addEventListener("click", () => { const x = S.to[S.chon]; tai(`${x.t
 $("xlsx").addEventListener("click", () => tai(`${S.ten}-bang-tinh.xlsx`, bangTinh(), XLSX_MIME));
 $("nhanxlsx").addEventListener("click", () => tai(`${S.ten}-nhan.xlsx`, nhanExcel(), XLSX_MIME));
 // BOQ điện: khối lượng + khung đơn giá (điền giá ở sheet "Bang gia", thành tiền tự tính)
+const bocKhoiExcel = () => window.XLSX.write(xuatBaoCaoBocKhoi(window.XLSX, S.bocKhoi), { type: "array", bookType: "xlsx" });
+$("bkxlsx").addEventListener("click", () => tai(`${S.ten}-boc-khoi.xlsx`, bocKhoiExcel(), XLSX_MIME));
 const boqExcel = () => window.XLSX.write(S.bo.boqExcel(window.XLSX), { type: "array", bookType: "xlsx" });
 $("boq").addEventListener("click", () => tai(`${S.ten}-boq.xlsx`, boqExcel(), XLSX_MIME));
 // Trang in nhãn mở ở tab mới (trang HTML tự chứa, có nút In)
@@ -260,6 +287,7 @@ $("zip").addEventListener("click", async () => {
     zip.file("bang-tinh.xlsx", bangTinh());
     zip.file("nhan.xlsx", nhanExcel());
     zip.file("boq.xlsx", boqExcel());
+    if (S.bocKhoi) zip.file("boc-khoi.xlsx", bocKhoiExcel());
     zip.file("nhan-tu.html", S.bo.nhanHtml());
     zip.file("thuyet-minh.docx", await thuyetMinhWord());
     zip.file("thuyet-minh.html", S.bo.thuyetMinhHtml());

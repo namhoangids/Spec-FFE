@@ -7,7 +7,8 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
 - **nhãn tủ, nhãn cáp**;
 - **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung;
-- **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider).
+- **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider);
+- **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -52,7 +53,12 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
    - `BOQ`: 4 nhóm — thiết bị đóng cắt; vỏ tủ và phụ kiện (SPD, đèn báo pha, đồng hồ + CT, ATS); dây và cáp; ống, máng. Dây, cáp, ống đã cộng hao hụt 5%;
    - `Bang gia`: mỗi dòng BOQ một khóa. Điền mã hàng, đơn giá, chiết khấu vào đây thì sheet BOQ tự tra giá và tính thành tiền, tổng cộng;
    - `Chi tiet`: từng tủ, từng mạch đóng góp vào mỗi dòng BOQ, để kiểm lại khối lượng.
-7. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
+7. Bấm **Nạp bóc khối…** để nạp bảng DATAEXTRACTION (`.xlsx` / `.csv`) từ mặt bằng điện AutoCAD:
+   - block có thuộc tính `TU`, `MACH`, `CS`: công suất từng mạch tính lại theo số lượng × W, mạch chưa có thì tạo mới;
+   - block chỉ có tên: đếm số lượng theo loại / layer / phòng;
+   - block lạ được liệt kê trong mục Kiểm tra; nút **Báo cáo bóc khối** tải `boc-khoi.xlsx`; BOQ có thêm nhóm thiết bị điện.
+   Cách chuẩn hóa block và các bước xuất: `.claude/skills/so-do-nguyen-ly/tham-khao.md` § 8. File thử: `mau/vi-du-boc-khoi/`.
+8. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
 
 **Dòng lệnh:**
 
@@ -61,9 +67,10 @@ cd dien && npm install
 node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx            # → out/vi-du-HDMON/
 node tao-bo-ban-ve.mjs du-an.json                       # đầu vào JSON (dữ liệu dự án) cũng được
 node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   # BOQ có giá (sheet "Bang gia")
+node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 42 test
+npm test                                               # 48 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -100,6 +107,8 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Cap va ong, Canh bao, Quy tac |
 | `dien-giai.mjs` | Định dạng số và diễn giải cách chọn tiết diện / ống. Bảng tính và thuyết minh dùng chung |
 | `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in ra PDF (`thuyetMinhHtml`) cùng kiểu trình bày với bản Word |
+| `boc-khoi.mjs` | Bóc khối AutoCAD: `docBocKhoi` đọc DATAEXTRACTION (.csv/.xlsx, nhận cột theo tiêu đề), `apDungBocKhoi` ghi công suất mạch / tạo mạch mới / đếm số lượng, báo block lạ; `xuatBaoCaoBocKhoi` ra `boc-khoi.xlsx` |
+| `quy-doi-block.mjs` | Bảng quy đổi tên block → loại thiết bị, W (bảng mẫu, sửa theo thư viện block công ty; nạp bảng riêng bằng `--quy-doi`) |
 | `boq.mjs` | BOQ điện: `tinhBoq` bóc khối lượng (không tính trùng cáp cấp tủ con, cộng hao hụt), `docBangGia` đọc bảng giá Excel, `xuatBoqExcel` ra file có công thức tra giá |
 | `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`, trình bày theo mẫu văn bản Indust Design: Arial, cam `#F15A22` / xanh than `#22333B`, khối thông tin 3×2, đề mục có vạch cam, bảng dùng Table Style băng màu thật của Word, chân trang "Indust Design \| … \| Working Document" kèm số trang. Bảng rộng đặt trang ngang |
 | `tests/` | Tái lập đúng ví dụ DB-T1 (mục 7: CB tổng 40 A, cáp cấp 4×6, ΔU lớn nhất 2,95%, lệch pha 1,8%, vỏ 36 module) và các ca kiểm tra |

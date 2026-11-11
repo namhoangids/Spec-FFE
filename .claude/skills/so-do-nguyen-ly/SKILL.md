@@ -39,6 +39,8 @@ Mỗi dự án một thư mục: `dien/du-an/<ma-du-an>/`, tên không dấu, n�
 - Liệt kê theo tầng: tên phòng, loại phòng, diện tích nếu đọc được. Đánh dấu WC có tắm, bếp, khu ngoài nhà (sân, ban công, sân thượng).
 - Chỗ nào không chắc thì ghi "chưa chắc" và hỏi lại. Không đoán rồi im lặng.
 
+**Có file bóc khối AutoCAD (DATAEXTRACTION, .xlsx/.csv):** sau khi có `du-an.json`, chạy lệnh tạo bộ kèm `--boc-khoi <file>` (xem `tham-khao.md` § 8). Đọc `out/boc-khoi.xlsx`: báo anh công suất mạch đổi bao nhiêu, mạch mới nào cần chiều dài, block nào chưa nhận diện được. Dùng `out/du-an.json` (đã áp bóc khối) làm bản gốc cho các lần sửa sau.
+
 **Hỏi các điểm chính trong một lượt**, tối đa 5 câu. Có công cụ AskUserQuestion thì dùng, kèm lựa chọn và đề xuất mặc định. Chỉ hỏi những gì anh chưa nói:
 1. Loại công trình (biệt thự / nhà phố / căn hộ), số tầng, các phòng chính từng tầng (nếu chưa có mặt bằng).
 2. Nguồn 1 pha hay 3 pha; tủ tổng đặt ở tầng nào; mỗi tầng có tủ riêng không.
