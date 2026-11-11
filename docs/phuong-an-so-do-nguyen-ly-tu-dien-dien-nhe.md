@@ -529,7 +529,15 @@ Chốt ngày 07/11/2026.
   - Block lạ được liệt kê và cảnh báo, không bỏ qua. Báo cáo `boc-khoi.xlsx`; BOQ thêm nhóm E thiết bị điện.
   - Có trong lệnh tạo bộ (`--boc-khoi`, `--quy-doi`) và web app (nút **Nạp bóc khối…**). Còn chờ file DATAEXTRACTION thật và thư viện block của team để chỉnh bảng quy đổi.
 
+- **Dự án chung trên web (11/11/2026):** `dien/app/kho.mjs`, `nhap-lieu.mjs`, `firebase-config.mjs`.
+  - Lưu dự án lên Firestore project `measure-and-make` (collection `dien_projects`), đăng nhập bằng tài khoản app M&M. Cả team đã đăng nhập xem và sửa được mọi dự án.
+  - Mỗi lần lưu tăng số bản, ghi người sửa, chép bản cũ vào lịch sử; khôi phục được bản bất kỳ. Người khác vừa lưu trước thì app không ghi đè mà hỏi lại.
+  - Chế độ **Nhập liệu**: sửa khung tên, bảng tủ, bảng mạch ngay trên web; thêm / xóa / nhân bản / di chuyển mạch; tính lại cả bộ ngay khi sửa.
+  - Cần làm một lần trên Firebase console: rule cho `dien_projects` và thêm domain `spec-ffe.vercel.app` (xem `dien/README.md`).
+
 **Tiếp theo (GĐ2 đợt 2):**
+- **Ngắn mạch theo tổng trở và chọn lọc CB:** Ik3 max tại thanh cái từng tủ, Ik1 min cuối mạch (tự cắt nguồn theo IEC 60364-4-41), chọn lọc vùng ngắn mạch.
+- **Điện nhẹ (GĐ3):** sơ đồ trục, rack, KNX, bảng đấu nối, ELV-BOQ.
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.

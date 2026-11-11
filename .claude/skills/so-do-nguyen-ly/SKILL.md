@@ -128,6 +128,9 @@ Sau đó chạy lại bước 3 và báo **phần thay đổi**: CB, cáp, tờ 
 ## 6. Lưu và chia sẻ
 
 - **Phiên cloud bị xóa khi hết hạn.** Đề nghị anh commit + push thư mục `dien/du-an/<ma>/`. Chỉ làm khi anh đồng ý, và theo đúng nhánh của phiên.
+- **Dự án chung trên web:** web app (`/dien/app/`) lưu dự án lên server của team (Firebase `measure-and-make`, đăng nhập bằng tài khoản app M&M). Agent không tự đăng nhập được, nên trao đổi qua file:
+  - đưa lên server: anh tải `du-an/<ma>/du-an.json` (hoặc `nhap-lieu.xlsx`) lên web app bằng nút "Tải file Excel…" (nhận cả `.json`), rồi bấm **Lưu lên server**;
+  - lấy từ server về cho agent: anh mở dự án trên web, bấm **JSON dự án**, gửi file đó vào phiên.
 - **Dropbox:** chép khi anh đã dặn và connector Dropbox có trong phiên. Chép được file chữ (DXF R12, SVG, HTML, MD); file Excel/ZIP không chép được qua connector. Kiểm kích thước file sau khi chép.
 - **Bản skill trên Dropbox của anh:** `/Claude/6. So do nguyen ly tu dien/AI Agent ve so do/Skill/` chứa `SKILL.md` và `tham-khao.md` — bản dùng chung giữa các phiên.
   - **Đầu phiên** (có connector Dropbox): đọc 2 file này bằng `fetch`. Nếu khác bản trong repo (`.claude/skills/so-do-nguyen-ly/`), báo anh chỗ khác và hỏi lấy bản nào; bản trên Dropbox mới hơn thì chép vào repo.

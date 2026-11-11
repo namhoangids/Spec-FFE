@@ -51,7 +51,10 @@ try {
   });
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.fulfill({ body: "", contentType: "text/css" }));
 
-  await page.goto(`http://localhost:${port}/dien/app/`);
+  // ?kho=thu: kho dự án chung trong bộ nhớ (môi trường test không vào được Firebase)
+  page.on("dialog", (d) => d.accept());                    // confirm() khi xóa mạch / khôi phục
+  await page.goto(`http://localhost:${port}/dien/app/?kho=thu`);
+  await page.waitForSelector("#tk button");
   await page.click("#vidu");
   await page.waitForSelector("#tree .node");
   const nodes = await page.locator("#tree .node").allInnerTexts();
@@ -120,15 +123,84 @@ try {
   const [dl2] = await Promise.all([page.waitForEvent("download"), page.click("#dl-dxf")]);
   assert.equal(dl2.suggestedFilename(), "E.603-T3.dxf");
 
+  // --- Dự án chung trên server (kho bộ nhớ) -----------------------------------------------------
+  const nut = (re) => page.locator("#hop button", { hasText: re });
+  await page.click("#tk button");                                         // Đăng nhập
+  await page.fill("#hop input[name=email]", "ky.su@vi.du");
+  await page.fill("#hop input[name=pass]", "sai");
+  await nut(/^Đăng nhập$/).click();
+  assert.match(await page.locator("#hopLoi").innerText(), /Sai email hoặc mật khẩu/);
+  await page.fill("#hop input[name=pass]", "thu");
+  await nut(/^Đăng nhập$/).click();
+  await page.waitForSelector("#tk >> text=ky.su@vi.du");
+  assert.match(await page.locator("#duan").innerText(), /chưa có trên server/);
+  await page.click("#luu");                                               // Lưu lên server (tạo mới)
+  await page.fill("#hop input[name=ten]", "HDMON thử");
+  await nut(/^Lưu$/).click();
+  await page.waitForSelector("#duan >> text=bản 1");
+
+  // Nhập liệu: sửa công suất mạch đầu của T3 → tính lại, đánh dấu chưa lưu
+  await page.click("#tree .node >> nth=3");
+  await page.click("[data-view=nl]");
+  const oP = page.locator('#pane [data-dong="mach"][data-k="congSuat"]').first();
+  await oP.fill("1234");
+  await oP.press("Tab");
+  await page.waitForSelector("#duan .chuaLuu");
+  const soMach = await page.locator("#pane table.nl >> nth=1").locator("tbody tr").count();
+  await page.click('[data-lenh="themMach"]');
+  assert.equal(await page.locator("#pane table.nl >> nth=1").locator("tbody tr").count(), soMach + 1, "thêm mạch");
+  await page.locator('[data-lenh="xoaMach"]').last().click();
+  assert.equal(await page.locator("#pane table.nl >> nth=1").locator("tbody tr").count(), soMach, "xóa mạch");
+  await page.click("[data-view=bang]");
+  assert.match(await page.locator("#pane tbody tr").first().innerText(), /1\.234/, "bảng tính theo công suất mới");
+  await page.click("#luu");
+  await page.fill("#hop input[name=gc]", "sửa công suất");
+  await nut(/^Lưu$/).click();
+  await page.waitForSelector("#duan >> text=bản 2");
+
+  // Xung đột: người khác lưu trước → app không ghi đè, mở bản mới
+  await page.evaluate(() => window.__khoThu.luuThay("p1", (d) => { d.info.client = "NGƯỜI KHÁC SỬA"; return d; }));
+  await page.click("[data-view=nl]");
+  await oP.fill("1500");
+  await oP.press("Tab");
+  await page.click("#luu");
+  await nut(/^Lưu$/).click();
+  await page.waitForSelector("#hop >> text=Có người vừa lưu dự án này");
+  await nut(/Mở bản mới/).click();
+  await page.waitForSelector("#duan >> text=bản 3");
+  assert.equal(await oP.inputValue(), "1234", "mở lại bản trên server");
+
+  // Lịch sử: khôi phục bản 1 → công suất cũ
+  await page.click("#lichSu");
+  await page.locator("#hop .ls .dong", { hasText: "Bản 1" }).locator("button").click();
+  await page.waitForSelector("#duan >> text=bản 4");
+  assert.notEqual(await page.locator('#pane [data-dong="mach"][data-k="congSuat"]').first().inputValue(), "1234", "về bản 1");
+  if (anh) {
+    await page.screenshot({ path: join(anh, "app-nhap-lieu.png"), fullPage: true });
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.screenshot({ path: join(anh, "app-nhap-lieu-toi.png") });
+    await page.emulateMedia({ colorScheme: "light" });
+  }
+  await page.click("#dong");                                             // Đóng → danh sách
+  assert.match(await page.locator("#dsServer").innerText(), /HDMON thử[\s\S]*bản 4/);
+  if (anh) await page.screenshot({ path: join(anh, "app-ds-du-an.png") });
+
   // Màn hình điện thoại: không cuộn ngang trang
+  await page.click("#dsServer [data-mo]");
+  await page.click("[data-view=nl]");
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.click("[data-view=ve]");
   const tran = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   assert.ok(tran <= 1, `cuộn ngang ${tran}px`);
   if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai.png") });
 
+  // Nạp du-an.json (đầu ra của agent / lệnh tạo bộ) → dự án mới, chưa có trên server
+  await page.click("#dong");
+  await page.setInputFiles("#file", join(goc, "dien/du-an/can-ho-3pn-3-pha/du-an.json"));
+  await page.waitForSelector("#duan >> text=chưa có trên server");
+  assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
+
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

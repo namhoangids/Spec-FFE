@@ -2,13 +2,14 @@
 
 Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`](../docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md).
 
-**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán và khung BOQ (11/11/2026). Nhập phụ tải vào Excel, công cụ tự tính rồi vẽ **cả bộ**:
+**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán, khung BOQ, bóc khối và **dự án chung trên web** (11/11/2026). Nhập phụ tải vào Excel (hoặc sửa thẳng trên web), công cụ tự tính rồi vẽ **cả bộ**:
 - tờ **sơ đồ cấp điện tổng** E.600;
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
 - **nhãn tủ, nhãn cáp**;
 - **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung;
 - **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider);
-- **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ.
+- **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ;
+- **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -34,7 +35,7 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 
 ## Dùng thế nào
 
-**Web app:** mở `/dien/app/` trên bản triển khai Vercel của repo (gõ `/dien` cũng được, trang `dien/index.html` tự chuyển sang). Trang gốc `/` là app FF&E, không phải app này. Có thể tải file Excel lên, hoặc bấm "Chạy ví dụ HDMON". Các bước tiếp theo:
+**Web app:** mở `/dien/app/` trên bản triển khai Vercel của repo (gõ `/dien` cũng được, trang `dien/index.html` tự chuyển sang). Trang gốc `/` là app FF&E, không phải app này. Có thể tải file Excel lên (hoặc `du-an.json` của agent / lệnh tạo bộ), bấm "Chạy ví dụ HDMON", hoặc mở dự án chung của team. Các bước tiếp theo:
 
 1. Xem cây tờ. Đầu tiên là sơ đồ tổng E.600, sau đó là các tờ tủ; tủ nhiều tờ hiện (1/2), (2/2).
 2. Xem bản vẽ từng tờ, bảng tính từng mạch và danh sách lỗi/cảnh báo.
@@ -58,7 +59,29 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
    - block chỉ có tên: đếm số lượng theo loại / layer / phòng;
    - block lạ được liệt kê trong mục Kiểm tra; nút **Báo cáo bóc khối** tải `boc-khoi.xlsx`; BOQ có thêm nhóm thiết bị điện.
    Cách chuẩn hóa block và các bước xuất: `.claude/skills/so-do-nguyen-ly/tham-khao.md` § 8. File thử: `mau/vi-du-boc-khoi/`.
-8. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
+8. Chế độ **Nhập liệu** (cạnh Bản vẽ / Bảng tính / Kiểm tra): sửa khung tên, bảng tủ và bảng mạch của tủ đang chọn ngay trên web.
+   - Sửa ô rồi bấm Tab / Enter: bản vẽ, bảng tính, thuyết minh, BOQ tính lại ngay; dòng có lỗi tô màu.
+   - Thêm / xóa / nhân bản / di chuyển mạch; thêm, xóa tủ; đổi mã tủ thì mạch và tủ con đi theo.
+   - Bắt đầu từ file Excel, ví dụ, JSON của agent, hoặc nút **Dự án trống** (1 tủ).
+9. **Dự án chung của team** (cần đăng nhập bằng tài khoản app M&M Báo giá / FF&E):
+   - màn đầu có danh sách dự án trên server: tên, chủ đầu tư, số tủ/mạch, bản mấy, ai lưu lúc nào; có ô tìm;
+   - dự án đang mở (từ Excel, ví dụ, dự án trống) → **Lưu lên server**; sau đó nút **Lưu** (Ctrl+S) sáng lên khi có thay đổi, kèm ô ghi chú lần lưu;
+   - mỗi lần lưu tăng số bản và chép bản cũ vào **Lịch sử**; khôi phục được bản bất kỳ (bản hiện tại vào lịch sử trước);
+   - người khác vừa lưu trước anh → app **không ghi đè**, hỏi: mở bản mới của họ, hoặc vẫn lưu đè (bản của họ vẫn nằm trong Lịch sử);
+   - rời trang khi chưa lưu thì trình duyệt hỏi lại. Tính toán vẫn chạy trên trình duyệt; dữ liệu chỉ lên server khi bấm Lưu.
+
+**Cài đặt Firebase cho dự án chung** (làm một lần, trên project `measure-and-make`):
+- Firestore → Rules: cho phép người đã đăng nhập đọc/ghi collection `dien_projects` (nếu rule hiện tại chưa mở):
+  ```
+  match /dien_projects/{id} {
+    allow read, write: if request.auth != null;
+    match /history/{h} { allow read, write: if request.auth != null; }
+  }
+  ```
+- Authentication → Settings → Authorized domains: thêm `spec-ffe.vercel.app`. Nếu API key có giới hạn theo trang web (Google Cloud → Credentials) thì thêm `https://spec-ffe.vercel.app/*`.
+- Cấu hình nằm ở `app/firebase-config.mjs` (API key web của Firebase là công khai; bảo mật nằm ở rule và đăng nhập).
+- Dữ liệu: `dien_projects/{id}` giữ tên, tóm tắt, `phienBan`, `updatedBy/At` và toàn bộ dữ liệu dự án dạng chuỗi JSON `duAnJson`; `dien_projects/{id}/history` giữ các bản cũ.
+- Test tự động chạy với `?kho=thu` (kho trong bộ nhớ, đăng nhập bằng mật khẩu `thu`), không chạm Firebase.
 
 **Dòng lệnh:**
 
@@ -70,7 +93,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 48 test
+npm test                                               # 52 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -86,7 +109,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `bo-ban-ve.mjs` | Phần dùng chung: dữ liệu dự án → kết quả tính → sơ đồ tổng + các tờ tủ (SVG/DXF) + nhãn |
 | `tao-bo-ban-ve.mjs` | Lệnh tạo cả bộ: Excel → `E.600-TONG.*`, `E.601-T1.dxf`, `E.601-T1-R12.dxf`, `E.601-T1.svg`… + `bang-tinh.xlsx`, `nhan.xlsx`, `nhan-tu.html`, `thuyet-minh.docx`, `thuyet-minh.html`, `du-an.json`, `canh-bao.txt` |
 | `out/vi-du-HDMON/` | Bộ 7 tờ (E.600–E.606) và các file nhãn, tạo từ file ví dụ HDMON. ezdxf audit 0 lỗi |
-| `app/` | Web app MVP (`index.html`, `app.mjs`) và test Playwright `kiem-tra-app.mjs` |
+| `app/` | Web app (`index.html`, `app.mjs`), chế độ Nhập liệu (`nhap-lieu.mjs`), kho dự án chung Firebase / bộ nhớ (`kho.mjs`, `firebase-config.mjs`) và test Playwright `kiem-tra-app.mjs` |
 | `template/` | Template trình bày theo mẫu E.601. Từ dữ liệu tờ vẽ xuất DXF + SVG, cho tờ tủ (`mau-indust.mjs`) và tờ sơ đồ tổng (`so-do-tong.mjs`). Xem [`template/README.md`](template/README.md) |
 | `so-sanh-mau-E601-E606.md` | **Báo cáo so sánh** lựa chọn của bản mẫu với quy tắc. Có các mục cần kỹ sư điện chốt |
 | `spike/` | File DXF thử tiếng Việt để mở trên AutoCAD |
