@@ -1,6 +1,6 @@
 // Web app: Excel → lõi tính toán → bộ bản vẽ (sơ đồ tổng + các tờ tủ) → xem SVG, tải DXF/SVG/ZIP,
-// bảng tính, nhãn tủ / nhãn cáp, JSON.
-// Toàn bộ chạy trong trình duyệt; SheetJS và JSZip nạp từ cdnjs, thư viện DXF qua import map.
+// bảng tính, nhãn tủ / nhãn cáp, thuyết minh tính toán (Word + trang in), JSON.
+// Toàn bộ chạy trong trình duyệt; SheetJS và JSZip nạp từ cdnjs, thư viện DXF và docx qua import map.
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "../bo-ban-ve.mjs";
 import { docExcel } from "../engine/doc-excel.mjs";
@@ -27,7 +27,7 @@ async function napFile(buf, ten) {
     Object.assign(S, { ten: ten.replace(/\.[^.]+$/, ""), duAn, kq, bo, to, chon: 0 });
     $("empty").classList.add("hide");
     $("result").classList.remove("hide");
-    for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx"]) $(id).disabled = false;
+    for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx", "tmword", "tmxem"]) $(id).disabled = false;
     veTatCa();
   } catch (e) {
     console.error(e);
@@ -228,6 +228,21 @@ $("nhan").addEventListener("click", () => {
   if (!window.open(url, "_blank")) tai(`${S.ten}-nhan-tu.html`, S.bo.nhanHtml(), "text/html");
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 });
+// Thuyết minh: thư viện docx nạp khi cần (import map) để lỗi mạng không làm hỏng phần còn lại của app
+const thuyetMinhWord = async () => {
+  let docx;
+  try { docx = await import("docx"); } catch { throw new Error("Chưa tải được thư viện Word (docx) — kiểm tra kết nối mạng."); }
+  return docx.Packer.toBlob(S.bo.thuyetMinhDocx(docx));
+};
+$("tmword").addEventListener("click", async () => {
+  try { tai(`${S.ten}-thuyet-minh.docx`, await thuyetMinhWord()); } catch (e) { loi(e.message); }
+});
+$("tmxem").addEventListener("click", () => {
+  const html = S.bo.thuyetMinhHtml();
+  const url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+  if (!window.open(url, "_blank")) tai(`${S.ten}-thuyet-minh.html`, html, "text/html");
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+});
 $("json").addEventListener("click", () => tai(`${S.ten}-du-an.json`, JSON.stringify(S.duAn, null, 2), "application/json"));
 $("zip").addEventListener("click", async () => {
   try {
@@ -242,6 +257,8 @@ $("zip").addEventListener("click", async () => {
     zip.file("bang-tinh.xlsx", bangTinh());
     zip.file("nhan.xlsx", nhanExcel());
     zip.file("nhan-tu.html", S.bo.nhanHtml());
+    zip.file("thuyet-minh.docx", await thuyetMinhWord());
+    zip.file("thuyet-minh.html", S.bo.thuyetMinhHtml());
     zip.file("du-an.json", JSON.stringify(S.duAn, null, 2));
     zip.file("canh-bao.txt", vanBanCanhBao(S.kq));
     tai(`${S.ten}-bo-ban-ve.zip`, await zip.generateAsync({ type: "blob", compression: "DEFLATE" }));

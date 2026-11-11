@@ -511,6 +511,11 @@ Chốt ngày 07/11/2026.
   - Gợi ý đầu vào (`dien/agent/goi-y-dau-vao.mjs`): tự chia mạch, ước phụ tải theo bảng điển hình, ghi rõ giả định.
   - Chạy công cụ ra cả bộ bản vẽ, rồi sửa tiếp theo lời người dùng.
   - Cùng đợt: bộ cân pha tính theo đúng hệ số đồng thời của từng mạch; tủ nhiều tờ chia đều số lộ giữa các tờ.
+- **Thuyết minh tính toán (11/11/2026):** `dien/engine/thuyet-minh.mjs` và `thuyet-minh-docx.mjs`.
+  - Dựng nội dung một lần, xuất ra **Word** (`thuyet-minh.docx`, sửa được) và **trang HTML** in ra PDF.
+  - Gồm 6 mục: căn cứ thiết kế; nguồn và giải pháp cấp điện; phương pháp tính (ghi kèm tham số bộ quy tắc); tổng hợp phụ tải; chi tiết từng tủ; kiểm tra và kết luận (lỗi, cảnh báo, ghi đè có lý do, giả định, ô ký).
+  - Bảng từng mạch đặt trang ngang. Mạch phải tăng tiết diện có ghi lý do (các cỡ đã thử, Iz′, ΔU).
+  - Có trong web app (nút **Thuyết minh Word**, **Xem thuyết minh**, và trong ZIP), lệnh tạo bộ và skill agent.
 
 **Tiếp theo (GĐ2 đợt 2):**
 - **BOQ:** dựng khung trước; khi có file bảng giá Schneider (Excel) thì nạp vào để tự điền mã hàng và đơn giá.

@@ -97,6 +97,7 @@ Báo ngắn, theo thứ tự:
 - ảnh `E.600` và 1–2 tờ tủ trong `out/xem-truoc/`;
 - `nhap-lieu.xlsx`;
 - `out/bang-tinh.xlsx`;
+- `out/thuyet-minh.docx` (thuyết minh tính toán; `out/thuyet-minh.html` là cùng nội dung để xem / in PDF);
 - file DXF anh cần.
 
 Muốn gửi cả bộ: nén `out/` thành một file zip trước khi gửi:

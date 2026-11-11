@@ -35,6 +35,7 @@ const CDN = [
   [/xlsx\.full\.min\.js$/, join(dien, "node_modules/xlsx/dist/xlsx.full.min.js")],
   [/jszip\.min\.js$/, join(dien, "node_modules/jszip/dist/jszip.min.js")],
   [/@tarikjabiri\/dxf@2\.10\.0\/\+esm$/, join(dien, "node_modules/@tarikjabiri/dxf/lib/index.mjs")],
+  [/docx@9\.15\.0\/\+esm$/, join(dien, "node_modules/docx/dist/index.mjs")],
 ];
 
 const browser = await chromium.launch();
@@ -72,6 +73,16 @@ try {
   assert.ok(await popup.locator(".nhan").count() > 0, "có nhãn cáp");
   await popup.close();
 
+  // Xem thuyết minh: tab mới, đủ 6 mục, mỗi tủ một mục 5.x
+  const [tm] = await Promise.all([page.waitForEvent("popup"), page.click("#tmxem")]);
+  await tm.waitForLoadState();
+  const h2 = await tm.locator("h2").allInnerTexts();
+  assert.deepEqual(h2.map((x) => x.match(/^\d+/)?.[0]), ["1", "2", "3", "4", "5", "6"], "thuyết minh đủ mục 1–6");
+  assert.equal(await tm.locator("h3", { hasText: /^5\.\d+\. Tủ/ }).count(), 6, "mỗi tủ một mục");
+  await tm.close();
+  const [dlTm] = await Promise.all([page.waitForEvent("download"), page.click("#tmword")]);
+  assert.match(dlTm.suggestedFilename(), /thuyet-minh\.docx$/);
+
   await page.click("#tree .node >> nth=3");
   assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ NGUYÊN LÝ ĐIỆN T3/);
   await page.click("[data-view=bang]");
@@ -85,11 +96,14 @@ try {
   const ten = Object.keys(zip.files).sort();
   assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 14);
   assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 7);
-  for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
+  for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "thuyet-minh.docx", "thuyet-minh.html", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
+  const tmXml = await (await JSZip.loadAsync(await zip.file("thuyet-minh.docx").async("uint8array"))).file("word/document.xml").async("string");
+  assert.match(tmXml, /THUYẾT MINH TÍNH TOÁN/);
+  assert.match(tmXml, /w:orient="landscape"/, "có trang ngang cho bảng từng mạch");
   const r12 = await zip.file("E.603-T3-R12.dxf").async("string");
   assert.match(r12, /AC1009/);
   const wb = XLSX.read(await zip.file("bang-tinh.xlsx").async("uint8array"));
-  assert.deepEqual(wb.SheetNames, ["Tong hop", "T1", "T2", "T3", "T4", "T5", "T6", "Canh bao", "Quy tac"]);
+  assert.deepEqual(wb.SheetNames, ["Tong hop", "T1", "T2", "T3", "T4", "T5", "T6", "Cap va ong", "Canh bao", "Quy tac"]);
 
   const [dl2] = await Promise.all([page.waitForEvent("download"), page.click("#dl-dxf")]);
   assert.equal(dl2.suggestedFilename(), "E.603-T3.dxf");
@@ -102,7 +116,7 @@ try {
   if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai.png") });
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

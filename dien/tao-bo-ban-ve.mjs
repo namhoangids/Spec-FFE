@@ -12,12 +12,15 @@
 //   bang-tinh.xlsx    kết quả tính từng tủ + danh sách lỗi/cảnh báo/ghi chú
 //   nhan.xlsx         danh mục mạch dán cánh tủ + nhãn cáp (cho máy in nhãn)
 //   nhan-tu.html      trang in nhãn từ trình duyệt
+//   thuyet-minh.docx  thuyết minh tính toán (Word, sửa được) — cùng nội dung với thuyet-minh.html
+//   thuyet-minh.html  thuyết minh tính toán, mở trình duyệt để xem / in PDF
 //   du-an.json        dữ liệu đã đọc từ Excel (tính lại được bằng engine/tinhDuAn)
 //   canh-bao.txt      danh sách lỗi/cảnh báo/ghi chú
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import * as docx from "docx";
 import XLSX from "xlsx";
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "./bo-ban-ve.mjs";
@@ -56,6 +59,8 @@ for (const t of to) {
 writeFileSync(join(outDir, "bang-tinh.xlsx"), XLSX.write(xuatExcel(XLSX, kq, duAn.info, { soTheoTu: bo.soTheoTu }), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "nhan.xlsx"), XLSX.write(bo.nhanExcel(XLSX), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "nhan-tu.html"), bo.nhanHtml(), "utf8");
+writeFileSync(join(outDir, "thuyet-minh.docx"), await docx.Packer.toBuffer(bo.thuyetMinhDocx(docx)));
+writeFileSync(join(outDir, "thuyet-minh.html"), bo.thuyetMinhHtml(), "utf8");
 writeFileSync(join(outDir, "du-an.json"), JSON.stringify(duAn, null, 2), "utf8");
 writeFileSync(join(outDir, "canh-bao.txt"), vanBanCanhBao(kq), "utf8");
 

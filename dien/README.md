@@ -2,10 +2,11 @@
 
 Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`](../docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md).
 
-**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026). Nhập phụ tải vào Excel, công cụ tự tính rồi vẽ **cả bộ**:
+**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán (11/11/2026). Nhập phụ tải vào Excel, công cụ tự tính rồi vẽ **cả bộ**:
 - tờ **sơ đồ cấp điện tổng** E.600;
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
-- **nhãn tủ, nhãn cáp**.
+- **nhãn tủ, nhãn cáp**;
+- **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -14,7 +15,7 @@ Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt*
 Trong Claude Code mở repo này, anh mô tả nhu cầu hoặc gửi ảnh/PDF mặt bằng. Có thể gõ `/so-do-nguyen-ly` hoặc nói thẳng, ví dụ "vẽ sơ đồ nguyên lý cho biệt thự 4 tầng…". Agent sẽ:
 1. hỏi vài điểm chính;
 2. gợi ý danh sách tủ và mạch, kèm các giả định;
-3. chạy công cụ ra cả bộ bản vẽ, bảng tính, nhãn và file Excel;
+3. chạy công cụ ra cả bộ bản vẽ, bảng tính, nhãn, thuyết minh và file Excel;
 4. sửa tiếp theo lời anh.
 
 | File | Nội dung |
@@ -37,9 +38,16 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 2. Xem bản vẽ từng tờ, bảng tính từng mạch và danh sách lỗi/cảnh báo.
 3. Tải xuống:
    - từng tờ: DXF 2007, DXF R12 hoặc SVG;
-   - cả bộ ZIP: gồm bảng tính Excel, nhãn và JSON dự án.
+   - cả bộ ZIP: gồm bảng tính Excel, nhãn, thuyết minh và JSON dự án.
 4. Bấm **In nhãn** để mở trang in danh mục mạch dán cánh tủ và nhãn cáp. Bấm **Nhãn Excel** để tải bảng nhãn cho máy in nhãn.
-5. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
+5. Bấm **Thuyết minh Word** để tải thuyết minh tính toán (`.docx`), hoặc **Xem thuyết minh** để mở trang in (In / Lưu PDF). Nội dung:
+   1. căn cứ thiết kế;
+   2. nguồn điện và giải pháp cấp điện;
+   3. phương pháp tính, ghi kèm tham số của bộ quy tắc;
+   4. tổng hợp phụ tải;
+   5. tính toán chi tiết từng tủ: bảng từng mạch đặt trang ngang, lý do tăng tiết diện;
+   6. kiểm tra và kết luận: lỗi, cảnh báo, ghi đè có lý do, giả định, ô ký.
+6. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
 
 **Dòng lệnh:**
 
@@ -49,7 +57,7 @@ node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx            # → out/vi-du-HDMON/
 node tao-bo-ban-ve.mjs du-an.json                       # đầu vào JSON (dữ liệu dự án) cũng được
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 33 test
+npm test                                               # 38 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -63,7 +71,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `mau/tao_mau_nhap_lieu.py` | Script tạo 2 file Excel trên |
 | `engine/` | **Lõi tính toán** (JavaScript thuần, chạy được cả trên Node và trình duyệt), xem bảng dưới |
 | `bo-ban-ve.mjs` | Phần dùng chung: dữ liệu dự án → kết quả tính → sơ đồ tổng + các tờ tủ (SVG/DXF) + nhãn |
-| `tao-bo-ban-ve.mjs` | Lệnh tạo cả bộ: Excel → `E.600-TONG.*`, `E.601-T1.dxf`, `E.601-T1-R12.dxf`, `E.601-T1.svg`… + `bang-tinh.xlsx`, `nhan.xlsx`, `nhan-tu.html`, `du-an.json`, `canh-bao.txt` |
+| `tao-bo-ban-ve.mjs` | Lệnh tạo cả bộ: Excel → `E.600-TONG.*`, `E.601-T1.dxf`, `E.601-T1-R12.dxf`, `E.601-T1.svg`… + `bang-tinh.xlsx`, `nhan.xlsx`, `nhan-tu.html`, `thuyet-minh.docx`, `thuyet-minh.html`, `du-an.json`, `canh-bao.txt` |
 | `out/vi-du-HDMON/` | Bộ 7 tờ (E.600–E.606) và các file nhãn, tạo từ file ví dụ HDMON. ezdxf audit 0 lỗi |
 | `app/` | Web app MVP (`index.html`, `app.mjs`) và test Playwright `kiem-tra-app.mjs` |
 | `template/` | Template trình bày theo mẫu E.601. Từ dữ liệu tờ vẽ xuất DXF + SVG, cho tờ tủ (`mau-indust.mjs`) và tờ sơ đồ tổng (`so-do-tong.mjs`). Xem [`template/README.md`](template/README.md) |
@@ -83,7 +91,10 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `doc-excel.mjs` | Đọc file Excel theo tên sheet và tiêu đề cột, kể cả sheet `Quy tac` |
 | `sang-ban-ve.mjs` | Kết quả → dữ liệu tờ vẽ, ghi chữ theo kiểu bản mẫu (`Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2`, `ỐNG PVC  Ø 20`, `Pđ=… kW, Kđt=…`). Có thêm:<br>• tự ngắt tờ (`chiaTo`: nhóm RCBO không bị tách giữa hai tờ);<br>• đánh số tờ;<br>• dữ liệu sơ đồ tổng (`sangSoDoTong`) |
 | `nhan.mjs` | Danh mục mạch dán cánh tủ và nhãn cáp (mỗi cáp 2 bản). Xuất Excel và trang HTML in |
-| `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Canh bao, Quy tac |
+| `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Cap va ong, Canh bao, Quy tac |
+| `dien-giai.mjs` | Định dạng số và diễn giải cách chọn tiết diện / ống. Bảng tính và thuyết minh dùng chung |
+| `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in (`thuyetMinhHtml`) |
+| `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`: Times New Roman 13, bảng rộng trang ngang, số trang |
 | `tests/` | Tái lập đúng ví dụ DB-T1 (mục 7: CB tổng 40 A, cáp cấp 4×6, ΔU lớn nhất 2,95%, lệch pha 1,8%, vỏ 36 module) và các ca kiểm tra |
 
 ## Quy ước nhập liệu chính

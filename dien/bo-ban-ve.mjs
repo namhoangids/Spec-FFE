@@ -4,6 +4,8 @@
 import { tinhDuAn } from "./engine/cay-tu.mjs";
 import { nhanHtml, xuatNhanExcel } from "./engine/nhan.mjs";
 import { sangBoBanVe } from "./engine/sang-ban-ve.mjs";
+import { noiDungThuyetMinh, thuyetMinhHtml } from "./engine/thuyet-minh.mjs";
+import { thuyetMinhDocx } from "./engine/thuyet-minh-docx.mjs";
 import { SO_COT_TOI_DA, veSoDoTu } from "./template/mau-indust.mjs";
 import { veSoDoTong } from "./template/so-do-tong.mjs";
 import { taoDxf } from "./template/ve-dxf.mjs";
@@ -14,7 +16,8 @@ export const MUC = { loi: "Lỗi", canhbao: "Cảnh báo", ghichu: "Ghi chú" };
 
 /**
  * @param {object} duAn — { info, panels, circuits, quyTac } (docExcel)
- * @returns {{ kq, to: object[], soTheoTu: Map, nhanHtml: () => string, nhanExcel: (XLSX) => object }}
+ * @returns {{ kq, to: object[], soTheoTu: Map, nhanHtml: () => string, nhanExcel: (XLSX) => object,
+ *   thuyetMinh: () => object, thuyetMinhHtml: () => string, thuyetMinhDocx: (docx) => object }}
  *   Mỗi tờ: { loai: "tong"|"tu", ma, ten, thu, tong, du, tenFile, svg, dxf(), r12() }
  */
 export function taoBoBanVe(duAn) {
@@ -33,10 +36,16 @@ export function taoBoBanVe(duAn) {
       r12: () => { const g = taoDxfR12(); ve(g, x.du); return g.toString(); },
     };
   });
+  // Thuyết minh dựng lúc gọi (không dựng sẵn) để lấy cả các cảnh báo bổ sung sau khi tính, ví dụ lỗi đọc file
+  const thuyetMinh = () => noiDungThuyetMinh(kq, duAn.info, { soTheoTu: bo.soTheoTu });
   return {
     kq, to, soTheoTu: bo.soTheoTu,
     nhanHtml: () => nhanHtml(kq, duAn.info),
     nhanExcel: (XLSX) => xuatNhanExcel(XLSX, kq, duAn.info),
+    thuyetMinh,
+    thuyetMinhHtml: () => thuyetMinhHtml(thuyetMinh()),
+    /** docx: thư viện npm "docx" — đóng gói bằng docx.Packer.toBuffer (Node) / toBlob (trình duyệt) */
+    thuyetMinhDocx: (docx) => thuyetMinhDocx(docx, thuyetMinh()),
   };
 }
 

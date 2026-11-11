@@ -9,7 +9,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script type="importmap">
-{ "imports": { "@tarikjabiri/dxf": "https://cdn.jsdelivr.net/npm/@tarikjabiri/dxf@2.10.0/+esm" } }
+{ "imports": {
+  "@tarikjabiri/dxf": "https://cdn.jsdelivr.net/npm/@tarikjabiri/dxf@2.10.0/+esm",
+  "docx": "https://cdn.jsdelivr.net/npm/docx@9.15.0/+esm"
+} }
 </script>
 <style>
 /* Bộ nhận diện measure&make: chữ xanh than #22333B, điểm nhấn cam #F15A22, font Montserrat.
@@ -57,7 +60,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .brand{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em}
 .crumb{font-size:12px;color:var(--ink-3)}
 .toolbar{display:flex;align-items:center;gap:8px;padding:9px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.toolbar .sp{flex:1}
+/* Cụm nút tải kết quả: dồn phải; thiếu chỗ thì cả cụm xuống hàng (không để lẻ một nút) */
+.toolbar .ra{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 .btn{display:inline-flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;padding:6px 12px;border:1px solid var(--line-2);white-space:nowrap;text-decoration:none;color:inherit}
 .btn:hover{border-color:var(--ink-4)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -135,6 +139,7 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
   /* Montserrat rộng hơn Barlow Condensed: thu nhỏ chút cho thanh nút và tiêu đề khỏi xuống quá nhiều dòng */
   .btn{font-size:12px;padding:5px 9px}
   .btn-sm{font-size:11.5px;padding:4px 8px}
+  .toolbar .ra{margin-left:0;justify-content:flex-start}
   .phead h2{font-size:20px}
   .stat .v{font-size:16px}
 }
@@ -153,12 +158,15 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
     <input id="file" type="file" accept=".xlsx,.xls" class="hide">
     <button class="btn" id="vidu">Chạy ví dụ HDMON</button>
     <a class="btn" href="../mau/nhap-lieu-tu-dien.xlsx" download>File nhập liệu mẫu</a>
-    <span class="sp"></span>
-    <button class="btn" id="zip" disabled>Tải cả bộ (ZIP)</button>
-    <button class="btn" id="xlsx" disabled>Bảng tính Excel</button>
-    <button class="btn" id="nhan" disabled>In nhãn</button>
-    <button class="btn" id="nhanxlsx" disabled>Nhãn Excel</button>
-    <button class="btn" id="json" disabled>JSON dự án</button>
+    <div class="ra" role="group" aria-label="Tải kết quả">
+      <button class="btn" id="zip" disabled>Tải cả bộ (ZIP)</button>
+      <button class="btn" id="xlsx" disabled>Bảng tính Excel</button>
+      <button class="btn" id="tmword" disabled>Thuyết minh Word</button>
+      <button class="btn" id="tmxem" disabled>Xem thuyết minh</button>
+      <button class="btn" id="nhan" disabled>In nhãn</button>
+      <button class="btn" id="nhanxlsx" disabled>Nhãn Excel</button>
+      <button class="btn" id="json" disabled>JSON dự án</button>
+    </div>
   </div>
 
   <div id="err" class="err hide" role="alert"></div>
@@ -172,6 +180,7 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
         <li>Tổng hợp từng tủ, chọn CB tổng, cáp cấp, vỏ tủ; tính cả cây tủ từ tủ tầng lên tủ tổng.</li>
         <li>Vẽ sơ đồ cấp điện tổng và mỗi tủ một tờ theo template E.601 (tủ quá 18 lộ tự ngắt tờ), kèm danh sách lỗi / cảnh báo.</li>
         <li>In nhãn: danh mục mạch dán cánh tủ và nhãn cáp.</li>
+        <li>Thuyết minh tính toán (Word và trang in): căn cứ, phương pháp, phụ tải, chọn CB/cáp từng mạch, kết luận.</li>
       </ol>
       <div class="drop" id="drop">
         <label class="btn btn-primary" for="file">Chọn file Excel…</label>
