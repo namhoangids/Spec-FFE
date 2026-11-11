@@ -254,4 +254,3 @@ Hỏi anh vị trí rack (thường ở phòng kỹ thuật hoặc gầm cầu t
 - **LỖI `Ngân sách PoE`:** không xảy ra với bảng switch mặc định (công cụ tự thêm switch), chỉ gặp khi sửa quy tắc.
 - **Báo UPS / U vượt cỡ:** tách tủ.
 - **Nguồn rack:** báo anh mạch `DNn` đã thêm vào tủ nào, CB và cáp gì (xem tờ tủ điện và E.702).
-
