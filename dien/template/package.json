@@ -1,0 +1,12 @@
+{
+  "name": "indust-sld-template",
+  "private": true,
+  "type": "module",
+  "description": "Template sơ đồ nguyên lý tủ điện theo mẫu Indust (E.601) — xuất DXF + SVG từ dữ liệu JSON",
+  "scripts": {
+    "build": "node tao-ban-ve.mjs du-lieu/E601-T1.json du-lieu/E602-T2.json"
+  },
+  "dependencies": {
+    "@tarikjabiri/dxf": "2.10.0"
+  }
+}

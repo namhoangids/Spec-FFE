@@ -1,0 +1,31 @@
+{
+  "_ghi_chu": "Lấy từ phần chữ của tờ E.602 trong PDF mẫu (không có ảnh tờ này) — thứ tự cột suy luận, có thể khác bản gốc. Dùng để thử template với số mạch ít hơn.",
+  "sheet": {
+    "drawingNo": "E.602",
+    "title": "SƠ ĐỒ NGUYÊN LÝ ĐIỆN T2",
+    "companyInfo": "22 Thanh Cong, Ba Dinh, Ha Noi",
+    "client": "Mr. Tuấn",
+    "address": "Long Biên - Hà Nội",
+    "project": "MR. TUẤN - HDMON",
+    "date": "November 09/11/2026",
+    "scale": "1:50"
+  },
+  "panel": {
+    "name": "TỦ ĐIỆN 24 MODULE",
+    "supplyCable": ["Cu.XPLE/PVC (4x6)mm2 + E(1x4)mm", "ỐNG PVC  Ø 32"],
+    "incomer": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "10kA" },
+    "loadText": ["Pđ=23.84 kW, Kđt=0.5", "Ptt=11,92 kW"]
+  },
+  "groups": [
+    { "device": { "type": "RCBO", "poles": "1P+N", "rating": "32A", "breaking": "30mA" }, "circuits": ["S1", "S2"] }
+  ],
+  "circuits": [
+    { "code": "L1", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIÊN CHIẾU SÁNG PHÒNG NGỦ" },
+    { "code": "L2", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC" },
+    { "code": "S1", "device": { "type": "MCB", "poles": "1P", "rating": "20A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x4)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI" },
+    { "code": "S2", "device": { "type": "MCB", "poles": "1P", "rating": "16A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIỆN Ổ CẮM CLOSET" },
+    { "code": "AC2", "device": { "type": "MCB", "poles": "1P", "rating": "16A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T2" },
+    { "code": "WH2", "device": { "type": "RCBO", "poles": "1P+N", "rating": "25A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "BÌNH NÓNG LẠNH WC" },
+    { "code": "R2", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP NGUỒN RÈM" }
+  ]
+}

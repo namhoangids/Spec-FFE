@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<rect width="100%" height="100%" fill="#fff"/>
+<polygon points="9.81,290.741 417.093,290.741 417.093,12.073 9.81,12.073" fill="none" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<line x1="350.606" y1="12.073" x2="350.606" y2="290.741" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
+<text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG</text>
+<text x="48.208" y="243.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BẢNG TỔNG HỢP PHỤ TẢI</text>
+<polygon points="48.208,251.741 312.208,251.741 312.208,246.241 48.208,246.241" fill="rgb(238,238,238)" stroke="none"/>
+<line x1="48.208" y1="284.741" x2="312.208" y2="284.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="279.241" x2="312.208" y2="279.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="273.741" x2="312.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="268.241" x2="312.208" y2="268.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="262.741" x2="312.208" y2="262.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="257.241" x2="312.208" y2="257.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="251.741" x2="312.208" y2="251.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="246.241" x2="312.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="48.208" y1="284.741" x2="48.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="66.208" y1="284.741" x2="66.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="92.208" y1="284.741" x2="92.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="106.208" y1="284.741" x2="106.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="122.208" y1="284.741" x2="122.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="134.208" y1="284.741" x2="134.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="150.208" y1="284.741" x2="150.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="164.208" y1="284.741" x2="164.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="204.208" y1="284.741" x2="204.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="274.208" y1="284.741" x2="274.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="288.208" y1="284.741" x2="288.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="312.208" y1="284.741" x2="312.208" y2="246.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="57.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">TỦ</text>
+<text x="79.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CẤP TỪ</text>
+<text x="99.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">SỐ PHA</text>
+<text x="114.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Pđ (kW)</text>
+<text x="128.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Kđt</text>
+<text x="142.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Ptt (kW)</text>
+<text x="157.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Itt (A)</text>
+<text x="184.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CB TỔNG</text>
+<text x="239.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CÁP CẤP</text>
+<text x="281.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">ΔU (%)</text>
+<text x="300.208" y="249.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">BẢN VẼ</text>
+<text x="57.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="79.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">NGUỒN</text>
+<text x="99.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3P</text>
+<text x="114.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">53,01</text>
+<text x="128.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,75</text>
+<text x="142.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">39,77</text>
+<text x="157.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">67,5</text>
+<text x="184.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCCB 4P 100A 15kA</text>
+<text x="239.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x25)mm2 + E(1x16)mm2</text>
+<text x="281.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,65</text>
+<text x="300.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.601</text>
+<text x="57.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T2</text>
+<text x="79.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1 / S5</text>
+<text x="99.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1P</text>
+<text x="114.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">6,10</text>
+<text x="128.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="142.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">4,27</text>
+<text x="157.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">21,3</text>
+<text x="184.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 32A 10kA</text>
+<text x="239.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x4)mm2 + E(1x4)mm2</text>
+<text x="281.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,65</text>
+<text x="300.208" y="260.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.602</text>
+<text x="57.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T3</text>
+<text x="79.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1 / S6</text>
+<text x="99.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1P</text>
+<text x="114.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">8,65</text>
+<text x="128.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="142.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">6,05</text>
+<text x="157.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">29,4</text>
+<text x="184.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 40A 10kA</text>
+<text x="239.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</text>
+<text x="281.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,97</text>
+<text x="300.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.603</text>
+<text x="57.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T4</text>
+<text x="79.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1 / S7</text>
+<text x="99.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1P</text>
+<text x="114.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">8,65</text>
+<text x="128.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="142.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">6,05</text>
+<text x="157.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">29,4</text>
+<text x="184.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 40A 10kA</text>
+<text x="239.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="281.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,68</text>
+<text x="300.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.604</text>
+<text x="57.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T5</text>
+<text x="79.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1 / S8</text>
+<text x="99.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1P</text>
+<text x="114.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">9,15</text>
+<text x="128.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="142.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">6,41</text>
+<text x="157.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">31,1</text>
+<text x="184.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 40A 10kA</text>
+<text x="239.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="281.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,98</text>
+<text x="300.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.605</text>
+<text x="57.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T6</text>
+<text x="79.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1 / S9</text>
+<text x="99.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1P</text>
+<text x="114.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">5,60</text>
+<text x="128.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="142.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3,92</text>
+<text x="157.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">20,9</text>
+<text x="184.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 32A 10kA</text>
+<text x="239.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="281.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,62</text>
+<text x="300.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.606</text>
+<line x1="180.208" y1="33.876" x2="180.208" y2="49.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="180.208,39.376 179.478,36.876 180.938,36.876" fill="rgb(40,79,128)" stroke="none"/>
+<text x="182.208" y="33.676" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(232,86,42)">NGUỒN ĐIỆN</text>
+<text x="182.208" y="38.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x25)mm2 + E(1x16)mm2</text>
+<text x="182.208" y="42.476" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">MÁNG CÁP</text>
+<circle cx="180.208" cy="49.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="180.208" cy="55.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="179.876" y1="55.328" x2="177.21" y2="50.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="181.479" y="47.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCCB</text>
+<text x="181.479" y="50.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">4P</text>
+<text x="181.479" y="55.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">100A</text>
+<text x="181.479" y="58.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">15kA</text>
+<line x1="180.208" y1="56.506" x2="180.208" y2="58.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="160.208,76.876 200.208,76.876 200.208,58.876 160.208,58.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="65.126" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="180.208" y="68.776" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 48 MODULE</text>
+<text x="180.208" y="72.376" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=39,77 kW</text>
+<text x="180.208" y="75.676" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.601</text>
+<line x1="180.208" y1="76.876" x2="180.208" y2="82.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="76.208" y1="82.876" x2="284.208" y2="82.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="76.208" y1="82.876" x2="76.208" y2="88.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="76.208" cy="88.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="76.208" cy="94.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="75.876" y1="94.328" x2="73.21" y2="89.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="77.479" y="86.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="77.479" y="89.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="77.479" y="94.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">32A</text>
+<text x="77.479" y="97.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
+<text x="72.008" y="90.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="end" fill="rgb(232,86,42)">S5</text>
+<text x="72.008" y="94.176" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="end" fill="rgb(232,86,42)">PHA B</text>
+<line x1="76.208" y1="95.506" x2="76.208" y2="147.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(75.808 146.506) rotate(-90) scale(0.85 1)">Cu/XLPE/PVC (2x4)mm2 + E(1x4)mm2</text>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(79.308 141.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 32</text>
+<circle cx="76.208" cy="147.506" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="76.208" cy="153.501" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="75.876" y1="152.959" x2="73.21" y2="148.596" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="77.479" y="145.187" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="77.479" y="148.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="77.479" y="152.635" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">32A</text>
+<text x="77.479" y="156.086" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
+<line x1="76.208" y1="154.137" x2="76.208" y2="156.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="56.208,174.506 96.208,174.506 96.208,156.506 56.208,156.506" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="76.208" y="162.756" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T2</text>
+<text x="76.208" y="166.406" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 18 MODULE</text>
+<text x="76.208" y="170.006" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=4,27 kW</text>
+<text x="76.208" y="173.306" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.602</text>
+<line x1="128.208" y1="82.876" x2="128.208" y2="88.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="128.208" cy="88.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="128.208" cy="94.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="127.876" y1="94.328" x2="125.21" y2="89.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="129.479" y="86.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="129.479" y="89.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="129.479" y="94.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="129.479" y="97.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
+<text x="124.008" y="90.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="end" fill="rgb(232,86,42)">S6</text>
+<text x="124.008" y="94.176" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="end" fill="rgb(232,86,42)">PHA B</text>
+<line x1="128.208" y1="95.506" x2="128.208" y2="147.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(127.808 146.506) rotate(-90) scale(0.85 1)">Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</text>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(131.308 141.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 32</text>
+<circle cx="128.208" cy="147.506" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="128.208" cy="153.501" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="127.876" y1="152.959" x2="125.21" y2="148.596" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="129.479" y="145.187" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="129.479" y="148.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="129.479" y="152.635" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="129.479" y="156.086" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
+<line x1="128.208" y1="154.137" x2="128.208" y2="156.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="108.208,174.506 148.208,174.506 148.208,156.506 108.208,156.506" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="128.208" y="162.756" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T3</text>
+<text x="128.208" y="166.406" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 24 MODULE</text>
+<text x="128.208" y="170.006" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=6,05 kW</text>
+<text x="128.208" y="173.306" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.603</text>
+<line x1="180.208" y1="82.876" x2="180.208" y2="88.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="180.208" cy="88.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="180.208" cy="94.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="179.876" y1="94.328" x2="177.21" y2="89.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="181.479" y="86.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="181.479" y="89.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="181.479" y="94.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="181.479" y="97.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
+<text x="176.008" y="90.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="end" fill="rgb(232,86,42)">S7</text>
+<text x="176.008" y="94.176" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="end" fill="rgb(232,86,42)">PHA C</text>
+<line x1="180.208" y1="95.506" x2="180.208" y2="147.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(179.808 146.506) rotate(-90) scale(0.85 1)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(183.308 141.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 40</text>
+<circle cx="180.208" cy="147.506" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="180.208" cy="153.501" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="179.876" y1="152.959" x2="177.21" y2="148.596" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="181.479" y="145.187" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="181.479" y="148.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="181.479" y="152.635" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="181.479" y="156.086" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
+<line x1="180.208" y1="154.137" x2="180.208" y2="156.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="160.208,174.506 200.208,174.506 200.208,156.506 160.208,156.506" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="162.756" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T4</text>
+<text x="180.208" y="166.406" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 24 MODULE</text>
+<text x="180.208" y="170.006" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=6,05 kW</text>
+<text x="180.208" y="173.306" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.604</text>
+<line x1="232.208" y1="82.876" x2="232.208" y2="88.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="232.208" cy="88.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="232.208" cy="94.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="231.876" y1="94.328" x2="229.21" y2="89.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="233.479" y="86.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="233.479" y="89.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="233.479" y="94.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="233.479" y="97.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
+<text x="228.008" y="90.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="end" fill="rgb(232,86,42)">S8</text>
+<text x="228.008" y="94.176" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="end" fill="rgb(232,86,42)">PHA A</text>
+<line x1="232.208" y1="95.506" x2="232.208" y2="147.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(231.808 146.506) rotate(-90) scale(0.85 1)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(235.308 141.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 40</text>
+<circle cx="232.208" cy="147.506" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="232.208" cy="153.501" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="231.876" y1="152.959" x2="229.21" y2="148.596" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="233.479" y="145.187" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="233.479" y="148.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="233.479" y="152.635" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">40A</text>
+<text x="233.479" y="156.086" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
+<line x1="232.208" y1="154.137" x2="232.208" y2="156.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="212.208,174.506 252.208,174.506 252.208,156.506 212.208,156.506" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="232.208" y="162.756" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T5</text>
+<text x="232.208" y="166.406" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 18 MODULE</text>
+<text x="232.208" y="170.006" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=6,41 kW</text>
+<text x="232.208" y="173.306" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.605</text>
+<line x1="284.208" y1="82.876" x2="284.208" y2="88.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="284.208" cy="88.876" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="284.208" cy="94.871" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="283.876" y1="94.328" x2="281.21" y2="89.966" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="285.479" y="86.556" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="285.479" y="89.826" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="285.479" y="94.004" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">32A</text>
+<text x="285.479" y="97.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">6kA</text>
+<text x="280.008" y="90.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="end" fill="rgb(232,86,42)">S9</text>
+<text x="280.008" y="94.176" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="end" fill="rgb(232,86,42)">PHA C</text>
+<line x1="284.208" y1="95.506" x2="284.208" y2="147.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(283.808 146.506) rotate(-90) scale(0.85 1)">Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</text>
+<text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)" transform="translate(287.308 141.737) rotate(-90) scale(0.85 1)">ỐNG PVC  Ø 40</text>
+<circle cx="284.208" cy="147.506" r="0.727" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="284.208" cy="153.501" r="0.636" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="283.876" y1="152.959" x2="281.21" y2="148.596" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="285.479" y="145.187" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">MCB</text>
+<text x="285.479" y="148.456" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">2P</text>
+<text x="285.479" y="152.635" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">32A</text>
+<text x="285.479" y="156.086" font-family="Arial, Helvetica, sans-serif" font-size="2.654" text-anchor="start" fill="rgb(232,86,42)">10kA</text>
+<line x1="284.208" y1="154.137" x2="284.208" y2="156.506" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="264.208,174.506 304.208,174.506 304.208,156.506 264.208,156.506" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="284.208" y="162.756" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T6</text>
+<text x="284.208" y="166.406" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 18 MODULE</text>
+<text x="284.208" y="170.006" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=3,92 kW</text>
+<text x="284.208" y="173.306" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.606</text>
+<text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
+<text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>
+<text x="361.142" y="38.224" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Company info:</text>
+<line x1="361.142" y1="43.682" x2="411.099" y2="43.682" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="46.035" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Director:</text>
+<line x1="361.142" y1="51.675" x2="411.099" y2="51.675" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="54.028" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Design:</text>
+<line x1="361.142" y1="59.668" x2="411.099" y2="59.668" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="62.021" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Check by:</text>
+<line x1="361.142" y1="67.661" x2="411.099" y2="67.661" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="70.015" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Drawing title:</text>
+<line x1="361.142" y1="75.836" x2="411.099" y2="75.836" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="78.189" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Key plan:</text>
+<line x1="361.142" y1="113.985" x2="411.099" y2="113.985" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="116.338" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project notes:</text>
+<text x="361.142" y="210.983" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Client:</text>
+<line x1="361.142" y1="216.442" x2="411.099" y2="216.442" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="218.976" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Address:</text>
+<line x1="361.142" y1="224.98" x2="411.099" y2="224.98" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="226.97" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project:</text>
+<line x1="361.142" y1="232.791" x2="411.099" y2="232.791" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="235.326" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Made by:</text>
+<line x1="361.142" y1="240.966" x2="411.099" y2="240.966" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="243.137" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Date:</text>
+<line x1="361.142" y1="248.959" x2="411.099" y2="248.959" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="251.675" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Scale:</text>
+<line x1="361.142" y1="256.952" x2="411.099" y2="256.952" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="259.669" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project no:</text>
+<text x="361.142" y="120.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">1. All measurements must be</text>
+<text x="361.142" y="123.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">verified on-site before</text>
+<text x="361.142" y="127.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">construction begins.</text>
+<text x="361.142" y="133.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Do not scale this drawing.</text>
+<text x="361.142" y="137.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Dimensions to be read in</text>
+<text x="361.142" y="140.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conjunction with corresponding</text>
+<text x="361.142" y="143.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">architectural and structural</text>
+<text x="361.142" y="147.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">drawings. This drawing is</text>
+<text x="361.142" y="150.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">copyright or used with the</text>
+<text x="361.142" y="153.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">express authority of Indust</text>
+<text x="361.142" y="157.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Design.</text>
+<text x="361.142" y="163.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Ensure all foundations are</text>
+<text x="361.142" y="167.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">level and stable—verify soil</text>
+<text x="361.142" y="170.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conditions for adequate</text>
+<text x="361.142" y="173.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">support.</text>
+<text x="361.142" y="180.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">3. Coordinate electrical and</text>
+<text x="361.142" y="183.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">plumbing work with off-grid</text>
+<text x="361.142" y="187.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">solutions (if applicable, such</text>
+<text x="361.142" y="190.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">as solar power or composting</text>
+<text x="361.142" y="193.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">toilets)</text>
+<polygon points="361.142,289.833 411.099,289.833 411.099,269.85 361.142,269.85" fill="rgb(127,127,127)" stroke="none"/>
+<text x="386.12" y="42.502" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">22 Thanh Cong, Ba Dinh, Ha Noi</text>
+<text x="386.12" y="75.024" font-family="Arial, Helvetica, sans-serif" font-size="2.806" text-anchor="middle" fill="rgb(51,51,51)">SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG</text>
+<text x="386.12" y="215.398" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">Mr. Tuấn</text>
+<text x="386.12" y="222.71" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">Long Biên - Hà Nội</text>
+<text x="386.12" y="231.384" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">MR. TUẤN - HDMON</text>
+<text x="386.12" y="246.689" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">November 09/11/2026</text>
+<text x="386.12" y="255.045" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">1:50</text>
+<text x="386.12" y="284.091" font-family="Arial, Helvetica, sans-serif" font-size="11.872" text-anchor="middle" fill="rgb(229,229,229)">E.600</text>
+</svg>

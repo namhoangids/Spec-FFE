@@ -1,0 +1,39 @@
+{
+  "_ghi_chu": "Chép nguyên văn từ bản mẫu E.601 (6.E601 Co Dien.pdf) để kiểm tra template — chưa xét đúng sai kỹ thuật.",
+  "sheet": {
+    "drawingNo": "E.601",
+    "title": "SƠ ĐỒ NGUYÊN LÝ ĐIỆN T1",
+    "companyInfo": "22 Thanh Cong, Ba Dinh, Ha Noi",
+    "client": "Mr. Tuấn",
+    "address": "Long Biên - Hà Nội",
+    "project": "MR. TUẤN - HDMON",
+    "date": "November 09/11/2026",
+    "scale": "1:50"
+  },
+  "panel": {
+    "name": "TỦ ĐIỆN 24 MODULE",
+    "supplyCable": ["Cu.XPLE/PVC (4x16)mm2 + E(1x10)mm", "MÁNG CÁP/ỐNG  Ø 40"],
+    "incomer": { "type": "MCCB", "poles": "4P", "rating": "63A", "breaking": "15kA" },
+    "loadText": ["Pđ=23.84 kW, Kđt=0.5", "Ptt=11,92 kW"]
+  },
+  "groups": [
+    { "device": { "type": "RCBO", "poles": "1P+N", "rating": "32A", "breaking": "30mA" }, "circuits": ["S1", "S2"] }
+  ],
+  "circuits": [
+    { "code": "L1", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CHIẾU SÁNG NGOÀI NHÀ" },
+    { "code": "L2", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "B", "load": "CHIẾU SÁNG TRONG NHÀ" },
+    { "code": "S1", "device": { "type": "MCB", "poles": "1P", "rating": "20A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x4)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "C", "load": "Ổ CẮM TRONG NHÀ , CAMERA, WIFI" },
+    { "code": "S2", "device": { "type": "MCB", "poles": "1P", "rating": "16A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "C", "load": "Ổ CẮM ĐIỆN NGOÀI NHÀ" },
+    { "code": "ACT", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XPLE (4x10)mm2 + E(1x10)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN DÀN NÓNG ĐIỀU HOÀ" },
+    { "code": "AC1", "device": { "type": "MCB", "poles": "1P", "rating": "16A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "A", "load": "CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T1" },
+    { "code": "WH1", "device": { "type": "RCBO", "poles": "1P+N", "rating": "25A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x2.5)mm2 + E(1x2.5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "B", "load": "CẤP ĐIỆN BÌNH NÓNG LẠNH T1" },
+    { "code": "TM", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XPLE (4x10)mm2 + E(1x10)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN THANG MÁY" },
+    { "code": "S5", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XLPE 2(1x6)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN T2" },
+    { "code": "S6", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XLPE 2(1x6)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN T3" },
+    { "code": "S7", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XLPE 2(1x6)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN T4" },
+    { "code": "S8", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XLPE 2(1x6)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN T5" },
+    { "code": "S9", "device": { "type": "MCB", "poles": "3P", "rating": "32A", "breaking": "6kA" }, "cable": "Cu/PVC/XLPE 2(1x6)mm2 + E(1x4)mm2", "conduit": "ỐNG PVC  Ø 32", "phase": "ABC", "load": "CẤP ĐIỆN T7" },
+    { "code": "R1", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "C", "load": "CẤP ĐIỆN RÈM" },
+    { "code": "", "device": { "type": "MCB", "poles": "1P", "rating": "10A", "breaking": "6kA" }, "cable": "Cu/PVC 2(1x1,5)mm2", "conduit": "ỐNG PVC  Ø 20", "phase": "C", "load": "CẤP ĐIỆN NGUỒN TỦ BƠM" }
+  ]
+}

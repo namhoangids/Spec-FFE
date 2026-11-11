@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nhãn tủ điện — MR. TUẤN - HDMON</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  /* Thanh nút và nền màn hình theo bộ nhận diện measure&make; phần nhãn in ra giữ đen trắng, Arial. */
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #22333B; background: #F4F3F0; }
+  .in { position: sticky; top: 0; padding: 10px 16px; background: #22333B; color: #fff; display: flex; gap: 12px; align-items: center; }
+  .in button { font: inherit; padding: 6px 14px; border: 0; cursor: pointer; background: #F15A22; color: #fff; }
+  .trang, .luoi { background: #fff; max-width: 186mm; margin: 16px auto; padding: 10mm; }
+  .trang { page-break-after: always; break-after: page; }
+  h1 { font-size: 20pt; margin: 0 0 4px; } h2 { font-size: 14pt; margin: 0 0 8px; }
+  header p { margin: 0 0 10px; font-size: 10pt; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+  th, td { border: 0.3mm solid #444; padding: 1.6mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #eee; } td.lo { font-weight: bold; white-space: nowrap; }
+  footer { margin-top: 6px; font-size: 8pt; color: #777; }
+  .luoi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+  .luoi h2 { grid-column: 1 / -1; }
+  .nhan { border: 0.3mm dashed #444; padding: 2mm; min-height: 20mm; display: flex; flex-direction: column; gap: 1mm; break-inside: avoid; }
+  .nhan b { font-size: 13pt; } .nhan span { font-size: 8.5pt; } .nhan small { font-size: 7.5pt; color: #444; }
+  @media (max-width: 720px) { .trang, .luoi { margin: 8px; padding: 12px; } .luoi { grid-template-columns: repeat(2, 1fr); } table { font-size: 8.5pt; } }
+  @media print { body { background: #fff; color: #000; } .in { display: none; } .trang, .luoi { margin: 0; padding: 0; max-width: none; } }
+</style></head>
+<body>
+<div class="in"><b>Nhãn tủ điện — MR. TUẤN - HDMON</b><button onclick="print()">In</button></div>
+
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T1</h1>
+    <p>Cấp từ: <b>NGUỒN</b> · CB tổng: <b>MCCB 4P 100A</b> · 3P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CHIẾU SÁNG NGOÀI NHÀ</td><td>RCBO 1P+N 10A 30mA</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CHIẾU SÁNG TRONG NHÀ</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>Ổ CẮM TRONG NHÀ , CAMERA, WIFI</td><td>RCBO 1P+N 16A 30mA</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>Ổ CẮM ĐIỆN NGOÀI NHÀ</td><td>RCBO 1P+N 16A 30mA</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">ACT</td><td>CẤP ĐIỆN DÀN NÓNG ĐIỀU HOÀ</td><td>MCB 3P 32A</td><td>ABC</td><td>Cu/PVC 4(1x6)mm2 + E(1x6)mm2</td></tr><tr><td class="lo">AC1</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T1</td><td>MCB 1P 16A</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH1</td><td>CẤP ĐIỆN BÌNH NÓNG LẠNH T1</td><td>RCBO 1P+N 16A 30mA</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">TM</td><td>CẤP ĐIỆN THANG MÁY</td><td>MCB 3P 16A</td><td>ABC</td><td>Cu/PVC 3(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S5</td><td>CẤP ĐIỆN T2</td><td>MCB 2P 32A</td><td>B</td><td>Cu/XLPE/PVC (2x4)mm2 + E(1x4)mm2</td></tr><tr><td class="lo">S6</td><td>CẤP ĐIỆN T3</td><td>MCB 2P 40A</td><td>B</td><td>Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</td></tr><tr><td class="lo">S7</td><td>CẤP ĐIỆN T4</td><td>MCB 2P 40A</td><td>C</td><td>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</td></tr><tr><td class="lo">S8</td><td>CẤP ĐIỆN T5</td><td>MCB 2P 40A</td><td>A</td><td>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</td></tr><tr><td class="lo">S9</td><td>CẤP ĐIỆN T6</td><td>MCB 2P 32A</td><td>C</td><td>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</td></tr><tr><td class="lo">R1</td><td>CẤP ĐIỆN RÈM</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">TB</td><td>CẤP ĐIỆN NGUỒN TỦ BƠM</td><td>MCB 1P 16A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T2</h1>
+    <p>Cấp từ: <b>T1 / S5</b> · CB tổng: <b>MCB 2P 32A</b> · 1P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CẤP ĐIÊN CHIẾU SÁNG PHÒNG NGỦ</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC</td><td>RCBO 1P+N 10A 30mA</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>CẤP ĐIỆN Ổ CẮM CLOSET</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC2</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T2</td><td>MCB 1P 16A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH2</td><td>BÌNH NÓNG LẠNH WC</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">R2</td><td>CẤP NGUỒN RÈM</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T3</h1>
+    <p>Cấp từ: <b>T1 / S6</b> · CB tổng: <b>MCB 2P 40A</b> · 1P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 3-1</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 3-2</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L3</td><td>CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC</td><td>RCBO 1P+N 10A 30mA</td><td>B</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-1</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-2</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC3-1</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-1</td><td>MCB 1P 16A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC3-2</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-2</td><td>MCB 1P 16A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH3-1</td><td>BÌNH NÓNG LẠNH WC3-1</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH3-2</td><td>BÌNH NÓNG LẠNH WC3-2</td><td>RCBO 1P+N 16A 30mA</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">R3</td><td>CẤP NGUỒN RÈM</td><td>MCB 1P 10A</td><td>B</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T4</h1>
+    <p>Cấp từ: <b>T1 / S7</b> · CB tổng: <b>MCB 2P 40A</b> · 1P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 4-1</td><td>MCB 1P 10A</td><td>C</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 4-2</td><td>MCB 1P 10A</td><td>C</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L3</td><td>CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC</td><td>RCBO 1P+N 10A 30mA</td><td>C</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-1</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-2</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC4-1</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-1</td><td>MCB 1P 16A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC4-2</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-2</td><td>MCB 1P 16A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH4-1</td><td>BÌNH NÓNG LẠNH WC4-1</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH4-2</td><td>BÌNH NÓNG LẠNH WC4-2</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">R4</td><td>CẤP NGUỒN RÈM</td><td>MCB 1P 10A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T5</h1>
+    <p>Cấp từ: <b>T1 / S8</b> · CB tổng: <b>MCB 2P 40A</b> · 1P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CẤP ĐIÊN CHIẾU SÁNG P.BẾP + ĂN</td><td>MCB 1P 10A</td><td>A</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC</td><td>RCBO 1P+N 10A 30mA</td><td>A</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI</td><td>RCBO 1P+N 16A 30mA</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>CẤP ĐIỆN BẾP TỪ</td><td>RCBO 1P+N 25A 30mA</td><td>A</td><td>Cu/PVC 2(1x4)mm2 + E(1x4)mm2</td></tr><tr><td class="lo">AC5</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T5</td><td>MCB 1P 16A</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">WH5</td><td>BÌNH NÓNG LẠNH WC T5</td><td>RCBO 1P+N 16A 30mA</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">R5</td><td>CẤP NGUỒN RÈM T5</td><td>MCB 1P 10A</td><td>A</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="trang">
+  <header><h1>TỦ ĐIỆN T6</h1>
+    <p>Cấp từ: <b>T1 / S9</b> · CB tổng: <b>MCB 2P 32A</b> · 1P+N+PE</p></header>
+  <table><thead><tr><th>Lộ</th><th>Phụ tải</th><th>Thiết bị</th><th>Pha</th><th>Cáp</th></tr></thead>
+  <tbody><tr><td class="lo">L1</td><td>CẤP ĐIÊN CHIẾU SÁNG</td><td>MCB 1P 10A</td><td>C</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">L2</td><td>CẤP ĐIỆN SÂN TRƯỚC</td><td>RCBO 1P+N 10A 30mA</td><td>C</td><td>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</td></tr><tr><td class="lo">S1</td><td>CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S2</td><td>CẤP ĐIỆN Ổ CẮM NGOÀI TRỜI</td><td>RCBO 1P+N 16A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">S3</td><td>Ổ CẮM MÁY GIẶT, BƠM TĂNG ÁP</td><td>RCBO 1P+N 20A 30mA</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">AC6</td><td>CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T6</td><td>MCB 1P 16A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">R6</td><td>CẤP NGUỒN RÈM T6</td><td>MCB 1P 10A</td><td>C</td><td>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</td></tr><tr><td class="lo">DP</td><td>DỰ PHÒNG</td><td>MCB 1P 16A</td><td>C</td><td></td></tr></tbody></table>
+  <footer>MR. TUẤN - HDMON</footer>
+</section>
+<section class="luoi"><h2>NHÃN CÁP (mỗi nhãn 2 bản, dán hai đầu cáp)</h2>
+  <div class="nhan"><b>NGUON-T1</b><span>Cu/XLPE/PVC (4x25)mm2 + E(1x16)mm2</span><small>NGUỒN → TỦ T1 · 25 m</small></div>
+  <div class="nhan"><b>NGUON-T1</b><span>Cu/XLPE/PVC (4x25)mm2 + E(1x16)mm2</span><small>NGUỒN → TỦ T1 · 25 m</small></div>
+  <div class="nhan"><b>T1-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T1 / L1 → CHIẾU SÁNG NGOÀI NHÀ · 30 m</small></div>
+  <div class="nhan"><b>T1-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T1 / L1 → CHIẾU SÁNG NGOÀI NHÀ · 30 m</small></div>
+  <div class="nhan"><b>T1-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T1 / L2 → CHIẾU SÁNG TRONG NHÀ · 25 m</small></div>
+  <div class="nhan"><b>T1-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T1 / L2 → CHIẾU SÁNG TRONG NHÀ · 25 m</small></div>
+  <div class="nhan"><b>T1-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / S1 → Ổ CẮM TRONG NHÀ , CAMERA, WIFI · 25 m</small></div>
+  <div class="nhan"><b>T1-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / S1 → Ổ CẮM TRONG NHÀ , CAMERA, WIFI · 25 m</small></div>
+  <div class="nhan"><b>T1-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / S2 → Ổ CẮM ĐIỆN NGOÀI NHÀ · 30 m</small></div>
+  <div class="nhan"><b>T1-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / S2 → Ổ CẮM ĐIỆN NGOÀI NHÀ · 30 m</small></div>
+  <div class="nhan"><b>T1-ACT</b><span>Cu/PVC 4(1x6)mm2 + E(1x6)mm2</span><small>TỦ T1 / ACT → CẤP ĐIỆN DÀN NÓNG ĐIỀU HOÀ · 15 m</small></div>
+  <div class="nhan"><b>T1-ACT</b><span>Cu/PVC 4(1x6)mm2 + E(1x6)mm2</span><small>TỦ T1 / ACT → CẤP ĐIỆN DÀN NÓNG ĐIỀU HOÀ · 15 m</small></div>
+  <div class="nhan"><b>T1-AC1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / AC1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T1 · 25 m</small></div>
+  <div class="nhan"><b>T1-AC1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / AC1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T1 · 25 m</small></div>
+  <div class="nhan"><b>T1-WH1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / WH1 → CẤP ĐIỆN BÌNH NÓNG LẠNH T1 · 15 m</small></div>
+  <div class="nhan"><b>T1-WH1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / WH1 → CẤP ĐIỆN BÌNH NÓNG LẠNH T1 · 15 m</small></div>
+  <div class="nhan"><b>T1-TM</b><span>Cu/PVC 3(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / TM → CẤP ĐIỆN THANG MÁY · 20 m</small></div>
+  <div class="nhan"><b>T1-TM</b><span>Cu/PVC 3(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / TM → CẤP ĐIỆN THANG MÁY · 20 m</small></div>
+  <div class="nhan"><b>T1-S5</b><span>Cu/XLPE/PVC (2x4)mm2 + E(1x4)mm2</span><small>TỦ T1 / S5 → TỦ T2 · 10 m</small></div>
+  <div class="nhan"><b>T1-S5</b><span>Cu/XLPE/PVC (2x4)mm2 + E(1x4)mm2</span><small>TỦ T1 / S5 → TỦ T2 · 10 m</small></div>
+  <div class="nhan"><b>T1-S6</b><span>Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</span><small>TỦ T1 / S6 → TỦ T3 · 14 m</small></div>
+  <div class="nhan"><b>T1-S6</b><span>Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</span><small>TỦ T1 / S6 → TỦ T3 · 14 m</small></div>
+  <div class="nhan"><b>T1-S7</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S7 → TỦ T4 · 18 m</small></div>
+  <div class="nhan"><b>T1-S7</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S7 → TỦ T4 · 18 m</small></div>
+  <div class="nhan"><b>T1-S8</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S8 → TỦ T5 · 22 m</small></div>
+  <div class="nhan"><b>T1-S8</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S8 → TỦ T5 · 22 m</small></div>
+  <div class="nhan"><b>T1-S9</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S9 → TỦ T6 · 26 m</small></div>
+  <div class="nhan"><b>T1-S9</b><span>Cu/XLPE/PVC (2x10)mm2 + E(1x10)mm2</span><small>TỦ T1 / S9 → TỦ T6 · 26 m</small></div>
+  <div class="nhan"><b>T1-R1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / R1 → CẤP ĐIỆN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T1-R1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / R1 → CẤP ĐIỆN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T1-TB</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / TB → CẤP ĐIỆN NGUỒN TỦ BƠM · 15 m</small></div>
+  <div class="nhan"><b>T1-TB</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T1 / TB → CẤP ĐIỆN NGUỒN TỦ BƠM · 15 m</small></div>
+  <div class="nhan"><b>T2-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T2 / L1 → CẤP ĐIÊN CHIẾU SÁNG PHÒNG NGỦ · 20 m</small></div>
+  <div class="nhan"><b>T2-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T2 / L1 → CẤP ĐIÊN CHIẾU SÁNG PHÒNG NGỦ · 20 m</small></div>
+  <div class="nhan"><b>T2-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T2 / L2 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 20 m</small></div>
+  <div class="nhan"><b>T2-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T2 / L2 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 20 m</small></div>
+  <div class="nhan"><b>T2-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 20 m</small></div>
+  <div class="nhan"><b>T2-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 20 m</small></div>
+  <div class="nhan"><b>T2-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / S2 → CẤP ĐIỆN Ổ CẮM CLOSET · 15 m</small></div>
+  <div class="nhan"><b>T2-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / S2 → CẤP ĐIỆN Ổ CẮM CLOSET · 15 m</small></div>
+  <div class="nhan"><b>T2-AC2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / AC2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T2 · 20 m</small></div>
+  <div class="nhan"><b>T2-AC2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / AC2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T2 · 20 m</small></div>
+  <div class="nhan"><b>T2-WH2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / WH2 → BÌNH NÓNG LẠNH WC · 15 m</small></div>
+  <div class="nhan"><b>T2-WH2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / WH2 → BÌNH NÓNG LẠNH WC · 15 m</small></div>
+  <div class="nhan"><b>T2-R2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / R2 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T2-R2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T2 / R2 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T3-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L1 → CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L1 → CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L2 → CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L2 → CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-L3</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L3 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T3-L3</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T3 / L3 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T3-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / S2 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / S2 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-AC3-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / AC3-1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-AC3-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / AC3-1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-1 · 18 m</small></div>
+  <div class="nhan"><b>T3-AC3-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / AC3-2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-AC3-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / AC3-2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T3-2 · 22 m</small></div>
+  <div class="nhan"><b>T3-WH3-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / WH3-1 → BÌNH NÓNG LẠNH WC3-1 · 15 m</small></div>
+  <div class="nhan"><b>T3-WH3-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / WH3-1 → BÌNH NÓNG LẠNH WC3-1 · 15 m</small></div>
+  <div class="nhan"><b>T3-WH3-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / WH3-2 → BÌNH NÓNG LẠNH WC3-2 · 20 m</small></div>
+  <div class="nhan"><b>T3-WH3-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / WH3-2 → BÌNH NÓNG LẠNH WC3-2 · 20 m</small></div>
+  <div class="nhan"><b>T3-R3</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / R3 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T3-R3</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T3 / R3 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T4-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L1 → CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L1 → CẤP ĐIÊN CHIẾU SÁNG P. NGỦ 4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L2 → CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L2 → CẤP ĐIỆN CHIẾU SÁNG P. NGỦ 4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-L3</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L3 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T4-L3</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T4 / L3 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T4-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / S2 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / S2 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI 4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-AC4-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / AC4-1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-AC4-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / AC4-1 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-1 · 18 m</small></div>
+  <div class="nhan"><b>T4-AC4-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / AC4-2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-AC4-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / AC4-2 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T4-2 · 22 m</small></div>
+  <div class="nhan"><b>T4-WH4-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / WH4-1 → BÌNH NÓNG LẠNH WC4-1 · 15 m</small></div>
+  <div class="nhan"><b>T4-WH4-1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / WH4-1 → BÌNH NÓNG LẠNH WC4-1 · 15 m</small></div>
+  <div class="nhan"><b>T4-WH4-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / WH4-2 → BÌNH NÓNG LẠNH WC4-2 · 20 m</small></div>
+  <div class="nhan"><b>T4-WH4-2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / WH4-2 → BÌNH NÓNG LẠNH WC4-2 · 20 m</small></div>
+  <div class="nhan"><b>T4-R4</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / R4 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T4-R4</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T4 / R4 → CẤP NGUỒN RÈM · 20 m</small></div>
+  <div class="nhan"><b>T5-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T5 / L1 → CẤP ĐIÊN CHIẾU SÁNG P.BẾP + ĂN · 18 m</small></div>
+  <div class="nhan"><b>T5-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T5 / L1 → CẤP ĐIÊN CHIẾU SÁNG P.BẾP + ĂN · 18 m</small></div>
+  <div class="nhan"><b>T5-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T5 / L2 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T5-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T5 / L2 → CẤP ĐIỆN CHIẾU SÁNG SẢNH + WC · 15 m</small></div>
+  <div class="nhan"><b>T5-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 18 m</small></div>
+  <div class="nhan"><b>T5-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 18 m</small></div>
+  <div class="nhan"><b>T5-S2</b><span>Cu/PVC 2(1x4)mm2 + E(1x4)mm2</span><small>TỦ T5 / S2 → CẤP ĐIỆN BẾP TỪ · 12 m</small></div>
+  <div class="nhan"><b>T5-S2</b><span>Cu/PVC 2(1x4)mm2 + E(1x4)mm2</span><small>TỦ T5 / S2 → CẤP ĐIỆN BẾP TỪ · 12 m</small></div>
+  <div class="nhan"><b>T5-AC5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / AC5 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T5 · 18 m</small></div>
+  <div class="nhan"><b>T5-AC5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / AC5 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T5 · 18 m</small></div>
+  <div class="nhan"><b>T5-WH5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / WH5 → BÌNH NÓNG LẠNH WC T5 · 15 m</small></div>
+  <div class="nhan"><b>T5-WH5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / WH5 → BÌNH NÓNG LẠNH WC T5 · 15 m</small></div>
+  <div class="nhan"><b>T5-R5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / R5 → CẤP NGUỒN RÈM T5 · 18 m</small></div>
+  <div class="nhan"><b>T5-R5</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T5 / R5 → CẤP NGUỒN RÈM T5 · 18 m</small></div>
+  <div class="nhan"><b>T6-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T6 / L1 → CẤP ĐIÊN CHIẾU SÁNG · 18 m</small></div>
+  <div class="nhan"><b>T6-L1</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T6 / L1 → CẤP ĐIÊN CHIẾU SÁNG · 18 m</small></div>
+  <div class="nhan"><b>T6-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T6 / L2 → CẤP ĐIỆN SÂN TRƯỚC · 20 m</small></div>
+  <div class="nhan"><b>T6-L2</b><span>Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2</span><small>TỦ T6 / L2 → CẤP ĐIỆN SÂN TRƯỚC · 20 m</small></div>
+  <div class="nhan"><b>T6-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 18 m</small></div>
+  <div class="nhan"><b>T6-S1</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S1 → CẤP ĐIỆN Ổ CẮM, CAMERA, WIFI · 18 m</small></div>
+  <div class="nhan"><b>T6-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S2 → CẤP ĐIỆN Ổ CẮM NGOÀI TRỜI · 20 m</small></div>
+  <div class="nhan"><b>T6-S2</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S2 → CẤP ĐIỆN Ổ CẮM NGOÀI TRỜI · 20 m</small></div>
+  <div class="nhan"><b>T6-S3</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S3 → Ổ CẮM MÁY GIẶT, BƠM TĂNG ÁP · 15 m</small></div>
+  <div class="nhan"><b>T6-S3</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / S3 → Ổ CẮM MÁY GIẶT, BƠM TĂNG ÁP · 15 m</small></div>
+  <div class="nhan"><b>T6-AC6</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / AC6 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T6 · 18 m</small></div>
+  <div class="nhan"><b>T6-AC6</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / AC6 → CẤP ĐIỆN DÀN LẠNH ĐIỀU HOÀ T6 · 18 m</small></div>
+  <div class="nhan"><b>T6-R6</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / R6 → CẤP NGUỒN RÈM T6 · 18 m</small></div>
+  <div class="nhan"><b>T6-R6</b><span>Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2</span><small>TỦ T6 / R6 → CẤP NGUỒN RÈM T6 · 18 m</small></div>
+</section>
+</body></html>

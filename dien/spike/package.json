@@ -1,0 +1,12 @@
+{
+  "name": "dxf-tieng-viet-spike",
+  "private": true,
+  "type": "module",
+  "description": "GĐ0 — thử xuất DXF tiếng Việt cho công cụ sơ đồ nguyên lý tủ điện",
+  "scripts": {
+    "build": "node tao-dxf-thu.mjs"
+  },
+  "dependencies": {
+    "@tarikjabiri/dxf": "2.10.0"
+  }
+}

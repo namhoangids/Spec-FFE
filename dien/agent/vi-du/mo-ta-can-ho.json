@@ -1,0 +1,19 @@
+{
+  "duAn": { "ten": "CĂN HỘ A-1205", "loaiCongTrinh": "Căn hộ", "congTy": "22 Thanh Cong, Ba Dinh, Ha Noi", "tyLe": "1:50" },
+  "nguon": { "soPha": 1 },
+  "tuTong": { "ma": "CH", "ten": "CĂN HỘ A-1205", "tang": "A1205" },
+  "dieuHoa": "cục bộ",
+  "tang": [
+    { "ten": "A1205", "phong": [
+      { "loai": "phòng khách", "ten": "P.KHÁCH", "dienTich": 25 },
+      { "loai": "bếp", "dienTich": 12.5 },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ MASTER", "dienTich": 16.8 },
+      { "loai": "wc", "ten": "WC MASTER", "tam": true },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 2", "dienTich": 12.2 },
+      { "loai": "wc", "ten": "WC2", "tam": true },
+      { "loai": "giặt phơi", "ten": "LÔ GIA" },
+      { "loai": "phòng làm việc", "ten": "P.LÀM VIỆC", "dienTich": 10.5 },
+      { "loai": "ban công", "ten": "BAN CÔNG" }
+    ] }
+  ]
+}

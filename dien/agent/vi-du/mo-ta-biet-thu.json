@@ -1,0 +1,52 @@
+{
+  "duAn": {
+    "ten": "BIỆT THỰ MẪU 4 TẦNG",
+    "chuDauTu": "Khách hàng mẫu",
+    "diaChi": "Hà Nội",
+    "congTy": "22 Thanh Cong, Ba Dinh, Ha Noi",
+    "loaiCongTrinh": "Nhà ở / biệt thự",
+    "tyLe": "1:50",
+    "soBanVeDau": "E.601"
+  },
+  "nguon": { "soPha": 3, "chieuDaiCap": 25, "kieuDi": "Máng cáp" },
+  "tuTong": { "ma": "T1", "tang": "T1" },
+  "dieuHoa": "cục bộ",
+  "tang": [
+    { "ten": "T1", "rem": true, "phong": [
+      { "loai": "phòng khách", "dienTich": 35 },
+      { "loai": "phòng ăn", "dienTich": 20 },
+      { "loai": "bếp", "dienTich": 18 },
+      { "loai": "wc", "ten": "WC CHUNG", "tam": false },
+      { "loai": "sảnh" },
+      { "loai": "gara", "dienTich": 30 },
+      { "loai": "sân vườn", "ten": "SÂN VƯỜN" }
+    ] },
+    { "ten": "T2", "rem": true, "phong": [
+      { "loai": "phòng ngủ", "ten": "P.NGỦ MASTER", "dienTich": 28 },
+      { "loai": "wc", "ten": "WC MASTER" },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 2", "dienTich": 18 },
+      { "loai": "wc", "ten": "WC2" },
+      { "loai": "hành lang" }
+    ] },
+    { "ten": "T3", "rem": true, "phong": [
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 3" },
+      { "loai": "phòng ngủ", "ten": "P.NGỦ 4" },
+      { "loai": "wc", "ten": "WC3" },
+      { "loai": "wc", "ten": "WC4" },
+      { "loai": "phòng làm việc", "dienTich": 14 },
+      { "loai": "hành lang" }
+    ] },
+    { "ten": "T4", "phong": [
+      { "loai": "phòng thờ" },
+      { "loai": "giặt phơi" },
+      { "loai": "wc", "ten": "WC TUM" },
+      { "loai": "sân thượng", "ten": "SÂN THƯỢNG" },
+      { "loai": "kho" }
+    ] }
+  ],
+  "thietBi": [
+    { "loai": "thang máy", "tang": "T1" },
+    { "loai": "bơm", "tang": "T1" },
+    { "loai": "tủ điện nhẹ", "tang": "T1" }
+  ]
+}

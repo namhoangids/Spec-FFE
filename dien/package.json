@@ -1,0 +1,18 @@
+{
+  "name": "indust-so-do-nguyen-ly",
+  "private": true,
+  "type": "module",
+  "description": "Công cụ sơ đồ nguyên lý tủ điện: Excel nhập liệu → lõi tính toán → bộ bản vẽ DXF/SVG theo template E.601",
+  "scripts": {
+    "test": "node --test engine/tests/*.test.mjs",
+    "vi-du": "node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx out/vi-du-HDMON",
+    "kiem-tra-app": "node app/kiem-tra-app.mjs"
+  },
+  "dependencies": {
+    "@tarikjabiri/dxf": "2.10.0",
+    "xlsx": "0.18.5"
+  },
+  "devDependencies": {
+    "jszip": "3.10.1"
+  }
+}
