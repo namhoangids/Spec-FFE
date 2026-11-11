@@ -77,6 +77,8 @@ for (const t of to) {
   writeFileSync(join(outDir, `${t.tenFile}-R12.dxf`), t.r12(), "ascii");
   if (t.loai === "tong") {
     console.log(`✔ ${t.tenFile}: sơ đồ cấp điện tổng, ${t.du.bang.length} tủ`);
+  } else if (t.loai === "dn") {
+    console.log(`✔ ${t.tenFile}: ${t.ten.toLowerCase()}`);
   } else {
     const cb = t.du.panel.incomer;
     console.log(`✔ ${t.tenFile}: ${t.du.circuits.length} lộ ra${cb ? `, ${cb.type} ${cb.poles} ${cb.rating}` : ""}, ${t.du.panel.name}${t.tong > 1 ? ` (tờ ${t.thu + 1}/${t.tong})` : ""}`);
@@ -92,6 +94,12 @@ const bangGia = fileGia ? docBangGia(XLSX, readFileSync(fileGia)) : null;
 const boqOpt = { bangGia, haoHut: haoHut == null ? undefined : Number(haoHut) };
 writeFileSync(join(outDir, "boq.xlsx"), XLSX.write(bo.boqExcel(XLSX, boqOpt), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "du-an.json"), JSON.stringify(duAn, null, 2), "utf8");
+if (bo.dienNhe) {
+  writeFileSync(join(outDir, "dien-nhe.xlsx"), XLSX.write(bo.dienNheExcel(XLSX), { type: "buffer", bookType: "xlsx" }));
+  const t = bo.dienNhe.tong;
+  console.log(`Điện nhẹ: ${t.data} ổ data, ${t.ap} AP, ${t.cam} camera — ${t.lienKet} link; ` +
+    bo.dienNhe.rack.map((r) => `rack ${r.ma} ${r.uRack}U, UPS ${r.ups.va} VA, nguồn ${r.nguon ? `${r.nguon.tu}/${r.nguon.ma}` : "—"}`).join("; ") + " (dien-nhe.xlsx)");
+}
 if (bocKhoi) writeFileSync(join(outDir, "boc-khoi.xlsx"), XLSX.write(xuatBaoCaoBocKhoi(XLSX, bocKhoi.baoCao), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "canh-bao.txt"), vanBanCanhBao(kq), "utf8");
 

@@ -108,7 +108,8 @@ drop.addEventListener("drop", async (e) => {
 });
 
 // --- Vẽ giao diện ----------------------------------------------------------------
-const dem = (ma, muc) => S.kq.canhBao.filter((c) => (ma == null || c.tu === ma) && c.muc === muc).length;
+const dem = (ma, muc) => S.kq.canhBao.filter((c) => (ma == null || c.tu === ma) && !c.dienNhe && c.muc === muc).length;
+const demDn = (ma, muc) => S.kq.canhBao.filter((c) => c.dienNhe && c.tu === ma && c.muc === muc).length;
 
 function veTatCa() {
   const { kq, to } = S;
@@ -139,6 +140,15 @@ const tuCua = (x) => S.kq.tu.find((t) => t.ma === x.ma);
 
 function veCay() {
   $("tree").innerHTML = S.to.map((x, i) => {
+    if (x.loai === "dn") {
+      // Tờ điện nhẹ: lỗi / cảnh báo của rack ghi ở tờ rack đó
+      const ma = x.ma.startsWith("RACK-") ? x.ma.slice(5) : null;
+      const l = ma ? demDn(ma, "loi") : 0, c = ma ? demDn(ma, "canhbao") : 0;
+      return `<button class="node" data-i="${i}" aria-current="${i === S.chon}" style="padding-left:16px">
+        <span class="no">${esc(x.du.sheet.drawingNo)}</span><span class="nm">${esc(x.ten)}</span>
+        ${l ? `<span class="dot loi" title="${l} lỗi">${l}</span>` : ""}${c ? `<span class="dot canhbao" title="${c} cảnh báo">${c}</span>` : ""}
+      </button>`;
+    }
     const tong = x.loai === "tong";
     const t = tong ? null : tuCua(x);
     const ten = tong ? "Sơ đồ tổng" : `${t.ten}${x.tong > 1 ? ` (${x.thu + 1}/${x.tong})` : ""}`;
@@ -171,6 +181,7 @@ for (const b of document.querySelectorAll("[data-view]")) {
 function veTu() {
   const x = S.to[S.chon];
   if (x.loai === "tong") return veTong(x);
+  if (x.loai === "dn") return veDienNhe(x);
   const t = tuCua(x);
   const cha = t.cha ? S.kq.tu.find((y) => y.ma === t.cha) : null;
   $("phead").innerHTML = `<div><div class="kick">${esc(x.du.sheet.drawingNo)}${x.tong > 1 ? ` · tờ ${x.thu + 1}/${x.tong}` : ""} · ${t.soPha === 3 ? "3 pha" : "1 pha"}${cha ? ` · cấp từ ${esc(cha.ten)}` : " · tủ gốc"}</div>
@@ -247,6 +258,46 @@ function bangMach(t) {
     <tbody>${rows}${nhom}</tbody></table></div>`;
 }
 
+// Tờ điện nhẹ (E.7xx): thông số, bản vẽ, bảng (thiết bị rack / đấu nối cổng / tính toán rack), kiểm tra
+function veDienNhe(x) {
+  const dn = S.kq.dienNhe;
+  const ma = x.ma.startsWith("RACK-") ? x.ma.slice(5) : null;
+  const r = ma ? dn.rack.find((y) => y.ma === ma) : null;
+  $("phead").innerHTML = `<div><div class="kick">${esc(x.du.sheet.drawingNo)} · điện nhẹ</div><h2>${esc(x.du.sheet.title)}</h2></div>`;
+  const facts = r ? [
+    ["Tủ rack", `${r.uRack}U ${r.kieuRack} · ${r.uTong}U thiết bị`],
+    ["Liên kết", `${r.dem.data} data · ${r.dem.ap} AP · ${r.dem.cam} camera · ${r.soPP} patch panel`],
+    ["PoE cần / ngân sách", r.dem.ap + r.dem.cam ? `${Math.ceil(r.poe.can)} / ${r.poe.nganSach} W` : "—"],
+    ["Tải · UPS", `${Math.round(r.w)} W · ${r.ups.va} VA`],
+    ["Nguồn cấp", r.nguon ? `${r.nguon.tu} / ${r.nguon.ma} · ${r.nguon.P} W${r.nguon.coSan ? "" : " (tự thêm)"}` : "—"],
+  ] : [
+    ["Tổng", `${dn.tong.data} ổ data · ${dn.tong.ap} AP · ${dn.tong.cam} camera`],
+    ["Link Cat6", `${dn.tong.lienKet}`],
+    ["Tủ rack", dn.rack.map((y) => `${y.ma} ${y.uRack}U`).join(", ")],
+    ["NVR", dn.nvr ? `${dn.nvr.kenh} kênh · ${dn.nvr.soHdd} × ${dn.nvr.hddTB} TB` : "—"],
+  ];
+  $("facts").innerHTML = facts.map(([k, v]) => `<div class="fact"><div class="kick">${k}</div><div class="v tnum">${esc(v)}</div></div>`).join("");
+  const pane = $("pane");
+  const dsKt = S.kq.canhBao.filter((c) => c.dienNhe && (!ma || c.tu === ma || !c.tu));
+  if (S.view === "ve") pane.innerHTML = `<div class="sheet">${S.to[S.chon].svg.replace(/^<\?xml[^>]*>\s*/, "")}</div>`;
+  else if (S.view === "bang") {
+    pane.innerHTML = r
+      ? `<div class="tblwrap"><table><thead><tr><th>Thiết bị</th><th>Số U</th><th>Công suất (W)</th></tr></thead><tbody>
+        ${r.thietBi.map((y) => `<tr><td>${esc(y.ten)}</td><td class="n">${y.u}</td><td class="n">${y.w || "—"}</td></tr>`).join("")}
+        <tr><td>Tải PoE (AP, camera)</td><td></td><td class="n">${r.poe.tai || "—"}</td></tr>
+        <tr><td><b>Tổng</b></td><td class="n"><b>${r.uTong}</b></td><td class="n"><b>${Math.round(r.w)}</b></td></tr></tbody></table></div>`
+      : `<div class="tblwrap"><table><thead><tr><th>Mã nhãn</th><th>Rack</th><th>Tầng</th><th>Phòng</th><th>Loại</th><th>Thiết bị</th><th>L (m)</th></tr></thead><tbody>
+        ${dn.lienKet.map((y) => `<tr class="${y.L > S.kq.quyTac.dienNhe.cat6Max ? "canhbao" : ""}"><td class="nw"><b>${esc(y.ma)}</b></td><td>${esc(y.rack)}</td><td>${esc(y.tang)}</td><td>${esc(y.phong)}</td><td>${esc(y.moTa)}</td><td>${esc(y.thietBi)}</td><td class="n">${y.L}</td></tr>`).join("")}
+        </tbody></table></div>`;
+  } else if (S.view === "nl") {
+    pane.innerHTML = `<p class="crumb">Đợt này sửa số liệu điện nhẹ ở sheet <b>Dien nhe</b> và <b>Tu rack</b> của file Excel (hoặc <code>dienNhe</code> trong du-an.json) rồi nạp lại; nhập liệu điện nhẹ ngay trên web làm ở đợt sau.</p>
+      <div class="tblwrap"><table><thead><tr><th>Tầng</th><th>Phòng</th><th>Ổ data</th><th>AP</th><th>Camera</th><th>Rack</th><th>L (m)</th></tr></thead><tbody>
+      ${dn.phong.map((p) => `<tr><td>${esc(p.tang ?? "")}</td><td>${esc(p.phong ?? "")}</td><td class="n">${p.data || ""}</td><td class="n">${p.ap || ""}</td><td class="n">${(p.camTrong || 0) + (p.camNgoai || 0) || ""}</td><td>${esc(p.rack)}</td><td class="n">${p.L ?? ""}</td></tr>`).join("")}
+      </tbody></table></div>`;
+  } else if (S.view === "kt") pane.innerHTML = dsCanhBao(dsKt, false);
+  else pane.innerHTML = dsCanhBao(S.kq.canhBao, true);
+}
+
 function dsCanhBao(ds, coTu) {
   if (!ds.length) return `<p class="crumb">Không có lỗi, cảnh báo hay ghi chú.</p>`;
   return ["loi", "canhbao", "ghichu"].flatMap((m) => ds.filter((c) => c.muc === m)).map((c) =>
@@ -312,6 +363,7 @@ $("zip").addEventListener("click", async () => {
     zip.file("nhan.xlsx", nhanExcel());
     zip.file("boq.xlsx", boqExcel());
     if (S.bocKhoi) zip.file("boc-khoi.xlsx", bocKhoiExcel());
+    if (S.bo.dienNhe) zip.file("dien-nhe.xlsx", window.XLSX.write(S.bo.dienNheExcel(window.XLSX), { type: "array", bookType: "xlsx" }));
     zip.file("nhan-tu.html", S.bo.nhanHtml());
     zip.file("thuyet-minh.docx", await thuyetMinhWord());
     zip.file("thuyet-minh.html", S.bo.thuyetMinhHtml());

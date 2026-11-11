@@ -52,6 +52,26 @@ export const QUY_TAC = {
     duongCong: { B: [3, 5], C: [5, 10], D: [10, 20] },   // ngưỡng cắt từ MCB/RCBO (× In) [dưới, trên] — IEC 60898-1
   },
 
+  // --- Điện nhẹ (mục 8): mạng LAN / Wi-Fi, camera, tủ rack. Thiết bị ghi theo chủng loại, chưa gắn hãng ---
+  dienNhe: {
+    duPhongCong: 20,            // % — dự phòng cổng switch
+    poeAp: 20, poeCam: 10,      // W — công suất PoE mỗi AP / camera
+    kPoe: 1.2,                  // hệ số dự trữ ngân sách PoE
+    cat6Max: 90,                // m — chiều dài tối đa link cố định Cat6 (TIA-568)
+    lMacDinh: 30,               // m — chiều dài cáp ngang khi thiếu số liệu (có gắn cờ)
+    bitrate: 4, ngayLuu: 30,    // CCTV: Mbps mỗi camera (4 MP, H.265), số ngày lưu
+    hddTB: 8,                   // TB — dung lượng mỗi ổ cứng NVR
+    ppCong: 24,                 // cổng mỗi patch panel
+    kRack: 1.3,                 // hệ số dự phòng U tủ rack
+    kUps: 1.25, pfUps: 0.9,     // UPS: VA ≥ ΣW / PF · k
+    switchThuong: [[8, 8], [16, 12], [24, 18], [48, 35]],                       // [cổng, W]
+    switchPoe: [[8, 120, 15], [16, 240, 25], [24, 370, 35], [48, 740, 60]],     // [cổng, ngân sách PoE W, W tự dùng]
+    nvr: [[4, 1, 1], [8, 1, 1], [16, 2, 1], [32, 4, 2], [64, 8, 2]],            // [kênh, số khay ổ cứng, U]
+    rackU: [6, 9, 12, 15, 20, 27, 42], rackTreoMax: 15,                         // ≤ 15U: tủ treo tường
+    upsVA: [1000, 1500, 2000, 3000, 6000, 10000],
+    congSuat: { router: 20, modem: 10, nvr: 15, hdd: 8 },                       // W
+  },
+
   // --- Theo loại mạch (mục 6.3) ------------------------------------------
   // rcd: "30mA" bắt buộc · "khong" không cần · "tuy_chon" không đặt mặc định
   loaiMach: {
@@ -115,6 +135,7 @@ export function taoQuyTac(ghiDe = {}) {
     k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) },
     ks: { ...QUY_TAC.ks, ...(ghiDe.ks || {}) },
     nganMach: { ...QUY_TAC.nganMach, ...(ghiDe.nganMach || {}) },
+    dienNhe: { ...QUY_TAC.dienNhe, ...(ghiDe.dienNhe || {}) },
   };
 }
 

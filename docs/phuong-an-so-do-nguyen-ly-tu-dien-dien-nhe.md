@@ -541,8 +541,15 @@ Chốt ngày 07/11/2026.
   - Chọn lọc vùng ngắn mạch giữa CB tổng / lộ cấp tủ trên và các CB phía sau: toàn phần hoặc một phần tới Is (theo dòng).
   - Có trong bảng tính (sheet `Ngan mach`), thuyết minh (mục 3.4), E.600 (cột Ik), web app.
 
+- **Điện nhẹ đợt 1 — mạng LAN / Wi-Fi, camera, tủ rack (11/11/2026):** `dien/engine/dien-nhe.mjs`, `dien/template/dien-nhe.mjs`.
+  - Đầu vào: sheet `Dien nhe` (thêm cột chiều dài cáp TB) và sheet mới `Tu rack`.
+  - Tính theo mục 8: switch (cổng + 20%, PoE), patch panel, NVR (kênh, dung lượng, khay ổ), cỡ tủ (U × 1,3), UPS (ΣW / 0,9 × 1,25), mã cổng TIA-606, Cat6 ≤ 90 m, trục Cat6 / quang.
+  - Nguồn rack tự thành mạch `DNn` trong tủ điện cấp, có tham chiếu chéo.
+  - Bản vẽ E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… mặt đứng tủ rack (theo phong cách E.601).
+  - File `dien-nhe.xlsx` (bảng đấu nối cổng), BOQ nhóm F, thuyết minh mục 06, web app. Thiết bị ghi theo chủng loại, chưa gắn hãng.
+
 **Tiếp theo (GĐ2 đợt 2):**
-- **Điện nhẹ (GĐ3):** sơ đồ trục, rack, KNX, bảng đấu nối, ELV-BOQ.
+- **Điện nhẹ đợt 2:** truyền hình, kiểm soát ra vào, chuông cửa, âm thanh, KNX; nhập liệu điện nhẹ trên web; bóc khối block điện nhẹ; agent gợi ý số ổ / AP theo phòng.
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.

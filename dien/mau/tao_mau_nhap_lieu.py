@@ -171,6 +171,7 @@ DU_AN = [
     ("TY_LE", "Tỷ lệ (Scale)", ""),
     ("SO_BV_TONG", "Số bản vẽ sơ đồ cấp điện tổng", "Trống = liền trước tờ tủ đầu (E.601 → E.600)"),
     ("SO_BV_DAU", "Số bản vẽ tờ tủ đầu tiên", "Các tờ sau tăng dần theo thứ tự tủ: E.601, E.602…; tủ nhiều mạch tự ngắt thêm tờ"),
+    ("SO_BV_DN", "Số bản vẽ điện nhẹ (tờ đầu)", "Trống = E.700: E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… tủ rack"),
     ("REV", "Revision", ""),
     ("UF", "Điện áp pha Uf (V)", "Trống = theo sheet Quy tac"),
     ("UD", "Điện áp dây Ud (V)", "Trống = theo sheet Quy tac"),
@@ -411,7 +412,7 @@ def build(path, du_lieu):
     head_dn = ["Tầng", "Phòng / khu vực", "Ổ data", "Ổ TV", "AP Wi-Fi", "Camera trong nhà",
                "Camera ngoài trời", "Cửa kiểm soát (ACS)", "Nút gọi chuông cửa (ngoài)",
                "Màn hình chuông cửa (trong)", "Loa (số lượng)", "Công suất tap mỗi loa (W)",
-               "Vùng âm thanh", "Thiết bị KNX (số lượng)", "Tủ rack phục vụ", "Ghi chú"]
+               "Vùng âm thanh", "Thiết bị KNX (số lượng)", "Tủ rack phục vụ", "Chiều dài cáp TB (m)", "Ghi chú"]
     for c, h in enumerate(head_dn, start=1):
         dn.cell(row=1, column=c, value=h)
     style_header(dn, 1, len(head_dn), height=48)
@@ -423,7 +424,7 @@ def build(path, du_lieu):
         for c in range(1, len(head_dn) + 1):
             v = data[c - 1] if data else None
             put(dn, r, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT,
-                align=CENTER if 3 <= c <= 12 or c == 14 else None)
+                align=CENTER if 3 <= c <= 12 or c in (14, 16) else None)
     tot = 2 + n_elv
     put(dn, tot, 1, "Tổng", font=F_BOLD, fill=FILL_CALC)
     put(dn, tot, 2, None, fill=FILL_CALC)
@@ -436,8 +437,25 @@ def build(path, du_lieu):
     put(dn, tot + 1, 3, f"=SUMPRODUCT(K2:K{tot - 1},L2:L{tot - 1})", font=F_BOLD, fill=FILL_CALC, align=CENTER)
     dn.merge_cells(start_row=tot, start_column=1, end_row=tot, end_column=2)
     dn.merge_cells(start_row=tot + 1, start_column=1, end_row=tot + 1, end_column=2)
-    set_widths(dn, [6, 24, 8, 7, 8, 10, 10, 11, 12, 12, 9, 11, 11, 11, 10, 28])
+    set_widths(dn, [6, 24, 8, 7, 8, 10, 10, 11, 12, 12, 9, 11, 11, 11, 10, 10, 28])
     dn.freeze_panes = "C2"
+
+    # --- Tu rack (điện nhẹ) ------------------------------------------------------
+    rk = wb.create_sheet("Tu rack", 4)
+    head_rk = ["Mã rack", "Tầng", "Vị trí", "Cấp nguồn từ tủ", "Mã lộ cấp nguồn (trống = tự thêm)", "Chiều dài cáp nguồn (m)",
+               "Chiều dài trục tới rack trung tâm (m)", "Rack trung tâm", "Ghi chú"]
+    for c, h in enumerate(head_rk, start=1):
+        rk.cell(row=1, column=c, value=h)
+    style_header(rk, 1, len(head_rk), height=48)
+    racks = du_lieu.get("rack", [])
+    for i in range(10):
+        data = racks[i] if i < len(racks) else None
+        for c in range(1, len(head_rk) + 1):
+            v = data[c - 1] if data else None
+            put(rk, 2 + i, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT, align=CENTER if c in (2, 6, 7, 8) else None)
+    add_list_validation(rk, "H2:H11", '"Có,Không"')
+    set_widths(rk, [9, 7, 18, 12, 16, 12, 14, 10, 34])
+    rk.freeze_panes = "B2"
 
     # --- Huong dan -------------------------------------------------------------
     hd = wb.create_sheet("Huong dan", 0)
@@ -456,7 +474,10 @@ def build(path, du_lieu):
                     "(mã theo cột 'Mã lộ cấp', vị trí theo cột 'Đặt sau lộ')."),
         ("Mach", "Mỗi dòng là một lộ ra. Bắt buộc: Mã tủ, Mã lộ, Loại mạch, Phụ tải, Công suất, Chiều dài. "
                  "Để trống Pha thì công cụ tự cân pha."),
-        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng (dùng ở GĐ3)."),
+        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng và tủ rack phục vụ. Đợt 1 tính: ổ data, AP Wi-Fi, camera "
+                     "(switch, PoE, patch panel, NVR, rack, UPS) và vẽ tờ E.7xx; TV, ACS, chuông cửa, loa, KNX làm ở đợt sau."),
+        ("Tu rack", "Mỗi dòng một tủ rack: tầng đặt, tủ điện cấp nguồn (công cụ tự thêm mạch 'DNn' vào tủ đó nếu để trống mã lộ), "
+                    "chiều dài trục về rack trung tâm (> 90 m thì dùng cáp quang)."),
         ("Quy tac", "Bộ quy tắc mặc định đề xuất. Công cụ dùng các giá trị trong sheet này khi tính."),
         ("Danh muc", "Các danh sách chọn."),
         ("Công cụ tự làm", None),
@@ -551,11 +572,12 @@ DB_T1 = {
         mach("DB-T1", "DP2", "Dự phòng", "DỰ PHÒNG", None, None, tb="MCB 1P 20A", ly_do="Dự phòng cho ổ cắm bếp"),
     ],
     "dien_nhe": [
-        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", ""],
-        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", ""],
-        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", ""],
-        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", "AP và loa loại ngoài trời"],
+        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", 12, ""],
+        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", 15, ""],
+        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", 18, ""],
+        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", 35, "AP và loa loại ngoài trời"],
     ],
+    "rack": [["R1", "T1", "Gầm cầu thang", "DB-T1", "", 5, "", "Có", "Rack trung tâm"]],
 }
 
 # Ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON): tủ T1 ở tầng 1 cấp cho các tủ tầng
@@ -641,6 +663,17 @@ HDMON = {
             ("DP", "Dự phòng", "DỰ PHÒNG", None, None),
         ]),
     ],
+    # Điện nhẹ (giả định): 1 rack ở T1, cáp ngang tính từ rack lên các tầng (≈ 3,6 m/tầng + tuyến ngang)
+    "dien_nhe": [
+        ["T1", "Sảnh, P.khách", 2, 1, 1, 1, 0, 0, 0, 0, 0, None, "", 0, "R1", 15, GD],
+        ["T1", "Bếp, P.ăn", 1, 0, 1, 0, 0, 0, 0, 0, 0, None, "", 0, "R1", 18, GD],
+        ["T1", "Sân trước, cổng, gara", 0, 0, 0, 0, 3, 0, 0, 0, 0, None, "", 0, "R1", 30, f"Camera ngoài trời — {GD}"],
+        *[dong for k in range(2, 6) for dong in (
+            [f"T{k}", "Các phòng ngủ", 2, 2, 0, 0, 0, 0, 0, 0, 0, None, "", 0, "R1", 14 + 5 * k, GD],
+            [f"T{k}", "Sảnh tầng, hành lang", 0, 0, 1, 1, 0, 0, 0, 0, 0, None, "", 0, "R1", 12 + 5 * k, GD])],
+        ["T6", "P.thờ, sân thượng", 1, 0, 1, 0, 1, 0, 0, 0, 0, None, "", 0, "R1", 45, GD],
+    ],
+    "rack": [["R1", "T1", "Phòng kỹ thuật T1", "T1", "", 8, "", "Có", f"Rack trung tâm — {GD}"]],
 }
 
 
@@ -652,7 +685,7 @@ _INFO_SANG_MA = {
     "companyInfo": "CONG_TY", "loaiCongTrinh": "LOAI_CT", "director": "GIAM_DOC", "design": "THIET_KE",
     "checkBy": "KIEM_TRA", "madeBy": "NGUOI_VE", "date": "NGAY", "scale": "TY_LE", "soBanVeTong": "SO_BV_TONG",
     "soBanVeDau": "SO_BV_DAU", "rev": "REV", "uf": "UF", "ud": "UD", "noiDat": "NOI_DAT", "ikNguon": "IK_NGUON",
-    "mbaKva": "MBA_KVA", "mbaUk": "MBA_UK",
+    "mbaKva": "MBA_KVA", "mbaUk": "MBA_UK", "soBanVeDienNhe": "SO_BV_DN",
     "duMax": "DU_MAX", "bangGia": "BANG_GIA", "chietKhau": "CHIET_KHAU",
 }
 _TU_SANG_COT = {
@@ -668,6 +701,11 @@ _MACH_SANG_COT = {
     "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè",
     "ghiChu": "Ghi chú",
 }
+
+
+_DN_COT = ["tang", "phong", "data", "tv", "ap", "camTrong", "camNgoai", "acs", "chuongNgoai", "chuongTrong", "loa", "loaW",
+           "vungAm", "knx", "rack", "L", "ghiChu"]
+_RACK_COT = ["ma", "tang", "viTri", "capTu", "maMach", "lNguon", "lTruc", "trungTam", "ghiChu"]
 
 
 def tu_json(du_an):
@@ -688,7 +726,9 @@ def tu_json(du_an):
         "du_an": {_INFO_SANG_MA[k]: v for k, v in info.items() if k in _INFO_SANG_MA},
         "tu": tu,
         "mach": mach,
-        "dien_nhe": [],
+        "dien_nhe": [[p.get(k, "") if p.get(k) is not None else "" for k in _DN_COT] for p in (du_an.get("dienNhe") or {}).get("phong", [])],
+        "rack": [[("Có" if r.get("trungTam") else "") if k == "trungTam" else (r.get(k) if r.get(k) is not None else "") for k in _RACK_COT]
+                 for r in (du_an.get("dienNhe") or {}).get("rack", [])],
     }
 
 

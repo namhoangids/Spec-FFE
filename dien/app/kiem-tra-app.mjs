@@ -58,7 +58,8 @@ try {
   await page.click("#vidu");
   await page.waitForSelector("#tree .node");
   const nodes = await page.locator("#tree .node").allInnerTexts();
-  assert.equal(nodes.length, 7, "đủ 7 tờ: sơ đồ tổng + 6 tủ");
+  assert.equal(nodes.length, 10, "đủ 10 tờ: sơ đồ tổng + 6 tủ + 3 tờ điện nhẹ");
+  assert.match(nodes.slice(7).join(" "), /E\.700[\s\S]*E\.701[\s\S]*E\.702/, "tờ điện nhẹ E.700–E.702");
   assert.match(nodes[0], /E\.600\s+Sơ đồ tổng/);
   assert.match(nodes[1], /E\.601\s+T1/);
   assert.match(await page.locator("#stats").innerText(), /lỗi\s+0/i);
@@ -80,7 +81,7 @@ try {
   const [tm] = await Promise.all([page.waitForEvent("popup"), page.click("#tmxem")]);
   await tm.waitForLoadState();
   const h2 = await tm.locator("h2").allInnerTexts();
-  assert.deepEqual(h2.map((x) => x.match(/^\d+/)?.[0]), ["01", "02", "03", "04", "05", "06"], "thuyết minh đủ mục 01–06");
+  assert.deepEqual(h2.map((x) => x.match(/^\d+/)?.[0]), ["01", "02", "03", "04", "05", "06", "07"], "thuyết minh đủ mục 01–07 (06 điện nhẹ)");
   assert.equal(await tm.locator("h3", { hasText: /^5\.\d+\. Tủ/ }).count(), 6, "mỗi tủ một mục");
   await tm.close();
   const [dlTm] = await Promise.all([page.waitForEvent("download"), page.click("#tmword")]);
@@ -94,6 +95,15 @@ try {
   await page.click("[data-view=tatca]");
   assert.ok(await page.locator("#pane .msg").count() > 0);
 
+  // Tờ tủ rack (điện nhẹ): bản vẽ, bảng thiết bị, thông số nguồn cấp
+  await page.click("#tree .node >> nth=9");
+  assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ TỦ RACK R1/);
+  assert.match(await page.locator("#facts").innerText(), /20U[\s\S]*T1 \/ DN1/);
+  await page.click("[data-view=bang]");
+  assert.match(await page.locator("#pane").innerText(), /UPS 1000 VA[\s\S]*Tổng/);
+  if (anh) { await page.click("[data-view=ve]"); await page.screenshot({ path: join(anh, "app-tu-rack.png") }); }
+  await page.click("[data-view=ve]");
+
   // Nạp bóc khối (file mẫu chỉ có tên block): tính lại cả bộ, có ghi chú bóc khối, nút báo cáo hiện ra
   await page.setInputFiles("#bkfile", join(dien, "mau/vi-du-boc-khoi/boc-khoi-ten-block.csv"));
   await page.waitForSelector("#bkxlsx:not(.hide)");
@@ -104,11 +114,15 @@ try {
   const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#zip")]);
   const zip = await JSZip.loadAsync(readFileSync(await dl.path()));
   const ten = Object.keys(zip.files).sort();
-  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 14);
-  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 7);
+  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 20);
+  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 10);
+  const dnx = XLSX.read(await zip.file("dien-nhe.xlsx").async("uint8array"));
+  assert.deepEqual(dnx.SheetNames, ["Tong hop", "Thiet bi rack", "Dau noi", "Canh bao"]);
+  assert.equal(XLSX.utils.sheet_to_json(dnx.Sheets["Dau noi"], { header: 1 }).length - 1, 28, "28 link Cat6");
   for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "thuyet-minh.docx", "thuyet-minh.html", "boq.xlsx", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
   assert.ok(ten.includes("boc-khoi.xlsx"), "ZIP có báo cáo bóc khối");
   const boq = XLSX.read(await zip.file("boq.xlsx").async("uint8array"));
+  assert.ok(XLSX.utils.sheet_to_json(boq.Sheets.BOQ, { header: 1 }).some((r) => /ĐIỆN NHẸ/.test(r[1] ?? "")), "BOQ có nhóm F điện nhẹ");
   assert.ok(XLSX.utils.sheet_to_json(boq.Sheets.BOQ, { header: 1 }).some((r) => /THIẾT BỊ ĐIỆN/.test(r[1] ?? "")), "BOQ có nhóm thiết bị điện theo bóc khối");
   assert.deepEqual(boq.SheetNames, ["BOQ", "Bang gia", "Chi tiet"]);
   assert.match(String(boq.Sheets.BOQ.H8?.f ?? ""), /^ROUND\(D8\*F8/, "thành tiền là công thức");
@@ -200,7 +214,7 @@ try {
   assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 10 tờ (sơ đồ tổng, 6 tủ, 3 tờ điện nhẹ), in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<rect width="100%" height="100%" fill="#fff"/>
+<polygon points="9.81,290.741 417.093,290.741 417.093,12.073 9.81,12.073" fill="none" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<line x1="350.606" y1="12.073" x2="350.606" y2="290.741" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
+<text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ TỦ RACK R1</text>
+<text x="19.81" y="148.991" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">TỦ RACK R1 — 20U, ĐỨNG</text>
+<text x="19.81" y="154.241" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(232,86,42)">Tầng T1 · Phòng kỹ thuật T1 · rack trung tâm</text>
+<polygon points="23.81,278.741 93.81,278.741 93.81,158.741 23.81,158.741" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="27.81,274.741 89.81,274.741 89.81,162.741 27.81,162.741" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="26.81" y="272.691" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">1</text>
+<text x="26.81" y="267.091" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">2</text>
+<text x="26.81" y="261.491" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">3</text>
+<text x="26.81" y="255.891" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">4</text>
+<text x="26.81" y="250.291" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">5</text>
+<text x="26.81" y="244.691" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">6</text>
+<text x="26.81" y="239.091" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">7</text>
+<text x="26.81" y="233.491" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">8</text>
+<text x="26.81" y="227.891" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">9</text>
+<text x="26.81" y="222.291" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">10</text>
+<text x="26.81" y="216.691" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">11</text>
+<text x="26.81" y="211.091" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">12</text>
+<text x="26.81" y="205.491" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">13</text>
+<text x="26.81" y="199.891" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">14</text>
+<text x="26.81" y="194.291" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">15</text>
+<text x="26.81" y="188.691" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">16</text>
+<text x="26.81" y="183.091" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">17</text>
+<text x="26.81" y="177.491" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">18</text>
+<text x="26.81" y="171.891" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">19</text>
+<text x="26.81" y="166.291" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="end" fill="rgb(232,86,42)">20</text>
+<polygon points="28.81,168.091 88.81,168.091 88.81,162.991 28.81,162.991" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,168.091 88.81,168.091 88.81,162.991 28.81,162.991" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="166.341" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Patch panel Cat6 24 cổng (PP1)</text>
+<polygon points="28.81,173.691 88.81,173.691 88.81,168.591 28.81,168.591" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,173.691 88.81,173.691 88.81,168.591 28.81,168.591" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="171.941" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Thanh quản lý cáp</text>
+<polygon points="28.81,179.291 88.81,179.291 88.81,174.191 28.81,174.191" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,179.291 88.81,179.291 88.81,174.191 28.81,174.191" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="177.541" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Patch panel Cat6 24 cổng (PP2)</text>
+<polygon points="28.81,184.891 88.81,184.891 88.81,179.791 28.81,179.791" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,184.891 88.81,184.891 88.81,179.791 28.81,179.791" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="183.141" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Thanh quản lý cáp</text>
+<polygon points="28.81,190.491 88.81,190.491 88.81,185.391 28.81,185.391" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,190.491 88.81,190.491 88.81,185.391 28.81,185.391" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="188.741" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Switch 16 cổng</text>
+<polygon points="28.81,196.091 88.81,196.091 88.81,190.991 28.81,190.991" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,196.091 88.81,196.091 88.81,190.991 28.81,190.991" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="194.341" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Switch PoE 24 cổng (ngân sách PoE 370 W)</text>
+<polygon points="28.81,201.691 88.81,201.691 88.81,196.591 28.81,196.591" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,201.691 88.81,201.691 88.81,196.591 28.81,196.591" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="199.941" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Switch lõi 8 cổng</text>
+<polygon points="28.81,207.291 88.81,207.291 88.81,202.191 28.81,202.191" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,207.291 88.81,207.291 88.81,202.191 28.81,202.191" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="205.541" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Router / tường lửa</text>
+<polygon points="28.81,212.891 88.81,212.891 88.81,207.791 28.81,207.791" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,212.891 88.81,212.891 88.81,207.791 28.81,207.791" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="211.141" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Kệ đặt modem ISP</text>
+<polygon points="28.81,218.491 88.81,218.491 88.81,213.391 28.81,213.391" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,218.491 88.81,218.491 88.81,213.391 28.81,213.391" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="216.741" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Đầu ghi NVR 16 kênh + 2 ổ 8 TB</text>
+<polygon points="28.81,274.491 88.81,274.491 88.81,263.791 28.81,263.791" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,274.491 88.81,274.491 88.81,263.791 28.81,263.791" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="269.941" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">UPS 1000 VA (online, rack-mount)</text>
+<polygon points="28.81,263.291 88.81,263.291 88.81,258.191 28.81,258.191" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="28.81,263.291 88.81,263.291 88.81,258.191 28.81,258.191" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="58.81" y="261.541" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(0,0,0)">Thanh nguồn PDU</text>
+<text x="111.81" y="37.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">DANH MỤC THIẾT BỊ TỦ RACK</text>
+<polygon points="111.81,44.876 344.606,44.876 344.606,39.876 111.81,39.876" fill="rgb(238,238,238)" stroke="none"/>
+<line x1="111.81" y1="39.876" x2="344.606" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="44.876" x2="344.606" y2="44.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="49.876" x2="344.606" y2="49.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="54.876" x2="344.606" y2="54.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="59.876" x2="344.606" y2="59.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="64.876" x2="344.606" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="69.876" x2="344.606" y2="69.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="74.876" x2="344.606" y2="74.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="79.876" x2="344.606" y2="79.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="84.876" x2="344.606" y2="84.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="89.876" x2="344.606" y2="89.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="94.876" x2="344.606" y2="94.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="99.876" x2="344.606" y2="99.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="104.876" x2="344.606" y2="104.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="109.876" x2="344.606" y2="109.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="114.876" x2="344.606" y2="114.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="111.81" y1="114.876" x2="111.81" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="121.81" y1="114.876" x2="121.81" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="288.606" y1="114.876" x2="288.606" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="310.606" y1="114.876" x2="310.606" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="322.606" y1="114.876" x2="322.606" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="344.606" y1="114.876" x2="344.606" y2="39.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="116.81" y="43.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">STT</text>
+<text x="205.208" y="43.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">THIẾT BỊ</text>
+<text x="299.606" y="43.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">VỊ TRÍ (U)</text>
+<text x="316.606" y="43.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">SỐ U</text>
+<text x="333.606" y="43.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">CÔNG SUẤT (W)</text>
+<text x="116.81" y="48.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="122.81" y="48.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Patch panel Cat6 24 cổng (PP1)</text>
+<text x="299.606" y="48.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U20</text>
+<text x="316.606" y="48.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="48.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="116.81" y="53.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2</text>
+<text x="122.81" y="53.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Thanh quản lý cáp</text>
+<text x="299.606" y="53.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U19</text>
+<text x="316.606" y="53.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="53.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="116.81" y="58.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">3</text>
+<text x="122.81" y="58.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Patch panel Cat6 24 cổng (PP2)</text>
+<text x="299.606" y="58.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U18</text>
+<text x="316.606" y="58.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="58.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="116.81" y="63.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">4</text>
+<text x="122.81" y="63.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Thanh quản lý cáp</text>
+<text x="299.606" y="63.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U17</text>
+<text x="316.606" y="63.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="63.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="116.81" y="68.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">5</text>
+<text x="122.81" y="68.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Switch 16 cổng</text>
+<text x="299.606" y="68.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U16</text>
+<text x="316.606" y="68.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="68.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12</text>
+<text x="116.81" y="73.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">6</text>
+<text x="122.81" y="73.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Switch PoE 24 cổng (ngân sách PoE 370 W)</text>
+<text x="299.606" y="73.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U15</text>
+<text x="316.606" y="73.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="73.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">35</text>
+<text x="116.81" y="78.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">7</text>
+<text x="122.81" y="78.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Switch lõi 8 cổng</text>
+<text x="299.606" y="78.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U14</text>
+<text x="316.606" y="78.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="78.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="116.81" y="83.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="122.81" y="83.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Router / tường lửa</text>
+<text x="299.606" y="83.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U13</text>
+<text x="316.606" y="83.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="83.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20</text>
+<text x="116.81" y="88.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">9</text>
+<text x="122.81" y="88.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Kệ đặt modem ISP</text>
+<text x="299.606" y="88.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U12</text>
+<text x="316.606" y="88.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="88.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">10</text>
+<text x="116.81" y="93.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">10</text>
+<text x="122.81" y="93.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Đầu ghi NVR 16 kênh + 2 ổ 8 TB</text>
+<text x="299.606" y="93.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U11</text>
+<text x="316.606" y="93.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="93.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">31</text>
+<text x="116.81" y="98.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">11</text>
+<text x="122.81" y="98.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Thanh nguồn PDU</text>
+<text x="299.606" y="98.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U3</text>
+<text x="316.606" y="98.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1</text>
+<text x="333.606" y="98.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="116.81" y="103.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12</text>
+<text x="122.81" y="103.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">UPS 1000 VA (online, rack-mount)</text>
+<text x="299.606" y="103.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">U1–U2</text>
+<text x="316.606" y="103.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2</text>
+<text x="333.606" y="103.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="122.81" y="108.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Tải PoE cấp cho AP, camera (qua switch PoE)</text>
+<text x="333.606" y="108.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">230</text>
+<text x="122.81" y="113.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">TỔNG CÔNG SUẤT</text>
+<text x="316.606" y="113.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">13</text>
+<text x="333.606" y="113.226" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">346</text>
+<text x="111.81" y="123.876" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">DIỄN GIẢI TÍNH TOÁN:</text>
+<text x="111.81" y="127.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">1. Nguồn cấp: tủ T1, lộ DN1 — MCB 1P 10A C 6kA, Cu/PVC 2(1x1,5)mm2 + E(1x1,5)mm2 (công suất mạch 440 W = tải 346 W × 1.25).</text>
+<text x="111.81" y="131.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2. UPS 1000 VA ≥ 346 W / 0.9 × 1.25 = 481 VA; thời gian lưu điện theo yêu cầu dự án.</text>
+<text x="111.81" y="135.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">3. Ổ data: 12 cổng + 20% dự phòng → switch 16 cổng.</text>
+<text x="111.81" y="139.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">4. PoE: 7 AP × 20 W + 9 camera × 10 W = 230 W × 1.2 = 276 W ≤ ngân sách 370 W.</text>
+<text x="111.81" y="143.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">5. Patch panel: 28 link → 2 × 24 cổng. Tủ: 13U × 1.3 = 16,9U → 20U, đứng.</text>
+<text x="111.81" y="147.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">6. NVR: 9 camera × 4 Mbps × 30 ngày = 11,7 TB → 2 ổ 8 TB.</text>
+<text x="111.81" y="151.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">7. Bảng đấu nối cổng – ổ: dien-nhe.xlsx, sheet Dau noi.</text>
+<text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
+<text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>
+<text x="361.142" y="38.224" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Company info:</text>
+<line x1="361.142" y1="43.682" x2="411.099" y2="43.682" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="46.035" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Director:</text>
+<line x1="361.142" y1="51.675" x2="411.099" y2="51.675" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="54.028" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Design:</text>
+<line x1="361.142" y1="59.668" x2="411.099" y2="59.668" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="62.021" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Check by:</text>
+<line x1="361.142" y1="67.661" x2="411.099" y2="67.661" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="70.015" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Drawing title:</text>
+<line x1="361.142" y1="75.836" x2="411.099" y2="75.836" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="78.189" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Key plan:</text>
+<line x1="361.142" y1="113.985" x2="411.099" y2="113.985" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="116.338" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project notes:</text>
+<text x="361.142" y="210.983" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Client:</text>
+<line x1="361.142" y1="216.442" x2="411.099" y2="216.442" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="218.976" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Address:</text>
+<line x1="361.142" y1="224.98" x2="411.099" y2="224.98" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="226.97" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project:</text>
+<line x1="361.142" y1="232.791" x2="411.099" y2="232.791" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="235.326" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Made by:</text>
+<line x1="361.142" y1="240.966" x2="411.099" y2="240.966" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="243.137" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Date:</text>
+<line x1="361.142" y1="248.959" x2="411.099" y2="248.959" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="251.675" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Scale:</text>
+<line x1="361.142" y1="256.952" x2="411.099" y2="256.952" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="259.669" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project no:</text>
+<text x="361.142" y="120.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">1. All measurements must be</text>
+<text x="361.142" y="123.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">verified on-site before</text>
+<text x="361.142" y="127.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">construction begins.</text>
+<text x="361.142" y="133.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Do not scale this drawing.</text>
+<text x="361.142" y="137.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Dimensions to be read in</text>
+<text x="361.142" y="140.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conjunction with corresponding</text>
+<text x="361.142" y="143.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">architectural and structural</text>
+<text x="361.142" y="147.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">drawings. This drawing is</text>
+<text x="361.142" y="150.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">copyright or used with the</text>
+<text x="361.142" y="153.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">express authority of Indust</text>
+<text x="361.142" y="157.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Design.</text>
+<text x="361.142" y="163.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Ensure all foundations are</text>
+<text x="361.142" y="167.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">level and stable—verify soil</text>
+<text x="361.142" y="170.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conditions for adequate</text>
+<text x="361.142" y="173.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">support.</text>
+<text x="361.142" y="180.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">3. Coordinate electrical and</text>
+<text x="361.142" y="183.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">plumbing work with off-grid</text>
+<text x="361.142" y="187.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">solutions (if applicable, such</text>
+<text x="361.142" y="190.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">as solar power or composting</text>
+<text x="361.142" y="193.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">toilets)</text>
+<polygon points="361.142,289.833 411.099,289.833 411.099,269.85 361.142,269.85" fill="rgb(127,127,127)" stroke="none"/>
+<text x="386.12" y="42.502" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">22 Thanh Cong, Ba Dinh, Ha Noi</text>
+<text x="386.12" y="75.219" font-family="Arial, Helvetica, sans-serif" font-size="3.352" text-anchor="middle" fill="rgb(51,51,51)">SƠ ĐỒ TỦ RACK R1</text>
+<text x="386.12" y="215.398" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">Mr. Tuấn</text>
+<text x="386.12" y="222.71" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">Long Biên - Hà Nội</text>
+<text x="386.12" y="231.384" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">MR. TUẤN - HDMON</text>
+<text x="386.12" y="246.689" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">November 09/11/2026</text>
+<text x="386.12" y="255.045" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">1:50</text>
+<text x="386.12" y="284.091" font-family="Arial, Helvetica, sans-serif" font-size="11.872" text-anchor="middle" fill="rgb(229,229,229)">E.702</text>
+</svg>

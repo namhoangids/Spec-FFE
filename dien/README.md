@@ -10,7 +10,8 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 - **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider);
 - **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ;
 - **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản;
-- **ngắn mạch theo tổng trở**: Ik3 max tại thanh cái từng tủ (chọn Icu), Ik1 min cuối từng mạch (kiểm tự cắt nguồn khi chạm vỏ), chọn lọc CB vùng ngắn mạch.
+- **ngắn mạch theo tổng trở**: Ik3 max tại thanh cái từng tủ (chọn Icu), Ik1 min cuối từng mạch (kiểm tự cắt nguồn khi chạm vỏ), chọn lọc CB vùng ngắn mạch;
+- **điện nhẹ đợt 1** (mạng LAN / Wi-Fi, camera, tủ rack): tờ E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… mặt đứng tủ rack, bảng đấu nối cổng, BOQ nhóm F; nguồn cho rack tự thành mạch trong tủ điện.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -84,6 +85,26 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 - Dữ liệu: `dien_projects/{id}` giữ tên, tóm tắt, `phienBan`, `updatedBy/At` và toàn bộ dữ liệu dự án dạng chuỗi JSON `duAnJson`; `dien_projects/{id}/history` giữ các bản cũ.
 - Test tự động chạy với `?kho=thu` (kho trong bộ nhớ, đăng nhập bằng mật khẩu `thu`), không chạm Firebase.
 
+**Điện nhẹ đợt 1 — mạng LAN / Wi-Fi, camera, tủ rack** (`engine/dien-nhe.mjs`, `template/dien-nhe.mjs`):
+- **Đầu vào:**
+  - sheet `Dien nhe`: mỗi dòng một phòng, gồm tầng, số ổ data, AP Wi-Fi, camera trong/ngoài, tủ rack phục vụ, chiều dài cáp TB;
+  - sheet `Tu rack`: mã rack, tầng, tủ điện cấp nguồn, mã lộ có sẵn (trống thì công cụ tự thêm), L cáp nguồn, L trục về rack trung tâm, rack trung tâm;
+  - trong JSON: `dienNhe: { phong, rack }`. Số tờ đầu ở ô `SO_BV_DN` (mặc định E.700).
+- **Tính theo §8 của phương án, từng rack:**
+  - ổ data đi switch thường, AP và camera đi switch PoE; số cổng có 20% dự phòng; ngân sách PoE = (AP 20 W + camera 10 W) × 1,2;
+  - patch panel 24 cổng, kèm thanh quản lý cáp;
+  - rack trung tâm có router, kệ modem, switch lõi; đầu ghi NVR (kênh, dung lượng = bitrate × ngày lưu, ổ 8 TB);
+  - cỡ tủ = ΣU × 1,3; UPS = ΣW / 0,9 × 1,25;
+  - mã cổng `<Tầng>-<Rack>-PP<n>-<cổng>` (TIA-606); cảnh báo khi Cat6 dài quá 90 m; trục dài quá 90 m thì dùng cáp quang.
+- **Nguồn rack:** tự thêm mạch `DNn` "CẤP NGUỒN TỦ RACK Rx" (tải × 1,25) vào tủ điện cấp. Mạch này được chọn CB, cáp, tính ngắn mạch như mọi mạch khác. Hai bên ghi tham chiếu chéo.
+- **Kết quả:**
+  - tờ E.700 / E.701 / E.702…;
+  - `dien-nhe.xlsx` (Tong hop, Thiet bi rack, Dau noi, Canh bao);
+  - BOQ nhóm F (thiết bị rack, AP, camera, ổ data, cáp Cat6 tính theo mét có hao hụt, patch cord, trục);
+  - thuyết minh mục 06 (mục kiểm tra thành 07);
+  - web app có cây tờ E.7xx, bảng thiết bị rack / đấu nối cổng.
+- **Đợt sau:** TV, kiểm soát ra vào, chuông cửa, âm thanh, KNX (cột đã có trong sheet `Dien nhe`, hiện chỉ đếm); nhập liệu điện nhẹ trên web; bóc khối block điện nhẹ.
+
 **Ngắn mạch, tự cắt nguồn, chọn lọc** (`engine/ngan-mach.mjs`, phương pháp tổng trở IEC 60909-0 rút gọn):
 - **Nguồn:** Ik tại điểm đấu (sheet `Du an`, ô `IK_NGUON`; trống thì 6 kA và cảnh báo). Công trình có trạm riêng thì khai `MBA_KVA` (+ `MBA_UK`), công cụ tính Ik từ máy biến áp. Tủ có ô `Ik tại tủ` thì dùng số đó.
 - **Ik3 max tại thanh cái từng tủ** giảm dần theo tổng trở cáp cấp (R = ρ20·L/S, X = λ·L), dùng để chọn và kiểm Icu. Tủ 1 pha tính sự cố pha – trung tính. Công cụ tính 2 lượt: lượt 1 chọn cáp, lượt 2 chọn lại Icu theo Ik vừa tính.
@@ -109,7 +130,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 59 test
+npm test                                               # 64 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -126,7 +147,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `tao-bo-ban-ve.mjs` | Lệnh tạo cả bộ: Excel → `E.600-TONG.*`, `E.601-T1.dxf`, `E.601-T1-R12.dxf`, `E.601-T1.svg`… + `bang-tinh.xlsx`, `nhan.xlsx`, `nhan-tu.html`, `thuyet-minh.docx`, `thuyet-minh.html`, `du-an.json`, `canh-bao.txt` |
 | `out/vi-du-HDMON/` | Bộ 7 tờ (E.600–E.606) và các file nhãn, tạo từ file ví dụ HDMON. ezdxf audit 0 lỗi |
 | `app/` | Web app (`index.html`, `app.mjs`), chế độ Nhập liệu (`nhap-lieu.mjs`), kho dự án chung Firebase / bộ nhớ (`kho.mjs`, `firebase-config.mjs`) và test Playwright `kiem-tra-app.mjs` |
-| `template/` | Template trình bày theo mẫu E.601. Từ dữ liệu tờ vẽ xuất DXF + SVG, cho tờ tủ (`mau-indust.mjs`) và tờ sơ đồ tổng (`so-do-tong.mjs`). Xem [`template/README.md`](template/README.md) |
+| `template/` | Template trình bày theo mẫu E.601. Từ dữ liệu tờ vẽ xuất DXF + SVG, cho tờ tủ (`mau-indust.mjs`), tờ sơ đồ tổng (`so-do-tong.mjs`) và tờ điện nhẹ E.7xx (`dien-nhe.mjs`). Xem [`template/README.md`](template/README.md) |
 | `so-sanh-mau-E601-E606.md` | **Báo cáo so sánh** lựa chọn của bản mẫu với quy tắc. Có các mục cần kỹ sư điện chốt |
 | `spike/` | File DXF thử tiếng Việt để mở trên AutoCAD |
 
@@ -140,6 +161,8 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `tu.mjs` | Tổng hợp tủ (Pđ, Kđt, Ptt, dòng từng pha), CB tổng, đếm module, chọn vỏ |
 | `cay-tu.mjs` | Tính cả cây tủ: từ tủ lá lên tủ gốc (tải, thiết bị), rồi từ gốc xuống (cáp, sụt áp cộng dồn) |
 | `kiem-tra.mjs` | Lỗi / cảnh báo / ghi chú theo mục 6.8 |
+| `ngan-mach.mjs` | Ngắn mạch theo tổng trở: Ik3 max thanh cái, Ik1 min cuối mạch, tự cắt nguồn (TN/TT), chọn lọc vùng ngắn mạch |
+| `dien-nhe.mjs`, `dien-nhe-excel.mjs` | Điện nhẹ đợt 1: switch, PoE, patch panel, NVR, rack, UPS, mã cổng, nguồn rack vào tủ điện; dữ liệu tờ E.7xx; `dien-nhe.xlsx` |
 | `doc-excel.mjs` | Đọc file Excel theo tên sheet và tiêu đề cột, kể cả sheet `Quy tac` |
 | `sang-ban-ve.mjs` | Kết quả → dữ liệu tờ vẽ, ghi chữ theo kiểu bản mẫu (`Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2`, `ỐNG PVC  Ø 20`, `Pđ=… kW, Kđt=…`). Có thêm:<br>• tự ngắt tờ (`chiaTo`: nhóm RCBO không bị tách giữa hai tờ);<br>• đánh số tờ;<br>• dữ liệu sơ đồ tổng (`sangSoDoTong`) |
 | `nhan.mjs` | Danh mục mạch dán cánh tủ và nhãn cáp (mỗi cáp 2 bản). Xuất Excel và trang HTML in |

@@ -54,6 +54,8 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   const nguonNm = kq.nganMach?.nguon;
   const TU_CAT = { dat: "Đạt", rcd: "Nhờ RCD", khong: tn ? "Không đạt" : "Cần RCD" };
   const chonLocText = (t) => (t.nganMach?.chonLoc || []).map((c) => `${c.tren}: ${c.toanPhan ? "toàn phần" : `một phần, tới Is ≈ ${so(c.is / 1000, 2)} kA`}`).join("; ");
+  const dn = kq.dienNhe;
+  const KT = dn ? 7 : 6;                               // số mục "Kiểm tra và kết luận" (có điện nhẹ thì điện nhẹ là mục 6)
   const khoi = [];
   // Đề mục cấp 1 viết "1. TÊN" trong code; tách số thành "01" để trình bày như mẫu Indust Design
   const muc = (cap, text) => {
@@ -109,7 +111,7 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   ds(TIEU_CHUAN);
   const coGiaDinh = kq.tu.some((t) => t.mach.some((m) => /giả định/i.test(m.nguon?.ghiChu || "")));
   doan("Số liệu phụ tải (công suất, chiều dài tuyến, loại khu vực) lấy theo bảng nhập liệu của dự án.",
-    coGiaDinh ? " Các giá trị chưa có số liệu được ước theo bảng phụ tải điển hình và ghi rõ \"giả định\" ở cột Ghi chú (xem mục 6.3)." : "");
+    coGiaDinh ? ` Các giá trị chưa có số liệu được ước theo bảng phụ tải điển hình và ghi rõ "giả định" ở cột Ghi chú (xem mục ${KT}.3).` : "");
 
   // --- 2. Nguồn và giải pháp ----------------------------------------------------------------
   muc(1, "2. NGUỒN ĐIỆN VÀ GIẢI PHÁP CẤP ĐIỆN");
@@ -216,7 +218,7 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
     const ksTxt = t.soCon ? `Kđt mạch cuối ${so(t.ksRieng, 2)}, hệ số tủ con ${so(t.ksCon, 2)}` : `Kđt ${so(t.ks, 2)}`;
     doan({ b: "Cấp từ: " }, t.cha ? `tủ ${t.cha}, lộ ${loCap(t)?.ma ?? "?"}` : "nguồn", `; ${pha(t)}; Pđ = ${so(t.pd, 2)} kW; ${ksTxt}; Ptt = ${so(t.ptt, 2)} kW; cosφ TB = ${so(t.cosTb, 2)}; `,
       t.soPha === 3 ? `I pha A/B/C = ${so(t.iPha.A)} / ${so(t.iPha.B)} / ${so(t.iPha.C)} A, lệch pha ${so(t.lechPha)}%.` : `Itt = ${so(t.iMax)} A.`);
-    doan({ b: "CB tổng: " }, tb(t.cbTong), t.cbTong?.ghiDe ? " (ghi đè, xem mục 6.2)" : "", "; ", { b: "cáp cấp: " }, chuCap(t.capNguon, { soPha: t.soPha }) || "—",
+    doan({ b: "CB tổng: " }, tb(t.cbTong), t.cbTong?.ghiDe ? ` (ghi đè, xem mục ${KT}.2)` : "", "; ", { b: "cáp cấp: " }, chuCap(t.capNguon, { soPha: t.soPha }) || "—",
       t.capNguon && !t.capNguon.mang && t.ongNguon ? `, ${t.ongNguon}` : "", t.capNguon?.chuaCoL ? " (chưa có chiều dài)" : `, L = ${so(t.lCap)} m`,
       `; ΔU tới thanh cái ${duBusText(t, true)}; vỏ tủ ${t.module.voTu ?? "—"} module (thiết bị ${t.module.tong} module).`);
     doan({ b: "Ngắn mạch: " }, `Ik3 max tại thanh cái ${so(t.ikTinh, 2)} kA (${t.ikNguon}), Ik1 min tại thanh cái ${so(t.nganMach?.ik1Min, 2)} kA`,
@@ -262,10 +264,41 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
     }
   });
 
-  // --- 6. Kiểm tra và kết luận (trang dọc) ---------------------------------------------------
+  // --- 6. Điện nhẹ: mạng LAN / Wi-Fi, camera, tủ rack (khi dự án có) ------------------------------
   khoi.push({ loai: "trang", huong: "doc" });
-  muc(1, "6. KIỂM TRA VÀ KẾT LUẬN");
-  muc(2, "6.1. Kết quả kiểm tra tự động");
+  if (dn) {
+    const R = rule.dienNhe;
+    const soRack = (ma) => dn.soTheoRack?.get(ma) ?? "";
+    muc(1, "6. HỆ THỐNG MẠNG LAN, WI-FI VÀ CAMERA");
+    doan(`Phạm vi đợt này: mạng dữ liệu (ổ data), Wi-Fi, camera giám sát IP và tủ rack. Tổng: `, { b: `${dn.tong.data} ổ data, ${dn.tong.ap} AP Wi-Fi, ${dn.tong.cam} camera` },
+      `, ${dn.tong.lienKet} link cáp ngang Cat6; ${dn.rack.length} tủ rack (trung tâm: ${dn.trungTam}). Căn cứ: ANSI/TIA-568 (cáp có cấu trúc), TIA-569 (đường dẫn cáp), TIA-606 (ghi nhãn), ONVIF (camera IP).`);
+    muc(2, "6.1. Phương pháp tính");
+    ds([
+      ["Cáp ngang Cat6 U/UTP 4 đôi từ patch panel tại rack tới từng ổ / thiết bị; link cố định ", { b: `≤ ${R.cat6Max} m` }, ", vượt thì đặt thêm rack/switch gần hơn hoặc dùng cáp quang."],
+      ["Switch: ổ data dùng switch thường, AP và camera dùng switch PoE; ", { b: `số cổng = số thiết bị × ${so(1 + R.duPhongCong / 100, 2)}` }, ` (dự phòng ${R.duPhongCong}%), chọn cỡ ${R.switchThuong.map(([c]) => c).join("/")} cổng.`],
+      ["Ngân sách PoE: ", { b: `(AP × ${R.poeAp} W + camera × ${R.poeCam} W) × ${so(R.kPoe, 2)}` }, " ≤ ngân sách PoE của switch."],
+      [`Patch panel ${R.ppCong} cổng: số lượng = ⌈số link / ${R.ppCong}⌉, mỗi patch panel kèm 1 thanh quản lý cáp. Rack trung tâm có router / tường lửa, kệ modem ISP, switch lõi khi có nhiều switch hoặc nhiều rack.`],
+      ["Đầu ghi NVR: số kênh ≥ số camera kèm dự phòng; ", { b: "dung lượng = Σ bitrate × 86 400 s × số ngày lưu / 8" }, ` (${R.bitrate} Mbps/camera, ${R.ngayLuu} ngày, ổ ${R.hddTB} TB).`],
+      ["Tủ rack: ", { b: `ΣU thiết bị × ${so(R.kRack, 2)}` }, `, chọn cỡ ${R.rackU.join("/")}U (≤ ${R.rackTreoMax}U treo tường). UPS: `, { b: `VA ≥ ΣW / ${so(R.pfUps, 2)} × ${so(R.kUps, 2)}` }, "."],
+      ["Nguồn cấp rack: một mạch riêng trong tủ điện, công suất = tải rack × ", { b: so(R.kUps, 2) }, " (sạc UPS, dự phòng); mạch được tính như các mạch khác của tủ (CB, cáp, ngắn mạch)."],
+    ]);
+    muc(2, "6.2. Kết quả từng tủ rack");
+    bang([{ ten: "Rack", rong: 7 }, { ten: "Bản vẽ", rong: 8 }, { ten: "Data / AP / Cam", rong: 11 }, { ten: "Switch (cổng)", rong: 20 }, { ten: "PoE cần / có (W)", rong: 11 },
+      { ten: "Patch panel", rong: 8 }, { ten: "U → tủ", rong: 13 }, { ten: "UPS", rong: 9 }, { ten: "Nguồn cấp", rong: 13 }],
+    dn.rack.map((r) => [r.ma, soRack(r.ma), `${r.dem.data} / ${r.dem.ap} / ${r.dem.cam}`,
+      [...r.switch.map((x) => (x.loai === "poe" ? `PoE ${x.cong}` : `${x.cong}`)), ...(r.switchLoi ? [`lõi ${r.switchLoi.cong}`] : [])].join(" + "),
+      r.dem.ap + r.dem.cam ? `${Math.ceil(r.poe.can)} / ${r.poe.nganSach}` : "—", String(r.soPP), `${so(r.uCan, 1)}U → ${r.uRack}U ${r.kieuRack}`,
+      `${r.ups.va} VA`, r.nguon ? `${r.nguon.tu} / ${r.nguon.ma} (${r.nguon.P} W)` : "—"]), true);
+    if (dn.nvr) doan({ b: "Đầu ghi: " }, `NVR ${dn.nvr.kenh} kênh đặt tại rack ${dn.nvr.rack}; ${dn.nvr.soCam} camera × ${R.bitrate} Mbps × ${R.ngayLuu} ngày = ${so(dn.nvr.tb, 1)} TB → ${dn.nvr.soHdd} ổ ${dn.nvr.hddTB} TB.`);
+    for (const r of dn.rack.filter((x) => x.truc)) doan({ b: `Trục ${r.ma} → ${dn.trungTam}: ` }, `${r.truc.moTa}${r.truc.L ? `, ${r.truc.L} m` : ""}.`);
+    doan("Bảng đấu nối cổng patch panel – ổ / thiết bị, kèm mã nhãn theo TIA-606, ở file dien-nhe.xlsx (sheet Dau noi). Thiết bị ghi theo chủng loại, chưa gắn hãng; mã hàng và đơn giá điền ở BOQ (nhóm F).");
+    if (Object.keys(dn.chuaTinh || {}).length) doan("Các hệ truyền hình, kiểm soát ra vào, chuông cửa, âm thanh, KNX trong bảng điện nhẹ sẽ được tính ở đợt sau.");
+  }
+
+  // --- Kiểm tra và kết luận (trang dọc) -------------------------------------------------------
+  if (dn) khoi.push({ loai: "trang", huong: "doc" });
+  muc(1, `${KT}. KIỂM TRA VÀ KẾT LUẬN`);
+  muc(2, `${KT}.1. Kết quả kiểm tra tự động`);
   const nLoi = dem("loi"), nCb = dem("canhbao"), nGc = dem("ghichu");
   doan(`Bộ kiểm tra tự động: `, { b: `${nLoi} lỗi, ${nCb} cảnh báo, ${nGc} ghi chú` }, ".");
   const dongCb = (muc) => kq.canhBao.filter((c) => c.muc === muc).map((c) => [MUC[c.muc], c.tu || "—", c.mach || "—", c.noiDung]);
@@ -273,7 +306,7 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   if (nLoi + nCb) bang(cotCb, [...dongCb("loi"), ...dongCb("canhbao")], true);
   if (nGc) { dan("Các ghi chú:"); bang(cotCb, dongCb("ghichu"), true); }
 
-  muc(2, "6.2. Các ghi đè thiết kế");
+  muc(2, `${KT}.2. Các ghi đè thiết kế`);
   const ghiDe = [];
   for (const t of kq.tu) {
     if (t.ghiDeCbTong) ghiDe.push([t.ma, "CB tổng", t.ghiDeCbTong.thietBi || "", t.ghiDeCbTong.lyDo || ""]);
@@ -287,7 +320,7 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   if (ghiDe.length) bang([{ ten: "Tủ", rong: 7 }, { ten: "Hạng mục", rong: 11 }, { ten: "Nội dung ghi đè", rong: 30 }, { ten: "Lý do", rong: 52 }], ghiDe, true);
   else doan("Không có ghi đè — mọi thiết bị, cáp và ống do công cụ chọn theo quy tắc.");
 
-  muc(2, "6.3. Các giả định");
+  muc(2, `${KT}.3. Các giả định`);
   const giaDinh = kq.tu.flatMap((t) => t.mach.filter((m) => /giả định/i.test(m.nguon?.ghiChu || "")).map((m) => [t.ma, m.ma, m.phuTai, m.nguon.ghiChu]));
   if (giaDinh.length) {
     dan("Các số liệu sau được ước theo bảng phụ tải điển hình, cần đối chiếu với thiết bị thực tế:");
@@ -296,18 +329,18 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
     doan("Không có số liệu phụ tải nào ghi là giả định trong bảng nhập liệu.");
   }
 
-  muc(2, "6.4. Kết luận");
+  muc(2, `${KT}.4. Kết luận`);
   if (nLoi === 0) {
     doan("Với số liệu đầu vào và bộ quy tắc nêu trên, bộ kiểm tra tự động không phát hiện lỗi đối với các điều kiện: Ib ≤ In ≤ Iz′; Icu ≥ Ik3 max tại thanh cái; sụt áp cộng dồn trong giới hạn; tiết diện không nhỏ hơn mức tối thiểu của loại mạch; RCD 30 mA cho các mạch bắt buộc; CB cấp tủ con không nhỏ hơn CB tổng của tủ con.");
-    if (nCb) doan(`Còn ${nCb} cảnh báo (mục 6.1) cần kỹ sư xem xét và chấp thuận trước khi phát hành.`);
+    if (nCb) doan(`Còn ${nCb} cảnh báo (mục ${KT}.1) cần kỹ sư xem xét và chấp thuận trước khi phát hành.`);
   } else {
-    doan({ b: `Còn ${nLoi} lỗi (mục 6.1) phải xử lý trước khi phát hành hồ sơ.` }, nCb ? ` Ngoài ra có ${nCb} cảnh báo cần kỹ sư xem xét.` : "");
+    doan({ b: `Còn ${nLoi} lỗi (mục ${KT}.1) phải xử lý trước khi phát hành hồ sơ.` }, nCb ? ` Ngoài ra có ${nCb} cảnh báo cần kỹ sư xem xét.` : "");
   }
   const demTuCat = (k) => kq.tu.reduce((a, t) => a + t.mach.filter((m) => !m.laCapTuCon && m.nganMach?.tuCat === k).length, 0);
   if (demTuCat("dat") + demTuCat("rcd") + demTuCat("khong")) {
     doan({ b: "Tự cắt nguồn khi chạm vỏ: " }, tn
-      ? `${demTuCat("dat")} mạch đạt bằng ngưỡng cắt từ của CB, ${demTuCat("rcd")} mạch nhờ RCD 30 mA${demTuCat("khong") ? `, ${demTuCat("khong")} mạch chưa đạt — xem cảnh báo và đề xuất ở mục 6.1` : ""}.`
-      : `sơ đồ TT — ${demTuCat("rcd")} mạch có RCD${demTuCat("khong") ? `, ${demTuCat("khong")} mạch chưa có RCD — xem cảnh báo ở mục 6.1` : ""}.`);
+      ? `${demTuCat("dat")} mạch đạt bằng ngưỡng cắt từ của CB, ${demTuCat("rcd")} mạch nhờ RCD 30 mA${demTuCat("khong") ? `, ${demTuCat("khong")} mạch chưa đạt — xem cảnh báo và đề xuất ở mục ${KT}.1` : ""}.`
+      : `sơ đồ TT — ${demTuCat("rcd")} mạch có RCD${demTuCat("khong") ? `, ${demTuCat("khong")} mạch chưa có RCD — xem cảnh báo ở mục ${KT}.1` : ""}.`);
   }
   if (chuaDuyet) doan(`Bộ quy tắc tính toán phiên bản ${rule.phienBan} ${rule.trangThai.toLowerCase()}; kết quả chỉ có giá trị tham khảo cho đến khi kỹ sư điện duyệt.`);
   khoi.push({ loai: "kyTen", o: [["NGƯỜI LẬP", info.madeBy || info.design || ""], ["KIỂM TRA", info.checkBy || ""], ["CHỦ TRÌ", info.director || ""]] });

@@ -2,6 +2,10 @@
 // Dùng chung cho lệnh tao-bo-ban-ve.mjs (Node) và web app dien/app (trình duyệt).
 
 import { tinhDuAn } from "./engine/cay-tu.mjs";
+import { coDienNhe, sangDienNhe, tinhDienNhe } from "./engine/dien-nhe.mjs";
+import { xuatDienNheExcel } from "./engine/dien-nhe-excel.mjs";
+import { taoQuyTac } from "./engine/quy-tac.mjs";
+import { veDienNhe } from "./template/dien-nhe.mjs";
 import { tinhBoq, xuatBoqExcel } from "./engine/boq.mjs";
 import { nhanHtml, xuatNhanExcel } from "./engine/nhan.mjs";
 import { sangBoBanVe } from "./engine/sang-ban-ve.mjs";
@@ -23,13 +27,26 @@ export const MUC = { loi: "Lỗi", canhbao: "Cảnh báo", ghichu: "Ghi chú" };
  *   Mỗi tờ: { loai: "tong"|"tu", ma, ten, thu, tong, du, tenFile, svg, dxf(), r12() }
  */
 export function taoBoBanVe(duAn) {
-  const kq = tinhDuAn(structuredClone(duAn));
+  const vao = structuredClone(duAn);
+  // Điện nhẹ tính trước: nguồn cho tủ rack thành mạch trong tủ điện cấp, rồi mới tính cả hệ điện
+  const dn = coDienNhe(vao.dienNhe) ? tinhDienNhe(vao.dienNhe, taoQuyTac(vao.quyTac || {}), { panels: vao.panels, circuits: vao.circuits }) : null;
+  if (dn) vao.circuits = [...vao.circuits, ...dn.machThem];
+  const kq = tinhDuAn(vao);
   const bo = sangBoBanVe(kq, duAn.info, { toiDa: SO_COT_TOI_DA });
   for (const c of bo.canhBao) kq.canhBao.push({ muc: "canhbao", tu: c.tu, mach: "", noiDung: c.noiDung });
+  if (dn) {
+    kq.dienNhe = dn;
+    kq.canhBao.push(...dn.canhBao);
+    const toDn = sangDienNhe(dn, kq, duAn.info || {});
+    dn.soTheoRack = toDn.soTheoRack;
+    // Mạch nguồn rack: ghi số tờ tủ rack vào ghi chú (tham chiếu chéo)
+    for (const t of kq.tu) for (const m of t.mach) if (m.nguon?.tuDienNhe) m.nguon.ghiChu = `${m.nguon.ghiChu} — xem ${toDn.soTheoRack.get(m.nguon.tuDienNhe)}`;
+    bo.to.push(...toDn.to);
+  }
   const to = bo.to.map((x) => {
-    const ve = x.loai === "tong" ? veSoDoTong : veSoDoTu;
+    const ve = x.loai === "tong" ? veSoDoTong : x.loai === "dn" ? veDienNhe : veSoDoTu;
     const svg = taoSvg();
-    for (const w of ve(svg, x.du)) kq.canhBao.push({ muc: "ghichu", tu: x.loai === "tong" ? "" : x.ma, mach: "", noiDung: `Bố cục ${x.du.sheet.drawingNo}: ${w}` });
+    for (const w of ve(svg, x.du)) kq.canhBao.push({ muc: "ghichu", tu: x.loai === "tu" ? x.ma : "", mach: "", noiDung: `Bố cục ${x.du.sheet.drawingNo}: ${w}` });
     return {
       ...x,
       tenFile: `${x.du.sheet.drawingNo}-${x.ma}`.replace(/[\\/:*?"<>|]/g, "-"),
@@ -41,7 +58,9 @@ export function taoBoBanVe(duAn) {
   // Thuyết minh dựng lúc gọi (không dựng sẵn) để lấy cả các cảnh báo bổ sung sau khi tính, ví dụ lỗi đọc file
   const thuyetMinh = () => noiDungThuyetMinh(kq, duAn.info, { soTheoTu: bo.soTheoTu });
   return {
-    kq, to, soTheoTu: bo.soTheoTu,
+    kq, to, soTheoTu: bo.soTheoTu, dienNhe: dn,
+    /** Điện nhẹ ra Excel (Tong hop rack, Dau noi, Thiet bi, Canh bao); null khi dự án không có điện nhẹ */
+    dienNheExcel: (XLSX) => (dn ? xuatDienNheExcel(XLSX, dn, kq, duAn.info) : null),
     nhanHtml: () => nhanHtml(kq, duAn.info),
     nhanExcel: (XLSX) => xuatNhanExcel(XLSX, kq, duAn.info),
     thuyetMinh,

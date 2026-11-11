@@ -44,10 +44,10 @@
 <text x="50.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
 <text x="72.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">NGUỒN</text>
 <text x="92.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3P</text>
-<text x="107.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">53,01</text>
+<text x="107.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">53,45</text>
 <text x="121.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,75</text>
-<text x="135.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">39,77</text>
-<text x="150.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">67,5</text>
+<text x="135.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">40,08</text>
+<text x="150.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">68,0</text>
 <text x="177.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCCB 4P 100A 15kA</text>
 <text x="232.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x25)mm2 + E(1x16)mm2</text>
 <text x="274.208" y="255.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,65</text>
@@ -74,7 +74,7 @@
 <text x="150.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">29,4</text>
 <text x="177.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 2P 40A 10kA</text>
 <text x="232.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (2x6)mm2 + E(1x6)mm2</text>
-<text x="274.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,97</text>
+<text x="274.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">1,98</text>
 <text x="288.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">2,0</text>
 <text x="307.208" y="266.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.603</text>
 <text x="50.208" y="271.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">T4</text>
@@ -129,7 +129,7 @@
 <polygon points="160.208,76.876 200.208,76.876 200.208,58.876 160.208,58.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <text x="180.208" y="65.126" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
 <text x="180.208" y="68.776" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ ĐIỆN 48 MODULE</text>
-<text x="180.208" y="72.376" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=39,77 kW</text>
+<text x="180.208" y="72.376" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Ptt=40,08 kW</text>
 <text x="180.208" y="75.676" font-family="Arial, Helvetica, sans-serif" font-size="2.235" text-anchor="middle" fill="rgb(232,86,42)">XEM E.601</text>
 <line x1="180.208" y1="76.876" x2="180.208" y2="82.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="76.208" y1="82.876" x2="284.208" y2="82.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>

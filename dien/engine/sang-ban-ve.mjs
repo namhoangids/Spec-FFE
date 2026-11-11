@@ -37,7 +37,7 @@ export function soBanVe(dau = "E.601", i = 0) {
 const hoa = (s) => String(s ?? "").toLocaleUpperCase("vi");
 
 /** Thông tin khung tên chung của mọi tờ. */
-function khungTen(info, drawingNo, title) {
+export function khungTen(info, drawingNo, title) {
   return {
     drawingNo, title,
     companyInfo: info.companyInfo ?? "",

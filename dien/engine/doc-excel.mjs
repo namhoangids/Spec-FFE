@@ -42,12 +42,26 @@ const COT_MACH = {
   "ghi chú": "ghiChu",
 };
 const SO_TU = new Set(["lCap", "ik", "ks"]);
+// Điện nhẹ: bảng thiết bị theo phòng (sheet Dien nhe) và danh sách tủ rack (sheet Tu rack)
+const COT_DN = {
+  "tầng": "tang", "phòng / khu vực": "phong", "ổ data": "data", "ổ tv": "tv", "ap wi-fi": "ap",
+  "camera trong nhà": "camTrong", "camera ngoài trời": "camNgoai", "cửa kiểm soát": "acs",
+  "nút gọi chuông cửa": "chuongNgoai", "màn hình chuông cửa": "chuongTrong", "loa": "loa",
+  "công suất tap mỗi loa": "loaW", "vùng âm thanh": "vungAm", "thiết bị knx": "knx", "tủ rack phục vụ": "rack",
+  "chiều dài cáp tb": "L", "ghi chú": "ghiChu",
+};
+const SO_DN = new Set(["data", "tv", "ap", "camTrong", "camNgoai", "acs", "chuongNgoai", "chuongTrong", "loa", "loaW", "knx", "L"]);
+const COT_RACK = {
+  "mã rack": "ma", "tầng": "tang", "vị trí": "viTri", "cấp nguồn từ tủ": "capTu", "mã lộ cấp nguồn": "maMach",
+  "chiều dài cáp nguồn": "lNguon", "chiều dài trục tới rack trung tâm": "lTruc", "rack trung tâm": "trungTam", "ghi chú": "ghiChu",
+};
+const SO_RACK = new Set(["lNguon", "lTruc"]);
 const SO_MACH = new Set(["soLuong", "congSuat", "cos", "L", "nhomOng"]);
 
 const DU_AN = {
   MA_DA: "projectNo", TEN_DA: "project", CHU_DAU_TU: "client", DIA_CHI: "address", CONG_TY: "companyInfo",
   LOAI_CT: "loaiCongTrinh", GIAM_DOC: "director", THIET_KE: "design", CHU_TRI: "design", KIEM_TRA: "checkBy",
-  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", REV: "rev",
+  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", SO_BV_DN: "soBanVeDienNhe", REV: "rev",
   UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", MBA_KVA: "mbaKva", MBA_UK: "mbaUk", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
 };
 const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "mbaKva", "mbaUk", "duMax", "chietKhau"]);
@@ -59,6 +73,9 @@ const QUY_TAC = {
   KS_NHA: ["ks.Nhà ở / biệt thự"], KS_CANHO: ["ks.Căn hộ"], K_IN: ["kIn"], K_CHONLOC: ["kChonLoc"],
   IN_MCB_MAX: ["inMaxMcb"], LECH_PHA: ["lechPha"], DP_VO: ["duPhongVo"], DP_CB: ["cbDuPhong"],
   CT_NGUONG: ["ctNguong"], IK_MD: ["ikMacDinh"], IK_CANHO: ["ikMacDinh"], L_MD: ["lMacDinh"], IM_MCCB: ["nganMach.imMccb"],
+  ELV_DP_CONG: ["dienNhe.duPhongCong"], ELV_POE_AP: ["dienNhe.poeAp"], ELV_POE_CAM: ["dienNhe.poeCam"], ELV_POE_K: ["dienNhe.kPoe"],
+  ELV_CAT6: ["dienNhe.cat6Max"], ELV_BITRATE: ["dienNhe.bitrate"], ELV_NGAY_LUU: ["dienNhe.ngayLuu"], ELV_RACK_K: ["dienNhe.kRack"],
+  ELV_UPS_K: ["dienNhe.kUps"],
   LAP_DAY: ["lapDay"], ONG_MIN: ["ongToiThieu"], L_CANHBAO: ["lCanhBao"], IB_IN: ["ibIn"],
 };
 
@@ -181,5 +198,14 @@ export function docExcel(XLSX, data) {
     loiDoc.push("Không có sheet Quy tac — dùng bộ quy tắc mặc định của công cụ");
   }
 
-  return { info, panels, circuits, quyTac, loiDoc };
+  // --- Dien nhe, Tu rack (điện nhẹ) -----------------------------------------------------------
+  const dnRows = sheet("Dien nhe");
+  const phongDn = dnRows ? bangTheoTieuDe(dnRows, COT_DN, SO_DN, "Dien nhe", loiDoc)
+    .filter((p) => !/^tổng/i.test(String(p.tang ?? "")) && (p.phong || p.tang)) : [];
+  const rkRows = sheet("Tu rack");
+  const rack = rkRows ? bangTheoTieuDe(rkRows, COT_RACK, SO_RACK, "Tu rack", loiDoc).filter((r) => r.ma) : [];
+  for (const r of rack) r.trungTam = daChot(r.trungTam) || /trung tâm/i.test(String(r.trungTam ?? ""));
+  const kq = { info, panels, circuits, quyTac, loiDoc };
+  if (phongDn.length || rack.length) kq.dienNhe = { phong: phongDn.map(({ dong, ...p }) => p), rack: rack.map(({ dong, ...r }) => r) };
+  return kq;
 }

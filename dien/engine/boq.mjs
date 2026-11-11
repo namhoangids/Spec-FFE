@@ -15,6 +15,7 @@ const NHOM = [
   ["day", "C", "DÂY VÀ CÁP ĐIỆN"],
   ["ong", "D", "ỐNG LUỒN DÂY, MÁNG CÁP"],
   ["thietBiDien", "E", "THIẾT BỊ ĐIỆN (THEO BÓC KHỐI MẶT BẰNG)"],
+  ["dienNhe", "F", "THIẾT BỊ VÀ CÁP ĐIỆN NHẸ (MẠNG, CAMERA, TỦ RACK)"],
 ];
 const tdText = (s) => String(s).replace(".", ",");          // 2.5 → "2,5"
 const ongKhoa = (o) => {
@@ -96,6 +97,38 @@ export function tinhBoq(kq, { haoHut = 5, bocKhoi = null } = {}) {
   // Thiết bị điện theo bóc khối mặt bằng (đèn, ổ cắm, công tắc…)
   for (const t of bocKhoi?.theoLoai ?? []) {
     cong("thietBiDien", t.moTa, t.dvt || "cái", t.sl, { tu: "", mach: "", cach: `bóc khối${bocKhoi.nguon ? ` ${bocKhoi.nguon}` : ""} (${t.nhom})` });
+  }
+
+  // Điện nhẹ (kq.dienNhe — engine/dien-nhe.mjs): thiết bị tủ rack, thiết bị đầu cuối, cáp Cat6, trục
+  const dn = kq.dienNhe;
+  if (dn) {
+    const R = kq.quyTac.dienNhe;
+    const F = (khoa, dvt, sl, rack, cach, ghi) => cong("dienNhe", khoa, dvt, sl, { tu: rack, mach: "", cach }, ghi);
+    for (const r of dn.rack) {
+      F(`Tủ rack ${r.uRack}U ${r.kieuRack}`, "cái", 1, r.ma, `${r.uTong}U thiết bị × ${R.kRack}`);
+      for (const x of r.thietBi) {
+        if (x.loai === "pp") F(`Patch panel Cat6 ${R.ppCong} cổng`, "cái", 1, r.ma, `${r.dem.lienKet} link`);
+        else if (x.loai === "nvr" && dn.nvr) {
+          F(`Đầu ghi NVR ${dn.nvr.kenh} kênh`, "cái", 1, r.ma, `${dn.nvr.soCam} camera + dự phòng`);
+          F(`Ổ cứng NVR ${dn.nvr.hddTB} TB`, "cái", dn.nvr.soHdd, r.ma, `${dn.nvr.soCam} × ${R.bitrate} Mbps × ${R.ngayLuu} ngày`);
+        } else if (x.loai === "ups") F(`UPS online ${r.ups.va} VA rack-mount`, "bộ", 1, r.ma, `${Math.round(r.w)} W / ${R.pfUps} × ${R.kUps}`, "thời gian lưu điện theo yêu cầu");
+        else F(x.ten, "cái", 1, r.ma, "");
+      }
+      if (r.truc?.loai === "quang") {
+        F("Cáp quang single-mode 4 lõi", "m", r.truc.L, r.ma, "trục về rack trung tâm");
+        F("Module SFP single-mode", "cái", 2, r.ma, "2 đầu trục quang");
+      } else if (r.truc) {
+        if (r.truc.L > 0) F("Cáp Cat6 U/UTP 4 đôi", "m", 2 * r.truc.L, r.ma, `trục 2 sợi × ${r.truc.L} m`);
+        else thieuL.push(`${r.ma}/trục điện nhẹ`);
+      }
+    }
+    const dem = (loai, ngoai) => dn.lienKet.filter((x) => x.loai === loai && (ngoai == null || x.ngoaiTroi === ngoai)).length;
+    F("Mặt + nhân ổ data RJ45 Cat6", "bộ", dem("DATA"), "", "1 bộ / ổ data");
+    F(`Bộ phát Wi-Fi (AP) PoE`, "cái", dem("AP"), "", `PoE ${R.poeAp} W`);
+    F("Camera IP trong nhà PoE", "cái", dem("CAM", false), "", `${R.bitrate} Mbps`);
+    F("Camera IP ngoài trời PoE (IP66)", "cái", dem("CAM", true), "", `${R.bitrate} Mbps`);
+    F("Cáp Cat6 U/UTP 4 đôi", "m", dn.lienKet.reduce((a, x) => a + x.L, 0), "", `${dn.lienKet.length} link cáp ngang`);
+    F("Dây nhảy Cat6 (patch cord)", "sợi", 2 * dn.lienKet.length, "", "2 sợi / link (rack + đầu cuối)");
   }
 
   const he = 1 + haoHut / 100;
