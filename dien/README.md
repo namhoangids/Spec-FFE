@@ -93,8 +93,8 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `nhan.mjs` | Danh mục mạch dán cánh tủ và nhãn cáp (mỗi cáp 2 bản). Xuất Excel và trang HTML in |
 | `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Cap va ong, Canh bao, Quy tac |
 | `dien-giai.mjs` | Định dạng số và diễn giải cách chọn tiết diện / ống. Bảng tính và thuyết minh dùng chung |
-| `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in (`thuyetMinhHtml`) |
-| `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`: Times New Roman 13, bảng rộng trang ngang, số trang |
+| `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in ra PDF (`thuyetMinhHtml`) cùng kiểu trình bày với bản Word |
+| `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`, trình bày theo mẫu văn bản Indust Design: Arial, cam `#F15A22` / xanh than `#22333B`, khối thông tin 3×2, đề mục có vạch cam, bảng dùng Table Style băng màu thật của Word, chân trang "Indust Design \| … \| Working Document" kèm số trang. Bảng rộng đặt trang ngang |
 | `tests/` | Tái lập đúng ví dụ DB-T1 (mục 7: CB tổng 40 A, cáp cấp 4×6, ΔU lớn nhất 2,95%, lệch pha 1,8%, vỏ 36 module) và các ca kiểm tra |
 
 ## Quy ước nhập liệu chính

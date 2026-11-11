@@ -77,7 +77,7 @@ try {
   const [tm] = await Promise.all([page.waitForEvent("popup"), page.click("#tmxem")]);
   await tm.waitForLoadState();
   const h2 = await tm.locator("h2").allInnerTexts();
-  assert.deepEqual(h2.map((x) => x.match(/^\d+/)?.[0]), ["1", "2", "3", "4", "5", "6"], "thuyết minh đủ mục 1–6");
+  assert.deepEqual(h2.map((x) => x.match(/^\d+/)?.[0]), ["01", "02", "03", "04", "05", "06"], "thuyết minh đủ mục 01–06");
   assert.equal(await tm.locator("h3", { hasText: /^5\.\d+\. Tủ/ }).count(), 6, "mỗi tủ một mục");
   await tm.close();
   const [dlTm] = await Promise.all([page.waitForEvent("download"), page.click("#tmword")]);

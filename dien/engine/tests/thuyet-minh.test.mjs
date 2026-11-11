@@ -11,14 +11,19 @@ import { thuyetMinhDocx } from "../thuyet-minh-docx.mjs";
 import { DB_T1 } from "./du-lieu-db-t1.mjs";
 
 const chu = (noi = []) => noi.map((x) => (typeof x === "string" ? x : x.b)).join("");
-const vanBan = (nd) => nd.khoi.flatMap((k) => [k.text, k.phu, chu(k.noi), ...(k.muc || []).map(chu), ...(k.dong || []).flat()]).filter(Boolean).join("\n");
+const vanBan = (nd) => nd.khoi.flatMap((k) => [k.text, k.phu, chu(k.noi), ...(k.muc || []).map(chu), ...(k.dong || []).flat(), ...(k.o || []).flat()]).filter(Boolean).join("\n");
 const bo = (duAn) => taoBoBanVe(structuredClone(duAn));
 
 test("đủ mục 1–6 đúng thứ tự; mỗi tủ một mục 5.x; mạch nào có cáp đều có dòng trong bảng của tủ đó", () => {
   const b = bo(DB_T1);
   const nd = b.thuyetMinh();
-  const muc1 = nd.khoi.filter((k) => k.loai === "muc" && k.cap === 1).map((k) => k.text.match(/^(\d+)\./)[1]);
-  assert.deepEqual(muc1, ["1", "2", "3", "4", "5", "6"]);
+  const muc1 = nd.khoi.filter((k) => k.loai === "muc" && k.cap === 1).map((k) => k.so);
+  assert.deepEqual(muc1, ["01", "02", "03", "04", "05", "06"]);
+  // Đầu tài liệu theo mẫu Indust Design: khối thông tin 3 × 2, dòng "Cách dùng", chân trang
+  const tt = nd.khoi.find((k) => k.loai === "thongTin");
+  assert.deepEqual(tt.o.map((x) => x[0]), ["DỰ ÁN", "CHỦ ĐẦU TƯ", "NGÀY LẬP", "BẢN VẼ KÈM THEO", "NGƯỜI LẬP", "TRẠNG THÁI"]);
+  assert.ok(nd.khoi.some((k) => k.loai === "cachDung"));
+  assert.match(nd.chanTrang, /^Indust Design \| .+ \| Thuyết minh tính toán hệ thống điện \| Working Document$/);
   const muc5 = nd.khoi.filter((k) => k.loai === "muc" && /^5\.\d+\. Tủ /.test(k.text));
   assert.deepEqual(muc5.map((k) => k.text.match(/Tủ (\S+)/)[1]), b.kq.tu.map((t) => t.ma));
   for (const t of b.kq.tu) {
@@ -40,7 +45,7 @@ test("mục 3 ghi đúng tham số của bộ quy tắc; khung CHƯA DUYỆT; k�
   assert.match(s, new RegExp(`Ud = ${r.ud} V`));
   assert.ok(s.includes(`≤ ${r.duMax}% (mạch chiếu sáng ≤ ${r.duChieuSang}%)`));
   assert.ok(s.includes(`≤ ${r.lapDay}% diện tích trong của ống`));
-  assert.ok(nd.khoi.some((k) => k.loai === "khung" && /CHƯA DUYỆT/.test(chu(k.noi))));
+  assert.ok(nd.khoi.some((k) => k.loai === "cachDung" && /CHƯA DUYỆT/.test(chu(k.noi))));
   assert.equal(b.kq.canhBao.filter((c) => c.muc === "loi").length, 0);
   assert.match(s, /không phát hiện lỗi/);
   assert.doesNotMatch(s, /phải xử lý trước khi phát hành/);
@@ -69,9 +74,17 @@ test("Word: đóng gói được, có tên tủ, CB tổng, trang ngang và tiê
   assert.ok(xml.includes(`${mdb.cbTong.loai} ${mdb.cbTong.soCuc} ${mdb.cbTong.in}A`));
   assert.match(xml, /w:orient="landscape"/);
   assert.match(xml, /<w:tblHeader\/>/);
+  assert.match(xml, /<w:tblStyle w:val="IndustBang"\/>/, "bảng dùng Table Style băng màu");
+  const zip = await JSZip.loadAsync(buf);
+  const styles = await zip.file("word/styles.xml").async("string");
+  assert.match(styles, /w:styleId="IndustBang"/);
+  assert.match(styles, /w:ascii="Arial"/, "font Arial như mẫu Indust Design");
+  const footer = (await Promise.all(Object.keys(zip.files).filter((f) => /word\/footer\d*\.xml$/.test(f)).map((f) => zip.file(f).async("string")))).join("");
+  assert.match(footer, /Indust Design \|/);
   const html = b.thuyetMinhHtml();
   assert.match(html, /@page ngang \{ size: A4 landscape/);
   assert.match(html, /<section class="ngang">/);
+  assert.match(html, /@bottom-center \{ content: "Indust Design \|/);
 });
 
 test("nội dung dùng số bản vẽ của bộ tờ (tủ bị ngắt 2 tờ ghi dải số)", () => {

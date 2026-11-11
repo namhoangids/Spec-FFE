@@ -2,12 +2,13 @@
 // rồi xuất ra HTML (thuyetMinhHtml, ở file này) hoặc Word (thuyet-minh-docx.mjs).
 //
 // Nội dung là danh sách khối:
-//   { loai: "muc", cap: 1|2, text }                     đề mục
+//   { loai: "tieuDe", text, phu }                       tiêu đề tài liệu + dòng phụ
+//   { loai: "thongTin", o: [[NHÃN, giá trị] × 6] }      khối thông tin dự án 3 cột × 2 dòng (theo mẫu Indust Design)
+//   { loai: "cachDung", noi }                            dòng "Cách dùng — …" ngay dưới khối thông tin
+//   { loai: "muc", cap: 1, so: "01", text } | { loai: "muc", cap: 2, text }   đề mục
 //   { loai: "doan", noi }                                đoạn văn; noi = [chuỗi | { b: "chữ đậm" }]
 //   { loai: "danhSach", muc: [noi] }                     danh sách gạch đầu dòng
 //   { loai: "bang", cot: [{ ten, rong, so }], dong: [[ô]], nho } bảng (rong: tỷ lệ độ rộng, so: căn phải)
-//   { loai: "thongTin", dong: [[nhãn, giá trị]] }        bảng thông tin không viền (đầu tài liệu)
-//   { loai: "khung", noi }                               khung nhắc (CHƯA DUYỆT)
 //   { loai: "trang", huong: "doc"|"ngang" }              sang trang mới với hướng giấy này
 //   { loai: "ngatTrang" }                                sang trang mới, giữ hướng
 //   { loai: "kyTen", o: [[chức danh, tên]] }             ô ký
@@ -43,12 +44,16 @@ function bacThang(bang, donVi) {
  * @param {object} kq — kết quả tinhDuAn
  * @param {object} info — duAn.info
  * @param {{ soTheoTu?: Map<string,string[]>, ngay?: Date }} opt
- * @returns {{ tieuDe: string, tenDuAn: string, khoi: object[] }}
+ * @returns {{ tieuDe: string, tenDuAn: string, chanTrang: string, khoi: object[] }}
  */
 export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new Date() } = {}) {
   const rule = kq.quyTac;
   const khoi = [];
-  const muc = (cap, text) => khoi.push({ loai: "muc", cap, text });
+  // Đề mục cấp 1 viết "1. TÊN" trong code; tách số thành "01" để trình bày như mẫu Indust Design
+  const muc = (cap, text) => {
+    const m = cap === 1 && text.match(/^(\d+)\.\s+(.*)$/);
+    khoi.push(m ? { loai: "muc", cap, so: m[1].padStart(2, "0"), text: m[2] } : { loai: "muc", cap, text });
+  };
   const doan = (...noi) => khoi.push({ loai: "doan", noi });
   const dan = (...noi) => khoi.push({ loai: "doan", noi, giu: true });   // đoạn dẫn: giữ cùng trang với khối sau
   const ds = (muc) => khoi.push({ loai: "danhSach", muc });
@@ -72,22 +77,25 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   // --- Đầu tài liệu -------------------------------------------------------------------------
   const tieuDe = "THUYẾT MINH TÍNH TOÁN HỆ THỐNG ĐIỆN";
   khoi.push({ loai: "trang", huong: "doc" });
-  khoi.push({ loai: "tieuDe", text: tieuDe, phu: "SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN" });
+  const dsTo = `${soTong}${tatCaTo.length ? `, ${tatCaTo[0]}${tatCaTo.length > 1 ? `–${tatCaTo.at(-1)}` : ""}` : ""}`;
+  khoi.push({ loai: "tieuDe", text: tieuDe, phu: "ELECTRICAL CALCULATION REPORT · SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN" });
+  // Khối thông tin 3 × 2 như mẫu "Yêu cầu bàn giao mặt bằng" của Indust Design
   khoi.push({
     loai: "thongTin",
-    dong: [
-      ["Dự án", info.project || "—"],
-      ["Chủ đầu tư", info.client || "—"],
-      ["Địa điểm", info.address || "—"],
-      ["Loại công trình", info.loaiCongTrinh || "—"],
-      ["Bản vẽ kèm theo", `${soTong} (sơ đồ cấp điện tổng)${tatCaTo.length ? ` và ${tatCaTo[0]}${tatCaTo.length > 1 ? `–${tatCaTo.at(-1)}` : ""} (sơ đồ nguyên lý ${kq.tu.length} tủ)` : ""}`],
-      ["Ngày lập", info.date || ngayVN(ngay)],
-      ["Bộ quy tắc tính toán", `Phiên bản ${rule.phienBan} — ${rule.trangThai}`],
+    o: [
+      ["DỰ ÁN", info.project || "—"],
+      ["CHỦ ĐẦU TƯ", info.client || "—"],
+      ["NGÀY LẬP", info.date || ngayVN(ngay)],
+      ["BẢN VẼ KÈM THEO", `${dsTo} (${kq.tu.length} tủ)`],
+      ["NGƯỜI LẬP", info.madeBy || info.design || "Indust Design"],
+      ["TRẠNG THÁI", chuaDuyet ? "Working Document — quy tắc chưa duyệt" : "Working Document"],
     ],
   });
-  if (chuaDuyet) {
-    khoi.push({ loai: "khung", noi: [{ b: "Bộ quy tắc tính toán đang ở trạng thái CHƯA DUYỆT." }, " Thuyết minh này là bản nháp để tham khảo; kỹ sư điện có chứng chỉ phải kiểm tra trước khi phát hành hồ sơ."] });
-  }
+  khoi.push({
+    loai: "cachDung",
+    noi: [`thuyết minh tự sinh từ dữ liệu dự án${info.loaiCongTrinh ? ` (${info.loaiCongTrinh.toLowerCase()}${info.address ? `, ${info.address}` : ""})` : ""} và bộ quy tắc tính toán phiên bản ${rule.phienBan}. Số liệu khớp với bảng tính và bộ bản vẽ ${dsTo}: muốn đổi số liệu thì sửa đầu vào rồi xuất lại, chỉ sửa tay phần lời văn. `,
+      ...(chuaDuyet ? [{ b: "Bộ quy tắc đang ở trạng thái CHƯA DUYỆT" }, " — kỹ sư điện có chứng chỉ phải kiểm tra trước khi phát hành hồ sơ."] : [])],
+  });
 
   // --- 1. Căn cứ ----------------------------------------------------------------------------
   muc(1, "1. CĂN CỨ THIẾT KẾ");
@@ -233,7 +241,7 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   const nLoi = dem("loi"), nCb = dem("canhbao"), nGc = dem("ghichu");
   doan(`Bộ kiểm tra tự động: `, { b: `${nLoi} lỗi, ${nCb} cảnh báo, ${nGc} ghi chú` }, ".");
   const dongCb = (muc) => kq.canhBao.filter((c) => c.muc === muc).map((c) => [MUC[c.muc], c.tu || "—", c.mach || "—", c.noiDung]);
-  const cotCb = [{ ten: "Mức", rong: 9 }, { ten: "Tủ", rong: 7 }, { ten: "Mạch", rong: 10 }, { ten: "Nội dung", rong: 74 }];
+  const cotCb = [{ ten: "Mức", rong: 11 }, { ten: "Tủ", rong: 7 }, { ten: "Mạch", rong: 10 }, { ten: "Nội dung", rong: 72 }];
   if (nLoi + nCb) bang(cotCb, [...dongCb("loi"), ...dongCb("canhbao")], true);
   if (nGc) { dan("Các ghi chú:"); bang(cotCb, dongCb("ghichu"), true); }
 
@@ -270,14 +278,18 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   if (chuaDuyet) doan(`Bộ quy tắc tính toán phiên bản ${rule.phienBan} ${rule.trangThai.toLowerCase()}; kết quả chỉ có giá trị tham khảo cho đến khi kỹ sư điện duyệt.`);
   khoi.push({ loai: "kyTen", o: [["NGƯỜI LẬP", info.madeBy || info.design || ""], ["KIỂM TRA", info.checkBy || ""], ["CHỦ TRÌ", info.director || ""]] });
 
-  return { tieuDe, tenDuAn: info.project || "", khoi };
+  const chanTrang = `Indust Design | ${info.client || info.project || "—"} | Thuyết minh tính toán hệ thống điện | Working Document`;
+  return { tieuDe, tenDuAn: info.project || "", chanTrang, khoi };
 }
 
 // ============================================================================================
-// HTML: xem nhanh trên web app, in ra PDF từ trình duyệt (bảng rộng tự sang trang ngang)
+// HTML: xem nhanh trên web app, in ra PDF từ trình duyệt — trình bày theo mẫu văn bản Indust Design
+// (Arial; cam #F15A22, xanh than #22333B, xám nâu #6E6156; khối thông tin 3×2; đề mục có vạch cam;
+//  bảng băng màu xen kẽ, không viền dọc; chân trang "Indust Design | … | Working Document")
 // ============================================================================================
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const noiHtml = (noi) => noi.map((x) => (typeof x === "string" ? esc(x) : `<b>${esc(x.b)}</b>`)).join("");
+const cssStr = (s) => `"${String(s).replace(/["\\]/g, "\\$&")}"`;
 
 /** @param {ReturnType<typeof noiDungThuyetMinh>} nd */
 export function thuyetMinhHtml(nd) {
@@ -289,15 +301,19 @@ export function thuyetMinhHtml(nd) {
         html += `<section class="${k.huong}">`; mo = true; break;
       case "ngatTrang": html += `<div class="ngat"></div>`; break;
       case "tieuDe": html += `<header><h1>${esc(k.text)}</h1><p class="phu">${esc(k.phu)}</p></header>`; break;
-      case "thongTin": html += `<table class="tt">${k.dong.map(([a, b]) => `<tr><th>${esc(a)}</th><td>${esc(b)}</td></tr>`).join("")}</table>`; break;
-      case "khung": html += `<p class="khung">${noiHtml(k.noi)}</p>`; break;
-      case "muc": html += k.cap === 1 ? `<h2>${esc(k.text)}</h2>` : `<h3>${esc(k.text)}</h3>`; break;
+      case "thongTin": {
+        const o = (x) => `<td><span class="nhan">${esc(x[0])}</span>${esc(x[1])}</td>`;
+        html += `<table class="tt"><tr>${k.o.slice(0, 3).map(o).join("")}</tr><tr class="nen">${k.o.slice(3).map(o).join("")}</tr></table>`;
+        break;
+      }
+      case "cachDung": html += `<p class="cach"><b>Cách dùng — </b><i>${noiHtml(k.noi)}</i></p>`; break;
+      case "muc": html += k.cap === 1 ? `<h2><span class="so">${esc(k.so ?? "")}</span>${esc(k.text)}</h2>` : `<h3>${esc(k.text)}</h3>`; break;
       case "doan": html += `<p${k.giu ? ' class="giu"' : ""}>${noiHtml(k.noi)}</p>`; break;
       case "danhSach": html += `<ul>${k.muc.map((m) => `<li>${noiHtml(m)}</li>`).join("")}</ul>`; break;
       case "bang": {
         const tong = k.cot.reduce((a, c) => a + (c.rong || 1), 0);
-        html += `<table class="bang${k.nho ? " nho" : ""}"><colgroup>${k.cot.map((c) => `<col style="width:${(((c.rong || 1) / tong) * 100).toFixed(1)}%">`).join("")}</colgroup>` +
-          `<thead><tr>${k.cot.map((c) => `<th>${esc(c.ten)}</th>`).join("")}</tr></thead><tbody>` +
+        html += `<table class="bang"><colgroup>${k.cot.map((c) => `<col style="width:${(((c.rong || 1) / tong) * 100).toFixed(1)}%">`).join("")}</colgroup>` +
+          `<thead><tr>${k.cot.map((c) => `<th${c.so ? ' class="so"' : ""}>${esc(c.ten)}</th>`).join("")}</tr></thead><tbody>` +
           k.dong.map((d) => `<tr>${d.map((o, i) => `<td${k.cot[i]?.so ? ' class="so"' : ""}>${esc(o)}</td>`).join("")}</tr>`).join("") + "</tbody></table>";
         break;
       }
@@ -309,33 +325,43 @@ export function thuyetMinhHtml(nd) {
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Thuyết minh tính toán — ${esc(nd.tenDuAn)}</title>
 <style>
-  /* Chữ đen, đề mục xanh than #22333B (bộ nhận diện measure&make); font giống bản Word */
-  @page { size: A4; margin: 20mm 15mm 18mm 25mm; }
-  @page ngang { size: A4 landscape; margin: 15mm 15mm 15mm 18mm; }
+  :root { --cam: #F15A22; --than: #22333B; --xam: #6E6156; --nen: #F5F4F1; --bang: #F7F7F5; }
+  @page { size: A4; margin: 18mm 16mm 18mm 20mm;
+    @bottom-center { content: ${cssStr(nd.chanTrang || "")} "  ·  Trang " counter(page) "/" counter(pages); font: 7.5pt Arial, Helvetica, sans-serif; color: #6E6156; border-top: 0.2mm solid #D5D0C8; } }
+  @page ngang { size: A4 landscape; margin: 14mm 14mm 16mm 16mm; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.4; color: #000; background: #F4F3F0; }
-  .in { position: sticky; top: 0; z-index: 2; padding: 10px 16px; background: #22333B; color: #fff; display: flex; gap: 12px; align-items: center; font-family: Arial, Helvetica, sans-serif; font-size: 14px; }
-  .in button { font: inherit; padding: 6px 14px; border: 0; cursor: pointer; background: #F15A22; color: #fff; }
-  section { background: #fff; max-width: 210mm; margin: 16px auto; padding: 18mm 15mm 16mm 22mm; }
-  section.ngang { max-width: 297mm; padding: 14mm 14mm; page: ngang; }
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.45; color: var(--than); background: #ECEAE6; }
+  .in { position: sticky; top: 0; z-index: 2; padding: 10px 16px; background: var(--than); color: #fff; display: flex; gap: 12px; align-items: center; font-size: 14px; }
+  .in button { font: inherit; padding: 6px 14px; border: 0; cursor: pointer; background: var(--cam); color: #fff; }
+  section { background: #fff; max-width: 210mm; margin: 16px auto; padding: 16mm 16mm 14mm 20mm; }
+  section.ngang { max-width: 297mm; padding: 14mm; page: ngang; }
   section + section { break-before: page; }
   .ngat { break-before: page; height: 0; }
-  header { text-align: center; margin: 4mm 0 8mm; }
-  h1 { font-size: 17pt; margin: 0; color: #22333B; } .phu { margin: 2mm 0 0; font-weight: bold; font-size: 14pt; color: #22333B; }
-  h2 { font-size: 13.5pt; margin: 7mm 0 3mm; color: #22333B; break-after: avoid; }
-  h3 { font-size: 13pt; margin: 5mm 0 2mm; color: #22333B; font-style: italic; break-after: avoid; }
-  p { margin: 0 0 2.5mm; text-align: justify; } p.giu { break-after: avoid; } header p { text-align: center; }
-  ul { margin: 0 0 3mm; padding-left: 7mm; } li { margin-bottom: 1.2mm; }
-  .khung { border: 0.4mm solid #a5514b; background: #f8eceb; padding: 3mm 4mm; margin: 6mm 0; }
+  header { text-align: center; margin: 2mm 0 6mm; }
+  h1 { font-size: 16.5pt; margin: 0; font-weight: bold; letter-spacing: .01em; }
+  header .phu { margin: 1.5mm 0 0; font-size: 9.5pt; color: var(--xam); letter-spacing: .06em; text-align: center; }
+  .tt { width: 100%; border-collapse: collapse; margin: 0 0 3mm; border-bottom: 0.35mm solid var(--cam); }
+  .tt td { width: 33.33%; padding: 2.2mm 3mm; vertical-align: top; font-size: 9.5pt; }
+  .tt tr.nen td { background: var(--nen); }
+  .tt .nhan { display: block; font-size: 7.5pt; font-weight: bold; color: var(--xam); letter-spacing: .05em; margin-bottom: .6mm; }
+  p.cach { margin: 3mm 0 5mm; font-size: 9pt; color: var(--xam); } p.cach b { color: var(--cam); font-style: normal; }
+  h2 { font-size: 13pt; margin: 7mm 0 3mm; padding: .6mm 0 .6mm 3mm; border-left: 1.4mm solid var(--cam); color: var(--than); break-after: avoid; }
+  h2 .so { color: var(--cam); margin-right: 3mm; }
+  h3 { font-size: 10.5pt; margin: 5mm 0 2mm; color: var(--than); break-after: avoid; }
+  p { margin: 0 0 2.2mm; text-align: justify; } p.giu { break-after: avoid; }
+  ul { margin: 0 0 3mm; padding-left: 6mm; list-style: none; } li { margin-bottom: 1.2mm; position: relative; }
+  li::before { content: "•"; color: var(--cam); position: absolute; left: -4.5mm; }
   table { border-collapse: collapse; width: 100%; }
-  .tt { margin: 0 0 4mm; } .tt th { text-align: left; font-weight: normal; width: 34%; padding: 1mm 2mm 1mm 0; vertical-align: top; } .tt td { font-weight: bold; padding: 1mm 0; }
-  .bang { font-size: 10pt; margin: 2mm 0 4mm; } .bang.nho { font-size: 9pt; }
-  .bang th, .bang td { border: 0.25mm solid #444; padding: 1mm 1.4mm; vertical-align: top; text-align: left; }
-  .bang th { background: #eceae6; font-weight: bold; } .bang td.so { text-align: right; white-space: nowrap; }
+  .bang { font-size: 8.5pt; margin: 2mm 0 4mm; }
+  .bang th, .bang td { padding: 1.3mm 1.6mm; vertical-align: top; text-align: left; border: 0; }
+  .bang th { font-weight: bold; color: var(--than); border-bottom: 0.35mm solid var(--cam); background: #fff; }
+  .bang tbody tr:nth-child(odd) td { background: var(--bang); }
+  .bang .so { text-align: right; white-space: nowrap; }
   .bang thead { display: table-header-group; } .bang tr { break-inside: avoid; }
-  .ky { margin-top: 12mm; text-align: center; } .ky th { font-weight: bold; padding-bottom: 22mm; } .ky td { font-weight: bold; }
-  @media (max-width: 760px) { section, section.ngang { margin: 8px; padding: 14px; } .bang { display: block; overflow-x: auto; } }
-  @media print { body { background: #fff; } .in { display: none; } section, section.ngang { margin: 0; padding: 0; max-width: none; } }
+  .ky { margin-top: 12mm; text-align: center; } .ky th { font-size: 8pt; color: var(--xam); letter-spacing: .05em; padding-bottom: 20mm; } .ky td { font-weight: bold; }
+  @media (max-width: 760px) { section, section.ngang { margin: 8px; padding: 14px; } .bang { display: block; overflow-x: auto; } .tt td { display: block; width: auto; } }
+  @media print { body { background: #fff; } .in { display: none; } section, section.ngang { margin: 0; padding: 0; max-width: none; }
+    .bang tbody tr:nth-child(odd) td, .tt tr.nen td { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style></head><body>
 <div class="in"><b>${esc(nd.tieuDe)}${nd.tenDuAn ? ` — ${esc(nd.tenDuAn)}` : ""}</b><button onclick="print()">In / Lưu PDF</button></div>
 ${html}

@@ -513,6 +513,7 @@ Chốt ngày 07/11/2026.
   - Cùng đợt: bộ cân pha tính theo đúng hệ số đồng thời của từng mạch; tủ nhiều tờ chia đều số lộ giữa các tờ.
 - **Thuyết minh tính toán (11/11/2026):** `dien/engine/thuyet-minh.mjs` và `thuyet-minh-docx.mjs`.
   - Dựng nội dung một lần, xuất ra **Word** (`thuyet-minh.docx`, sửa được) và **trang HTML** in ra PDF.
+  - Trình bày theo mẫu văn bản Indust Design (như "Yêu cầu bàn giao mặt bằng"): Arial, cam / xanh than, khối thông tin 3×2, dòng "Cách dùng", đề mục 01–06 có vạch cam, bảng băng màu, chân trang "Indust Design | … | Working Document".
   - Gồm 6 mục: căn cứ thiết kế; nguồn và giải pháp cấp điện; phương pháp tính (ghi kèm tham số bộ quy tắc); tổng hợp phụ tải; chi tiết từng tủ; kiểm tra và kết luận (lỗi, cảnh báo, ghi đè có lý do, giả định, ô ký).
   - Bảng từng mạch đặt trang ngang. Mạch phải tăng tiết diện có ghi lý do (các cỡ đã thử, Iz′, ΔU).
   - Có trong web app (nút **Thuyết minh Word**, **Xem thuyết minh**, và trong ZIP), lệnh tạo bộ và skill agent.
