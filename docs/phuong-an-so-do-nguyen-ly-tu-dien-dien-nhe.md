@@ -548,8 +548,16 @@ Chốt ngày 07/11/2026.
   - Bản vẽ E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… mặt đứng tủ rack (theo phong cách E.601).
   - File `dien-nhe.xlsx` (bảng đấu nối cổng), BOQ nhóm F, thuyết minh mục 06, web app. Thiết bị ghi theo chủng loại, chưa gắn hãng.
 
+- **Điện nhẹ đợt 2 — IPTV, chuông cửa IP, kiểm soát ra vào, âm thanh 100 V, KNX (11/11/2026):**
+  - Truyền hình và chuông cửa đều qua mạng IP: ổ TV là link Cat6 vào switch thường; nút gọi ngoài trời và màn hình trong nhà là link PoE.
+  - ACS: bộ điều khiển 4 / 2 / 1 cửa (một link Cat6, nguồn 12 V ắc quy tính vào UPS) lắp cạnh rack; thiết bị và cáp từng cửa; liên động báo cháy ghi chú.
+  - Âm thanh 100 V theo vùng: ampli mixer khi ≤ 6 vùng, không thì ampli từng vùng; ampli ≥ 1,25 × Σ tap loa; nguồn ampli là mạch riêng `DNn` trong tủ điện, không qua UPS.
+  - KNX: cột `Điều khiển KNX` ở sheet `Mach`; actuator suy từ các mạch đánh dấu (+ 20% kênh), đặt trong tủ điện của mạch và tính vào module vỏ tủ; nguồn bus, giao diện IP ở tủ gốc; số line theo 64 thiết bị / dòng bus / 1000 m dây bus.
+  - Tờ mới: nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; `dien-nhe.xlsx` thêm 3 sheet; BOQ nhóm F, thuyết minh 6.x mở rộng.
+  - Nhập liệu điện nhẹ trên web (bảng phòng, bảng tủ rack, cột KNX ở bảng mạch); agent gợi ý thiết bị điện nhẹ theo loại phòng khi mô tả có `dienNhe` / `knx`.
+
 **Tiếp theo (GĐ2 đợt 2):**
-- **Điện nhẹ đợt 2:** truyền hình, kiểm soát ra vào, chuông cửa, âm thanh, KNX; nhập liệu điện nhẹ trên web; bóc khối block điện nhẹ; agent gợi ý số ổ / AP theo phòng.
+- **Điện nhẹ đợt 3:** bóc khối block điện nhẹ từ mặt bằng AutoCAD; gắn hãng thiết bị khi team chốt.
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.

@@ -8,7 +8,7 @@
 // Dạng file mô tả: xem .claude/skills/so-do-nguyen-ly/tham-khao.md và agent/vi-du/mo-ta-biet-thu.json.
 
 import {
-  CHIEU_DAI, DIEU_HOA, DU_PHONG_MOI_TU, GOM, LOAI_PHONG, PO_O_CAM, THIET_BI_PHONG, THIET_BI_RIENG, VRV,
+  CHIEU_DAI, DIEN_NHE, DIEN_NHE_PHONG, DIEU_HOA, DU_PHONG_MOI_TU, GOM, LOAI_PHONG, PO_O_CAM, THIET_BI_PHONG, THIET_BI_RIENG, VRV,
 } from "./phu-tai-dien-hinh.mjs";
 
 const VIET_TAT = {
@@ -125,6 +125,7 @@ export function goiYDauVao(moTa) {
   const dai = (co, n) => co + CHIEU_DAI.themMoiPhong * Math.max(0, n - 1);
   let tongBtuVrv = 0;
   const dienTichGiaDinh = [];
+  const phongTheoTang = [];   // cho bộ gợi ý điện nhẹ
 
   tang.forEach((t) => {
     const tu = tuCuaTang.get(t.ten);
@@ -147,6 +148,7 @@ export function goiYDauVao(moTa) {
       if ((demLoai[p.loai] || 0) > 1) { daDem[p.loai] = (daDem[p.loai] || 0) + 1; p.tenHien = `${p.tenHien} ${n}-${daDem[p.loai]}`; }
     }
     for (const p of phongs) if (p.dtGiaDinh) dienTichGiaDinh.push(`${p.tenHien} (${t.ten}) ${p.dt} m²`);
+    phongTheoTang.push({ tang: t.ten, i: tang.indexOf(t), phongs });
 
     // Chiếu sáng: khô gom theo nhóm; WC gom 1 mạch khu ướt; ngoài nhà riêng
     const gomDen = (ds, loaiMach, khuVuc, dau) => {
@@ -307,7 +309,69 @@ export function goiYDauVao(moTa) {
       canhBao.push(`Tủ ${p.ma} 1 pha nhưng tổng tải đặt ≈ ${so(kw)} kW — cân nhắc tủ 3 pha`);
     }
   }
-  return { duAn: { info, panels, circuits }, giaDinh, canhBao };
+  const dienNhe = goiYDienNhe(moTa, phongTheoTang, { tangGoc, iGoc, ccTang, tuRack: tuCuaTang.get(tangGoc) ?? maGoc, circuits, giaDinh });
+  return { duAn: { info, panels, circuits, ...(dienNhe ? { dienNhe } : {}) }, giaDinh, canhBao };
+}
+
+/**
+ * Điện nhẹ theo bảng điển hình (mô tả có "dienNhe": true | { tang, acs }) và KNX ("knx": true: mạch chiếu sáng bật/tắt,
+ * mạch rèm điều khiển rèm, phím / cảm biến theo phòng). Mọi số ghi "giả định".
+ */
+function goiYDienNhe(moTa, phongTheoTang, { tangGoc, iGoc, ccTang, tuRack, circuits, giaDinh }) {
+  const coDn = !!moTa.dienNhe, coKnx = !!moTa.knx;
+  if (!coDn && !coKnx) return null;
+  const cfg = typeof moTa.dienNhe === "object" ? moTa.dienNhe : {};
+  const rackTang = cfg.tang ?? tangGoc;
+  const iRack = Math.max(0, phongTheoTang.findIndex((x) => x.tang === rackTang));
+  const phong = [];
+  let daCoCong = false;
+  for (const { tang: ten, i, phongs } of phongTheoTang) {
+    const dong = phongs.map((p) => {
+      const b = DIEN_NHE_PHONG[p.loai] || {};
+      const ngoai = p.L.nhom === "ngoai";
+      const d = { tang: ten, phong: p.tenHien, ghiChu: "giả định" };
+      if (coDn) {
+        for (const k of ["data", "tv", "ap", "camTrong", "camNgoai", "loa"]) d[k] = b[k] || 0;
+        if (d.loa) { d.loaW = ngoai ? DIEN_NHE.loaWNgoai : DIEN_NHE.loaW; d.vungAm = `Vùng ${ten}${ngoai ? " ngoài" : ""}`; }
+        d.rack = "R1";
+        d.L = Math.round(Math.abs(i - iRack) * ccTang + (ngoai ? DIEN_NHE.lNgoai : DIEN_NHE.lNgang));
+      }
+      if (coKnx) d.knx = b.knx || 0;
+      return { d, p, ngoai };
+    });
+    if (coDn) {
+      // Mỗi tầng đủ AP theo diện tích trong nhà
+      const trong = dong.filter((x) => !x.ngoai);
+      const can = Math.ceil(trong.reduce((a, x) => a + (x.p.dt || 0), 0) / DIEN_NHE.apM2);
+      const co = trong.reduce((a, x) => a + x.d.ap, 0);
+      if (trong.length && co < Math.max(1, can)) {
+        const lon = [...trong].sort((a, b) => (b.p.dt || 0) - (a.p.dt || 0))[0];
+        lon.d.ap += Math.max(1, can) - co;
+      }
+      // Màn hình chuông ở phòng khách / sảnh; nút gọi + cửa ACS ở cổng tầng gốc
+      const khach = dong.find((x) => x.p.loai === "phòng khách") || dong.find((x) => x.p.loai === "sảnh, hành lang");
+      if (khach) khach.d.chuongTrong = 1;
+      if (ten === tangGoc && !daCoCong) {
+        const cong = dong.find((x) => x.ngoai) || khach || dong[0];
+        if (cong) { cong.d.chuongNgoai = 1; if (cfg.acs !== false) cong.d.acs = 1; daCoCong = true; }
+      }
+    }
+    for (const { d } of dong) {
+      if (["data", "tv", "ap", "camTrong", "camNgoai", "loa", "chuongNgoai", "chuongTrong", "acs", "knx"].some((k) => d[k] > 0)) phong.push(d);
+    }
+  }
+  if (coKnx) {
+    let n = 0;
+    for (const c of circuits) {
+      if (/^Chiếu sáng/.test(c.loai)) { c.knx = "Bật/tắt"; n++; } else if (/RÈM/.test(c.phuTai || "")) { c.knx = "Rèm"; n++; }
+    }
+    giaDinh.push(`KNX: ${n} mạch chiếu sáng / rèm điều khiển bằng actuator trong tủ; phím bấm / cảm biến theo loại phòng`);
+  }
+  if (coDn) {
+    giaDinh.push(`Điện nhẹ theo bảng điển hình (agent/phu-tai-dien-hinh.mjs): ổ data, ổ TV IPTV, AP (≥ 1 / ${DIEN_NHE.apM2} m² mỗi tầng), camera, loa 100 V; ` +
+      `1 rack R1 ở tầng ${rackTang}, cấp nguồn từ tủ ${tuRack}; chiều dài cáp = chênh tầng × ${so(ccTang)} m + ${DIEN_NHE.lNgang} m (ngoài nhà ${DIEN_NHE.lNgoai} m)`);
+  }
+  return { phong, rack: coDn ? [{ ma: "R1", tang: rackTang, viTri: "phòng kỹ thuật / gầm cầu thang (giả định)", capTu: tuRack, lNguon: DIEN_NHE.lNguonRack, trungTam: true, ghiChu: "giả định" }] : [] };
 }
 
 // --- Dòng lệnh ------------------------------------------------------------------------

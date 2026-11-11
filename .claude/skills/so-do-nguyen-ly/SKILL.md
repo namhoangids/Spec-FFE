@@ -86,7 +86,7 @@ python3 mau/tao_mau_nhap_lieu.py --tu-json du-an/<ma>/du-an.json du-an/<ma>/nhap
 
 **Soát ngắn mạch** trong sheet "Ngan mach" theo [`tham-khao.md`](tham-khao.md) § 9: mạch nào **không tự cắt nguồn** khi chạm vỏ (cảnh báo `Ik1 min … < ngưỡng cắt từ`) — nêu cho anh kèm các đề xuất của công cụ, chờ anh chọn rồi mới ghi đè. Hỏi Ik tại điểm đấu / máy biến áp / sơ đồ nối đất nếu anh chưa nói (ghi vào `info`: `ikNguon`, `mbaKva`, `noiDat`).
 
-**Điện nhẹ** (nếu anh cần mạng, Wi-Fi, camera): thêm `dienNhe` vào `du-an.json` theo [`tham-khao.md`](tham-khao.md) § 10 (số ổ data, AP, camera từng phòng; tủ rack và tủ điện cấp nguồn), chạy lại bước 3. Báo anh: các tờ E.700–E.70x, switch/PoE/NVR/UPS từng rack, mạch nguồn `DNn` đã thêm vào tủ nào, cảnh báo Cat6 > 90 m.
+**Điện nhẹ** (nếu anh cần mạng, Wi-Fi, camera, TV, chuông cửa, kiểm soát ra vào, âm thanh, KNX): thêm `"dienNhe": true` / `"knx": true` vào `mo-ta.json` để agent gợi ý theo phòng, hoặc sửa `dienNhe` trong `du-an.json` theo [`tham-khao.md`](tham-khao.md) § 10; KNX đánh dấu ở từng mạch (`knx`). Chạy lại bước 3. Báo anh: các tờ E.7xx, switch/PoE/NVR/UPS từng rack, ampli và vùng loa, bộ điều khiển ACS, actuator KNX đã vào tủ nào (và tủ nào vượt vỏ), các mạch nguồn `DNn` đã thêm, cảnh báo Cat6 > 90 m. Số thiết bị agent gợi ý là giả định — hỏi anh vị trí rack, dimmer, vùng âm thanh, cửa kiểm soát.
 
 Khi anh hỏi "tính tiết diện / chọn ống thế nào": trình bày theo § 6–7 và bảng của sheet "Cap va ong" (Ib → In → các cỡ đã thử → S chọn → số dây → lấp đầy → ống). Không tự nhẩm số khác với công cụ.
 

@@ -22,7 +22,7 @@ test("một rack: switch thường cho ổ data, switch PoE cho AP + camera, pat
   };
   const kq = tinhDienNhe(dn, rule, { panels: [{ ma: "T1" }] });
   const r = kq.rack[0];
-  assert.deepEqual(r.dem, { data: 12, ap: 7, cam: 9, lienKet: 28 });
+  assert.deepEqual(r.dem, { data: 12, tv: 0, ap: 7, cam: 9, chuong: 0, acs: 0, cua: 0, lienKet: 28 });
   // 12 ổ data × 1,2 = 14,4 → 15 cổng → switch 16; 16 thiết bị PoE → 20 cổng → switch PoE 24
   assert.deepEqual(r.switch.map((s) => [s.loai, s.cong]), [["thuong", 16], ["poe", 24]]);
   // PoE: (7 × 20 + 9 × 10) × 1,2 = 276 W ≤ 370 W
@@ -108,7 +108,7 @@ test("cả bộ: mạch nguồn rack vào tủ điện (có CB, cáp, ngắn m�
   assert.equal(f.find((d) => d.khoa === "Mặt + nhân ổ data RJ45 Cat6").kl, 4);
   const wb = bo.dienNheExcel(XLSX);
   assert.deepEqual(wb.SheetNames, ["Tong hop", "Thiet bi rack", "Dau noi", "Canh bao"]);
-  assert.match(bo.thuyetMinhHtml(), /06<\/span>[\s\S]*HỆ THỐNG MẠNG LAN, WI-FI VÀ CAMERA[\s\S]*07<\/span>[\s\S]*KIỂM TRA VÀ KẾT LUẬN/);
+  assert.match(bo.thuyetMinhHtml(), /06<\/span>[\s\S]*HỆ THỐNG ĐIỆN NHẸ[\s\S]*07<\/span>[\s\S]*KIỂM TRA VÀ KẾT LUẬN/);
 
   // Rack khai mã lộ có sẵn: không thêm mạch, cảnh báo nếu công suất mạch nhỏ hơn cần
   const coSan = structuredClone(duAn);

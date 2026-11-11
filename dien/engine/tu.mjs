@@ -67,6 +67,8 @@ export function demModule(tu, mach, nhom, cbTong, rule, { coSpd }) {
   them(`CB tổng ${cbTong.loai} ${cbTong.soCuc}`, cbTong.module);
   if (tu.soPha === 3 && rule.denBaoPha) them("Đèn báo pha", rule.module.DEN_BAO);
   if (coSpd) them("SPD loại 2", tu.soPha === 3 ? rule.module.SPD3 : rule.module.SPD1);
+  // Thiết bị DIN thêm vào tủ từ hệ khác (actuator, nguồn bus, giao diện IP KNX — engine/dien-nhe.mjs)
+  for (const x of tu.thietBiThem || []) them(x.ten, x.module);
   const tong = chiTiet.reduce((a, [, n]) => a + n, 0);
   const can = tong * (1 + rule.duPhongVo / 100);
   const voTu = rule.voTu.find((v) => v >= can - 1e-9) ?? null;

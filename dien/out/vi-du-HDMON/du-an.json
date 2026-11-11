@@ -98,7 +98,8 @@
       "khuVuc": "Ngoài nhà",
       "congSuat": 500,
       "soPha": 1,
-      "L": 30
+      "L": 30,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 3,
@@ -109,7 +110,8 @@
       "khuVuc": "Khô",
       "congSuat": 600,
       "soPha": 1,
-      "L": 25
+      "L": 25,
+      "knx": "Dimmer"
     },
     {
       "dong": 4,
@@ -188,7 +190,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Rèm"
     },
     {
       "dong": 11,
@@ -210,7 +213,8 @@
       "khuVuc": "Khô",
       "congSuat": 400,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 13,
@@ -221,7 +225,8 @@
       "khuVuc": "Ướt (WC, tắm)",
       "congSuat": 300,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 14,
@@ -278,7 +283,8 @@
       "khuVuc": "Khô",
       "congSuat": 200,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Rèm"
     },
     {
       "dong": 19,
@@ -289,7 +295,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 20,
@@ -300,7 +307,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 22
+      "L": 22,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 21,
@@ -311,7 +319,8 @@
       "khuVuc": "Ướt (WC, tắm)",
       "congSuat": 250,
       "soPha": 1,
-      "L": 15
+      "L": 15,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 22,
@@ -390,7 +399,8 @@
       "khuVuc": "Khô",
       "congSuat": 200,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Rèm"
     },
     {
       "dong": 29,
@@ -401,7 +411,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 30,
@@ -412,7 +423,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 22
+      "L": 22,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 31,
@@ -423,7 +435,8 @@
       "khuVuc": "Ướt (WC, tắm)",
       "congSuat": 250,
       "soPha": 1,
-      "L": 15
+      "L": 15,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 32,
@@ -502,7 +515,8 @@
       "khuVuc": "Khô",
       "congSuat": 200,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Rèm"
     },
     {
       "dong": 39,
@@ -513,7 +527,8 @@
       "khuVuc": "Khô",
       "congSuat": 400,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 40,
@@ -524,7 +539,8 @@
       "khuVuc": "Ướt (WC, tắm)",
       "congSuat": 250,
       "soPha": 1,
-      "L": 15
+      "L": 15,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 41,
@@ -581,7 +597,8 @@
       "khuVuc": "Khô",
       "congSuat": 200,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Rèm"
     },
     {
       "dong": 46,
@@ -592,7 +609,8 @@
       "khuVuc": "Khô",
       "congSuat": 300,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 47,
@@ -603,7 +621,8 @@
       "khuVuc": "Ngoài nhà",
       "congSuat": 300,
       "soPha": 1,
-      "L": 20
+      "L": 20,
+      "knx": "Bật/tắt"
     },
     {
       "dong": 48,
@@ -659,7 +678,8 @@
       "khuVuc": "Khô",
       "congSuat": 200,
       "soPha": 1,
-      "L": 18
+      "L": 18,
+      "knx": "Rèm"
     },
     {
       "dong": 53,
@@ -793,9 +813,11 @@
         "camNgoai": 0,
         "acs": 0,
         "chuongNgoai": 0,
-        "chuongTrong": 0,
-        "loa": 0,
-        "knx": 0,
+        "chuongTrong": 1,
+        "loa": 4,
+        "loaW": 6,
+        "vungAm": "Vùng 1 – khách",
+        "knx": 3,
         "rack": "R1",
         "L": 15,
         "ghiChu": "giả định"
@@ -811,8 +833,10 @@
         "acs": 0,
         "chuongNgoai": 0,
         "chuongTrong": 0,
-        "loa": 0,
-        "knx": 0,
+        "loa": 2,
+        "loaW": 6,
+        "vungAm": "Vùng 2 – bếp",
+        "knx": 2,
         "rack": "R1",
         "L": 18,
         "ghiChu": "giả định"
@@ -825,14 +849,16 @@
         "ap": 0,
         "camTrong": 0,
         "camNgoai": 3,
-        "acs": 0,
-        "chuongNgoai": 0,
+        "acs": 1,
+        "chuongNgoai": 1,
         "chuongTrong": 0,
-        "loa": 0,
-        "knx": 0,
+        "loa": 2,
+        "loaW": 10,
+        "vungAm": "Vùng 3 – sân",
+        "knx": 1,
         "rack": "R1",
         "L": 30,
-        "ghiChu": "Camera ngoài trời — giả định"
+        "ghiChu": "Camera, loa ngoài trời; cửa cổng có ACS — giả định"
       },
       {
         "tang": "T2",
@@ -846,7 +872,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 4,
         "rack": "R1",
         "L": 24,
         "ghiChu": "giả định"
@@ -863,7 +889,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 1,
         "rack": "R1",
         "L": 22,
         "ghiChu": "giả định"
@@ -880,7 +906,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 4,
         "rack": "R1",
         "L": 29,
         "ghiChu": "giả định"
@@ -897,7 +923,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 1,
         "rack": "R1",
         "L": 27,
         "ghiChu": "giả định"
@@ -914,7 +940,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 4,
         "rack": "R1",
         "L": 34,
         "ghiChu": "giả định"
@@ -931,7 +957,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 1,
         "rack": "R1",
         "L": 32,
         "ghiChu": "giả định"
@@ -948,7 +974,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 4,
         "rack": "R1",
         "L": 39,
         "ghiChu": "giả định"
@@ -965,7 +991,7 @@
         "chuongNgoai": 0,
         "chuongTrong": 0,
         "loa": 0,
-        "knx": 0,
+        "knx": 1,
         "rack": "R1",
         "L": 37,
         "ghiChu": "giả định"
@@ -981,8 +1007,10 @@
         "acs": 0,
         "chuongNgoai": 0,
         "chuongTrong": 0,
-        "loa": 0,
-        "knx": 0,
+        "loa": 2,
+        "loaW": 10,
+        "vungAm": "Vùng 4 – sân thượng",
+        "knx": 2,
         "rack": "R1",
         "L": 45,
         "ghiChu": "giả định"

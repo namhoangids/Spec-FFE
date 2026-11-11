@@ -105,7 +105,9 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
       const coMccb = cb?.loai === "MCCB" || t.mach.some((m) => m.thietBi?.loai === "MCCB");
       if (coMccb) bao("ghichu", t, null, "Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)");
       if (t.module.voTu == null) {
-        bao("canhbao", t, null, `Cần ${so(t.module.can, 1)} module (đã gồm ${rule.duPhongVo}% dự phòng) — vượt vỏ lớn nhất ${rule.voTu.at(-1)} module`);
+        const knx = (t.thietBiThem || []).filter((x) => /KNX/.test(x.ten)).reduce((a, x) => a + x.module, 0);
+        bao("canhbao", t, null, `Cần ${so(t.module.can, 1)} module (đã gồm ${rule.duPhongVo}% dự phòng) — vượt vỏ lớn nhất ${rule.voTu.at(-1)} module` +
+          (knx ? `; trong đó ${knx} module thiết bị KNX — có thể đặt actuator KNX ở tủ riêng cạnh tủ này` : ""));
       }
     }
     const soDuPhong = t.mach.filter((m) => m.kieu?.duPhong).length;

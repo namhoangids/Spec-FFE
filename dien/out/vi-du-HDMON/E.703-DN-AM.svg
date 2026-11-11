@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<rect width="100%" height="100%" fill="#fff"/>
+<polygon points="9.81,290.741 417.093,290.741 417.093,12.073 9.81,12.073" fill="none" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<line x1="350.606" y1="12.073" x2="350.606" y2="290.741" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
+<text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ NGUYÊN LÝ ÂM THANH NỀN 100 V</text>
+<text x="89.208" y="239.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BẢNG CÔNG SUẤT LOA THEO VÙNG</text>
+<polygon points="89.208,246.741 271.208,246.741 271.208,241.741 89.208,241.741" fill="rgb(238,238,238)" stroke="none"/>
+<line x1="89.208" y1="241.741" x2="271.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="246.741" x2="271.208" y2="246.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="251.741" x2="271.208" y2="251.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="256.741" x2="271.208" y2="256.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="261.741" x2="271.208" y2="261.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="266.741" x2="271.208" y2="266.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="89.208" y1="266.741" x2="89.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="119.208" y1="266.741" x2="119.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="133.208" y1="266.741" x2="133.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="183.208" y1="266.741" x2="183.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="199.208" y1="266.741" x2="199.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="215.208" y1="266.741" x2="215.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="231.208" y1="266.741" x2="231.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="271.208" y1="266.741" x2="271.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="104.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">VÙNG</text>
+<text x="126.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TẦNG</text>
+<text x="158.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">PHÒNG</text>
+<text x="191.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">SỐ LOA</text>
+<text x="207.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">W / LOA</text>
+<text x="223.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">ΣW</text>
+<text x="251.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">VÙNG → AMPLI</text>
+<text x="104.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">Vùng 1 – khách</text>
+<text x="126.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="134.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Sảnh, P.khách</text>
+<text x="191.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">4</text>
+<text x="207.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">6</text>
+<text x="223.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">24</text>
+<text x="251.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">24 W → 120 W</text>
+<text x="104.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">Vùng 2 – bếp</text>
+<text x="126.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="134.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Bếp, P.ăn</text>
+<text x="191.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2</text>
+<text x="207.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">6</text>
+<text x="223.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12</text>
+<text x="251.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12 W → 120 W</text>
+<text x="104.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">Vùng 3 – sân</text>
+<text x="126.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="134.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Sân trước, cổng, gara</text>
+<text x="191.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2</text>
+<text x="207.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">10</text>
+<text x="223.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20</text>
+<text x="251.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20 W → 120 W</text>
+<text x="104.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">Vùng 4 – sân thượng</text>
+<text x="126.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T6</text>
+<text x="134.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">P.thờ, sân thượng</text>
+<text x="191.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2</text>
+<text x="207.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">10</text>
+<text x="223.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20</text>
+<text x="251.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20 W → 120 W</text>
+<text x="89.208" y="273.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">GHI CHÚ:</text>
+<text x="89.208" y="277.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">1. Loa treo trần / gắn tường 100 V, chọn tap 6 W khi chưa có số liệu. Ampli ≥ 1,25 × Σ công suất tap loa; ≤ 6 vùng dùng ampli mixer chọn vùng.</text>
+<text x="89.208" y="281.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2. Cáp loa chống cháy 2 × 1,5 mm², đi riêng ống với cáp điện; loa trong một vùng đấu song song trên đường 100 V.</text>
+<text x="89.208" y="285.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">3. Ampli cấp nguồn từ lộ riêng trong tủ điện (không qua UPS), công suất ≈ 1,5 × công suất ra.</text>
+<polygon points="157.208,44.876 203.208,44.876 203.208,34.876 157.208,34.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="157.208,44.876 203.208,44.876 203.208,34.876 157.208,34.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="39.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">NGUỒN NHẠC</text>
+<text x="180.208" y="43.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">streamer / tuner tại rack</text>
+<polygon points="158.208,74.876 202.208,74.876 202.208,64.876 158.208,64.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="158.208,74.876 202.208,74.876 202.208,64.876 158.208,64.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="69.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">AMPLI MIXER 100 V 120 W</text>
+<text x="180.208" y="73.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">4 vùng · ≥ 1,25 × 76 W</text>
+<polygon points="83.208,102.876 127.208,102.876 127.208,92.876 83.208,92.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="105.208" y="97.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(0,0,0)">VÙNG 1 – KHÁCH: 4 LOA</text>
+<text x="105.208" y="101.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">24 W · Sảnh, P.khách</text>
+<polygon points="133.208,102.876 177.208,102.876 177.208,92.876 133.208,92.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="155.208" y="97.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(0,0,0)">VÙNG 2 – BẾP: 2 LOA</text>
+<text x="155.208" y="101.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12 W · Bếp, P.ăn</text>
+<polygon points="183.208,102.876 227.208,102.876 227.208,92.876 183.208,92.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="205.208" y="97.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(0,0,0)">VÙNG 3 – SÂN: 2 LOA</text>
+<text x="205.208" y="101.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20 W · Sân trước, cổng, gara</text>
+<polygon points="233.208,102.876 277.208,102.876 277.208,92.876 233.208,92.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="255.208" y="97.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(0,0,0)">VÙNG 4 – SÂN THƯỢNG: 2 LOA</text>
+<text x="255.208" y="101.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">20 W · P.thờ, sân thượng</text>
+<line x1="180.208" y1="74.876" x2="180.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="105.208" y1="83.876" x2="255.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="105.208" y1="92.876" x2="105.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="155.208" y1="92.876" x2="155.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="205.208" y1="92.876" x2="205.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="255.208" y1="92.876" x2="255.208" y2="83.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="155.608,77.876 204.808,77.876 204.808,57.876 155.608,57.876" fill="none" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="157.108" y="61.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">TỦ RACK R1 (T1)</text>
+<line x1="180.208" y1="44.876" x2="180.208" y2="48.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="180.208" y1="64.876" x2="180.208" y2="48.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
+<text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>
+<text x="361.142" y="38.224" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Company info:</text>
+<line x1="361.142" y1="43.682" x2="411.099" y2="43.682" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="46.035" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Director:</text>
+<line x1="361.142" y1="51.675" x2="411.099" y2="51.675" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="54.028" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Design:</text>
+<line x1="361.142" y1="59.668" x2="411.099" y2="59.668" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="62.021" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Check by:</text>
+<line x1="361.142" y1="67.661" x2="411.099" y2="67.661" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="70.015" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Drawing title:</text>
+<line x1="361.142" y1="75.836" x2="411.099" y2="75.836" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="78.189" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Key plan:</text>
+<line x1="361.142" y1="113.985" x2="411.099" y2="113.985" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="116.338" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project notes:</text>
+<text x="361.142" y="210.983" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Client:</text>
+<line x1="361.142" y1="216.442" x2="411.099" y2="216.442" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="218.976" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Address:</text>
+<line x1="361.142" y1="224.98" x2="411.099" y2="224.98" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="226.97" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project:</text>
+<line x1="361.142" y1="232.791" x2="411.099" y2="232.791" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="235.326" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Made by:</text>
+<line x1="361.142" y1="240.966" x2="411.099" y2="240.966" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="243.137" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Date:</text>
+<line x1="361.142" y1="248.959" x2="411.099" y2="248.959" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="251.675" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Scale:</text>
+<line x1="361.142" y1="256.952" x2="411.099" y2="256.952" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="259.669" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project no:</text>
+<text x="361.142" y="120.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">1. All measurements must be</text>
+<text x="361.142" y="123.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">verified on-site before</text>
+<text x="361.142" y="127.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">construction begins.</text>
+<text x="361.142" y="133.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Do not scale this drawing.</text>
+<text x="361.142" y="137.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Dimensions to be read in</text>
+<text x="361.142" y="140.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conjunction with corresponding</text>
+<text x="361.142" y="143.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">architectural and structural</text>
+<text x="361.142" y="147.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">drawings. This drawing is</text>
+<text x="361.142" y="150.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">copyright or used with the</text>
+<text x="361.142" y="153.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">express authority of Indust</text>
+<text x="361.142" y="157.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Design.</text>
+<text x="361.142" y="163.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Ensure all foundations are</text>
+<text x="361.142" y="167.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">level and stable—verify soil</text>
+<text x="361.142" y="170.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conditions for adequate</text>
+<text x="361.142" y="173.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">support.</text>
+<text x="361.142" y="180.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">3. Coordinate electrical and</text>
+<text x="361.142" y="183.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">plumbing work with off-grid</text>
+<text x="361.142" y="187.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">solutions (if applicable, such</text>
+<text x="361.142" y="190.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">as solar power or composting</text>
+<text x="361.142" y="193.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">toilets)</text>
+<polygon points="361.142,289.833 411.099,289.833 411.099,269.85 361.142,269.85" fill="rgb(127,127,127)" stroke="none"/>
+<text x="386.12" y="42.502" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">22 Thanh Cong, Ba Dinh, Ha Noi</text>
+<text x="386.12" y="74.893" font-family="Arial, Helvetica, sans-serif" font-size="2.441" text-anchor="middle" fill="rgb(51,51,51)">SƠ ĐỒ NGUYÊN LÝ ÂM THANH NỀN 100 V</text>
+<text x="386.12" y="215.398" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">Mr. Tuấn</text>
+<text x="386.12" y="222.71" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">Long Biên - Hà Nội</text>
+<text x="386.12" y="231.384" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">MR. TUẤN - HDMON</text>
+<text x="386.12" y="246.689" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">November 09/11/2026</text>
+<text x="386.12" y="255.045" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">1:50</text>
+<text x="386.12" y="284.091" font-family="Arial, Helvetica, sans-serif" font-size="11.872" text-anchor="middle" fill="rgb(229,229,229)">E.703</text>
+</svg>

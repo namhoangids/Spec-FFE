@@ -39,6 +39,7 @@ const COT_MACH = {
   "ghi đè cáp": "ghiDeCap",
   "ghi đè ống": "ghiDeOng",
   "lý do ghi đè": "lyDo",
+  "điều khiển knx": "knx",
   "ghi chú": "ghiChu",
 };
 const SO_TU = new Set(["lCap", "ik", "ks"]);

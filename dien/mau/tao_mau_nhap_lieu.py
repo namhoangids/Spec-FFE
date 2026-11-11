@@ -148,6 +148,8 @@ COT_MACH = [
     ("Ghi đè cáp", 16, "Ví dụ: Cu/PVC 2(1x4)mm2. Công cụ vẫn kiểm Iz′ và sụt áp."),
     ("Ghi đè ống", 10, "Ví dụ: ỐNG PVC  Ø 25"),
     ("Lý do ghi đè", 22, "Bắt buộc khi có ghi đè — hiện trong danh sách ghi chú."),
+    ("Điều khiển KNX", 10, "Bật/tắt · Dimmer · Rèm: mạch điều khiển bằng actuator KNX đặt trong tủ (1 kênh / mạch; rèm: số kênh = số lượng). "
+                           "Công cụ chọn actuator, cộng module vào vỏ tủ. Trống = không KNX."),
     ("Ib tham khảo (A)", 8, "Chỉ để tham khảo. Công cụ tự tính lại Ib, chọn CB, cáp, RCD theo bộ quy tắc."),
     ("Ghi chú", 22, None),
 ]
@@ -404,6 +406,7 @@ def build(path, du_lieu):
     add_list_validation(mc, f"{k['Loại khu vực']}2:{k['Loại khu vực']}{last}", ref["Loại khu vực"])
     add_list_validation(mc, f"{k['Số pha']}2:{k['Số pha']}{last}", ref["Số pha mạch"])
     add_list_validation(mc, f"{k['Pha (trống = tự cân)']}2:{k['Pha (trống = tự cân)']}{last}", ref["Pha"])
+    add_list_validation(mc, f"{k['Điều khiển KNX']}2:{k['Điều khiển KNX']}{last}", '"Bật/tắt,Dimmer,Rèm"')
     set_widths(mc, [w for _, w, _ in COT_MACH])
     mc.freeze_panes = "C2"
 
@@ -536,7 +539,7 @@ def mach(t, ma, loai, phu_tai, w, l, kv="Khô", sl=None, cos=None, pha3=False, *
          "Số pha": "3P" if pha3 else "1P", "Chiều dài (m)": l}
     ten = {"pha": "Pha (trống = tự cân)", "chung": "Số mạch chung ống", "nhom": "Nhóm RCD (ghi đè)",
            "tb": "Ghi đè thiết bị", "cap": "Ghi đè cáp", "ong": "Ghi đè ống", "ly_do": "Lý do ghi đè",
-           "gc": "Ghi chú"}
+           "gc": "Ghi chú", "knx": "Điều khiển KNX"}
     d.update({ten[k]: v for k, v in kw.items()})
     return d
 
@@ -664,17 +667,26 @@ HDMON = {
         ]),
     ],
     # Điện nhẹ (giả định): 1 rack ở T1, cáp ngang tính từ rack lên các tầng (≈ 3,6 m/tầng + tuyến ngang)
+    # Cột: tầng, phòng, data, TV, AP, cam trong, cam ngoài, ACS, nút gọi, màn hình, loa, W/loa, vùng, KNX, rack, L, ghi chú
     "dien_nhe": [
-        ["T1", "Sảnh, P.khách", 2, 1, 1, 1, 0, 0, 0, 0, 0, None, "", 0, "R1", 15, GD],
-        ["T1", "Bếp, P.ăn", 1, 0, 1, 0, 0, 0, 0, 0, 0, None, "", 0, "R1", 18, GD],
-        ["T1", "Sân trước, cổng, gara", 0, 0, 0, 0, 3, 0, 0, 0, 0, None, "", 0, "R1", 30, f"Camera ngoài trời — {GD}"],
+        ["T1", "Sảnh, P.khách", 2, 1, 1, 1, 0, 0, 0, 1, 4, 6, "Vùng 1 – khách", 3, "R1", 15, GD],
+        ["T1", "Bếp, P.ăn", 1, 0, 1, 0, 0, 0, 0, 0, 2, 6, "Vùng 2 – bếp", 2, "R1", 18, GD],
+        ["T1", "Sân trước, cổng, gara", 0, 0, 0, 0, 3, 1, 1, 0, 2, 10, "Vùng 3 – sân", 1, "R1", 30, f"Camera, loa ngoài trời; cửa cổng có ACS — {GD}"],
         *[dong for k in range(2, 6) for dong in (
-            [f"T{k}", "Các phòng ngủ", 2, 2, 0, 0, 0, 0, 0, 0, 0, None, "", 0, "R1", 14 + 5 * k, GD],
-            [f"T{k}", "Sảnh tầng, hành lang", 0, 0, 1, 1, 0, 0, 0, 0, 0, None, "", 0, "R1", 12 + 5 * k, GD])],
-        ["T6", "P.thờ, sân thượng", 1, 0, 1, 0, 1, 0, 0, 0, 0, None, "", 0, "R1", 45, GD],
+            [f"T{k}", "Các phòng ngủ", 2, 2, 0, 0, 0, 0, 0, 0, 0, None, "", 4, "R1", 14 + 5 * k, GD],
+            [f"T{k}", "Sảnh tầng, hành lang", 0, 0, 1, 1, 0, 0, 0, 0, 0, None, "", 1, "R1", 12 + 5 * k, GD])],
+        ["T6", "P.thờ, sân thượng", 1, 0, 1, 0, 1, 0, 0, 0, 2, 10, "Vùng 4 – sân thượng", 2, "R1", 45, GD],
     ],
     "rack": [["R1", "T1", "Phòng kỹ thuật T1", "T1", "", 8, "", "Có", f"Rack trung tâm — {GD}"]],
 }
+
+# KNX (giả định): mạch chiếu sáng điều khiển bật/tắt (L2 tủ T1: dimmer), mạch rèm điều khiển rèm
+for _m in HDMON["mach"]:
+    _ma = _m.get("Mã lộ") or ""
+    if _ma.startswith("L"):
+        _m["Điều khiển KNX"] = "Dimmer" if (_m["Mã tủ"], _ma) == ("T1", "L2") else "Bật/tắt"
+    elif _ma.startswith("R"):
+        _m["Điều khiển KNX"] = "Rèm"
 
 
 # ---------------------------------------------------------------------------
@@ -698,7 +710,7 @@ _MACH_SANG_COT = {
     "tu": "Mã tủ", "ma": "Mã lộ", "loai": "Loại mạch", "phuTai": "Phụ tải (chữ trên bản vẽ)", "khuVuc": "Loại khu vực",
     "soLuong": "Số lượng", "congSuat": "Công suất / đv (W)", "cos": "cosφ (trống = mặc định)",
     "pha": "Pha (trống = tự cân)", "L": "Chiều dài (m)", "nhomOng": "Số mạch chung ống", "nhomRcd": "Nhóm RCD (ghi đè)",
-    "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè",
+    "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè", "knx": "Điều khiển KNX",
     "ghiChu": "Ghi chú",
 }
 

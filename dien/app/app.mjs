@@ -284,16 +284,16 @@ function veDienNhe(x) {
     pane.innerHTML = r
       ? `<div class="tblwrap"><table><thead><tr><th>Thiết bị</th><th>Số U</th><th>Công suất (W)</th></tr></thead><tbody>
         ${r.thietBi.map((y) => `<tr><td>${esc(y.ten)}</td><td class="n">${y.u}</td><td class="n">${y.w || "—"}</td></tr>`).join("")}
-        <tr><td>Tải PoE (AP, camera)</td><td></td><td class="n">${r.poe.tai || "—"}</td></tr>
+        <tr><td>Tải PoE (AP, camera, chuông cửa)</td><td></td><td class="n">${r.poe.tai || "—"}</td></tr>
         <tr><td><b>Tổng</b></td><td class="n"><b>${r.uTong}</b></td><td class="n"><b>${Math.round(r.w)}</b></td></tr></tbody></table></div>`
       : `<div class="tblwrap"><table><thead><tr><th>Mã nhãn</th><th>Rack</th><th>Tầng</th><th>Phòng</th><th>Loại</th><th>Thiết bị</th><th>L (m)</th></tr></thead><tbody>
         ${dn.lienKet.map((y) => `<tr class="${y.L > S.kq.quyTac.dienNhe.cat6Max ? "canhbao" : ""}"><td class="nw"><b>${esc(y.ma)}</b></td><td>${esc(y.rack)}</td><td>${esc(y.tang)}</td><td>${esc(y.phong)}</td><td>${esc(y.moTa)}</td><td>${esc(y.thietBi)}</td><td class="n">${y.L}</td></tr>`).join("")}
         </tbody></table></div>`;
   } else if (S.view === "nl") {
-    pane.innerHTML = `<p class="crumb">Đợt này sửa số liệu điện nhẹ ở sheet <b>Dien nhe</b> và <b>Tu rack</b> của file Excel (hoặc <code>dienNhe</code> trong du-an.json) rồi nạp lại; nhập liệu điện nhẹ ngay trên web làm ở đợt sau.</p>
-      <div class="tblwrap"><table><thead><tr><th>Tầng</th><th>Phòng</th><th>Ổ data</th><th>AP</th><th>Camera</th><th>Rack</th><th>L (m)</th></tr></thead><tbody>
-      ${dn.phong.map((p) => `<tr><td>${esc(p.tang ?? "")}</td><td>${esc(p.phong ?? "")}</td><td class="n">${p.data || ""}</td><td class="n">${p.ap || ""}</td><td class="n">${(p.camTrong || 0) + (p.camNgoai || 0) || ""}</td><td>${esc(p.rack)}</td><td class="n">${p.L ?? ""}</td></tr>`).join("")}
-      </tbody></table></div>`;
+    const a = document.activeElement;
+    const giu = a?.dataset?.dong ? { dong: a.dataset.dong, i: a.dataset.i, k: a.dataset.k } : null;
+    pane.innerHTML = NL.veNhapLieuDn(S.duAnGoc, S.kq);
+    if (giu) pane.querySelector(`[data-dong="${giu.dong}"][data-k="${giu.k}"]${giu.i != null ? `[data-i="${giu.i}"]` : ""}`)?.focus();
   } else if (S.view === "kt") pane.innerHTML = dsCanhBao(dsKt, false);
   else pane.innerHTML = dsCanhBao(S.kq.canhBao, true);
 }
@@ -408,6 +408,8 @@ $("pane").addEventListener("change", (e) => {
   if (el.dataset.dong === "info") apSua(NL.suaInfo(S.duAnGoc, el.dataset.k, v));
   else if (el.dataset.dong === "tu") apSua(NL.suaTu(S.duAnGoc, i, el.dataset.k, v), { chonTu: el.dataset.k === "ma" ? v : null });
   else if (el.dataset.dong === "mach") apSua(NL.suaMach(S.duAnGoc, i, el.dataset.k, v));
+  else if (el.dataset.dong === "dn") apSua(NL.suaPhongDn(S.duAnGoc, i, el.dataset.k, v));
+  else if (el.dataset.dong === "rack") apSua(NL.suaRack(S.duAnGoc, i, el.dataset.k, v));
 });
 $("pane").addEventListener("click", (e) => {
   const b = e.target.closest("[data-lenh]");
@@ -432,6 +434,16 @@ $("pane").addEventListener("click", (e) => {
     case "xoaMach": if (confirm(`Xóa mạch ${S.duAnGoc.circuits[i].ma || ""}?`)) apSua(NL.xoaMach(S.duAnGoc, i)); break;
     case "len": apSua(NL.diChuyenMach(S.duAnGoc, i, -1).duAn); break;
     case "xuong": apSua(NL.diChuyenMach(S.duAnGoc, i, 1).duAn); break;
+    case "themDienNhe": apSua(NL.themDienNhe(S.duAnGoc)); break;
+    case "themPhongDn": apSua(NL.themPhongDn(S.duAnGoc, Number.isFinite(i) ? i : null)); break;
+    case "xoaPhongDn": if (confirm(`Xóa dòng "${S.duAnGoc.dienNhe.phong[i].phong || ""}"?`)) apSua(NL.xoaPhongDn(S.duAnGoc, i)); break;
+    case "themRack": apSua(NL.themRack(S.duAnGoc).duAn); break;
+    case "xoaRack": {
+      const r = NL.xoaRack(S.duAnGoc, i);
+      if (r.loi) return loi(r.loi);
+      apSua(r.duAn);
+      break;
+    }
   }
 });
 $("trong").addEventListener("click", () => {

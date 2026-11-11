@@ -25,7 +25,20 @@ export const COT_MACH = [
   ["ma", "Mã lộ", 8], ["loai", "Loại mạch", 16, "LOAI"], ["phuTai", "Phụ tải", 22], ["khuVuc", "Khu vực", 10, LOAI_KHU_VUC],
   ["soLuong", "SL", 4, null, true], ["congSuat", "P/đv (W)", 7, null, true], ["cos", "cosφ", 5, null, true], ["soPha", "Số pha", 5, [1, 3], true],
   ["pha", "Pha", 4, ["", "A", "B", "C"]], ["L", "L (m)", 5, null, true], ["nhomOng", "Chung ống", 5, null, true], ["nhomRcd", "Nhóm RCD", 6],
-  ["ghiDeThietBi", "Ghi đè thiết bị", 14], ["ghiDeCap", "Ghi đè cáp", 14], ["ghiDeOng", "Ghi đè ống", 10], ["lyDo", "Lý do ghi đè", 16], ["ghiChu", "Ghi chú", 16],
+  ["ghiDeThietBi", "Ghi đè thiết bị", 14], ["ghiDeCap", "Ghi đè cáp", 14], ["ghiDeOng", "Ghi đè ống", 10], ["lyDo", "Lý do ghi đè", 16],
+  ["knx", "KNX", 7, ["", "Bật/tắt", "Dimmer", "Rèm"]], ["ghiChu", "Ghi chú", 16],
+];
+// Điện nhẹ: bảng thiết bị theo phòng và bảng tủ rack (cột "rack" chọn trong danh sách rack)
+export const COT_DN = [
+  ["tang", "Tầng", 5], ["phong", "Phòng / khu vực", 18], ["data", "Ổ data", 4, null, true], ["tv", "Ổ TV", 4, null, true],
+  ["ap", "AP", 3, null, true], ["camTrong", "Cam trong", 4, null, true], ["camNgoai", "Cam ngoài", 4, null, true],
+  ["acs", "Cửa ACS", 4, null, true], ["chuongNgoai", "Nút gọi", 4, null, true], ["chuongTrong", "MH chuông", 4, null, true],
+  ["loa", "Loa", 3, null, true], ["loaW", "W/loa", 4, null, true], ["vungAm", "Vùng âm thanh", 12], ["knx", "KNX", 3, null, true],
+  ["rack", "Rack", 5, "RACK"], ["L", "L (m)", 4, null, true], ["ghiChu", "Ghi chú", 14],
+];
+export const COT_RACK = [
+  ["ma", "Mã rack", 5], ["tang", "Tầng", 5], ["viTri", "Vị trí", 14], ["capTu", "Cấp nguồn từ tủ", 7, "TU"], ["maMach", "Mã lộ có sẵn", 6],
+  ["lNguon", "L cáp nguồn (m)", 5, null, true], ["lTruc", "L trục (m)", 5, null, true], ["trungTam", "Trung tâm", 5, ["", "Có"]], ["ghiChu", "Ghi chú", 14],
 ];
 
 // --- Thao tác dữ liệu (trả về dự án MỚI, không sửa bản cũ) -------------------------------------------
@@ -142,13 +155,74 @@ export function duAnTrong() {
   };
 }
 
+// --- Điện nhẹ ---------------------------------------------------------------------------------------------
+const tuGoc = (d) => d.panels.find((p) => !p.capTu || !d.panels.some((x) => x.ma === p.capTu))?.ma ?? d.panels[0]?.ma ?? "";
+
+/** Thêm khung điện nhẹ cho dự án chưa có: 1 rack trung tâm ở tủ gốc, 1 phòng mẫu */
+export function themDienNhe(duAn) {
+  const d = sao(duAn);
+  d.dienNhe = {
+    phong: [{ tang: "T1", phong: "P.khách", data: 2, tv: 1, ap: 1, rack: "R1", L: 15 }],
+    rack: [{ ma: "R1", tang: "T1", capTu: tuGoc(d), trungTam: true }],
+  };
+  return d;
+}
+export function suaPhongDn(duAn, i, k, v) {
+  const d = sao(duAn);
+  d.dienNhe.phong[i] = { ...d.dienNhe.phong[i], [k]: v };
+  return d;
+}
+export function themPhongDn(duAn, sauI = null) {
+  const d = sao(duAn);
+  d.dienNhe ||= { phong: [], rack: [] };
+  const ds = d.dienNhe.phong;
+  const mau = sauI != null ? ds[sauI] : ds.at(-1);
+  ds.splice(sauI != null ? sauI + 1 : ds.length, 0, { tang: mau?.tang ?? "T1", phong: "", rack: mau?.rack ?? d.dienNhe.rack[0]?.ma ?? "R1", L: mau?.L ?? null });
+  return d;
+}
+export function xoaPhongDn(duAn, i) {
+  const d = sao(duAn);
+  d.dienNhe.phong.splice(i, 1);
+  return d;
+}
+/** Sửa rack: đổi mã thì các phòng đi theo; chọn "Có" ở cột trung tâm thì bỏ trung tâm ở rack khác */
+export function suaRack(duAn, i, k, v) {
+  const d = sao(duAn);
+  const ds = d.dienNhe.rack;
+  if (k === "trungTam") {
+    ds.forEach((r, j) => { r.trungTam = j === i ? v === "Có" : v === "Có" ? false : !!r.trungTam; });
+    return d;
+  }
+  const cu = ds[i].ma;
+  ds[i] = { ...ds[i], [k]: v };
+  if (k === "ma" && v && v !== cu) for (const p of d.dienNhe.phong) if (p.rack === cu) p.rack = v;
+  return d;
+}
+export function themRack(duAn) {
+  const d = sao(duAn);
+  d.dienNhe ||= { phong: [], rack: [] };
+  const ma = maKeTiep(d.dienNhe.rack.map((r) => r.ma), "R");
+  d.dienNhe.rack.push({ ma, tang: "", capTu: tuGoc(d), trungTam: !d.dienNhe.rack.length });
+  return { duAn: d, ma };
+}
+/** Xóa rack: chặn nếu còn phòng dùng rack này */
+export function xoaRack(duAn, i) {
+  const ma = duAn.dienNhe.rack[i].ma;
+  const dung = duAn.dienNhe.phong.filter((p) => p.rack === ma).map((p) => p.phong || p.tang);
+  if (dung.length) return { duAn, loi: `Rack ${ma} còn phục vụ ${dung.length} phòng (${dung.slice(0, 3).join(", ")}${dung.length > 3 ? "…" : ""}) — chuyển các phòng sang rack khác trước` };
+  const d = sao(duAn);
+  d.dienNhe.rack.splice(i, 1);
+  if (d.dienNhe.rack.length && !d.dienNhe.rack.some((r) => r.trungTam)) d.dienNhe.rack[0].trungTam = true;
+  return { duAn: d };
+}
+
 // --- Dựng bảng (HTML) --------------------------------------------------------------------------------
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const hienSo = (v) => (v == null || v === "" ? "" : String(v).replace(".", ","));
 
-function o(loaiDong, i, [k, , rong, chon, laSo], v, dsTu, dsLoai) {
+function o(loaiDong, i, [k, , rong, chon, laSo], v, dsTu, dsLoai, dsRack = []) {
   const attr = `data-dong="${loaiDong}" data-i="${i}" data-k="${k}" aria-label="${esc(k)}"`;
-  const ds = chon === "TU" ? ["", ...dsTu] : chon === "LOAI" ? dsLoai : chon;
+  const ds = chon === "TU" ? ["", ...dsTu] : chon === "LOAI" ? dsLoai : chon === "RACK" ? dsRack : chon;
   if (ds) {
     const cur = v ?? "";
     const opts = (ds.includes(cur) || ds.map(String).includes(String(cur)) ? ds : [cur, ...ds])
@@ -199,7 +273,36 @@ export function veNhapLieu(duAn, maTu, kq) {
     }).join("")}</tbody></table></div>
     <p class="crumb">Sửa ô rồi bấm Tab / Enter hoặc bấm ra ngoài: bản vẽ, bảng tính, thuyết minh, BOQ tính lại ngay. Rê chuột lên dòng tô màu để xem lỗi / cảnh báo. Lộ cấp tủ con do công cụ tự tạo theo bảng tủ.</p>`;
   }
-  return `<div class="nhaplieu">${info}${bangTu}${bangMach}</div>`;
+  const dienNhe = duAn.dienNhe?.phong?.length || duAn.dienNhe?.rack?.length
+    ? `<p class="crumb">Điện nhẹ (mạng, camera, TV, chuông cửa, ACS, âm thanh, KNX): chọn một tờ E.7xx trong cây rồi mở chế độ Nhập liệu để sửa bảng phòng và bảng tủ rack. Cột KNX của bảng mạch đánh dấu mạch điều khiển bằng actuator KNX.</p>`
+    : `<div class="nl-dau"><h3>Điện nhẹ</h3><button class="btn btn-sm" data-lenh="themDienNhe">+ Thêm điện nhẹ</button></div>
+      <p class="crumb">Dự án chưa có điện nhẹ. Bấm để thêm một tủ rack và một phòng mẫu, rồi sửa ở các tờ E.7xx.</p>`;
+  return `<div class="nhaplieu">${info}${bangTu}${bangMach}${dienNhe}</div>`;
+}
+
+/** Nhập liệu điện nhẹ: bảng thiết bị theo phòng + bảng tủ rack (dùng ở các tờ E.7xx) */
+export function veNhapLieuDn(duAn, kq) {
+  const dn = duAn.dienNhe || { phong: [], rack: [] };
+  const dsTu = duAn.panels.map((p) => p.ma);
+  const dsRack = dn.rack.map((r) => r.ma);
+  const canhBao = (kq?.canhBao ?? []).filter((c) => c.dienNhe);
+  const lop = (ds) => (ds.some((c) => c.muc === "loi") ? "loi" : ds.some((c) => c.muc === "canhbao") ? "canhbao" : "");
+  const bangPhong = `<div class="nl-dau"><h3>Thiết bị điện nhẹ theo phòng</h3><button class="btn btn-sm btn-primary" data-lenh="themPhongDn">+ Thêm phòng</button></div>
+  <div class="tblwrap"><table class="nl"><thead><tr>${COT_DN.map(([, t]) => `<th>${esc(t)}</th>`).join("")}<th></th></tr></thead><tbody>
+  ${dn.phong.map((p, i) => {
+    const kt = canhBao.filter((c) => c.mach && c.mach === p.phong);
+    return `<tr class="${lop(kt)}" title="${esc(kt.map((c) => c.noiDung).join("\n"))}">${COT_DN.map((c) => `<td>${o("dn", i, c, p[c[0]], dsTu, [], dsRack)}</td>`).join("")}
+      <td class="nw"><button class="btn btn-sm" data-lenh="themPhongDn" data-i="${i}" title="Thêm phòng ngay sau">+</button><button class="btn btn-sm" data-lenh="xoaPhongDn" data-i="${i}" title="Xóa phòng">×</button></td></tr>`;
+  }).join("")}</tbody></table></div>`;
+  const bangRack = `<div class="nl-dau"><h3>Tủ rack</h3><button class="btn btn-sm" data-lenh="themRack">+ Thêm rack</button></div>
+  <div class="tblwrap"><table class="nl"><thead><tr>${COT_RACK.map(([, t]) => `<th>${esc(t)}</th>`).join("")}<th></th></tr></thead><tbody>
+  ${dn.rack.map((r, i) => {
+    const kt = canhBao.filter((c) => c.tu === r.ma);
+    return `<tr class="${lop(kt)}" title="${esc(kt.map((c) => c.noiDung).join("\n"))}">${COT_RACK.map((c) => `<td>${o("rack", i, c, c[0] === "trungTam" ? (r.trungTam ? "Có" : "") : r[c[0]], dsTu.filter(Boolean), [])}</td>`).join("")}
+      <td class="nw"><button class="btn btn-sm" data-lenh="xoaRack" data-i="${i}" title="Xóa rack">Xóa</button></td></tr>`;
+  }).join("")}</tbody></table></div>`;
+  return `<div class="nhaplieu">${bangPhong}${bangRack}
+    <p class="crumb">Số lượng theo phòng: ổ data, ổ TV (IPTV), AP Wi-Fi, camera, cửa kiểm soát ra vào, nút gọi / màn hình chuông cửa IP, loa 100 V (W/loa, vùng), phím / cảm biến KNX. L: chiều dài cáp trung bình từ rack tới phòng. Nguồn cho rack và ampli tự thêm thành mạch DNn trong tủ "Cấp nguồn từ tủ".</p></div>`;
 }
 
 /** Đọc giá trị một ô theo kiểu cột */

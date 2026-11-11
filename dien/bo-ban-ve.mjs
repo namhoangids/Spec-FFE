@@ -29,8 +29,12 @@ export const MUC = { loi: "Lỗi", canhbao: "Cảnh báo", ghichu: "Ghi chú" };
 export function taoBoBanVe(duAn) {
   const vao = structuredClone(duAn);
   // Điện nhẹ tính trước: nguồn cho tủ rack thành mạch trong tủ điện cấp, rồi mới tính cả hệ điện
-  const dn = coDienNhe(vao.dienNhe) ? tinhDienNhe(vao.dienNhe, taoQuyTac(vao.quyTac || {}), { panels: vao.panels, circuits: vao.circuits }) : null;
-  if (dn) vao.circuits = [...vao.circuits, ...dn.machThem];
+  const dn = coDienNhe(vao.dienNhe, vao.circuits) ? tinhDienNhe(vao.dienNhe || {}, taoQuyTac(vao.quyTac || {}), { panels: vao.panels, circuits: vao.circuits }) : null;
+  if (dn) {
+    vao.circuits = [...vao.circuits, ...dn.machThem];
+    // Thiết bị KNX (actuator, nguồn bus, giao diện IP) vào tủ điện: tính vào số module, cỡ vỏ tủ
+    for (const p of vao.panels) { const x = dn.thietBiTu.get(p.ma); if (x) p.thietBiThem = [...(p.thietBiThem || []), ...x]; }
+  }
   const kq = tinhDuAn(vao);
   const bo = sangBoBanVe(kq, duAn.info, { toiDa: SO_COT_TOI_DA });
   for (const c of bo.canhBao) kq.canhBao.push({ muc: "canhbao", tu: c.tu, mach: "", noiDung: c.noiDung });

@@ -2,7 +2,7 @@
 
 Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`](../docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md).
 
-**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán, khung BOQ, bóc khối và **dự án chung trên web** (11/11/2026). Nhập phụ tải vào Excel (hoặc sửa thẳng trên web), công cụ tự tính rồi vẽ **cả bộ**:
+**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán, khung BOQ, bóc khối, **dự án chung trên web**, ngắn mạch và **điện nhẹ đợt 1 + 2** (11/11/2026). Nhập phụ tải vào Excel (hoặc sửa thẳng trên web), công cụ tự tính rồi vẽ **cả bộ**:
 - tờ **sơ đồ cấp điện tổng** E.600;
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
 - **nhãn tủ, nhãn cáp**;
@@ -11,7 +11,7 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 - **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ;
 - **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản;
 - **ngắn mạch theo tổng trở**: Ik3 max tại thanh cái từng tủ (chọn Icu), Ik1 min cuối từng mạch (kiểm tự cắt nguồn khi chạm vỏ), chọn lọc CB vùng ngắn mạch;
-- **điện nhẹ đợt 1** (mạng LAN / Wi-Fi, camera, tủ rack): tờ E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… mặt đứng tủ rack, bảng đấu nối cổng, BOQ nhóm F; nguồn cho rack tự thành mạch trong tủ điện.
+- **điện nhẹ** (mạng LAN / Wi-Fi, camera, IPTV, chuông cửa IP, kiểm soát ra vào, âm thanh 100 V, KNX): tờ E.700 sơ đồ trục, E.701 nguyên lý mạng, mặt đứng từng tủ rack, nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; bảng đấu nối cổng, BOQ nhóm F; nguồn cho rack và ampli tự thành mạch trong tủ điện, actuator KNX tự vào tủ điện.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -103,7 +103,25 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
   - BOQ nhóm F (thiết bị rack, AP, camera, ổ data, cáp Cat6 tính theo mét có hao hụt, patch cord, trục);
   - thuyết minh mục 06 (mục kiểm tra thành 07);
   - web app có cây tờ E.7xx, bảng thiết bị rack / đấu nối cổng.
-- **Đợt sau:** TV, kiểm soát ra vào, chuông cửa, âm thanh, KNX (cột đã có trong sheet `Dien nhe`, hiện chỉ đếm); nhập liệu điện nhẹ trên web; bóc khối block điện nhẹ.
+
+**Điện nhẹ đợt 2 — IPTV, chuông cửa IP, kiểm soát ra vào, âm thanh 100 V, KNX** (cùng các file trên):
+- **Đầu vào:** các cột còn lại của sheet `Dien nhe` (ổ TV, cửa ACS, nút gọi chuông ngoài / màn hình chuông trong, số loa, W/loa, vùng âm thanh, thiết bị KNX tại phòng) và cột mới **`Điều khiển KNX`** ở sheet `Mach` (`Bật/tắt` | `Dimmer` | `Rèm`).
+- **IPTV, chuông cửa:** đều đi mạng IP. Ổ TV là link Cat6 vào switch thường; nút gọi ngoài trời (PoE 6 W) và màn hình trong nhà (PoE 8 W) vào switch PoE. Có mã cổng, patch panel, BOQ như ổ data.
+- **Kiểm soát ra vào (ACS):**
+  - bộ điều khiển chọn cỡ 4 / 2 / 1 cửa, mỗi bộ một link Cat6 và nguồn 12 V kèm ắc quy (≈ 40 W, tính vào tải UPS), lắp cạnh tủ rack;
+  - mỗi cửa: đầu đọc, khóa điện, nút exit, công tắc cửa, nút khẩn; cáp từng cửa theo chiều dài;
+  - liên động báo cháy chỉ ghi chú (điểm giao tiếp).
+- **Âm thanh 100 V:** gom loa theo cột vùng; ≤ 6 vùng và vừa cỡ thì dùng 1 ampli mixer chọn vùng, không thì mỗi vùng một ampli; ampli ≥ 1,25 × Σ công suất tap loa (cỡ 60 / 120 / 240 / 360 / 480 / 650 W). Ampli đặt ở rack, cấp nguồn bằng **mạch riêng** `DNn` "CẤP NGUỒN AMPLI ÂM THANH" (không qua UPS, ≈ 1,5 × công suất ra). Cáp loa chống cháy 2 × 1,5 = L + 4 m × số loa.
+- **KNX:**
+  - mỗi mạch đánh dấu là 1 kênh (rèm: số kênh = số lượng); mỗi tủ cộng 20% dự phòng rồi chọn actuator bật/tắt 4/8/12, dimmer 2/4, rèm 4/8 kênh;
+  - **actuator nằm trong tủ điện của mạch**, module tính vào vỏ tủ; vượt vỏ thì cảnh báo và gợi ý tách tủ KNX riêng;
+  - tủ gốc có nguồn bus (160 / 320 / 640 mA ≥ 1,2 × Σ 10 mA/thiết bị) và giao diện IP;
+  - số line: mỗi line ≤ 64 thiết bị, dòng bus không vượt nguồn 640 mA, dây bus ≤ 1000 m; nhiều line thì mỗi line một IP router;
+  - phím bấm / cảm biến lấy từ cột KNX của từng phòng; cáp bus J-Y(St)Y 2×2×0,8.
+- **Kết quả thêm:** tờ nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX (chỉ ra khi hệ đó có dữ liệu); `dien-nhe.xlsx` thêm sheet `Am thanh`, `ACS chuong`, `KNX`; BOQ nhóm F thêm ampli, loa, cáp loa, bộ điều khiển và thiết bị cửa, chuông, ổ TV, actuator, phím KNX, cáp bus; thuyết minh mục 06 có các tiểu mục từng hệ.
+- **Nhập liệu trên web:** ở tờ E.7xx, chế độ Nhập liệu sửa bảng phòng và bảng tủ rack (thêm / xóa dòng; đổi mã rack thì các phòng đi theo; không xóa được rack còn phòng). Dự án chưa có điện nhẹ thì bấm "Thêm điện nhẹ". Bảng mạch có cột KNX.
+- **Agent:** trong mô tả công trình thêm `"dienNhe": true` (hoặc `{ "tang": "T1", "acs": true }`) và `"knx": true`. Agent gợi ý số ổ data / TV / AP / camera / loa / chuông / cửa ACS theo loại phòng và diện tích (ghi "giả định"), đặt 1 rack ở tầng có tủ tổng; KNX thì đánh dấu mạch chiếu sáng, rèm và thêm phím ở từng phòng.
+- **Đợt sau:** bóc khối block điện nhẹ từ mặt bằng; gắn hãng thiết bị.
 
 **Ngắn mạch, tự cắt nguồn, chọn lọc** (`engine/ngan-mach.mjs`, phương pháp tổng trở IEC 60909-0 rút gọn):
 - **Nguồn:** Ik tại điểm đấu (sheet `Du an`, ô `IK_NGUON`; trống thì 6 kA và cảnh báo). Công trình có trạm riêng thì khai `MBA_KVA` (+ `MBA_UK`), công cụ tính Ik từ máy biến áp. Tủ có ô `Ik tại tủ` thì dùng số đó.
@@ -130,7 +148,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 64 test
+npm test                                               # 70 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -162,7 +180,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `cay-tu.mjs` | Tính cả cây tủ: từ tủ lá lên tủ gốc (tải, thiết bị), rồi từ gốc xuống (cáp, sụt áp cộng dồn) |
 | `kiem-tra.mjs` | Lỗi / cảnh báo / ghi chú theo mục 6.8 |
 | `ngan-mach.mjs` | Ngắn mạch theo tổng trở: Ik3 max thanh cái, Ik1 min cuối mạch, tự cắt nguồn (TN/TT), chọn lọc vùng ngắn mạch |
-| `dien-nhe.mjs`, `dien-nhe-excel.mjs` | Điện nhẹ đợt 1: switch, PoE, patch panel, NVR, rack, UPS, mã cổng, nguồn rack vào tủ điện; dữ liệu tờ E.7xx; `dien-nhe.xlsx` |
+| `dien-nhe.mjs`, `dien-nhe-excel.mjs` | Điện nhẹ: switch, PoE, patch panel, NVR, rack, UPS, mã cổng, IPTV, chuông IP, ACS, âm thanh 100 V, KNX (actuator vào tủ điện), nguồn rack / ampli vào tủ điện; dữ liệu tờ E.7xx; `dien-nhe.xlsx` |
 | `doc-excel.mjs` | Đọc file Excel theo tên sheet và tiêu đề cột, kể cả sheet `Quy tac` |
 | `sang-ban-ve.mjs` | Kết quả → dữ liệu tờ vẽ, ghi chữ theo kiểu bản mẫu (`Cu/PVC 2(1x2,5)mm2 + E(1x2,5)mm2`, `ỐNG PVC  Ø 20`, `Pđ=… kW, Kđt=…`). Có thêm:<br>• tự ngắt tờ (`chiaTo`: nhóm RCBO không bị tách giữa hai tờ);<br>• đánh số tờ;<br>• dữ liệu sơ đồ tổng (`sangSoDoTong`) |
 | `nhan.mjs` | Danh mục mạch dán cánh tủ và nhãn cáp (mỗi cáp 2 bản). Xuất Excel và trang HTML in |

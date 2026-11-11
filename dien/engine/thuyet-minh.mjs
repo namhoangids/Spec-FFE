@@ -269,30 +269,67 @@ export function noiDungThuyetMinh(kq, info = {}, { soTheoTu = null, ngay = new D
   if (dn) {
     const R = rule.dienNhe;
     const soRack = (ma) => dn.soTheoRack?.get(ma) ?? "";
-    muc(1, "6. HỆ THỐNG MẠNG LAN, WI-FI VÀ CAMERA");
-    doan(`Phạm vi đợt này: mạng dữ liệu (ổ data), Wi-Fi, camera giám sát IP và tủ rack. Tổng: `, { b: `${dn.tong.data} ổ data, ${dn.tong.ap} AP Wi-Fi, ${dn.tong.cam} camera` },
-      `, ${dn.tong.lienKet} link cáp ngang Cat6; ${dn.rack.length} tủ rack (trung tâm: ${dn.trungTam}). Căn cứ: ANSI/TIA-568 (cáp có cấu trúc), TIA-569 (đường dẫn cáp), TIA-606 (ghi nhãn), ONVIF (camera IP).`);
-    muc(2, "6.1. Phương pháp tính");
-    ds([
-      ["Cáp ngang Cat6 U/UTP 4 đôi từ patch panel tại rack tới từng ổ / thiết bị; link cố định ", { b: `≤ ${R.cat6Max} m` }, ", vượt thì đặt thêm rack/switch gần hơn hoặc dùng cáp quang."],
-      ["Switch: ổ data dùng switch thường, AP và camera dùng switch PoE; ", { b: `số cổng = số thiết bị × ${so(1 + R.duPhongCong / 100, 2)}` }, ` (dự phòng ${R.duPhongCong}%), chọn cỡ ${R.switchThuong.map(([c]) => c).join("/")} cổng.`],
-      ["Ngân sách PoE: ", { b: `(AP × ${R.poeAp} W + camera × ${R.poeCam} W) × ${so(R.kPoe, 2)}` }, " ≤ ngân sách PoE của switch."],
-      [`Patch panel ${R.ppCong} cổng: số lượng = ⌈số link / ${R.ppCong}⌉, mỗi patch panel kèm 1 thanh quản lý cáp. Rack trung tâm có router / tường lửa, kệ modem ISP, switch lõi khi có nhiều switch hoặc nhiều rack.`],
-      ["Đầu ghi NVR: số kênh ≥ số camera kèm dự phòng; ", { b: "dung lượng = Σ bitrate × 86 400 s × số ngày lưu / 8" }, ` (${R.bitrate} Mbps/camera, ${R.ngayLuu} ngày, ổ ${R.hddTB} TB).`],
-      ["Tủ rack: ", { b: `ΣU thiết bị × ${so(R.kRack, 2)}` }, `, chọn cỡ ${R.rackU.join("/")}U (≤ ${R.rackTreoMax}U treo tường). UPS: `, { b: `VA ≥ ΣW / ${so(R.pfUps, 2)} × ${so(R.kUps, 2)}` }, "."],
-      ["Nguồn cấp rack: một mạch riêng trong tủ điện, công suất = tải rack × ", { b: so(R.kUps, 2) }, " (sạc UPS, dự phòng); mạch được tính như các mạch khác của tủ (CB, cáp, ngắn mạch)."],
-    ]);
-    muc(2, "6.2. Kết quả từng tủ rack");
-    bang([{ ten: "Rack", rong: 7 }, { ten: "Bản vẽ", rong: 8 }, { ten: "Data / AP / Cam", rong: 11 }, { ten: "Switch (cổng)", rong: 20 }, { ten: "PoE cần / có (W)", rong: 11 },
-      { ten: "Patch panel", rong: 8 }, { ten: "U → tủ", rong: 13 }, { ten: "UPS", rong: 9 }, { ten: "Nguồn cấp", rong: 13 }],
-    dn.rack.map((r) => [r.ma, soRack(r.ma), `${r.dem.data} / ${r.dem.ap} / ${r.dem.cam}`,
-      [...r.switch.map((x) => (x.loai === "poe" ? `PoE ${x.cong}` : `${x.cong}`)), ...(r.switchLoi ? [`lõi ${r.switchLoi.cong}`] : [])].join(" + "),
-      r.dem.ap + r.dem.cam ? `${Math.ceil(r.poe.can)} / ${r.poe.nganSach}` : "—", String(r.soPP), `${so(r.uCan, 1)}U → ${r.uRack}U ${r.kieuRack}`,
-      `${r.ups.va} VA`, r.nguon ? `${r.nguon.tu} / ${r.nguon.ma} (${r.nguon.P} W)` : "—"]), true);
-    if (dn.nvr) doan({ b: "Đầu ghi: " }, `NVR ${dn.nvr.kenh} kênh đặt tại rack ${dn.nvr.rack}; ${dn.nvr.soCam} camera × ${R.bitrate} Mbps × ${R.ngayLuu} ngày = ${so(dn.nvr.tb, 1)} TB → ${dn.nvr.soHdd} ổ ${dn.nvr.hddTB} TB.`);
-    for (const r of dn.rack.filter((x) => x.truc)) doan({ b: `Trục ${r.ma} → ${dn.trungTam}: ` }, `${r.truc.moTa}${r.truc.L ? `, ${r.truc.L} m` : ""}.`);
-    doan("Bảng đấu nối cổng patch panel – ổ / thiết bị, kèm mã nhãn theo TIA-606, ở file dien-nhe.xlsx (sheet Dau noi). Thiết bị ghi theo chủng loại, chưa gắn hãng; mã hàng và đơn giá điền ở BOQ (nhóm F).");
-    if (Object.keys(dn.chuaTinh || {}).length) doan("Các hệ truyền hình, kiểm soát ra vào, chuông cửa, âm thanh, KNX trong bảng điện nhẹ sẽ được tính ở đợt sau.");
+    muc(1, "6. HỆ THỐNG ĐIỆN NHẸ");
+    let soMuc = 0;
+    const mucCon = (ten) => muc(2, `6.${++soMuc}. ${ten}`);
+    const T = dn.tong;
+    const ds2 = [T.data && `${T.data} ổ data`, T.tv && `${T.tv} ổ TV (IPTV)`, T.ap && `${T.ap} AP Wi-Fi`, T.cam && `${T.cam} camera`, T.chuong && `${T.chuong} thiết bị chuông cửa IP`,
+      T.cua && `${T.cua} cửa kiểm soát ra vào`, T.loa && `${T.loa} loa 100 V`, dn.knx && `KNX ${dn.knx.nAct} actuator, ${dn.knx.nPhong} phím / cảm biến`].filter(Boolean);
+    doan("Gồm: ", { b: ds2.join(", ") }, T.lienKet ? `; ${T.lienKet} link cáp ngang Cat6, ${dn.rack.length} tủ rack (trung tâm: ${dn.trungTam}).` : ".",
+      " Căn cứ: ANSI/TIA-568 (cáp có cấu trúc), TIA-569 (đường dẫn cáp), TIA-606 (ghi nhãn), ONVIF (camera IP), KNX (ISO/IEC 14543-3).");
+    if (dn.rack.length) {
+      mucCon("Mạng, camera, tủ rack — phương pháp tính");
+      ds([
+        ["Cáp ngang Cat6 U/UTP 4 đôi từ patch panel tại rack tới từng ổ / thiết bị; link cố định ", { b: `≤ ${R.cat6Max} m` }, ", vượt thì đặt thêm rack/switch gần hơn hoặc dùng cáp quang."],
+        ["Switch: ổ data, ổ TV (IPTV), bộ điều khiển ACS dùng switch thường; AP, camera, chuông cửa IP dùng switch PoE; ", { b: `số cổng = số thiết bị × ${so(1 + R.duPhongCong / 100, 2)}` }, ` (dự phòng ${R.duPhongCong}%), chọn cỡ ${R.switchThuong.map(([c]) => c).join("/")} cổng.`],
+        ["Ngân sách PoE: ", { b: `(AP × ${R.poeAp} W + camera × ${R.poeCam} W + nút gọi × ${R.poeChuongNgoai} W + màn hình × ${R.poeChuongTrong} W) × ${so(R.kPoe, 2)}` }, " ≤ ngân sách PoE của switch."],
+        [`Patch panel ${R.ppCong} cổng: số lượng = ⌈số link / ${R.ppCong}⌉, mỗi patch panel kèm 1 thanh quản lý cáp. Rack trung tâm có router / tường lửa, kệ modem ISP, switch lõi khi có nhiều switch hoặc nhiều rack.`],
+        ["Đầu ghi NVR: số kênh ≥ số camera kèm dự phòng; ", { b: "dung lượng = Σ bitrate × 86 400 s × số ngày lưu / 8" }, ` (${R.bitrate} Mbps/camera, ${R.ngayLuu} ngày, ổ ${R.hddTB} TB).`],
+        ["Tủ rack: ", { b: `ΣU thiết bị × ${so(R.kRack, 2)}` }, `, chọn cỡ ${R.rackU.join("/")}U (≤ ${R.rackTreoMax}U treo tường). UPS: `, { b: `VA ≥ ΣW / ${so(R.pfUps, 2)} × ${so(R.kUps, 2)}` }, "."],
+        ["Nguồn cấp rack: một mạch riêng trong tủ điện, công suất = tải rack × ", { b: so(R.kUps, 2) }, " (sạc UPS, dự phòng); mạch được tính như các mạch khác của tủ (CB, cáp, ngắn mạch)."],
+      ]);
+      mucCon("Kết quả từng tủ rack");
+      bang([{ ten: "Rack", rong: 7 }, { ten: "Bản vẽ", rong: 8 }, { ten: "Data/TV/AP/Cam/Chuông", rong: 14 }, { ten: "Switch (cổng)", rong: 18 }, { ten: "PoE cần / có (W)", rong: 10 },
+        { ten: "Patch panel", rong: 7 }, { ten: "U → tủ", rong: 12 }, { ten: "UPS", rong: 9 }, { ten: "Nguồn cấp", rong: 15 }],
+      dn.rack.map((r) => [r.ma, soRack(r.ma), `${r.dem.data} / ${r.dem.tv} / ${r.dem.ap} / ${r.dem.cam} / ${r.dem.chuong}`,
+        [...r.switch.map((x) => (x.loai === "poe" ? `PoE ${x.cong}` : `${x.cong}`)), ...(r.switchLoi ? [`lõi ${r.switchLoi.cong}`] : [])].join(" + "),
+        r.poe.tai ? `${Math.ceil(r.poe.can)} / ${r.poe.nganSach}` : "—", String(r.soPP), `${so(r.uCan, 1)}U → ${r.uRack}U ${r.kieuRack}`,
+        `${r.ups.va} VA`, r.nguon ? `${r.nguon.tu} / ${r.nguon.ma} (${r.nguon.P} W)` : "—"]), true);
+      if (dn.nvr) doan({ b: "Đầu ghi: " }, `NVR ${dn.nvr.kenh} kênh đặt tại rack ${dn.nvr.rack}; ${dn.nvr.soCam} camera × ${R.bitrate} Mbps × ${R.ngayLuu} ngày = ${so(dn.nvr.tb, 1)} TB → ${dn.nvr.soHdd} ổ ${dn.nvr.hddTB} TB.`);
+      for (const r of dn.rack.filter((x) => x.truc)) doan({ b: `Trục ${r.ma} → ${dn.trungTam}: ` }, `${r.truc.moTa}${r.truc.L ? `, ${r.truc.L} m` : ""}.`);
+      doan("Bảng đấu nối cổng patch panel – ổ / thiết bị, kèm mã nhãn theo TIA-606, ở file dien-nhe.xlsx (sheet Dau noi). Thiết bị ghi theo chủng loại, chưa gắn hãng; mã hàng và đơn giá điền ở BOQ (nhóm F).");
+    }
+    if (T.tv || T.chuong) {
+      mucCon("Truyền hình IPTV và chuông cửa IP");
+      ds([
+        ...(T.tv ? [[`Truyền hình qua mạng (IPTV): ${T.tv} ổ TV là ổ mạng Cat6 RJ45 về switch thường tại rack; đầu thu IPTV / Smart TV theo nhà cung cấp dịch vụ.`]] : []),
+        ...(T.chuong ? [[`Chuông cửa IP: nút gọi ngoài trời (PoE ${R.poeChuongNgoai} W) và màn hình trong nhà (PoE ${R.poeChuongTrong} W) nối switch PoE bằng Cat6; tổng ${T.chuong} thiết bị.`]] : []),
+      ]);
+    }
+    if (T.cua) {
+      mucCon("Kiểm soát ra vào");
+      ds([
+        [`Mỗi cửa: đầu đọc thẻ, khóa điện, nút exit, công tắc cửa, nút khẩn mở cửa. Bộ điều khiển chọn cỡ ${R.acsBoDieuKhien.join("/")} cửa, có nguồn 12 V và ắc quy (≈ ${R.acsW} W), lắp cạnh tủ rack, nối mạng bằng 1 link Cat6.`],
+        [`${T.cua} cửa → ${dn.rack.flatMap((r) => r.acs.map((b) => `${b.ma} (${b.cua} cửa)`)).join(", ")}.`],
+        ["Liên động báo cháy: tín hiệu từ tủ báo cháy mở khóa các cửa thoát nạn (điểm giao tiếp; hệ báo cháy ngoài phạm vi thiết kế này)."],
+      ]);
+    }
+    if (dn.amThanh.vung.length) {
+      mucCon("Âm thanh nền 100 V");
+      dan(`Ampli ≥ ${so(R.kAmpli, 2)} × Σ công suất tap loa; ≤ ${R.ampliVungMax} vùng dùng một ampli mixer chọn vùng. Cáp loa chống cháy 2 × 1,5 mm². Ampli cấp nguồn từ lộ riêng trong tủ điện (≈ ${so(R.kTieuThuAmpli, 1)} × công suất ra), không qua UPS.`);
+      bang([{ ten: "Vùng", rong: 20 }, { ten: "Phòng", rong: 40 }, { ten: "Số loa", rong: 8 }, { ten: "ΣW", rong: 8 }, { ten: "Ampli", rong: 24 }],
+        dn.amThanh.vung.map((v) => [v.ten, v.phong.map((p) => p.phong).join(", "), String(v.phong.reduce((a, p) => a + p.loa, 0)), String(v.W),
+          v.ampli ? `${v.ampli.ra} W${v.ampli.mixer ? " (mixer)" : ""}` : "—"]), true);
+    }
+    if (dn.knx) {
+      const K = dn.knx, KR = R.knx;
+      mucCon("Nhà thông minh KNX");
+      ds([
+        [`Mỗi mạch chiếu sáng / rèm đánh dấu KNX là 1 kênh actuator (rèm: số kênh = số lượng); số kênh + ${KR.duPhongKenh}% dự phòng, chọn actuator bật/tắt ${KR.batTat.map((x) => x[0]).join("/")} kênh, dimmer ${KR.dimmer.map((x) => x[0]).join("/")} kênh, rèm ${KR.rem.map((x) => x[0]).join("/")} kênh. Actuator đặt trong tủ điện của mạch, đã tính vào số module và cỡ vỏ tủ.`],
+        [`${K.nAct} actuator ở các tủ ${K.tu.map((t) => t.tu).join(", ")}; ${K.nPhong} phím bấm / cảm biến tại phòng.`],
+        [`${K.line} line (≤ ${KR.thietBiLine} thiết bị/line), nguồn bus ${K.nguon.ma} mA/line ≥ ${so(KR.kNguon, 1)} × ${Math.round(K.maLine / KR.kNguon)} mA; ${K.line > 1 ? "IP router mỗi line" : "giao diện IP"} và nguồn bus đặt ở tủ ${K.tuHe}. Dây bus J-Y(St)Y 2×2×0,8 ước tính ${Math.round(K.busL)} m (≤ ${KR.busMax} m/line).`],
+      ]);
+    }
   }
 
   // --- Kiểm tra và kết luận (trang dọc) -------------------------------------------------------

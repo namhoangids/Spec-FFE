@@ -70,6 +70,27 @@ export const QUY_TAC = {
     rackU: [6, 9, 12, 15, 20, 27, 42], rackTreoMax: 15,                         // ≤ 15U: tủ treo tường
     upsVA: [1000, 1500, 2000, 3000, 6000, 10000],
     congSuat: { router: 20, modem: 10, nvr: 15, hdd: 8 },                       // W
+    // Chuông cửa IP (qua switch PoE)
+    poeChuongNgoai: 6, poeChuongTrong: 8,       // W — nút gọi ngoài trời / màn hình trong nhà
+    // Kiểm soát ra vào: bộ điều khiển 4/2/1 cửa, mỗi bộ có nguồn 12 V + ắc quy, lắp cạnh tủ rack
+    acsBoDieuKhien: [4, 2, 1], acsW: 40,
+    // Âm thanh nền 100 V: ampli ≥ k · Σ công suất tap loa; ≤ 6 vùng thì dùng 1 ampli mixer chọn vùng
+    loaWMacDinh: 6, kAmpli: 1.25, ampliW: [60, 120, 240, 360, 480, 650], ampliVungMax: 6,
+    kTieuThuAmpli: 1.5,         // công suất điện ampli ≈ 1,5 × công suất ra (mạch nguồn riêng, không qua UPS)
+    nguonNhacW: 20,
+    // KNX: actuator đặt trong tủ điện (module tính vào vỏ tủ), nguồn bus + giao diện IP ở tủ gốc
+    knx: {
+      maThietBi: 10,            // mA — dòng bus mỗi thiết bị
+      thietBiLine: 64,          // thiết bị tối đa mỗi line
+      kNguon: 1.2,              // nguồn bus ≥ k · Σ mA
+      duPhongKenh: 20,          // % dự phòng kênh actuator
+      busMax: 1000,             // m — chiều dài dây bus tối đa mỗi line
+      batTat: [[4, 4], [8, 8], [12, 12]],   // [kênh, module]
+      dimmer: [[2, 4], [4, 8]],
+      rem: [[4, 4], [8, 8]],
+      nguon: [[160, 2], [320, 4], [640, 4]], // [mA, module]
+      ip: 2,                    // module giao diện IP / IP router
+    },
   },
 
   // --- Theo loại mạch (mục 6.3) ------------------------------------------

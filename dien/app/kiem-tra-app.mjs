@@ -58,8 +58,8 @@ try {
   await page.click("#vidu");
   await page.waitForSelector("#tree .node");
   const nodes = await page.locator("#tree .node").allInnerTexts();
-  assert.equal(nodes.length, 10, "đủ 10 tờ: sơ đồ tổng + 6 tủ + 3 tờ điện nhẹ");
-  assert.match(nodes.slice(7).join(" "), /E\.700[\s\S]*E\.701[\s\S]*E\.702/, "tờ điện nhẹ E.700–E.702");
+  assert.equal(nodes.length, 13, "đủ 13 tờ: sơ đồ tổng + 6 tủ + 6 tờ điện nhẹ");
+  assert.match(nodes.slice(7).join(" "), /E\.700[\s\S]*E\.701[\s\S]*E\.702[\s\S]*E\.703[\s\S]*Âm thanh[\s\S]*E\.704[\s\S]*E\.705[\s\S]*KNX/, "tờ điện nhẹ E.700–E.705");
   assert.match(nodes[0], /E\.600\s+Sơ đồ tổng/);
   assert.match(nodes[1], /E\.601\s+T1/);
   assert.match(await page.locator("#stats").innerText(), /lỗi\s+0/i);
@@ -98,10 +98,30 @@ try {
   // Tờ tủ rack (điện nhẹ): bản vẽ, bảng thiết bị, thông số nguồn cấp
   await page.click("#tree .node >> nth=9");
   assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ TỦ RACK R1/);
-  assert.match(await page.locator("#facts").innerText(), /20U[\s\S]*T1 \/ DN1/);
+  assert.match(await page.locator("#facts").innerText(), /27U[\s\S]*T1 \/ DN1/);
   await page.click("[data-view=bang]");
   assert.match(await page.locator("#pane").innerText(), /UPS 1000 VA[\s\S]*Tổng/);
   if (anh) { await page.click("[data-view=ve]"); await page.screenshot({ path: join(anh, "app-tu-rack.png") }); }
+  await page.click("[data-view=ve]");
+
+  // Nhập liệu điện nhẹ trên web (tờ E.700): sửa số ổ data, thêm phòng, xóa rack còn phòng → báo lỗi
+  await page.click("#tree .node >> nth=7");
+  await page.click("[data-view=nl]");
+  const oData = page.locator('#pane [data-dong="dn"][data-k="data"]').first();
+  await oData.fill("5");
+  await oData.press("Tab");
+  await page.waitForFunction(() => /15 ổ data/.test(document.querySelector("#facts")?.innerText || ""));
+  const soPhong = await page.locator('#pane [data-dong="dn"][data-k="phong"]').count();
+  await page.locator('#pane [data-lenh="themPhongDn"]').first().click();
+  assert.equal(await page.locator('#pane [data-dong="dn"][data-k="phong"]').count(), soPhong + 1, "thêm phòng điện nhẹ");
+  await page.locator('#pane [data-lenh="xoaRack"]').first().click();
+  assert.match(await page.locator("#err").innerText(), /còn phục vụ/);
+  await page.locator('#pane [data-lenh="xoaPhongDn"]').last().click();
+  assert.equal(await page.locator('#pane [data-dong="dn"][data-k="phong"]').count(), soPhong, "xóa phòng điện nhẹ");
+  await oData.fill("2");
+  await oData.press("Tab");
+  await page.waitForFunction(() => /12 ổ data/.test(document.querySelector("#facts")?.innerText || ""));
+  if (anh) await page.screenshot({ path: join(anh, "app-nhap-lieu-dien-nhe.png"), fullPage: true });
   await page.click("[data-view=ve]");
 
   // Nạp bóc khối (file mẫu chỉ có tên block): tính lại cả bộ, có ghi chú bóc khối, nút báo cáo hiện ra
@@ -114,11 +134,11 @@ try {
   const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#zip")]);
   const zip = await JSZip.loadAsync(readFileSync(await dl.path()));
   const ten = Object.keys(zip.files).sort();
-  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 20);
-  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 10);
+  assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 26);
+  assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 13);
   const dnx = XLSX.read(await zip.file("dien-nhe.xlsx").async("uint8array"));
-  assert.deepEqual(dnx.SheetNames, ["Tong hop", "Thiet bi rack", "Dau noi", "Canh bao"]);
-  assert.equal(XLSX.utils.sheet_to_json(dnx.Sheets["Dau noi"], { header: 1 }).length - 1, 28, "28 link Cat6");
+  assert.deepEqual(dnx.SheetNames, ["Tong hop", "Thiet bi rack", "Dau noi", "Am thanh", "ACS chuong", "KNX", "Canh bao"]);
+  assert.equal(XLSX.utils.sheet_to_json(dnx.Sheets["Dau noi"], { header: 1 }).length - 1, 40, "40 link Cat6");
   for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "thuyet-minh.docx", "thuyet-minh.html", "boq.xlsx", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
   assert.ok(ten.includes("boc-khoi.xlsx"), "ZIP có báo cáo bóc khối");
   const boq = XLSX.read(await zip.file("boq.xlsx").async("uint8array"));
@@ -214,7 +234,7 @@ try {
   assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 10 tờ (sơ đồ tổng, 6 tủ, 3 tờ điện nhẹ), in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

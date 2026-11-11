@@ -97,7 +97,8 @@ writeFileSync(join(outDir, "du-an.json"), JSON.stringify(duAn, null, 2), "utf8")
 if (bo.dienNhe) {
   writeFileSync(join(outDir, "dien-nhe.xlsx"), XLSX.write(bo.dienNheExcel(XLSX), { type: "buffer", bookType: "xlsx" }));
   const t = bo.dienNhe.tong;
-  console.log(`Điện nhẹ: ${t.data} ổ data, ${t.ap} AP, ${t.cam} camera — ${t.lienKet} link; ` +
+  console.log(`Điện nhẹ: ${[t.data && `${t.data} ổ data`, t.tv && `${t.tv} ổ TV`, t.ap && `${t.ap} AP`, t.cam && `${t.cam} camera`, t.chuong && `${t.chuong} chuông IP`,
+    t.cua && `${t.cua} cửa ACS`, t.loa && `${t.loa} loa`, bo.dienNhe.knx && `KNX ${bo.dienNhe.knx.nAct} actuator`].filter(Boolean).join(", ")} — ${t.lienKet} link; ` +
     bo.dienNhe.rack.map((r) => `rack ${r.ma} ${r.uRack}U, UPS ${r.ups.va} VA, nguồn ${r.nguon ? `${r.nguon.tu}/${r.nguon.ma}` : "—"}`).join("; ") + " (dien-nhe.xlsx)");
 }
 if (bocKhoi) writeFileSync(join(outDir, "boc-khoi.xlsx"), XLSX.write(xuatBaoCaoBocKhoi(XLSX, bocKhoi.baoCao), { type: "buffer", bookType: "xlsx" }));

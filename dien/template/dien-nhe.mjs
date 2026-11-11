@@ -87,6 +87,7 @@ export function veDienNhe(g, d) {
 
   if (d.kieu === "truc") veTruc();
   else if (d.kieu === "mang") veMang();
+  else if (d.kieu === "cay") veCay();
   else veRack();
   veKhungTen(g, d.sheet);
   return canhBao;
@@ -103,7 +104,7 @@ export function veDienNhe(g, d) {
     const xPhong0 = xRack(nR - 1) + 22;
     const canBand = 12 + nR * 4.5 + 10;
     const hBand = Math.min(48, (yTren - yNen) / nT);
-    if (hBand < canBand) canBao.push(`Sơ đồ trục: ${nT} tầng, mỗi dải cao ${hBand.toFixed(1)} mm < cần ${canBand.toFixed(1)} mm — chữ có thể chồng`);
+    if (hBand < canBand) canhBao.push(`Sơ đồ trục: ${nT} tầng, mỗi dải cao ${hBand.toFixed(1)} mm < cần ${canBand.toFixed(1)} mm — chữ có thể chồng`);
     const dinh = (k) => yTren - k * hBand;                      // đỉnh dải tầng thứ k (từ trên)
     const kTang = new Map(d.tang.map((t, k) => [t, k]));
 
@@ -115,7 +116,7 @@ export function veDienNhe(g, d) {
     // Phòng: mỗi tầng một hàng ô, chia đều bề ngang còn lại
     const soPhongMax = Math.max(1, ...d.tang.map((t) => d.nhanh.filter((n) => n.tang === t).reduce((a, n) => a + n.phong.length, 0)));
     const buoc = Math.min(48, (x1 - xPhong0) / soPhongMax);
-    if (buoc < 30) canBao.push(`Sơ đồ trục: tầng nhiều phòng (${soPhongMax}) — ô phòng hẹp ${buoc.toFixed(1)} mm`);
+    if (buoc < 30) canhBao.push(`Sơ đồ trục: tầng nhiều phòng (${soPhongMax}) — ô phòng hẹp ${buoc.toFixed(1)} mm`);
     const viTriO = new Map();                                   // tầng → số ô đã dùng
     const hopRack = new Map();
 
@@ -151,13 +152,11 @@ export function veDienNhe(g, d) {
         viTriO.set(n.tang, dau + n.phong.length);
         g.line("LINE", b.xc, y, xs.at(-1), y);
         g.circle("LINE", b.xc, y, 0.6, { fill: true });
-        const phan = [n.dem.data && `${n.dem.data}×Cat6 ổ data`, n.dem.ap && `${n.dem.ap}×Cat6 AP`, n.dem.cam && `${n.dem.cam}×Cat6 camera`].filter(Boolean).join(" · ");
-        chu("TEXT", b.xc + 2, y + 1.6, HN, phan, { va: "middle", max: Math.max(20, x1 - b.xc - 4), what: "nhánh cáp" });
+        chu("TEXT", b.xc + 2, y + 1.6, HN, n.chu, { va: "middle", max: Math.max(20, x1 - b.xc - 4), what: "nhánh cáp" });
         const yHop = dinh(kTang.get(n.tang)) - 4 - d.rack.length * 4.5 - 6.5;
         n.phong.forEach((p, j) => {
           g.line("LINE", xs[j], y, xs[j], yHop + 4.5);
-          const dem = [p.data && `${p.data} DATA`, p.ap && `${p.ap} AP`, p.cam && `${p.cam} CAM`].filter(Boolean).join(" · ");
-          hop(xs[j], yHop, buoc - 4, 9, p.ten, dem, { dam: true });
+          hop(xs[j], yHop, buoc - 4, 9, p.ten, p.dem, { dam: true });
         });
       }
     });
@@ -176,13 +175,13 @@ export function veDienNhe(g, d) {
   // ===================================================================================================
   function veMang() {
     // Bảng tổng hợp ở đáy
-    const cot = [["RACK", 14], ["TẦNG", 12], ["Ổ DATA", 14], ["AP", 10], ["CAMERA", 14], ["SWITCH (CỔNG)", 40], ["PoE CẦN / CÓ (W)", 26],
+    const cot = [["RACK", 14], ["TẦNG", 12], ["DATA / TV", 16], ["AP", 10], ["CAMERA", 14], ["CHUÔNG", 14], ["SWITCH (CỔNG)", 40], ["PoE CẦN / CÓ (W)", 26],
       ["PATCH PANEL", 18], ["U CẦN → TỦ", 26], ["UPS", 18], ["NGUỒN", 22]];
     const wBang = cot.reduce((a, c) => a + c[1], 0);
     const xb = (x0 + x1) / 2 - wBang / 2;
     const hDong = 5;
     const yBangTop = yDuoi + (d.ghiChu?.length ? 4 * (d.ghiChu.length + 1) + 2 : 0) + (d.bang.length + 1) * hDong;
-    bang(xb, yBangTop, cot, d.bang.map((b) => [b.ma, b.tang, b.data, b.ap, b.cam, b.sw, b.poe, b.pp, b.u, b.ups, b.nguon]),
+    bang(xb, yBangTop, cot, d.bang.map((b) => [b.ma, b.tang, b.data, b.ap, b.cam, b.chuong, b.sw, b.poe, b.pp, b.u, b.ups, b.nguon]),
       { hDong, tieuDe: "BẢNG TÍNH TOÁN TỦ RACK" });
     ghiChu(xb, yDuoi + 4 * d.ghiChu.length, wBang, d.ghiChu);
 
@@ -190,7 +189,7 @@ export function veDienNhe(g, d) {
     const la = [];
     for (const n of d.nhom) for (const m of n.muc) for (const l of m.la.length ? m.la : [null]) la.push({ n, m, l });
     const buoc = Math.min(50, (x1 - x0 - 8) / Math.max(1, la.length));
-    if (buoc < 34) canBao.push(`Sơ đồ nguyên lý mạng: ${la.length} nhóm thiết bị — bước ${buoc.toFixed(1)} mm hơi hẹp`);
+    if (buoc < 34) canhBao.push(`Sơ đồ nguyên lý mạng: ${la.length} nhóm thiết bị — bước ${buoc.toFixed(1)} mm hơi hẹp`);
     const xla0 = (x0 + x1) / 2 - (la.length * buoc) / 2;
     la.forEach((x, i) => { x.x = xla0 + (i + 0.5) * buoc; });
     for (const n of d.nhom) for (const m of n.muc) {
@@ -204,7 +203,7 @@ export function veDienNhe(g, d) {
     y.loi = y.router - 16;
     y.muc = (d.loi ? y.loi : y.router) - 30;
     y.la = y.muc - 28;
-    if (y.la - hH / 2 < yBangTop + 12) canBao.push("Sơ đồ nguyên lý mạng: thiếu chỗ giữa cây và bảng");
+    if (y.la - hH / 2 < yBangTop + 12) canhBao.push("Sơ đồ nguyên lý mạng: thiếu chỗ giữa cây và bảng");
 
     const noi = (tren, duoi, ymCho) => {             // nối 1 hộp trên với các hộp dưới (đường gấp khúc)
       if (!duoi.length) return;
@@ -249,6 +248,81 @@ export function veDienNhe(g, d) {
   }
 
   // ===================================================================================================
+  // Cây nguyên lý dùng chung (âm thanh, kiểm soát ra vào & chuông cửa, KNX): chuỗi hộp đỉnh → các nhóm (khung) → mục → lá
+  function veCay() {
+    let yBangTop = yDuoi + (d.ghiChu?.length ? 4 * (d.ghiChu.length + 1) + 2 : 0);
+    const hDong = 5;
+    if (d.bang?.dong?.length) {
+      const nDong = Math.min(d.bang.dong.length, 18);
+      if (d.bang.dong.length > nDong) canhBao.push(`Bảng "${d.bang.tieuDe}": ${d.bang.dong.length} dòng, chỉ vẽ ${nDong} dòng đầu (đủ trong dien-nhe.xlsx)`);
+      const wB = d.bang.cot.reduce((a, c) => a + c[1], 0);
+      const xb = (x0 + x1) / 2 - wB / 2;
+      yBangTop += (nDong + 1) * hDong;
+      bang(xb, yBangTop, d.bang.cot, d.bang.dong.slice(0, nDong), { hDong, tieuDe: d.bang.tieuDe });
+      ghiChu(xb, yDuoi + 4 * (d.ghiChu?.length || 0), wB, d.ghiChu);
+    } else ghiChu(x0, yDuoi + 4 * (d.ghiChu?.length || 0), x1 - x0, d.ghiChu);
+
+    const la = [];
+    for (const n of d.nhom) for (const m of n.muc) for (const l of m.la.length ? m.la : [null]) la.push({ n, m, l });
+    const buoc = Math.min(50, (x1 - x0 - 8) / Math.max(1, la.length));
+    if (buoc < 30) canhBao.push(`${d.sheet.title}: ${la.length} nhóm — bước ${buoc.toFixed(1)} mm hẹp`);
+    const xla0 = (x0 + x1) / 2 - (la.length * buoc) / 2;
+    la.forEach((x, i) => { x.x = xla0 + (i + 0.5) * buoc; });
+    for (const n of d.nhom) for (const m of n.muc) {
+      const xs = la.filter((x) => x.m === m).map((x) => x.x);
+      m.x = (Math.min(...xs) + Math.max(...xs)) / 2;
+    }
+    const wH = Math.min(44, buoc - 2.5), hH = 10;
+    const xc = (x0 + x1) / 2;
+    // Vùng chữ tên khung: đường nối đứng đi qua thì ngắt đoạn, không đè lên chữ
+    const kheChu = [];
+    const doc = (x, ya, yb) => {
+      let ds = [[Math.min(ya, yb), Math.max(ya, yb)]];
+      for (const k of kheChu.filter((k) => x > k.x0 && x < k.x1)) {
+        ds = ds.flatMap(([u, v]) => (k.y1 <= u || k.y0 >= v ? [[u, v]] : [[u, k.y0], [k.y1, v]].filter(([p, q]) => q - p > 0.1)));
+      }
+      for (const [u, v] of ds) g.line("LINE", x, u, x, v);
+    };
+    const noi = (tren, duoi, ymCho) => {
+      if (!duoi.length) return;
+      const ym = ymCho ?? (tren.y0 + Math.max(...duoi.map((b) => b.y1))) / 2;
+      g.line("LINE", tren.xc, tren.y0, tren.xc, ym);
+      const xs = duoi.map((b) => b.xc);
+      if (xs.length > 1 || xs[0] !== tren.xc) g.line("LINE", Math.min(tren.xc, ...xs), ym, Math.max(tren.xc, ...xs), ym);
+      for (const b of duoi) doc(b.xc, ym, b.y1);
+    };
+    let y = yTren - 8, truoc = null;
+    for (const h of d.dinh) {
+      const b = hop(xc, y, Math.max(wH, 46), hH, h.ten, h.phu, { nen: true });
+      if (truoc) noi(truoc, [b]);
+      truoc = b;
+      y -= 16;
+    }
+    const yMuc = y - 14, yLa = yMuc - 28;
+    if (yLa - hH / 2 < yBangTop + 6) canhBao.push(`${d.sheet.title}: thiếu chỗ giữa cây và bảng`);
+    const hopMuc = [];
+    for (const n of d.nhom) {
+      const bs = [];
+      for (const m of n.muc) {
+        const b = hop(m.x, yMuc, wH, hH, m.ten, m.phu, { nen: true });
+        bs.push(b);
+        noi(b, la.filter((x) => x.m === m && x.l).map((x) => hop(x.x, yLa, wH, hH, x.l.ten, x.l.phu, { dam: false })));
+      }
+      if (!bs.length) continue;
+      const dem = Math.min(3, (buoc - wH) / 2 - 0.4);              // lề khung không chồm sang nhóm bên cạnh
+      const fx0 = Math.min(...bs.map((b) => b.x0)) - dem, fx1 = Math.max(...bs.map((b) => b.x1)) + dem;
+      g.rect("TB_LINE", fx0, yMuc - hH / 2 - 3, fx1, yMuc + hH / 2 + 7);
+      const tenKhung = (/^BUS/.test(n.ma) ? n.ma : `TỦ RACK ${n.ma}${n.tang ? ` (${n.tang})` : ""}`) + (n.truc ? ` — ${n.truc}` : "");
+      const yTen = yMuc + hH / 2 + 4;
+      const hTen = vua(tenKhung, HN, fx1 - fx0 - 3, "tên nhóm", { bold: true });
+      chu("TITLE", fx0 + 1.5, yTen, hTen, tenKhung, { va: "middle", bold: true });
+      kheChu.push({ x0: fx0 + 0.5, x1: fx0 + 2.5 + doRongChu(tenKhung, hTen, { bold: true }), y0: yTen - hTen * 0.7, y1: yTen + hTen * 0.7 });
+      hopMuc.push(...bs);
+    }
+    if (truoc) noi(truoc, hopMuc, truoc.y0 - 4);
+  }
+
+  // ===================================================================================================
   function veRack() {
     const r = d.rack;
     const uH = Math.min(5.6, (yTren - yDuoi - 28) / r.uRack);
@@ -264,13 +338,14 @@ export function veDienNhe(g, d) {
     for (let u = 1; u <= r.uRack; u += buocSo) chu("TEXT", xR - 1, yR0 + (u - 0.5) * uH, Math.min(1.5, uH * 0.55), String(u), { ha: "right", va: "middle" });
     // Thiết bị: UPS ở đáy, PDU trên UPS; còn lại xếp từ đỉnh xuống
     const day = [...d.thietBi.filter((x) => x.loai === "ups"), ...d.thietBi.filter((x) => x.loai === "pdu")];
-    const tren = d.thietBi.filter((x) => x.loai !== "ups" && x.loai !== "pdu");
+    const tren = d.thietBi.filter((x) => x.loai !== "ups" && x.loai !== "pdu" && x.u > 0);
+    const canh = d.thietBi.filter((x) => !(x.u > 0));
     const vt = [];
     let u = r.uRack;
     for (const x of tren) { vt.push({ x, uTu: u - x.u + 1, uDen: u }); u -= x.u; }
     let ud = 1;
     for (const x of day) { vt.push({ x, uTu: ud, uDen: ud + x.u - 1 }); ud += x.u; }
-    if (ud - 1 > u) canBao.push(`Tủ ${r.ma}: thiết bị (${d.thietBi.reduce((a, x) => a + x.u, 0)}U) vượt ${r.uRack}U`);
+    if (ud - 1 > u) canhBao.push(`Tủ ${r.ma}: thiết bị (${d.thietBi.reduce((a, x) => a + x.u, 0)}U) vượt ${r.uRack}U`);
     for (const { x, uTu, uDen } of vt) {
       const a = [xR + 1, yR0 + (uTu - 1) * uH + 0.25, xR + wR - 1, yR0 + uDen * uH - 0.25];
       g.fill("CELL", rectPts(...a));
@@ -283,7 +358,8 @@ export function veDienNhe(g, d) {
     const rong = x1 - bx;
     const cot = [["STT", 10], ["THIẾT BỊ", rong - 10 - 22 - 12 - 22, "l"], ["VỊ TRÍ (U)", 22], ["SỐ U", 12], ["CÔNG SUẤT (W)", 22]];
     const dong = vt.sort((a, b) => b.uDen - a.uDen).map((v, i) => [i + 1, v.x.ten, v.uTu === v.uDen ? `U${v.uTu}` : `U${v.uTu}–U${v.uDen}`, v.x.u, v.x.w || "—"]);
-    if (d.poeTai) dong.push(["", "Tải PoE cấp cho AP, camera (qua switch PoE)", "", "", d.poeTai]);
+    for (const x of canh) dong.push([dong.length + 1, x.ten, "cạnh tủ", "—", x.w || "—"]);
+    if (d.poeTai) dong.push(["", "Tải PoE cấp cho AP, camera, chuông cửa (qua switch PoE)", "", "", d.poeTai]);
     dong.push(["", "TỔNG CÔNG SUẤT", "", d.thietBi.reduce((a, x) => a + x.u, 0), d.w]);
     const yB = bang(bx, yTren - 8, cot, dong, { hDong: 5, tieuDe: "DANH MỤC THIẾT BỊ TỦ RACK" });
     ghiChu(bx, yB - 8, rong, d.ghiChu, "DIỄN GIẢI TÍNH TOÁN:");

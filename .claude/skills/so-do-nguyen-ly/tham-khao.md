@@ -224,33 +224,46 @@ Tủ có `ik` (kA) thì dùng số đó tại thanh cái tủ, không tính.
 - **GHI CHÚ `Chọn lọc ngắn mạch`**: "toàn phần" hoặc "một phần, tới Is ≈ …" là chọn lọc theo dòng (ngưỡng cắt từ). Nhà ở dùng MCB thường chỉ chọn lọc một phần. Đây là bình thường; nhắc kỹ sư tra bảng phối hợp Schneider nếu công trình yêu cầu chọn lọc toàn phần.
 - **MCCB chỉnh định:** ghi `Im=…A` trong chuỗi thiết bị ghi đè (`MCCB 3P 160A 25kA Im=1000A`).
 
-## 10. Điện nhẹ: mạng LAN / Wi-Fi, camera, tủ rack (đợt 1)
+## 10. Điện nhẹ: mạng, camera, IPTV, chuông cửa, kiểm soát ra vào, âm thanh, KNX
 
-Code: `dien/engine/dien-nhe.mjs`. Kết quả: tờ E.700 (trục), E.701 (nguyên lý), E.702… (tủ rack), `out/dien-nhe.xlsx`, BOQ nhóm F.
+Code: `dien/engine/dien-nhe.mjs`. Kết quả: tờ E.700 (trục), E.701 (nguyên lý mạng), mặt đứng từng tủ rack, rồi (khi hệ có dữ liệu) nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; `out/dien-nhe.xlsx`, BOQ nhóm F.
+
+**Cách nhanh — để agent gợi ý:** trong `mo-ta.json` thêm `"dienNhe": true` (hoặc `{ "tang": "T1", "acs": false }` để chọn tầng đặt rack / bỏ cửa ACS ở cổng) và `"knx": true`. `goi-y-dau-vao.mjs` gợi ý theo loại phòng (bảng `DIEN_NHE_PHONG` trong `agent/phu-tai-dien-hinh.mjs`), mọi dòng ghi "giả định":
+- phòng khách 2 data + 1 TV + 1 AP + 4 loa; phòng ngủ 1 data + 1 TV; bếp 1 data + 2 loa; sảnh/hành lang 1 AP + 1 camera; ngoài nhà 2 camera + 2 loa;
+- mỗi tầng ≥ 1 AP / 80 m²; màn hình chuông ở phòng khách/sảnh; nút gọi chuông + 1 cửa ACS ở cổng tầng có tủ tổng;
+- 1 rack R1 ở tầng có tủ tổng, cấp nguồn từ tủ tổng, cáp nguồn 8 m;
+- KNX: mọi mạch chiếu sáng đánh dấu `Bật/tắt`, mạch rèm `Rèm`; mỗi phòng 1 phím bấm / cảm biến.
+
+Sau đó hỏi anh: vị trí rack, phòng nào cần dimmer, vùng âm thanh, cửa nào kiểm soát ra vào — rồi sửa `du-an.json`.
 
 **Dữ liệu `dienNhe` trong `du-an.json`:**
 
 ```jsonc
 "dienNhe": {
-  "phong": [ { "tang": "T1", "phong": "P.khách", "data": 2, "ap": 1, "camTrong": 1, "camNgoai": 0, "rack": "R1", "L": 15 } ],
-  "rack":  [ { "ma": "R1", "tang": "T1", "viTri": "Phòng kỹ thuật", "capTu": "T1", "lNguon": 8, "trungTam": true } ]
+  "phong": [
+    { "tang": "T1", "phong": "P.khách", "data": 2, "tv": 1, "ap": 1, "camTrong": 1, "camNgoai": 0,
+      "chuongTrong": 1, "loa": 4, "loaW": 6, "vungAm": "Vùng 1 – khách", "knx": 2, "rack": "R1", "L": 15 },
+    { "tang": "T1", "phong": "Cổng", "camNgoai": 2, "chuongNgoai": 1, "acs": 1, "loa": 2, "loaW": 10, "vungAm": "Vùng sân", "L": 30 }
+  ],
+  "rack": [ { "ma": "R1", "tang": "T1", "viTri": "Phòng kỹ thuật", "capTu": "T1", "lNguon": 8, "trungTam": true } ]
 }
 ```
 - `L`: chiều dài cáp TB từ rack tới phòng (m). Thiếu thì tạm 30 m và ghi chú.
-- `capTu`: tủ điện cấp nguồn cho rack → công cụ tự thêm mạch `DNn`. Đã có mạch sẵn thì ghi `maMach`.
+- `capTu`: tủ điện cấp nguồn cho rack → công cụ tự thêm mạch `DNn` (rack) và, nếu có loa, một mạch `DNn` nữa cho ampli. Đã có mạch sẵn cho rack thì ghi `maMach`.
 - `lTruc`: chiều dài trục từ rack phụ về rack trung tâm. Quá 90 m thì dùng cáp quang.
-- Các trường `tv`, `acs`, `chuongNgoai`, `chuongTrong`, `loa`, `loaW`, `knx` đọc và giữ nhưng **chưa tính** (đợt sau).
+- `tv`: ổ TV (IPTV) = link Cat6 vào switch thường. `chuongNgoai` (nút gọi ngoài trời, PoE 6 W), `chuongTrong` (màn hình, PoE 8 W) vào switch PoE.
+- `acs`: số cửa kiểm soát ra vào. Công cụ chia bộ điều khiển 4 / 2 / 1 cửa đặt cạnh rack phục vụ phòng đó.
+- `loa`, `loaW` (tap W, trống thì 6 W), `vungAm` (trống thì mỗi phòng một vùng). ≤ 6 vùng → 1 ampli mixer.
+- `knx`: số phím bấm / cảm biến KNX tại phòng.
 
-**Gợi ý khi chưa có số liệu (ghi "giả định" ở `ghiChu`):**
-- phòng ngủ 1–2 ổ data;
-- phòng khách 2 ổ data + 1 AP;
-- mỗi tầng 1 AP / 60–80 m²;
-- camera ở cổng, sân, sảnh, hành lang chính.
-
-Hỏi anh vị trí rack (thường ở phòng kỹ thuật hoặc gầm cầu thang tầng 1) và tủ điện cấp nguồn.
+**KNX trong mạch:** thêm `"knx": "Bật/tắt" | "Dimmer" | "Rèm"` vào mạch trong `circuits` (Excel: cột `Điều khiển KNX` ở sheet `Mach`). Mỗi mạch 1 kênh, rèm thì số kênh = `soLuong`. Actuator đặt **trong tủ điện của mạch** và cộng vào số module vỏ tủ; nguồn bus + giao diện IP ở tủ gốc.
 
 **Đọc kết quả:**
 - **CẢNH BÁO `Cáp Cat6 … > 90 m`:** đề xuất thêm rack hoặc switch tầng gần hơn.
 - **LỖI `Ngân sách PoE`:** không xảy ra với bảng switch mặc định (công cụ tự thêm switch), chỉ gặp khi sửa quy tắc.
 - **Báo UPS / U vượt cỡ:** tách tủ.
-- **Nguồn rack:** báo anh mạch `DNn` đã thêm vào tủ nào, CB và cáp gì (xem tờ tủ điện và E.702).
+- **Nguồn rack, ampli:** báo anh các mạch `DNn` đã thêm vào tủ nào, CB và cáp gì (xem tờ tủ điện và tờ mặt đứng rack).
+- **`Cần … module … trong đó n module thiết bị KNX`:** actuator KNX làm tủ vượt vỏ — đề xuất anh tách tủ KNX riêng cạnh tủ đó, hoặc bớt mạch KNX; không tự quyết.
+- **`Chưa có công suất tap loa`** (ghi chú): đang dùng 6 W/loa — hỏi anh nếu có số liệu loa.
+- **`Dây bus KNX … chia n line`** (ghi chú): công cụ đã tự chia line; báo anh số line và IP router.
+- Liên động báo cháy với khóa cửa ACS chỉ là ghi chú (điểm giao tiếp), hệ báo cháy ngoài phạm vi.

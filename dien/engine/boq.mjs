@@ -112,6 +112,8 @@ export function tinhBoq(kq, { haoHut = 5, bocKhoi = null } = {}) {
           F(`Đầu ghi NVR ${dn.nvr.kenh} kênh`, "cái", 1, r.ma, `${dn.nvr.soCam} camera + dự phòng`);
           F(`Ổ cứng NVR ${dn.nvr.hddTB} TB`, "cái", dn.nvr.soHdd, r.ma, `${dn.nvr.soCam} × ${R.bitrate} Mbps × ${R.ngayLuu} ngày`);
         } else if (x.loai === "ups") F(`UPS online ${r.ups.va} VA rack-mount`, "bộ", 1, r.ma, `${Math.round(r.w)} W / ${R.pfUps} × ${R.kUps}`, "thời gian lưu điện theo yêu cầu");
+        else if (x.loai === "ampli") F(x.ten, "cái", 1, r.ma, `${x.ampli.vung.join(", ")}: ${x.ampli.W} W × ${R.kAmpli}`);
+        else if (x.loai === "acs") F(`Bộ điều khiển ACS ${x.ten.match(/(\d+) cửa/)?.[1] ?? ""} cửa + nguồn 12 V ắc quy`, "bộ", 1, r.ma, "lắp cạnh tủ rack");
         else F(x.ten, "cái", 1, r.ma, "");
       }
       if (r.truc?.loai === "quang") {
@@ -124,6 +126,32 @@ export function tinhBoq(kq, { haoHut = 5, bocKhoi = null } = {}) {
     }
     const dem = (loai, ngoai) => dn.lienKet.filter((x) => x.loai === loai && (ngoai == null || x.ngoaiTroi === ngoai)).length;
     F("Mặt + nhân ổ data RJ45 Cat6", "bộ", dem("DATA"), "", "1 bộ / ổ data");
+    F("Mặt + nhân ổ TV (IPTV) RJ45 Cat6", "bộ", dem("TV"), "", "1 bộ / ổ TV");
+    F("Nút gọi chuông cửa IP (ngoài trời)", "cái", dn.lienKet.filter((x) => x.loai === "CHUONG" && /Nút gọi/.test(x.moTa)).length, "", `PoE ${R.poeChuongNgoai} W`);
+    F("Màn hình chuông cửa IP", "cái", dn.lienKet.filter((x) => x.loai === "CHUONG" && /Màn hình/.test(x.moTa)).length, "", `PoE ${R.poeChuongTrong} W`);
+    // Kiểm soát ra vào: thiết bị và cáp từng cửa
+    const cua = dn.acs?.cua ?? [];
+    if (cua.length) {
+      for (const [k, t] of [["Đầu đọc thẻ ACS", "cái"], ["Khóa điện từ / chốt điện", "bộ"], ["Nút exit", "cái"], ["Công tắc cửa (door contact)", "cái"], ["Nút khẩn mở cửa (break glass)", "cái"]]) F(k, t, cua.length, "", `${cua.length} cửa`);
+      const Lc = cua.reduce((a, c) => a + c.L, 0);
+      F("Cáp tín hiệu 6 lõi có lưới (đầu đọc)", "m", Lc, "", "1 tuyến / cửa");
+      F("Cáp nguồn khóa 2 × 1,0 mm²", "m", Lc, "", "1 tuyến / cửa");
+      F("Cáp tín hiệu 2 lõi (nút exit, công tắc cửa)", "m", 2 * Lc, "", "2 tuyến / cửa");
+    }
+    // Âm thanh 100 V
+    for (const v of dn.amThanh?.vung ?? []) {
+      for (const p of v.phong) {
+        F(`Loa 100 V ${p.w} W`, "cái", p.loa, v.rack, `${v.ten} — ${p.phong}`);
+        F("Cáp loa chống cháy 2 × 1,5 mm²", "m", p.L + 4 * p.loa, v.rack, `${p.phong}: L + 4 m × ${p.loa} loa`);
+      }
+    }
+    // KNX
+    const K = dn.knx;
+    if (K) {
+      for (const [tu, ds] of K.thietBiTu) for (const x of ds) F(x.ten.replace(/ \(line \d+\)$/, ""), "cái", 1, tu, `lắp trong tủ ${tu}, ${x.module} module`);
+      F("Phím bấm / cảm biến KNX", "cái", K.nPhong, "", "theo bảng điện nhẹ");
+      F("Cáp bus KNX J-Y(St)Y 2×2×0,8", "m", K.busL, "", "ước tính: Σ chiều dài phòng + cáp cấp tủ");
+    }
     F(`Bộ phát Wi-Fi (AP) PoE`, "cái", dem("AP"), "", `PoE ${R.poeAp} W`);
     F("Camera IP trong nhà PoE", "cái", dem("CAM", false), "", `${R.bitrate} Mbps`);
     F("Camera IP ngoài trời PoE (IP66)", "cái", dem("CAM", true), "", `${R.bitrate} Mbps`);

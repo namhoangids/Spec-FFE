@@ -1151,11 +1151,11 @@ AcDbText
 10
 386.12
 20
-222.289
+222.104
 30
 0
 40
-1.384
+1.752
 1
 
 7
@@ -1165,7 +1165,7 @@ IND-ARIAL
 11
 386.12
 21
-222.289
+222.104
 31
 0
 100
@@ -1781,7 +1781,7 @@ AcDbText
 40
 2.7
 1
-SƠ ĐỒ TRỤC ĐIỆN NHẸ (MẠNG LAN, WI-FI, CAMERA)
+SƠ ĐỒ TRỤC ĐIỆN NHẸ (CÁP MẠNG Cat6)
 7
 IND-ARIAL-DAM
 100
@@ -1879,7 +1879,7 @@ AcDbText
 40
 1.7
 1
-2. Tổng: 12 ổ data, 7 AP Wi-Fi, 9 camera — 28 link Cat6. AP Wi-Fi và camera cấp nguồn PoE từ switch tại rack.
+2. Tổng: 12 ổ data, 9 ổ TV (IPTV), 7 AP Wi-Fi, 9 camera, 2 thiết bị chuông cửa IP, 1 bộ điều khiển ACS — 40 link Cat6. AP, camera, chuông cửa IP cấp nguồn PoE từ switch tại rack; ổ TV là ổ mạng (IPTV).
 7
 IND-ARIAL
 72
@@ -1915,7 +1915,7 @@ AcDbText
 40
 1.7
 1
-3. Thiết bị ghi theo chủng loại, chưa gắn hãng. Nguyên lý mạng và camera xem E.701; tủ rack xem E.702.
+3. Thiết bị ghi theo chủng loại, chưa gắn hãng. Nguyên lý mạng xem E.701; tủ rack xem E.702; âm thanh E.703; kiểm soát ra vào, chuông cửa E.704; KNX E.705.
 7
 IND-ARIAL
 72
@@ -2499,7 +2499,7 @@ AcDbText
 40
 1.7
 1
-20U ĐỨNG
+27U ĐỨNG
 7
 IND-ARIAL
 72
@@ -3267,7 +3267,7 @@ AcDbText
 40
 1.7
 1
-2×Cat6 ổ data · 1×Cat6 AP · 1×Cat6 camera
+2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera
 7
 IND-ARIAL
 72
@@ -3401,7 +3401,7 @@ AcDbText
 40
 1.7
 1
-2 DATA
+2 DATA · 2 TV
 7
 IND-ARIAL
 72
@@ -3761,7 +3761,7 @@ AcDbText
 40
 1.7
 1
-2×Cat6 ổ data · 1×Cat6 AP · 1×Cat6 camera
+2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera
 7
 IND-ARIAL
 72
@@ -3895,7 +3895,7 @@ AcDbText
 40
 1.7
 1
-2 DATA
+2 DATA · 2 TV
 7
 IND-ARIAL
 72
@@ -4255,7 +4255,7 @@ AcDbText
 40
 1.7
 1
-2×Cat6 ổ data · 1×Cat6 AP · 1×Cat6 camera
+2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera
 7
 IND-ARIAL
 72
@@ -4389,7 +4389,7 @@ AcDbText
 40
 1.7
 1
-2 DATA
+2 DATA · 2 TV
 7
 IND-ARIAL
 72
@@ -4749,7 +4749,7 @@ AcDbText
 40
 1.7
 1
-2×Cat6 ổ data · 1×Cat6 AP · 1×Cat6 camera
+2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera
 7
 IND-ARIAL
 72
@@ -4883,7 +4883,7 @@ AcDbText
 40
 1.7
 1
-2 DATA
+2 DATA · 2 TV
 7
 IND-ARIAL
 72
@@ -5243,7 +5243,7 @@ AcDbText
 40
 1.7
 1
-3×Cat6 ổ data · 2×Cat6 AP · 4×Cat6 camera
+3×Cat6 ổ data · 1×Cat6 TV · 2×Cat6 AP · 4×Cat6 camera · 2×Cat6 chuông · 1 cửa ACS (cáp riêng)
 7
 IND-ARIAL
 72
@@ -5375,9 +5375,9 @@ AcDbText
 30
 0
 40
-1.7
+1.546
 1
-2 DATA · 1 AP · 1 CAM
+2 DATA · 1 TV · 1 AP · 1 CAM · 1 CHUÔNG
 7
 IND-ARIAL
 72
@@ -5645,7 +5645,7 @@ AcDbText
 40
 1.7
 1
-3 CAM
+3 CAM · 1 CHUÔNG · 1 CỬA ACS
 7
 IND-ARIAL
 72
@@ -6829,13 +6829,13 @@ AcDbText
 10
 386.12
 20
-222.289
+222.104
 30
 0
 40
-1.384
+1.752
 1
-SƠ ĐỒ TRỤC ĐIỆN NHẸ (MẠNG LAN, WI-FI, CAMERA)
+SƠ ĐỒ TRỤC ĐIỆN NHẸ (CÁP MẠNG Cat6)
 7
 IND-ARIAL
 72
@@ -6843,7 +6843,7 @@ IND-ARIAL
 11
 386.12
 21
-222.289
+222.104
 31
 0
 100
