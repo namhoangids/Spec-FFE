@@ -223,4 +223,3 @@ Tủ có `ik` (kA) thì dùng số đó tại thanh cái tủ, không tính.
 - **Sơ đồ TT:** cảnh báo các mạch chưa có RCD. Đề xuất RCBO từng mạch, hoặc RCD đầu tủ (cần kỹ sư chốt RA · IΔn ≤ 50 V).
 - **GHI CHÚ `Chọn lọc ngắn mạch`**: "toàn phần" hoặc "một phần, tới Is ≈ …" là chọn lọc theo dòng (ngưỡng cắt từ). Nhà ở dùng MCB thường chỉ chọn lọc một phần. Đây là bình thường; nhắc kỹ sư tra bảng phối hợp Schneider nếu công trình yêu cầu chọn lọc toàn phần.
 - **MCCB chỉnh định:** ghi `Im=…A` trong chuỗi thiết bị ghi đè (`MCCB 3P 160A 25kA Im=1000A`).
-
