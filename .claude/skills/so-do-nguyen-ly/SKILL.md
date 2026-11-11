@@ -98,6 +98,7 @@ Báo ngắn, theo thứ tự:
 - `nhap-lieu.xlsx`;
 - `out/bang-tinh.xlsx`;
 - `out/thuyet-minh.docx` (thuyết minh tính toán; `out/thuyet-minh.html` là cùng nội dung để xem / in PDF);
+- `out/boq.xlsx` (BOQ điện: khối lượng + khung đơn giá ở sheet "Bang gia"; có bảng giá thì chạy lệnh tạo bộ kèm `--bang-gia <file.xlsx>`);
 - file DXF anh cần.
 
 Muốn gửi cả bộ: nén `out/` thành một file zip trước khi gửi:

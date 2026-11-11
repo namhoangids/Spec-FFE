@@ -2,6 +2,7 @@
 // Dùng chung cho lệnh tao-bo-ban-ve.mjs (Node) và web app dien/app (trình duyệt).
 
 import { tinhDuAn } from "./engine/cay-tu.mjs";
+import { tinhBoq, xuatBoqExcel } from "./engine/boq.mjs";
 import { nhanHtml, xuatNhanExcel } from "./engine/nhan.mjs";
 import { sangBoBanVe } from "./engine/sang-ban-ve.mjs";
 import { noiDungThuyetMinh, thuyetMinhHtml } from "./engine/thuyet-minh.mjs";
@@ -17,7 +18,8 @@ export const MUC = { loi: "Lỗi", canhbao: "Cảnh báo", ghichu: "Ghi chú" };
 /**
  * @param {object} duAn — { info, panels, circuits, quyTac } (docExcel)
  * @returns {{ kq, to: object[], soTheoTu: Map, nhanHtml: () => string, nhanExcel: (XLSX) => object,
- *   thuyetMinh: () => object, thuyetMinhHtml: () => string, thuyetMinhDocx: (docx) => object }}
+ *   thuyetMinh: () => object, thuyetMinhHtml: () => string, thuyetMinhDocx: (docx) => object,
+ *   boq: (opt) => object, boqExcel: (XLSX, opt) => object }}
  *   Mỗi tờ: { loai: "tong"|"tu", ma, ten, thu, tong, du, tenFile, svg, dxf(), r12() }
  */
 export function taoBoBanVe(duAn) {
@@ -46,6 +48,10 @@ export function taoBoBanVe(duAn) {
     thuyetMinhHtml: () => thuyetMinhHtml(thuyetMinh()),
     /** docx: thư viện npm "docx" — đóng gói bằng docx.Packer.toBuffer (Node) / toBlob (trình duyệt) */
     thuyetMinhDocx: (docx) => thuyetMinhDocx(docx, thuyetMinh()),
+    /** BOQ điện: khối lượng thiết bị, phụ kiện, dây/cáp, ống. opt: { haoHut } (%) */
+    boq: (opt) => tinhBoq(kq, opt),
+    /** BOQ ra Excel (sheet BOQ, Bang gia, Chi tiet). opt: { haoHut, bangGia } — bangGia từ engine/boq.mjs docBangGia */
+    boqExcel: (XLSX, { haoHut, bangGia } = {}) => xuatBoqExcel(XLSX, tinhBoq(kq, { haoHut }), duAn.info, { bangGia }),
   };
 }
 

@@ -1,5 +1,5 @@
 // Web app: Excel → lõi tính toán → bộ bản vẽ (sơ đồ tổng + các tờ tủ) → xem SVG, tải DXF/SVG/ZIP,
-// bảng tính, nhãn tủ / nhãn cáp, thuyết minh tính toán (Word + trang in), JSON.
+// bảng tính, nhãn tủ / nhãn cáp, thuyết minh tính toán (Word + trang in), BOQ điện, JSON.
 // Toàn bộ chạy trong trình duyệt; SheetJS và JSZip nạp từ cdnjs, thư viện DXF và docx qua import map.
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "../bo-ban-ve.mjs";
@@ -27,7 +27,7 @@ async function napFile(buf, ten) {
     Object.assign(S, { ten: ten.replace(/\.[^.]+$/, ""), duAn, kq, bo, to, chon: 0 });
     $("empty").classList.add("hide");
     $("result").classList.remove("hide");
-    for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx", "tmword", "tmxem"]) $(id).disabled = false;
+    for (const id of ["zip", "xlsx", "json", "nhan", "nhanxlsx", "tmword", "tmxem", "boq"]) $(id).disabled = false;
     veTatCa();
   } catch (e) {
     console.error(e);
@@ -222,6 +222,9 @@ $("dl-r12").addEventListener("click", () => { const x = S.to[S.chon]; tai(`${x.t
 $("dl-svg").addEventListener("click", () => { const x = S.to[S.chon]; tai(`${x.tenFile}.svg`, x.svg, SVG); });
 $("xlsx").addEventListener("click", () => tai(`${S.ten}-bang-tinh.xlsx`, bangTinh(), XLSX_MIME));
 $("nhanxlsx").addEventListener("click", () => tai(`${S.ten}-nhan.xlsx`, nhanExcel(), XLSX_MIME));
+// BOQ điện: khối lượng + khung đơn giá (điền giá ở sheet "Bang gia", thành tiền tự tính)
+const boqExcel = () => window.XLSX.write(S.bo.boqExcel(window.XLSX), { type: "array", bookType: "xlsx" });
+$("boq").addEventListener("click", () => tai(`${S.ten}-boq.xlsx`, boqExcel(), XLSX_MIME));
 // Trang in nhãn mở ở tab mới (trang HTML tự chứa, có nút In)
 $("nhan").addEventListener("click", () => {
   const url = URL.createObjectURL(new Blob([S.bo.nhanHtml()], { type: "text/html" }));
@@ -256,6 +259,7 @@ $("zip").addEventListener("click", async () => {
     }
     zip.file("bang-tinh.xlsx", bangTinh());
     zip.file("nhan.xlsx", nhanExcel());
+    zip.file("boq.xlsx", boqExcel());
     zip.file("nhan-tu.html", S.bo.nhanHtml());
     zip.file("thuyet-minh.docx", await thuyetMinhWord());
     zip.file("thuyet-minh.html", S.bo.thuyetMinhHtml());

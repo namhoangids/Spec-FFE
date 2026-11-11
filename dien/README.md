@@ -2,11 +2,12 @@
 
 Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`](../docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md).
 
-**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán (11/11/2026). Nhập phụ tải vào Excel, công cụ tự tính rồi vẽ **cả bộ**:
+**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán và khung BOQ (11/11/2026). Nhập phụ tải vào Excel, công cụ tự tính rồi vẽ **cả bộ**:
 - tờ **sơ đồ cấp điện tổng** E.600;
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
 - **nhãn tủ, nhãn cáp**;
-- **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung.
+- **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung;
+- **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider).
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -38,7 +39,7 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 2. Xem bản vẽ từng tờ, bảng tính từng mạch và danh sách lỗi/cảnh báo.
 3. Tải xuống:
    - từng tờ: DXF 2007, DXF R12 hoặc SVG;
-   - cả bộ ZIP: gồm bảng tính Excel, nhãn, thuyết minh và JSON dự án.
+   - cả bộ ZIP: gồm bảng tính Excel, nhãn, thuyết minh, BOQ và JSON dự án.
 4. Bấm **In nhãn** để mở trang in danh mục mạch dán cánh tủ và nhãn cáp. Bấm **Nhãn Excel** để tải bảng nhãn cho máy in nhãn.
 5. Bấm **Thuyết minh Word** để tải thuyết minh tính toán (`.docx`), hoặc **Xem thuyết minh** để mở trang in (In / Lưu PDF). Nội dung:
    1. căn cứ thiết kế;
@@ -47,7 +48,11 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
    4. tổng hợp phụ tải;
    5. tính toán chi tiết từng tủ: bảng từng mạch đặt trang ngang, lý do tăng tiết diện;
    6. kiểm tra và kết luận: lỗi, cảnh báo, ghi đè có lý do, giả định, ô ký.
-6. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
+6. Bấm **BOQ Excel** để tải bảng khối lượng vật tư điện. File có 3 sheet:
+   - `BOQ`: 4 nhóm — thiết bị đóng cắt; vỏ tủ và phụ kiện (SPD, đèn báo pha, đồng hồ + CT, ATS); dây và cáp; ống, máng. Dây, cáp, ống đã cộng hao hụt 5%;
+   - `Bang gia`: mỗi dòng BOQ một khóa. Điền mã hàng, đơn giá, chiết khấu vào đây thì sheet BOQ tự tra giá và tính thành tiền, tổng cộng;
+   - `Chi tiet`: từng tủ, từng mạch đóng góp vào mỗi dòng BOQ, để kiểm lại khối lượng.
+7. Mọi tính toán chạy trên trình duyệt, không gửi dữ liệu đi đâu.
 
 **Dòng lệnh:**
 
@@ -55,9 +60,10 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 cd dien && npm install
 node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx            # → out/vi-du-HDMON/
 node tao-bo-ban-ve.mjs du-an.json                       # đầu vào JSON (dữ liệu dự án) cũng được
+node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   # BOQ có giá (sheet "Bang gia")
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 38 test
+npm test                                               # 42 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```
@@ -94,6 +100,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Cap va ong, Canh bao, Quy tac |
 | `dien-giai.mjs` | Định dạng số và diễn giải cách chọn tiết diện / ống. Bảng tính và thuyết minh dùng chung |
 | `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in ra PDF (`thuyetMinhHtml`) cùng kiểu trình bày với bản Word |
+| `boq.mjs` | BOQ điện: `tinhBoq` bóc khối lượng (không tính trùng cáp cấp tủ con, cộng hao hụt), `docBangGia` đọc bảng giá Excel, `xuatBoqExcel` ra file có công thức tra giá |
 | `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`, trình bày theo mẫu văn bản Indust Design: Arial, cam `#F15A22` / xanh than `#22333B`, khối thông tin 3×2, đề mục có vạch cam, bảng dùng Table Style băng màu thật của Word, chân trang "Indust Design \| … \| Working Document" kèm số trang. Bảng rộng đặt trang ngang |
 | `tests/` | Tái lập đúng ví dụ DB-T1 (mục 7: CB tổng 40 A, cáp cấp 4×6, ΔU lớn nhất 2,95%, lệch pha 1,8%, vỏ 36 module) và các ca kiểm tra |
 

@@ -96,7 +96,10 @@ try {
   const ten = Object.keys(zip.files).sort();
   assert.equal(ten.filter((f) => f.endsWith(".dxf")).length, 14);
   assert.equal(ten.filter((f) => f.endsWith(".svg")).length, 7);
-  for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "thuyet-minh.docx", "thuyet-minh.html", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
+  for (const f of ["E.600-TONG-R12.dxf", "bang-tinh.xlsx", "nhan.xlsx", "nhan-tu.html", "thuyet-minh.docx", "thuyet-minh.html", "boq.xlsx", "du-an.json", "canh-bao.txt"]) assert.ok(ten.includes(f), f);
+  const boq = XLSX.read(await zip.file("boq.xlsx").async("uint8array"));
+  assert.deepEqual(boq.SheetNames, ["BOQ", "Bang gia", "Chi tiet"]);
+  assert.match(String(boq.Sheets.BOQ.H8?.f ?? ""), /^ROUND\(D8\*F8/, "thành tiền là công thức");
   const tmXml = await (await JSZip.loadAsync(await zip.file("thuyet-minh.docx").async("uint8array"))).file("word/document.xml").async("string");
   assert.match(tmXml, /THUYẾT MINH TÍNH TOÁN/);
   assert.match(tmXml, /w:orient="landscape"/, "có trang ngang cho bảng từng mạch");
@@ -116,7 +119,7 @@ try {
   if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai.png") });
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 7 tờ (có sơ đồ tổng), in nhãn 6 tủ, thuyết minh 6 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

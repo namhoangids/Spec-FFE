@@ -518,8 +518,13 @@ Chốt ngày 07/11/2026.
   - Bảng từng mạch đặt trang ngang. Mạch phải tăng tiết diện có ghi lý do (các cỡ đã thử, Iz′, ΔU).
   - Có trong web app (nút **Thuyết minh Word**, **Xem thuyết minh**, và trong ZIP), lệnh tạo bộ và skill agent.
 
+- **Khung BOQ (11/11/2026):** `dien/engine/boq.mjs`, file `boq.xlsx` trong mỗi bộ.
+  - Bóc khối lượng: thiết bị đóng cắt (kể cả CB dự phòng, RCBO nhóm, CB tổng); vỏ tủ; SPD, đèn báo pha, đồng hồ + CT, ATS; dây đơn, dây PE, cáp nhiều lõi; ống, máng. Dây, cáp, ống cộng hao hụt (mặc định 5%).
+  - Cáp cấp tủ con chỉ tính một lần ở lộ cấp của tủ trên. Tủ gốc chưa có chiều dài cáp nguồn thì BOQ ghi rõ "chưa tính".
+  - Khung đơn giá: sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu); sheet `BOQ` tra giá bằng công thức nên điền giá là thành tiền tự tính. Lệnh tạo bộ nhận `--bang-gia file.xlsx` để nạp bảng giá có sẵn.
+
 **Tiếp theo (GĐ2 đợt 2):**
-- **BOQ:** dựng khung trước; khi có file bảng giá Schneider (Excel) thì nạp vào để tự điền mã hàng và đơn giá.
+- **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** nhập CSV `DATAEXTRACTION` từ mặt bằng AutoCAD. Đọc được cả block chỉ có tên (dùng bảng quy đổi tên block → loại phụ tải) lẫn block có thuộc tính chuẩn.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.
 

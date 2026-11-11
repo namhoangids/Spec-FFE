@@ -3,6 +3,8 @@
 //   cd dien && npm install
 //   node tao-bo-ban-ve.mjs mau/vi-du-HDMON.xlsx [thư-mục-ra]
 //   node tao-bo-ban-ve.mjs du-an.json [thư-mục-ra]          (dữ liệu dự án dạng JSON)
+//   Tùy chọn: --bang-gia <file.xlsx>  nạp bảng giá cho BOQ (sheet "Bang gia": Khóa | Mã hàng | Đơn giá | Chiết khấu)
+//             --hao-hut <số %>        hao hụt dây, cáp, ống trong BOQ (mặc định 5)
 //
 // Thư mục ra (mặc định out/<tên file>):
 //   E.601-T1.dxf      AutoCAD 2007 (màu RGB, block có thuộc tính); tủ quá 18 lộ tự ngắt thêm tờ
@@ -14,6 +16,7 @@
 //   nhan-tu.html      trang in nhãn từ trình duyệt
 //   thuyet-minh.docx  thuyết minh tính toán (Word, sửa được) — cùng nội dung với thuyet-minh.html
 //   thuyet-minh.html  thuyết minh tính toán, mở trình duyệt để xem / in PDF
+//   boq.xlsx          BOQ điện: khối lượng thiết bị, phụ kiện, dây/cáp, ống + khung đơn giá (sheet Bang gia)
 //   du-an.json        dữ liệu đã đọc từ Excel (tính lại được bằng engine/tinhDuAn)
 //   canh-bao.txt      danh sách lỗi/cảnh báo/ghi chú
 
@@ -24,13 +27,19 @@ import * as docx from "docx";
 import XLSX from "xlsx";
 
 import { MUC, taoBoBanVe, vanBanCanhBao } from "./bo-ban-ve.mjs";
+import { docBangGia } from "./engine/boq.mjs";
 import { docExcel } from "./engine/doc-excel.mjs";
 import { xuatExcel } from "./engine/xuat-excel.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const [input, outArg] = process.argv.slice(2);
+// Tham số: <đầu vào> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5]
+const args = process.argv.slice(2);
+const tuyChon = (ten) => { const i = args.indexOf(ten); return i < 0 ? null : args.splice(i, 2)[1]; };
+const fileGia = tuyChon("--bang-gia");
+const haoHut = tuyChon("--hao-hut");
+const [input, outArg] = args;
 if (!input) {
-  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx | du-an.json> [thư mục ra]");
+  console.error("Cách dùng: node tao-bo-ban-ve.mjs <file nhập liệu.xlsx | du-an.json> [thư mục ra] [--bang-gia file.xlsx] [--hao-hut 5]");
   process.exit(1);
 }
 const outDir = outArg || join(here, "out", basename(input, extname(input)));
@@ -61,10 +70,16 @@ writeFileSync(join(outDir, "nhan.xlsx"), XLSX.write(bo.nhanExcel(XLSX), { type: 
 writeFileSync(join(outDir, "nhan-tu.html"), bo.nhanHtml(), "utf8");
 writeFileSync(join(outDir, "thuyet-minh.docx"), await docx.Packer.toBuffer(bo.thuyetMinhDocx(docx)));
 writeFileSync(join(outDir, "thuyet-minh.html"), bo.thuyetMinhHtml(), "utf8");
+const bangGia = fileGia ? docBangGia(XLSX, readFileSync(fileGia)) : null;
+const boqOpt = { bangGia, haoHut: haoHut == null ? undefined : Number(haoHut) };
+writeFileSync(join(outDir, "boq.xlsx"), XLSX.write(bo.boqExcel(XLSX, boqOpt), { type: "buffer", bookType: "xlsx" }));
 writeFileSync(join(outDir, "du-an.json"), JSON.stringify(duAn, null, 2), "utf8");
 writeFileSync(join(outDir, "canh-bao.txt"), vanBanCanhBao(kq), "utf8");
 
 const dem = (m) => kq.canhBao.filter((c) => c.muc === m).length;
 console.log(`\n${to.length} tờ → ${outDir}`);
 console.log(`Lỗi ${dem("loi")} · Cảnh báo ${dem("canhbao")} · Ghi chú ${dem("ghichu")} (xem canh-bao.txt / bang-tinh.xlsx)`);
+const boq = bo.boq(boqOpt);
+const coGia = bangGia ? boq.dong.filter((d) => bangGia.gia.get(d.khoa)?.donGia > 0).length : 0;
+console.log(`BOQ: ${boq.dong.length} dòng${bangGia ? ` · bảng giá "${bangGia.ten || fileGia}": ${coGia}/${boq.dong.length} dòng có giá` : " · chưa nạp bảng giá (điền ở sheet Bang gia của boq.xlsx)"}${boq.thieuL.length ? ` · chưa có chiều dài: ${boq.thieuL.join(", ")}` : ""}`);
 for (const c of kq.canhBao.filter((x) => x.muc !== "ghichu")) console.log(`  ${MUC[c.muc]} ${c.tu} ${c.mach}: ${c.noiDung}`);
