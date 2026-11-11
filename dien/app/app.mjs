@@ -183,7 +183,7 @@ function veTu() {
     ["Pđ · Kđt · Ptt", `${so(t.pd, 2)} kW · ${so(t.ks, 2)} · ${so(t.ptt, 2)} kW`],
     [t.soPha === 3 ? "I pha A / B / C" : "Dòng tính toán", t.soPha === 3 ? `${so(t.iPha.A)} / ${so(t.iPha.B)} / ${so(t.iPha.C)} A · lệch ${so(t.lechPha)}%` : `${so(t.iMax)} A`],
     ["ΔU tới thanh cái", `${so(t.duBus, 2)}%`],
-    ["Ik tại tủ", `${so(t.ikTinh)} kA (${t.ikNguon})`],
+    ["Ik3 max / Ik1 min tại thanh cái", `${so(t.ikTinh, 2)} / ${so(t.nganMach?.ik1Min, 2)} kA (${t.ikNguon})`],
     ["Vỏ tủ", `${t.module.voTu ?? "—"} module · thiết bị ${t.module.tong}, cần ${so(t.module.can)}`],
   ];
   $("facts").innerHTML = facts.map(([k, v]) => `<div class="fact"><div class="kick">${k}</div><div class="v tnum">${esc(v)}</div></div>`).join("");
@@ -225,6 +225,7 @@ function bangTong(bang) {
     <tbody>${bang.map((r) => `<tr>${cot.map(([, k, n]) => `<td class="${n ? "n" : ""}">${esc(r[k])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
+const TU_CAT_KY = { dat: " ✓", rcd: " RCD", khong: " ✗" };
 function bangMach(t) {
   const rows = t.mach.map((m) => {
     const kt = m.kiemTra || [];
@@ -236,12 +237,13 @@ function bangMach(t) {
       <td>${esc(chuCap(m.cap, { soPha: m.soPha, dongCo: m.kieu?.dongCo }) || "—")}</td>
       <td class="n">${m.cap?.izp != null ? so(m.cap.izp) : "—"}</td><td class="n">${m.kieu?.duPhong ? "—" : so(m.L, 0)}</td>
       <td class="n">${m.cap?.duCongDon != null ? so(m.cap.duCongDon, 2) + "%" : "—"}</td><td class="nw">${esc(m.ong || "—")}</td>
+      <td class="n" title="${esc(m.nganMach?.nguong ? `Ngưỡng cắt từ: ${m.nganMach.nguong.moTa}` : "")}">${m.nganMach?.ik1Cuoi != null ? `${so(m.nganMach.ik1Cuoi, 2)}${TU_CAT_KY[m.nganMach.tuCat] ?? ""}` : "—"}</td>
       <td>${kt.map((k) => `<div><span class="tag ${k.muc}">${MUC[k.muc]}</span> ${esc(k.noiDung)}</div>`).join("")}</td>
     </tr>`;
   }).join("");
-  const nhom = (t.nhomRcd || []).map((g) => `<tr><td><b>${esc(g.ma)}</b></td><td colspan="4">RCBO chung cho ${esc(g.mach.join(", "))}</td><td colspan="7">${esc(tb(g.thietBi))}</td></tr>`).join("");
+  const nhom = (t.nhomRcd || []).map((g) => `<tr><td><b>${esc(g.ma)}</b></td><td colspan="4">RCBO chung cho ${esc(g.mach.join(", "))}</td><td colspan="8">${esc(tb(g.thietBi))}</td></tr>`).join("");
   return `<div class="tblwrap"><table>
-    <thead><tr><th>Mã lộ</th><th>Phụ tải</th><th>Pha</th><th>P (W)</th><th>Ib (A)</th><th>Thiết bị</th><th>Cáp</th><th>Iz′ (A)</th><th>L (m)</th><th>ΔU cộng dồn</th><th>Ống</th><th>Kiểm tra</th></tr></thead>
+    <thead><tr><th>Mã lộ</th><th>Phụ tải</th><th>Pha</th><th>P (W)</th><th>Ib (A)</th><th>Thiết bị</th><th>Cáp</th><th>Iz′ (A)</th><th>L (m)</th><th>ΔU cộng dồn</th><th>Ống</th><th title="Dòng chạm vỏ nhỏ nhất cuối mạch (kA) — ✓ CB tự cắt; RCD: nhờ RCD 30 mA; ✗ chưa đạt">Ik1 cuối (kA)</th><th>Kiểm tra</th></tr></thead>
     <tbody>${rows}${nhom}</tbody></table></div>`;
 }
 

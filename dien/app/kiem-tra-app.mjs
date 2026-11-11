@@ -118,7 +118,7 @@ try {
   const r12 = await zip.file("E.603-T3-R12.dxf").async("string");
   assert.match(r12, /AC1009/);
   const wb = XLSX.read(await zip.file("bang-tinh.xlsx").async("uint8array"));
-  assert.deepEqual(wb.SheetNames, ["Tong hop", "T1", "T2", "T3", "T4", "T5", "T6", "Cap va ong", "Canh bao", "Quy tac"]);
+  assert.deepEqual(wb.SheetNames, ["Tong hop", "T1", "T2", "T3", "T4", "T5", "T6", "Cap va ong", "Ngan mach", "Canh bao", "Quy tac"]);
 
   const [dl2] = await Promise.all([page.waitForEvent("download"), page.click("#dl-dxf")]);
   assert.equal(dl2.suggestedFilename(), "E.603-T3.dxf");

@@ -11,7 +11,9 @@ const CO_KHONG = ["Theo quy tắc", "Có", "Không"];
 export const COT_INFO = [
   ["project", "Tên dự án"], ["client", "Chủ đầu tư"], ["address", "Địa chỉ"], ["loaiCongTrinh", "Loại công trình", LOAI_CONG_TRINH],
   ["projectNo", "Mã dự án"], ["date", "Ngày"], ["design", "Thiết kế / chủ trì"], ["checkBy", "Kiểm tra"], ["madeBy", "Người vẽ"],
-  ["director", "Giám đốc"], ["ikNguon", "Ik nguồn (kA)", null, true], ["soBanVeDau", "Số bản vẽ tờ tủ đầu"], ["soBanVeTong", "Số bản vẽ tờ tổng"],
+  ["director", "Giám đốc"], ["soBanVeDau", "Số bản vẽ tờ tủ đầu"], ["soBanVeTong", "Số bản vẽ tờ tổng"],
+  ["noiDat", "Sơ đồ nối đất", ["TN-S", "TN-C-S", "TT"]], ["ikNguon", "Ik tại điểm đấu (kA)", null, true],
+  ["mbaKva", "MBA riêng (kVA)", null, true], ["mbaUk", "Uk MBA (%)", null, true],
 ];
 // [khóa, tiêu đề, độ rộng (ch), danh sách chọn | null, là số]
 export const COT_TU = [

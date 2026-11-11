@@ -174,8 +174,10 @@ DU_AN = [
     ("REV", "Revision", ""),
     ("UF", "Điện áp pha Uf (V)", "Trống = theo sheet Quy tac"),
     ("UD", "Điện áp dây Ud (V)", "Trống = theo sheet Quy tac"),
-    ("NOI_DAT", "Sơ đồ nối đất", ""),
-    ("IK_NGUON", "Ik tại điểm đấu nối (kA)", "Lấy từ điện lực / tòa nhà"),
+    ("NOI_DAT", "Sơ đồ nối đất", "Trống = TN-S. TN: kiểm Ik1 min cuối mạch ≥ ngưỡng cắt từ; TT: mạch phải có RCD"),
+    ("IK_NGUON", "Ik tại điểm đấu nối (kA)", "Lấy từ điện lực / tòa nhà. Ik từng tủ tự tính theo tổng trở cáp"),
+    ("MBA_KVA", "Máy biến áp riêng (kVA)", "Chỉ khi công trình có trạm riêng: Ik tính từ MBA thay cho Ik điểm đấu"),
+    ("MBA_UK", "Uk máy biến áp (%)", "Trống = 4% (≤ 630 kVA) / 6% (lớn hơn)"),
     ("DU_MAX", "Sụt áp cộng dồn tối đa (%)", "Trống = theo sheet Quy tac"),
     ("BANG_GIA", "Bảng giá Schneider áp dụng", "Tên/ngày bảng giá, dùng cho BOQ (GĐ2)"),
     ("CHIET_KHAU", "Chiết khấu (%)", "Dùng cho BOQ (GĐ2)"),
@@ -203,6 +205,7 @@ QUY_TAC_A = [
     ("DP_CB", "Số CB dự phòng tối thiểu mỗi tủ", 2, "cái", "Thiếu thì ghi chú"),
     ("CT_NGUONG", "Ngưỡng In tổng dùng đồng hồ đa năng + CT", 63, "A", "Đề xuất nội bộ"),
     ("IK_MD", "Ik mặc định khi chưa có số liệu", 6, "kA", "Giá trị gắn cờ, phải xác nhận"),
+    ("IM_MCCB", "Ngưỡng cắt từ MCCB (Im = k·In)", 10, "×In", "MCCB nhiệt–từ; MCCB chỉnh định thì ghi đè thiết bị \"Im=…A\""),
     ("L_MD", "Chiều dài mạch dùng khi thiếu số liệu", 20, "m", "Gắn cờ cảnh báo"),
     ("LAP_DAY", "Hệ số lấp đầy ống tối đa", 40, "%", "Chọn đường kính ống"),
     ("ONG_MIN", "Đường kính ống nhỏ nhất", 20, "mm", "Bản vẽ mẫu E.601 dùng Ø20 cho mạch nhánh"),
@@ -649,6 +652,7 @@ _INFO_SANG_MA = {
     "companyInfo": "CONG_TY", "loaiCongTrinh": "LOAI_CT", "director": "GIAM_DOC", "design": "THIET_KE",
     "checkBy": "KIEM_TRA", "madeBy": "NGUOI_VE", "date": "NGAY", "scale": "TY_LE", "soBanVeTong": "SO_BV_TONG",
     "soBanVeDau": "SO_BV_DAU", "rev": "REV", "uf": "UF", "ud": "UD", "noiDat": "NOI_DAT", "ikNguon": "IK_NGUON",
+    "mbaKva": "MBA_KVA", "mbaUk": "MBA_UK",
     "duMax": "DU_MAX", "bangGia": "BANG_GIA", "chietKhau": "CHIET_KHAU",
 }
 _TU_SANG_COT = {

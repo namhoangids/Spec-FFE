@@ -1,8 +1,8 @@
-CẢNH BÁO	CH		Thiếu Ik — dùng mặc định 6 kA
 CẢNH BÁO	CH	RC1	RCBO nhóm RC1 ghi đè 40A (tự chọn 50A): ΣIb = 37.6 A, ΣIb×Kđt(0.7) = 26.3 A. Lý do: Theo yêu cầu chủ nhà: hạ RCBO nhóm ổ cắm xuống 40A để giảm CB tổng; ổ cắm không dùng đồng thời toàn bộ
 CẢNH BÁO	CH	S1, S2, S3, S5	Nhóm RCD RC1: dùng chung 1 RCBO 40A 30mA cho 4 mạch — quy tắc yêu cầu RCBO riêng cho từng mạch ổ cắm/khu ướt/ngoài nhà. Lý do: Theo yêu cầu chủ nhà: ổ cắm khô + bếp dùng MCB, chung 1 RCBO chống giật
 CẢNH BÁO	CH		CB tổng ghi đè MCB 4P 63A (tự chọn MCCB 80A). Lý do: Theo yêu cầu chủ nhà: hạ CB tổng xuống 63A (Itt ≈ 37 A); tỷ số chọn lọc 63/40 = 1,58 — kỹ sư xác nhận theo bảng phối hợp của hãng
 CẢNH BÁO	CH		In tổng 63 A < 1.6 × In mạch ra lớn nhất (40 A) — rủi ro mất chọn lọc
+CẢNH BÁO	CH		Thiếu Ik tại điểm đấu — tính ngắn mạch từ giá trị mặc định 6 kA; cần số liệu của điện lực / tòa nhà
 GHI CHÚ	CH		Tủ gốc không có chiều dài cáp cấp — cáp nguồn chọn theo Iz′, chưa kiểm sụt áp; sụt áp tính từ thanh cái tủ này
 GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
 GHI CHÚ	CH	BT	Ghi đè thiết bị "RCBO 1P+N 40A 30mA". Lý do: Theo yêu cầu chủ nhà: hạ RCBO bếp từ xuống 40A (Ib ≈ 34,4 A < 40 A) để giảm CB tổng
@@ -10,3 +10,4 @@ GHI CHÚ	CH	ACT	Ghi đè ống "ỐNG PVC  Ø 25". Lý do: Theo yêu cầu chủ
 GHI CHÚ	CH		In tổng 63 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
 GHI CHÚ	CH		SPD loại 2 đã tính vào số module nhưng chưa vẽ trên sơ đồ (template chưa có ký hiệu SPD)
 GHI CHÚ	CH		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	CH		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 6,00 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,32 kA (ngưỡng cắt từ dưới 315 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng

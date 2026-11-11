@@ -197,3 +197,30 @@ node tao-bo-ban-ve.mjs du-an/<ma>/du-an.json du-an/<ma>/out --boc-khoi mat-bang.
 - `out/du-an.json` là dữ liệu **đã** áp bóc khối; `out/boc-khoi.xlsx` ghi công suất mạch cũ → mới, số lượng theo loại, block lạ.
 - Mạch mới tạo từ bóc khối chưa có chiều dài và loại khu vực — hỏi anh rồi sửa `du-an.json`.
 - BOQ (`out/boq.xlsx`) có thêm nhóm **E. Thiết bị điện** (đèn, ổ cắm, công tắc) theo bóc khối.
+
+## 9. Ngắn mạch, tự cắt nguồn, chọn lọc
+
+Code: `dien/engine/ngan-mach.mjs`. Bảng chi tiết: sheet **"Ngan mach"** trong `out/bang-tinh.xlsx`.
+
+**Đầu vào** (thêm vào `info` của `du-an.json` / sheet `Du an`):
+
+| Trường | Ý nghĩa |
+|---|---|
+| `ikNguon` | Ik tại điểm đấu (kA), lấy từ điện lực / tòa nhà. Trống thì 6 kA và cảnh báo |
+| `mbaKva`, `mbaUk` | Công trình có trạm riêng: công suất MBA (kVA), Uk (%; trống = 4 % ≤ 630 kVA, 6 % lớn hơn) |
+| `noiDat` | `TN-S` (mặc định) · `TN-C-S` · `TT` |
+
+Tủ có `ik` (kA) thì dùng số đó tại thanh cái tủ, không tính.
+
+**Đọc kết quả:**
+- **Ik3 max tại thanh cái** giảm dần theo cáp cấp. Công cụ đã chọn Icu theo số này. Nếu báo LỖI `Icu … nhỏ hơn Ik` thì ghi đè thiết bị có Icu đủ (ví dụ MCB 15 kA), hoặc hỏi anh về Ik nguồn.
+- **CẢNH BÁO `Ik1 min cuối mạch … < ngưỡng cắt từ`** (sơ đồ TN, mạch không có RCD): CB có thể không tự cắt khi chạm vỏ. Đọc phần "Đề xuất" và hỏi anh chọn cách nào:
+  1. tăng tiết diện tới cỡ đề xuất (`ghiDeCap` + `lyDo`);
+  2. đổi MCB đường cong B (`ghiDeThietBi: "MCB 1P 10A B"`), chỉ khi tải không có dòng khởi động lớn;
+  3. dùng RCBO 30 mA (`ghiDeThietBi: "RCBO 1P+N 10A 30mA"`);
+  4. hoặc rút ngắn tuyến / đặt thêm tủ.
+- **GHI CHÚ `nhờ RCD 30 mA`**: đạt nhờ RCD, chỉ cần nêu khi anh hỏi.
+- **Sơ đồ TT:** cảnh báo các mạch chưa có RCD. Đề xuất RCBO từng mạch, hoặc RCD đầu tủ (cần kỹ sư chốt RA · IΔn ≤ 50 V).
+- **GHI CHÚ `Chọn lọc ngắn mạch`**: "toàn phần" hoặc "một phần, tới Is ≈ …" là chọn lọc theo dòng (ngưỡng cắt từ). Nhà ở dùng MCB thường chỉ chọn lọc một phần. Đây là bình thường; nhắc kỹ sư tra bảng phối hợp Schneider nếu công trình yêu cầu chọn lọc toàn phần.
+- **MCCB chỉnh định:** ghi `Im=…A` trong chuỗi thiết bị ghi đè (`MCCB 3P 160A 25kA Im=1000A`).
+

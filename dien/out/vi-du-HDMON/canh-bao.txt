@@ -14,3 +14,9 @@ GHI CHÚ	T5		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
 GHI CHÚ	T5		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
 GHI CHÚ	T6		Tủ có 1 CB dự phòng (quy tắc ≥ 2)
 GHI CHÚ	T6		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T1		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 5,01 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,80 kA (ngưỡng cắt từ dưới 800 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T2		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,89 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A); Lộ S5 tủ T1 ↔ tủ T2: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T3		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,98 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S6 tủ T1 ↔ tủ T3: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T4		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 2,34 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S7 tủ T1 ↔ tủ T4: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T5		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 2,05 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S8 tủ T1 ↔ tủ T5: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T6		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,82 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A); Lộ S9 tủ T1 ↔ tủ T6: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng

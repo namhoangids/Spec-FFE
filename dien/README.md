@@ -9,7 +9,8 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 - **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung;
 - **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider);
 - **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ;
-- **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản.
+- **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản;
+- **ngắn mạch theo tổng trở**: Ik3 max tại thanh cái từng tủ (chọn Icu), Ik1 min cuối từng mạch (kiểm tự cắt nguồn khi chạm vỏ), chọn lọc CB vùng ngắn mạch.
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
@@ -83,6 +84,21 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 - Dữ liệu: `dien_projects/{id}` giữ tên, tóm tắt, `phienBan`, `updatedBy/At` và toàn bộ dữ liệu dự án dạng chuỗi JSON `duAnJson`; `dien_projects/{id}/history` giữ các bản cũ.
 - Test tự động chạy với `?kho=thu` (kho trong bộ nhớ, đăng nhập bằng mật khẩu `thu`), không chạm Firebase.
 
+**Ngắn mạch, tự cắt nguồn, chọn lọc** (`engine/ngan-mach.mjs`, phương pháp tổng trở IEC 60909-0 rút gọn):
+- **Nguồn:** Ik tại điểm đấu (sheet `Du an`, ô `IK_NGUON`; trống thì 6 kA và cảnh báo). Công trình có trạm riêng thì khai `MBA_KVA` (+ `MBA_UK`), công cụ tính Ik từ máy biến áp. Tủ có ô `Ik tại tủ` thì dùng số đó.
+- **Ik3 max tại thanh cái từng tủ** giảm dần theo tổng trở cáp cấp (R = ρ20·L/S, X = λ·L), dùng để chọn và kiểm Icu. Tủ 1 pha tính sự cố pha – trung tính. Công cụ tính 2 lượt: lượt 1 chọn cáp, lượt 2 chọn lại Icu theo Ik vừa tính.
+- **Ik1 min cuối từng mạch** (vòng pha – PE, ρ = 1,25·ρ20). Với sơ đồ TN (mặc định TN-S, ô `NOI_DAT`):
+  - Ik1 min ≥ ngưỡng cắt từ của CB (B 5·In, C 10·In, D 20·In; MCCB 10·In +20%) thì đạt;
+  - không đạt mà mạch có RCD thì RCD đảm nhận (ghi chú);
+  - không có RCD thì **cảnh báo kèm đề xuất**: tiết diện đạt, MCB đường cong B, hoặc RCBO.
+- **Sơ đồ TT:** mạch nào không có RCD thì cảnh báo.
+- **Chọn lọc vùng ngắn mạch:** Ik3 tại thanh cái tủ so với ngưỡng cắt từ cận dưới của CB tổng và của lộ cấp ở tủ trên → toàn phần, hoặc một phần tới Is. Giới hạn thực tra bảng phối hợp của hãng.
+- **MCCB chỉnh định:** ghi đè thiết bị kèm `Im=…A` (ví dụ `MCCB 3P 160A 25kA Im=1000A`). Hệ số mặc định nằm ở sheet `Quy tac`, ô `IM_MCCB`.
+- **Kết quả:**
+  - bảng tính có sheet `Ngan mach` (tổng trở, Ik3 max, Ik1 min, ngưỡng cắt từ, tự cắt nguồn, đề xuất), cột Ik ở `Tong hop` và các sheet tủ;
+  - thuyết minh có mục 3.4, cột Ik ở mục 4–5, tổng kết tự cắt nguồn ở mục 6.4;
+  - E.600 có cột `Ik (kA)`; web app hiện Ik3 / Ik1 ở đầu tờ tủ và cột Ik1 cuối mạch.
+
 **Dòng lệnh:**
 
 ```bash
@@ -93,7 +109,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 52 test
+npm test                                               # 59 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
 ```

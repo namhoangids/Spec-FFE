@@ -535,8 +535,13 @@ Chốt ngày 07/11/2026.
   - Chế độ **Nhập liệu**: sửa khung tên, bảng tủ, bảng mạch ngay trên web; thêm / xóa / nhân bản / di chuyển mạch; tính lại cả bộ ngay khi sửa.
   - Cần làm một lần trên Firebase console: rule cho `dien_projects` và thêm domain `spec-ffe.vercel.app` (xem `dien/README.md`).
 
+- **Ngắn mạch theo tổng trở và chọn lọc CB (11/11/2026):** `dien/engine/ngan-mach.mjs`.
+  - Nguồn: từ Ik tại điểm đấu, hoặc từ máy biến áp riêng (kVA, Uk). Ik3 max tại thanh cái từng tủ tính theo tổng trở cáp, thay cho cách "lấy Ik tủ trên"; tính 2 lượt để chọn lại Icu.
+  - Ik1 min cuối mạch (vòng pha – PE): sơ đồ TN kiểm tự cắt nguồn theo ngưỡng cắt từ của CB (MCCB mặc định 10·In, ghi đè `Im=…A`). Không đạt thì RCD đảm nhận, hoặc cảnh báo kèm đề xuất tiết diện / đường cong B / RCBO. Sơ đồ TT: mạch phải có RCD.
+  - Chọn lọc vùng ngắn mạch giữa CB tổng / lộ cấp tủ trên và các CB phía sau: toàn phần hoặc một phần tới Is (theo dòng).
+  - Có trong bảng tính (sheet `Ngan mach`), thuyết minh (mục 3.4), E.600 (cột Ik), web app.
+
 **Tiếp theo (GĐ2 đợt 2):**
-- **Ngắn mạch theo tổng trở và chọn lọc CB:** Ik3 max tại thanh cái từng tủ, Ik1 min cuối mạch (tự cắt nguồn theo IEC 60364-4-41), chọn lọc vùng ngắn mạch.
 - **Điện nhẹ (GĐ3):** sơ đồ trục, rack, KNX, bảng đấu nối, ELV-BOQ.
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.

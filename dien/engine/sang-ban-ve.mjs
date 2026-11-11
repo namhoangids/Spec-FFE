@@ -240,6 +240,7 @@ export function sangSoDoTong(kq, info = {}, o = {}) {
     cbTong: (({ type, poles, rating, breaking }) => `${type} ${poles} ${rating} ${breaking}`)(chuThietBi(t.cbTong)),
     capCap: chuCap(t.capNguon, { soPha: t.soPha }) || "—",
     du: !t.cha && t.capNguon?.chuaCoL ? "—" : so(t.duBus),
+    ik: t.ikTinh != null ? so(t.ikTinh, 1) : "—",
     soBanVe: soTo(t.ma),
   }));
   return {

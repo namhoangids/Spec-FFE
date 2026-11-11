@@ -6,45 +6,48 @@
 <polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
 <polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
 <text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG</text>
-<text x="48.208" y="271.241" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BẢNG TỔNG HỢP PHỤ TẢI</text>
-<polygon points="48.208,279.241 312.208,279.241 312.208,273.741 48.208,273.741" fill="rgb(238,238,238)" stroke="none"/>
-<line x1="48.208" y1="284.741" x2="312.208" y2="284.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="48.208" y1="279.241" x2="312.208" y2="279.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="48.208" y1="273.741" x2="312.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="48.208" y1="284.741" x2="48.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="66.208" y1="284.741" x2="66.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="92.208" y1="284.741" x2="92.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="106.208" y1="284.741" x2="106.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="122.208" y1="284.741" x2="122.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="134.208" y1="284.741" x2="134.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="150.208" y1="284.741" x2="150.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="164.208" y1="284.741" x2="164.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="204.208" y1="284.741" x2="204.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="274.208" y1="284.741" x2="274.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="288.208" y1="284.741" x2="288.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<line x1="312.208" y1="284.741" x2="312.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
-<text x="57.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">TỦ</text>
-<text x="79.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CẤP TỪ</text>
-<text x="99.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">SỐ PHA</text>
-<text x="114.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Pđ (kW)</text>
-<text x="128.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Kđt</text>
-<text x="142.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Ptt (kW)</text>
-<text x="157.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Itt (A)</text>
-<text x="184.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CB TỔNG</text>
-<text x="239.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CÁP CẤP</text>
-<text x="281.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">ΔU (%)</text>
-<text x="300.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">BẢN VẼ</text>
-<text x="57.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ CĂN HỘ</text>
-<text x="79.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">ATS (LƯỚI/DP)</text>
-<text x="99.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3P</text>
-<text x="114.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">31,99</text>
-<text x="128.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
-<text x="142.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">22,39</text>
-<text x="157.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">36,8</text>
-<text x="184.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 4P 63A 10kA</text>
-<text x="239.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x10)mm2 + E(1x10)mm2</text>
-<text x="281.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">—</text>
-<text x="300.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.601</text>
+<text x="41.208" y="271.241" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BẢNG TỔNG HỢP PHỤ TẢI</text>
+<polygon points="41.208,279.241 319.208,279.241 319.208,273.741 41.208,273.741" fill="rgb(238,238,238)" stroke="none"/>
+<line x1="41.208" y1="284.741" x2="319.208" y2="284.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="41.208" y1="279.241" x2="319.208" y2="279.241" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="41.208" y1="273.741" x2="319.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="41.208" y1="284.741" x2="41.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="59.208" y1="284.741" x2="59.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="85.208" y1="284.741" x2="85.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="99.208" y1="284.741" x2="99.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="115.208" y1="284.741" x2="115.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="127.208" y1="284.741" x2="127.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="143.208" y1="284.741" x2="143.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="157.208" y1="284.741" x2="157.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="197.208" y1="284.741" x2="197.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="267.208" y1="284.741" x2="267.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="281.208" y1="284.741" x2="281.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="295.208" y1="284.741" x2="295.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="319.208" y1="284.741" x2="319.208" y2="273.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="50.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">TỦ</text>
+<text x="72.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CẤP TỪ</text>
+<text x="92.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">SỐ PHA</text>
+<text x="107.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Pđ (kW)</text>
+<text x="121.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Kđt</text>
+<text x="135.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Ptt (kW)</text>
+<text x="150.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Itt (A)</text>
+<text x="177.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CB TỔNG</text>
+<text x="232.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">CÁP CẤP</text>
+<text x="274.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">ΔU (%)</text>
+<text x="288.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">Ik (kA)</text>
+<text x="307.208" y="277.391" font-family="Arial, Helvetica, sans-serif" font-size="2.514" font-weight="bold" text-anchor="middle" fill="rgb(232,86,42)">BẢN VẼ</text>
+<text x="50.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">TỦ CĂN HỘ</text>
+<text x="72.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">ATS (LƯỚI/DP)</text>
+<text x="92.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">3P</text>
+<text x="107.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">31,99</text>
+<text x="121.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">0,70</text>
+<text x="135.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">22,39</text>
+<text x="150.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">36,8</text>
+<text x="177.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">MCB 4P 63A 10kA</text>
+<text x="232.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">Cu/XLPE/PVC (4x10)mm2 + E(1x10)mm2</text>
+<text x="274.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">—</text>
+<text x="288.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">6,0</text>
+<text x="307.208" y="282.891" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="middle" fill="rgb(232,86,42)">E.601</text>
 <line x1="146.208" y1="33.876" x2="146.208" y2="50.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="146.208" y1="50.876" x2="171.208" y2="50.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
 <line x1="171.208" y1="50.876" x2="171.208" y2="55.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>

@@ -695,6 +695,9 @@
     "cbDuPhong": 2,
     "ctNguong": 63,
     "ikMacDinh": 6,
+    "nganMach": {
+      "imMccb": 10
+    },
     "lMacDinh": 20,
     "lapDay": 40,
     "ongToiThieu": 20,

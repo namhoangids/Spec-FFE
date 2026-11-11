@@ -37,6 +37,21 @@ export const QUY_TAC = {
   spdTuGoc: true,          // SPD loại 2 tại tủ gốc (tủ tổng)
   denBaoPha: true,         // đèn báo pha cho tủ 3 pha
 
+  // --- Ngắn mạch: phương pháp tổng trở (IEC 60909-0 rút gọn, Schneider Electrical Installation Guide chương G) ---
+  noiDat: "TN-S",          // sơ đồ nối đất mặc định khi dự án không khai (TN-S | TN-C-S | TT)
+  nganMach: {
+    cMax: 1.05, cMin: 0.95,     // hệ số điện áp IEC 60909 cho lưới hạ áp (Ik max / Ik min)
+    rho20: 0.01851,             // Ω·mm²/m — đồng ở 20 °C, dùng tính Ik max
+    kRhoMin: 1.25,              // ρ khi tính Ik min = 1,25 · ρ20 (dây nóng lên lúc sự cố)
+    sscTrungThe: 500,           // MVA — công suất ngắn mạch lưới trung thế trước máy biến áp
+    ukMba: [[630, 4], [Infinity, 6]],   // % — Uk mặc định theo cỡ MBA (kVA): ≤ 630 → 4 %, lớn hơn → 6 %
+    rtZt: 0.3,                  // Rt / Zt của MBA (thay cho tổn hao ngắn mạch khi chưa có catalogue)
+    kVongNguon: 2,              // nguồn lấy từ Ik điểm đấu hạ áp: tổng trở vòng pha–PE phía nguồn = 2 × tổng trở pha
+    imMccb: 10,                 // ngưỡng cắt từ MCCB nhiệt–từ = 10 × In (ghi đè từng thiết bị bằng "Im=…A")
+    saiSoMccb: 0.2,             // sai số ngưỡng cắt từ MCCB ±20 %
+    duongCong: { B: [3, 5], C: [5, 10], D: [10, 20] },   // ngưỡng cắt từ MCB/RCBO (× In) [dưới, trên] — IEC 60898-1
+  },
+
   // --- Theo loại mạch (mục 6.3) ------------------------------------------
   // rcd: "30mA" bắt buộc · "khong" không cần · "tuy_chon" không đặt mặc định
   loaiMach: {
@@ -99,6 +114,7 @@ export function taoQuyTac(ghiDe = {}) {
     ...QUY_TAC, ...ghiDe, loaiMach,
     k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) },
     ks: { ...QUY_TAC.ks, ...(ghiDe.ks || {}) },
+    nganMach: { ...QUY_TAC.nganMach, ...(ghiDe.nganMach || {}) },
   };
 }
 

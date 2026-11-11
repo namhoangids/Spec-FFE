@@ -28,7 +28,7 @@ const K = {
 const COT_BANG = [
   ["TỦ", 18, "ten"], ["CẤP TỪ", 26, "capTu"], ["SỐ PHA", 14, "soPha"], ["Pđ (kW)", 16, "pd"], ["Kđt", 12, "ks"],
   ["Ptt (kW)", 16, "ptt"], ["Itt (A)", 14, "itt"], ["CB TỔNG", 40, "cbTong"], ["CÁP CẤP", 70, "capCap"],
-  ["ΔU (%)", 14, "du"], ["BẢN VẼ", 24, "soBanVe"],
+  ["ΔU (%)", 14, "du"], ["Ik (kA)", 14, "ik"], ["BẢN VẼ", 24, "soBanVe"],
 ];
 
 /**

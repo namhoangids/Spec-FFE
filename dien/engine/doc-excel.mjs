@@ -48,9 +48,9 @@ const DU_AN = {
   MA_DA: "projectNo", TEN_DA: "project", CHU_DAU_TU: "client", DIA_CHI: "address", CONG_TY: "companyInfo",
   LOAI_CT: "loaiCongTrinh", GIAM_DOC: "director", THIET_KE: "design", CHU_TRI: "design", KIEM_TRA: "checkBy",
   NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", REV: "rev",
-  UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
+  UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", MBA_KVA: "mbaKva", MBA_UK: "mbaUk", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
 };
-const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "duMax", "chietKhau"]);
+const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "mbaKva", "mbaUk", "duMax", "chietKhau"]);
 
 // Mã tham số sheet Quy tac → khóa trong bộ quy tắc (hàm biến đổi đơn vị nếu cần)
 const QUY_TAC = {
@@ -58,7 +58,7 @@ const QUY_TAC = {
   K1_PVC: ["k1.PVC"], K1_XLPE: ["k1.XLPE"], DU_MAX: ["duMax"], DU_CS: ["duChieuSang"], DU_TU: ["duThanhCai"],
   KS_NHA: ["ks.Nhà ở / biệt thự"], KS_CANHO: ["ks.Căn hộ"], K_IN: ["kIn"], K_CHONLOC: ["kChonLoc"],
   IN_MCB_MAX: ["inMaxMcb"], LECH_PHA: ["lechPha"], DP_VO: ["duPhongVo"], DP_CB: ["cbDuPhong"],
-  CT_NGUONG: ["ctNguong"], IK_MD: ["ikMacDinh"], IK_CANHO: ["ikMacDinh"], L_MD: ["lMacDinh"],
+  CT_NGUONG: ["ctNguong"], IK_MD: ["ikMacDinh"], IK_CANHO: ["ikMacDinh"], L_MD: ["lMacDinh"], IM_MCCB: ["nganMach.imMccb"],
   LAP_DAY: ["lapDay"], ONG_MIN: ["ongToiThieu"], L_CANHBAO: ["lCanhBao"], IB_IN: ["ibIn"],
 };
 
