@@ -50,16 +50,16 @@ test("kiểu thuộc tính: P mạch = Σ số lượng × W, CS trên block th�
 
 test("block lạ được liệt kê, không cộng công suất; có CS thì vẫn tính", () => {
   const dong = [
-    { ten: "LOA_TRAN", sl: 4, tu: "CH", mach: "S1", w: null, phong: "", layer: "E-AM" },
+    { ten: "QUAT_TRAN_X", sl: 4, tu: "CH", mach: "S1", w: null, phong: "", layer: "E-AM" },
     { ten: "BEP_DIEN_X", sl: 1, tu: "CH", mach: "S5", w: 2000, phong: "", layer: "" },
     { ten: "OCAM_DOI_3C", sl: 2, tu: "CH", mach: "S5", w: null, phong: "", layer: "" },
   ];
   const { duAn, baoCao } = apDungBocKhoi(canHo(), dong);
-  assert.deepEqual(baoCao.khongNhanDien.map((k) => [k.ten, k.sl, k.coCs]), [["LOA_TRAN", 4, false], ["BEP_DIEN_X", 1, true]]);
+  assert.deepEqual(baoCao.khongNhanDien.map((k) => [k.ten, k.sl, k.coCs]), [["QUAT_TRAN_X", 4, false], ["BEP_DIEN_X", 1, true]]);
   const s1 = duAn.circuits.find((c) => c.ma === "S1");
   assert.equal((s1.soLuong || 1) * s1.congSuat, 1200, "S1 chỉ có block lạ không CS → giữ nguyên (6 ổ × 200 W)");
   assert.equal(duAn.circuits.find((c) => c.ma === "S5").congSuat, 2000 + 2 * 200);
-  assert.ok(baoCao.canhBao.some((c) => c.muc === "canhbao" && /LOA_TRAN/.test(c.noiDung)));
+  assert.ok(baoCao.canhBao.some((c) => c.muc === "canhbao" && /QUAT_TRAN_X/.test(c.noiDung)));
 });
 
 test("thiếu TU: tự tìm tủ duy nhất có mạch; mã mạch trùng ở nhiều tủ thì báo lỗi; tủ ghi sai thì báo lỗi", () => {
@@ -110,5 +110,7 @@ test("cả bộ: áp bóc khối căn hộ 3PN → 0 lỗi, BOQ có nhóm E, bá
   assert.equal(e.find((d) => d.khoa === "Đèn hắt LED dây").dvt, "m");
   assert.equal(e.find((d) => d.khoa === "Đèn hắt LED dây").kl, Math.ceil(12 * 1.05));
   const wb = xuatBaoCaoBocKhoi(XLSX, baoCao);
-  assert.deepEqual(wb.SheetNames, ["Theo mach", "Theo loai", "Khong nhan dien", "Canh bao"]);
+  // File mẫu có 4 loa (LOA_TRAN) ở P.KHÁCH → thêm bảng điện nhẹ và sheet "Dien nhe"; loa không vào nhóm E
+  assert.deepEqual(wb.SheetNames, ["Theo mach", "Theo loai", "Dien nhe", "Khong nhan dien", "Canh bao"]);
+  assert.equal(e.find((d) => /Loa/.test(d.khoa)), undefined);
 });

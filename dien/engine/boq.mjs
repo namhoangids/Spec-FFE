@@ -96,6 +96,7 @@ export function tinhBoq(kq, { haoHut = 5, bocKhoi = null } = {}) {
 
   // Thiết bị điện theo bóc khối mặt bằng (đèn, ổ cắm, công tắc…)
   for (const t of bocKhoi?.theoLoai ?? []) {
+    if (t.nhom === "Điện nhẹ") continue;   // thiết bị điện nhẹ đã có ở nhóm F (qua bảng điện nhẹ theo phòng)
     cong("thietBiDien", t.moTa, t.dvt || "cái", t.sl, { tu: "", mach: "", cach: `bóc khối${bocKhoi.nguon ? ` ${bocKhoi.nguon}` : ""} (${t.nhom})` });
   }
 

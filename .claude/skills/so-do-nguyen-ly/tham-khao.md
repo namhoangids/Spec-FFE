@@ -178,16 +178,38 @@ Code: `dien/engine/boc-khoi.mjs`. Bảng quy đổi tên block mẫu: `dien/engi
 | `TU` | Mã tủ cấp điện | `T2`, `CH` |
 | `MACH` | Mã lộ trên sơ đồ | `L1`, `S3`, `AC2-1` |
 | `CS` | Công suất mỗi cái (W), bỏ trống thì lấy theo bảng quy đổi | `9`, `750` |
-| `PHONG` | Phòng (không bắt buộc) | `P.KHÁCH` |
+| `PHONG` | Phòng (không bắt buộc với block điện; nên có với block điện nhẹ) | `P.KHÁCH` |
+| `TANG` | Tầng (block điện nhẹ) | `T1`, `CH` |
+| `RACK` | Tủ rack phục vụ (block điện nhẹ, không bắt buộc) | `R1` |
+| `VUNG` | Vùng âm thanh (block loa, không bắt buộc) | `Vùng khách - bếp` |
 
 - Block **có** `MACH`: công suất mạch = Σ số lượng × W, ghi thẳng vào mạch. Thiếu `TU` thì công cụ tự tìm tủ duy nhất có mạch đó.
 - Block **chỉ có tên**: chỉ đếm số lượng theo loại / layer / phòng (nên đặt layer theo phòng hoặc tầng), không sửa mạch.
 - Block không có trong bảng quy đổi: công cụ liệt kê riêng trong `boc-khoi.xlsx` (sheet `Khong nhan dien`) và cảnh báo. Bổ sung vào `quy-doi-block.mjs` hoặc file `--quy-doi`.
 
+**Block điện nhẹ** (nhóm "Điện nhẹ" trong bảng quy đổi mẫu — không sửa mạch điện, kể cả khi có `MACH`):
+
+| Tên block (mẫu) | Đếm vào |
+|---|---|
+| `DATA*`, `O_DATA*`, `RJ45*` | ổ data |
+| `O_TV*`, `IPTV*`, `TV*` | ổ TV |
+| `AP_*`, `WIFI*`, `WAP*` | AP Wi-Fi |
+| `CAM_NGOAI*`, `CAM_OUT*` / `CAM_*`, `CAMERA*`, `CCTV*` | camera ngoài trời / trong nhà |
+| `NUT_GOI*`, `CHUONG_NGOAI*`, `DOORBELL*` / `MH_CHUONG*`, `CHUONG*`, `INTERCOM*` | nút gọi chuông / màn hình chuông |
+| `DAU_DOC*`, `READER*`, `ACS*` (`ACS_KHOA*`, `ACS_EXIT*`, `EXIT*` chỉ đếm) | cửa kiểm soát (1 đầu đọc = 1 cửa) |
+| `LOA*`, `SPEAKER*` (`CS` = tap W) | loa 100 V |
+| `PHIM_KNX*`, `KNX*` | phím / cảm biến KNX |
+
+- Gộp theo (`TANG`, `PHONG`). Thiếu `PHONG` thì lấy tên layer; thiếu `TANG` thì lấy tầng của phòng cùng tên đã có, tầng duy nhất của bảng điện nhẹ, mã tủ (dự án 1 tủ), cuối cùng là `T1` — có ghi chú.
+- Loại nào có trên mặt bằng thì **thay** số của phòng đó (0 nếu phòng không có block loại ấy); các loại khác, chiều dài `L`, rack, vùng âm thanh giữ nguyên; `RACK` / `VUNG` trên block thì ghi đè.
+- **Phòng mới** → cảnh báo "cần nhập chiều dài cáp ngang L": hỏi anh rồi sửa `dienNhe.phong[].L` trong `du-an.json`.
+- **Phòng cũ không có block** nhưng đang có loại thuộc diện bóc → giữ số cũ, cảnh báo — hỏi anh phòng đó còn thiết bị không.
+- Thiết bị điện nhẹ chỉ tính ở BOQ nhóm F (không vào nhóm E). `boc-khoi.xlsx` có sheet `Dien nhe` ghi số cũ → mới.
+
 **Xuất trong AutoCAD:**
 1. Gõ `DATAEXTRACTION` → Create a new data extraction → chọn bản vẽ mặt bằng điện.
 2. Chỉ chọn **Blocks**, bỏ chọn non-blocks; chọn các block điện.
-3. Thuộc tính: tick **Name**, **Count**, **Layer** và các thuộc tính `TU`, `MACH`, `CS`, `PHONG` (nếu block có).
+3. Thuộc tính: tick **Name**, **Count**, **Layer** và các thuộc tính `TU`, `MACH`, `CS`, `PHONG`, `TANG`, `RACK`, `VUNG` (nếu block có).
 4. Bật **Combine identical rows**; xuất ra **Excel (.xlsx)** — CSV của AutoCAD có thể hỏng dấu tiếng Việt.
 
 **Chạy:**

@@ -6,7 +6,8 @@
 //   Tùy chọn: --bang-gia <file.xlsx>  nạp bảng giá cho BOQ (sheet "Bang gia": Khóa | Mã hàng | Đơn giá | Chiết khấu)
 //             --hao-hut <số %>        hao hụt dây, cáp, ống trong BOQ (mặc định 5)
 //             --boc-khoi <file>       bảng DATAEXTRACTION từ mặt bằng AutoCAD (.csv / .xlsx / .xls): block có thuộc tính
-//                                     TU/MACH/CS thì cập nhật công suất mạch; block chỉ có tên thì đếm số lượng (engine/boc-khoi.mjs)
+//                                     TU/MACH/CS thì cập nhật công suất mạch; block chỉ có tên thì đếm số lượng; block điện nhẹ
+//                                     (ổ data, TV, AP, camera, chuông, đầu đọc, loa, phím KNX) điền bảng điện nhẹ theo TANG/PHONG
 //             --quy-doi <file.xlsx>   bảng quy đổi tên block riêng (sheet "Quy doi block"), đặt trước bảng mẫu
 //
 // Thư mục ra (mặc định out/<tên file>):
@@ -111,6 +112,7 @@ if (bocKhoi) {
   const b = bocKhoi.baoCao;
   console.log(`Bóc khối ${b.tenFile}: ${b.soDong} dòng (kiểu ${b.cheDo}) · ${b.theoMach.length} mạch cập nhật công suất` +
     `${b.theoMach.some((m) => m.moi) ? ` (mới: ${b.theoMach.filter((m) => m.moi).map((m) => m.mach).join(", ")})` : ""}` +
+    `${b.dienNhe ? ` · điện nhẹ: ${b.dienNhe.soCapNhat} phòng cập nhật, ${b.dienNhe.soMoi} phòng mới (${b.dienNhe.truong.join(", ")})` : ""}` +
     `${b.khongNhanDien.length ? ` · block lạ: ${b.khongNhanDien.map((k) => `${k.ten} ×${k.sl}`).join(", ")}` : ""} — xem boc-khoi.xlsx`);
 }
 const boq = bo.boq(boqOpt);

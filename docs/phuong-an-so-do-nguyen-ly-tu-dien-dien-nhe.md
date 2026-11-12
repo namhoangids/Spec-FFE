@@ -556,8 +556,11 @@ Chốt ngày 07/11/2026.
   - Tờ mới: nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; `dien-nhe.xlsx` thêm 3 sheet; BOQ nhóm F, thuyết minh 6.x mở rộng.
   - Nhập liệu điện nhẹ trên web (bảng phòng, bảng tủ rack, cột KNX ở bảng mạch); agent gợi ý thiết bị điện nhẹ theo loại phòng khi mô tả có `dienNhe` / `knx`.
 
+- **Bóc khối điện nhẹ (12/11/2026):** block điện nhẹ trên mặt bằng AutoCAD (ổ data, TV, AP, camera, chuông, đầu đọc ACS, loa, phím KNX; thuộc tính `TANG`, `PHONG`, `RACK`, `VUNG`, `CS`) tự điền bảng điện nhẹ theo phòng; không sửa mạch điện; BOQ không đếm hai lần. GĐ3 xong phần tính toán và bóc khối.
+- **Bộ quy tắc để duyệt (12/11/2026):** `dien/mau/bo-quy-tac.xlsx` đủ mọi thông số, bảng tra, quy tắc trong code và giả định của agent; công cụ đọc lại được.
+
 **Tiếp theo (GĐ2 đợt 2):**
-- **Điện nhẹ đợt 3:** bóc khối block điện nhẹ từ mặt bằng AutoCAD; gắn hãng thiết bị khi team chốt.
+- **Điện nhẹ:** gắn hãng thiết bị khi team chốt; phát hành hồ sơ điện nhẹ của 1 dự án thật.
 - **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
 - **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.

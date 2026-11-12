@@ -157,6 +157,15 @@ try {
   const [dl2] = await Promise.all([page.waitForEvent("download"), page.click("#dl-dxf")]);
   assert.equal(dl2.suggestedFilename(), "E.603-T3.dxf");
 
+  // Bóc khối điện nhẹ: block ổ data / TV / AP / camera / loa / KNX trên mặt bằng → bảng điện nhẹ theo phòng
+  await page.setInputFiles("#bkfile", join(dien, "mau/vi-du-boc-khoi/boc-khoi-dien-nhe.csv"));
+  await page.click("[data-view=tatca]");
+  await page.waitForFunction(() => /thêm phòng SẢNH CĂN HỘ/.test(document.querySelector("#pane")?.innerText || ""));
+  assert.match(await page.locator("#pane").innerText(), /Bóc khối: điện nhẹ: thêm phòng P\.KHÁCH \(tầng CH\)/);
+  const [dlBk] = await Promise.all([page.waitForEvent("download"), page.click("#bkxlsx")]);
+  assert.ok(XLSX.read(readFileSync(await dlBk.path())).SheetNames.includes("Dien nhe"), "báo cáo bóc khối có sheet Dien nhe");
+  await page.click("[data-view=ve]");
+
   // --- Dự án chung trên server (kho bộ nhớ) -----------------------------------------------------
   const nut = (re) => page.locator("#hop button", { hasText: re });
   await page.click("#tk button");                                         // Đăng nhập
@@ -234,7 +243,7 @@ try {
   assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối, dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối (điện + điện nhẹ), dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

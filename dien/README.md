@@ -2,13 +2,13 @@
 
 Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`](../docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md).
 
-**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán, khung BOQ, bóc khối, **dự án chung trên web**, ngắn mạch và **điện nhẹ đợt 1 + 2** (11/11/2026). Nhập phụ tải vào Excel (hoặc sửa thẳng trên web), công cụ tự tính rồi vẽ **cả bộ**:
+**Trạng thái:** GĐ1 xong; GĐ2 đợt 1 xong (10/11/2026); thêm thuyết minh tính toán, khung BOQ, bóc khối, **dự án chung trên web**, ngắn mạch, **điện nhẹ đợt 1 + 2** (11/11/2026) và **bóc khối điện nhẹ** (12/11/2026). Nhập phụ tải vào Excel (hoặc sửa thẳng trên web), công cụ tự tính rồi vẽ **cả bộ**:
 - tờ **sơ đồ cấp điện tổng** E.600;
 - mỗi tủ một tờ theo template E.601; tủ quá 18 lộ **tự ngắt thêm tờ**;
 - **nhãn tủ, nhãn cáp**;
 - **thuyết minh tính toán**: file Word sửa được và trang HTML in ra PDF, cùng một nội dung;
 - **BOQ điện**: khối lượng thiết bị, vỏ tủ và phụ kiện, dây/cáp, ống; có sẵn khung đơn giá (chờ bảng giá Schneider);
-- **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ;
+- **bóc khối từ mặt bằng AutoCAD** (DATAEXTRACTION): công suất mạch và số lượng đèn, ổ cắm lấy từ bản vẽ; block điện nhẹ (ổ data, TV, AP, camera, chuông, đầu đọc, loa, phím KNX) tự điền bảng điện nhẹ theo phòng;
 - **dự án chung của team** trên Firebase `measure-and-make` (cùng tài khoản app M&M): sửa bảng tủ, mạch ngay trên web, lưu có lịch sử phiên bản;
 - **ngắn mạch theo tổng trở**: Ik3 max tại thanh cái từng tủ (chọn Icu), Ik1 min cuối từng mạch (kiểm tự cắt nguồn khi chạm vỏ), chọn lọc CB vùng ngắn mạch;
 - **điện nhẹ** (mạng LAN / Wi-Fi, camera, IPTV, chuông cửa IP, kiểm soát ra vào, âm thanh 100 V, KNX): tờ E.700 sơ đồ trục, E.701 nguyên lý mạng, mặt đứng từng tủ rack, nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; bảng đấu nối cổng, BOQ nhóm F; nguồn cho rack và ampli tự thành mạch trong tủ điện, actuator KNX tự vào tủ điện.
@@ -71,7 +71,8 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 7. Bấm **Nạp bóc khối…** để nạp bảng DATAEXTRACTION (`.xlsx` / `.csv`) từ mặt bằng điện AutoCAD:
    - block có thuộc tính `TU`, `MACH`, `CS`: công suất từng mạch tính lại theo số lượng × W, mạch chưa có thì tạo mới;
    - block chỉ có tên: đếm số lượng theo loại / layer / phòng;
-   - block lạ được liệt kê trong mục Kiểm tra; nút **Báo cáo bóc khối** tải `boc-khoi.xlsx`; BOQ có thêm nhóm thiết bị điện.
+   - block điện nhẹ (thuộc tính `TANG`, `PHONG`, `RACK`, `VUNG`, `CS` cho loa): đếm theo phòng và điền vào bảng điện nhẹ; không sửa mạch điện. Loại nào có trên mặt bằng thì thay số cũ, loại khác và chiều dài, rack giữ nguyên; phòng mới cần nhập chiều dài cáp;
+   - block lạ được liệt kê trong mục Kiểm tra; nút **Báo cáo bóc khối** tải `boc-khoi.xlsx` (có sheet `Dien nhe` ghi số cũ → mới); BOQ có thêm nhóm thiết bị điện (thiết bị điện nhẹ tính ở nhóm F, không đếm hai lần).
    Cách chuẩn hóa block và các bước xuất: `.claude/skills/so-do-nguyen-ly/tham-khao.md` § 8. File thử: `mau/vi-du-boc-khoi/`.
 8. Chế độ **Nhập liệu** (cạnh Bản vẽ / Bảng tính / Kiểm tra): sửa khung tên, bảng tủ và bảng mạch của tủ đang chọn ngay trên web.
    - Sửa ô rồi bấm Tab / Enter: bản vẽ, bảng tính, thuyết minh, BOQ tính lại ngay; dòng có lỗi tô màu.
@@ -133,7 +134,8 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
 - **Kết quả thêm:** tờ nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX (chỉ ra khi hệ đó có dữ liệu); `dien-nhe.xlsx` thêm sheet `Am thanh`, `ACS chuong`, `KNX`; BOQ nhóm F thêm ampli, loa, cáp loa, bộ điều khiển và thiết bị cửa, chuông, ổ TV, actuator, phím KNX, cáp bus; thuyết minh mục 06 có các tiểu mục từng hệ.
 - **Nhập liệu trên web:** ở tờ E.7xx, chế độ Nhập liệu sửa bảng phòng và bảng tủ rack (thêm / xóa dòng; đổi mã rack thì các phòng đi theo; không xóa được rack còn phòng). Dự án chưa có điện nhẹ thì bấm "Thêm điện nhẹ". Bảng mạch có cột KNX.
 - **Agent:** trong mô tả công trình thêm `"dienNhe": true` (hoặc `{ "tang": "T1", "acs": true }`) và `"knx": true`. Agent gợi ý số ổ data / TV / AP / camera / loa / chuông / cửa ACS theo loại phòng và diện tích (ghi "giả định"), đặt 1 rack ở tầng có tủ tổng; KNX thì đánh dấu mạch chiếu sáng, rèm và thêm phím ở từng phòng.
-- **Đợt sau:** bóc khối block điện nhẹ từ mặt bằng; gắn hãng thiết bị.
+- **Bóc khối điện nhẹ (12/11/2026):** block ổ data / TV / AP / camera / chuông / đầu đọc ACS / loa / phím KNX trên mặt bằng tự điền bảng điện nhẹ theo phòng (xem mục web app bước 7 và tham-khao § 8). Ví dụ: `node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-dien-nhe.csv`.
+- **Đợt sau:** gắn hãng thiết bị khi team chốt.
 
 **Ngắn mạch, tự cắt nguồn, chọn lọc** (`engine/ngan-mach.mjs`, phương pháp tổng trở IEC 60909-0 rút gọn):
 - **Nguồn:** Ik tại điểm đấu (sheet `Du an`, ô `IK_NGUON`; trống thì 6 kA và cảnh báo). Công trình có trạm riêng thì khai `MBA_KVA` (+ `MBA_UK`), công cụ tính Ik từ máy biến áp. Tủ có ô `Ik tại tủ` thì dùng số đó.
@@ -160,7 +162,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 75 test
+npm test                                               # 79 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu + bo-quy-tac.xlsx (cần node)
 ```
@@ -201,7 +203,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 | `xuat-excel.mjs` | Bảng tính: sheet Tong hop, mỗi tủ một sheet, Cap va ong, Canh bao, Quy tac |
 | `dien-giai.mjs` | Định dạng số và diễn giải cách chọn tiết diện / ống. Bảng tính và thuyết minh dùng chung |
 | `thuyet-minh.mjs` | Thuyết minh tính toán: dựng nội dung một lần (`noiDungThuyetMinh`), xuất trang HTML in ra PDF (`thuyetMinhHtml`) cùng kiểu trình bày với bản Word |
-| `boc-khoi.mjs` | Bóc khối AutoCAD: `docBocKhoi` đọc DATAEXTRACTION (.csv/.xlsx, nhận cột theo tiêu đề), `apDungBocKhoi` ghi công suất mạch / tạo mạch mới / đếm số lượng, báo block lạ; `xuatBaoCaoBocKhoi` ra `boc-khoi.xlsx` |
+| `boc-khoi.mjs` | Bóc khối AutoCAD: `docBocKhoi` đọc DATAEXTRACTION (.csv/.xlsx, nhận cột theo tiêu đề), `apDungBocKhoi` ghi công suất mạch / tạo mạch mới / đếm số lượng / điền bảng điện nhẹ theo phòng, báo block lạ; `xuatBaoCaoBocKhoi` ra `boc-khoi.xlsx` |
 | `quy-doi-block.mjs` | Bảng quy đổi tên block → loại thiết bị, W (bảng mẫu, sửa theo thư viện block công ty; nạp bảng riêng bằng `--quy-doi`) |
 | `boq.mjs` | BOQ điện: `tinhBoq` bóc khối lượng (không tính trùng cáp cấp tủ con, cộng hao hụt), `docBangGia` đọc bảng giá Excel, `xuatBoqExcel` ra file có công thức tra giá |
 | `thuyet-minh-docx.mjs` | Xuất cùng nội dung ra Word bằng thư viện `docx`, trình bày theo mẫu văn bản Indust Design: Arial, cam `#F15A22` / xanh than `#22333B`, khối thông tin 3×2, đề mục có vạch cam, bảng dùng Table Style băng màu thật của Word, chân trang "Indust Design \| … \| Working Document" kèm số trang. Bảng rộng đặt trang ngang |
