@@ -179,8 +179,11 @@ try {
   assert.match(await page.locator("#duan").innerText(), /chưa có trên server/);
   await page.click("#luu");                                               // Lưu lên server (tạo mới)
   await page.fill("#hop input[name=ten]", "HDMON thử");
+  await page.selectOption("#hop select[name=ct]", "ha-do-charm-villas");  // gắn công trình chung (Dự toán + FF&E)
   await nut(/^Lưu$/).click();
   await page.waitForSelector("#duan >> text=bản 1");
+  assert.match(await page.locator("#ctDangGan").innerText(), /Công trình: Hà Đô Charm Villas/);
+  assert.match(await page.locator("#moFfe").getAttribute("href"), /ffe-schedule-app\.html#\/hado-charm-villas\/schedule$/, "mở bảng kê FF&E của công trình");
 
   // Nhập liệu: sửa công suất mạch đầu của T3 → tính lại, đánh dấu chưa lưu
   await page.click("#tree .node >> nth=3");
@@ -225,7 +228,7 @@ try {
     await page.emulateMedia({ colorScheme: "light" });
   }
   await page.click("#dong");                                             // Đóng → danh sách
-  assert.match(await page.locator("#dsServer").innerText(), /HDMON thử[\s\S]*bản 4/);
+  assert.match(await page.locator("#dsServer").innerText(), /HDMON thử[\s\S]*Công trình: Hà Đô Charm Villas[\s\S]*bản 4/);
   if (anh) await page.screenshot({ path: join(anh, "app-ds-du-an.png") });
 
   // Màn hình điện thoại: không cuộn ngang trang
@@ -242,8 +245,19 @@ try {
   await page.waitForSelector("#duan >> text=chưa có trên server");
   assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
 
+  // Link ?congTrinh=<mã Dự toán>: công trình chưa có sơ đồ điện → dự án trống gắn công trình, khung tên điền sẵn
+  await page.goto(`http://localhost:${port}/dien/app/?kho=thu&congTrinh=vp-abc`);
+  await page.click("#tk button");
+  await page.fill("#hop input[name=email]", "ky.su@vi.du");
+  await page.fill("#hop input[name=pass]", "thu");
+  await nut(/^Đăng nhập$/).click();
+  await page.waitForSelector("#ctDangGan >> text=Văn phòng ABC");
+  assert.match(await page.locator("#duan").innerText(), /Văn phòng ABC[\s\S]*chưa có trên server/);
+  assert.match(await page.locator("#moFfe").getAttribute("href"), /#\/vp-abc\/schedule$/);
+  assert.equal(await page.locator("[data-view=nl]").getAttribute("aria-pressed"), "true", "mở chế độ Nhập liệu");
+
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối (điện + điện nhẹ), dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối (điện + điện nhẹ), dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON / gắn công trình FF&E), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();

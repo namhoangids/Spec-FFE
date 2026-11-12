@@ -1,6 +1,6 @@
 // Kho dự án dùng chung của team: Firestore (project measure-and-make, cùng tài khoản app M&M / FF&E).
 //
-//   dien_projects/{id}            { ten, project, client, soTu, soMach, duAnJson, phienBan, createdAt/By, updatedAt/By }
+//   dien_projects/{id}            { ten, project, client, congTrinh, soTu, soMach, duAnJson, phienBan, createdAt/By, updatedAt/By }
 //   dien_projects/{id}/history/*  bản trước mỗi lần ghi đè: { ...bản cũ, _archivedAt, ghiChu }
 //
 // Dữ liệu dự án (info, panels, circuits, quyTac, bocKhoi) lưu thành MỘT chuỗi JSON (duAnJson): Firestore không nhận
@@ -10,8 +10,12 @@
 // Lưu có kiểm tra phiên bản: nếu trên server đã có bản mới hơn bản đang mở (người khác vừa lưu) thì KHÔNG ghi đè,
 // ném LoiXungDot để giao diện hỏi lại. Bản bị ghi đè luôn được chép vào history trước.
 //
+// Công trình dùng chung (chỉ ĐỌC): baogia/main.projects (app Dự toán) + ffe_projects (app FF&E), ghép theo tên
+// bằng app/cong-trinh.mjs. Dự án điện lưu liên kết ở congTrinh { key, ten, client, masterId, ffeId }.
+//
 // Hai bản cài đặt cùng giao diện: Firebase (thật) và bộ nhớ (?kho=thu — cho test Playwright, không cần mạng).
 
+import { ghepCongTrinh } from "./cong-trinh.mjs";
 import { FIREBASE_CONFIG, FIREBASE_SDK } from "./firebase-config.mjs";
 
 const COL = "dien_projects";
@@ -28,13 +32,14 @@ function dongGoi(ten, duAn) {
   const { loiDoc, ...gon } = duAn;
   return {
     ten, project: duAn.info?.project || "", client: duAn.info?.client || "",
+    congTrinh: duAn.congTrinh ? { key: duAn.congTrinh.key, ten: duAn.congTrinh.ten, masterId: duAn.congTrinh.masterId || null, ffeId: duAn.congTrinh.ffeId || null } : null,
     soTu: duAn.panels?.length || 0, soMach: duAn.circuits?.length || 0,
     duAnJson: JSON.stringify(gon),
   };
 }
 const moGoi = (d) => ({ ...JSON.parse(d.duAnJson || "{}"), loiDoc: [] });
 const ngay = (x) => (x?.toDate ? x.toDate() : x instanceof Date ? x : x ? new Date(x) : null);
-const tomTat = (id, d) => ({ id, ten: d.ten, project: d.project, client: d.client, soTu: d.soTu, soMach: d.soMach,
+const tomTat = (id, d) => ({ id, ten: d.ten, project: d.project, client: d.client, congTrinh: d.congTrinh || null, soTu: d.soTu, soMach: d.soMach,
   phienBan: d.phienBan, updatedAt: ngay(d.updatedAt), updatedBy: d.updatedBy || "" });
 
 // ================================================================================================
@@ -68,6 +73,24 @@ async function khoFirebase() {
     dangXuat: () => auth.signOut(),
     ngheDanhSach: (cb, loi) => db.collection(COL).orderBy("updatedAt", "desc").onSnapshot(
       (snap) => cb(snap.docs.map((d) => tomTat(d.id, d.data()))), loi),
+    /** Danh sách công trình chung: app Dự toán (baogia/main.projects) + app FF&E (ffe_projects); chỉ đọc */
+    ngheCongTrinh(cb, loi) {
+      let master = [], ffe = [];
+      const bao = () => cb(ghepCongTrinh(master, ffe));
+      const loiDoc = (ten) => (e) => loi?.(`Không đọc được danh sách công trình ${ten}: ${e.message}`);
+      const h1 = db.collection("baogia").doc("main").onSnapshot((s) => {
+        master = (s.exists && Array.isArray(s.data().projects) ? s.data().projects : []).filter((p) => p && p.id && p.name);
+        bao();
+      }, loiDoc("(app Dự toán)"));
+      const h2 = db.collection("ffe_projects").onSnapshot((snap) => {
+        ffe = snap.docs.map((d) => {
+          const x = d.data();
+          return { id: d.id, name: x.name || d.id, itemCount: Array.isArray(x.items) ? x.items.length : 0, rooms: (x.rooms || []).map((r) => r?.name).filter(Boolean) };
+        });
+        bao();
+      }, loiDoc("(app FF&E)"));
+      return () => { h1(); h2(); };
+    },
     async mo(id) {
       const s = await ref(id).get();
       if (!s.exists) throw new Error("Dự án không còn trên server.");
@@ -116,6 +139,19 @@ async function khoFirebase() {
 // ================================================================================================
 // Bộ nhớ (?kho=thu) — cùng giao diện, cho test tự động; window.__khoThu cho test giả lập người khác lưu
 // ================================================================================================
+// Danh sách công trình giả cho test: một công trình có cả Dự toán và FF&E (hai mã khác nhau), một công trình chỉ có
+// Dự toán, một bảng kê FF&E không có bên Dự toán.
+const CONG_TRINH_THU = {
+  master: [
+    { id: "hado", name: "Hà Đô Charm Villas", client: "Mr. Tuấn", type: "Biệt thự" },
+    { id: "vp-abc", name: "Văn phòng ABC", client: "Công ty ABC", type: "Văn phòng" },
+  ],
+  ffe: [
+    { id: "hado-charm-villas", name: "Hà Đô Charm Villas", itemCount: 42, rooms: ["WC Tầng 1", "WC Tầng 2"] },
+    { id: "can-ho-mau", name: "Căn hộ mẫu", itemCount: 7, rooms: [] },
+  ],
+};
+
 function khoBoNho() {
   const ds = new Map();                      // id → { data, history: [] }
   const nghe = new Set(), ngheU = new Set();
@@ -132,6 +168,7 @@ function khoBoNho() {
     },
     async dangXuat() { user = null; for (const cb of ngheU) cb(null); },
     ngheDanhSach: (cb) => { nghe.add(cb); setTimeout(bao); return () => nghe.delete(cb); },
+    ngheCongTrinh: (cb) => { setTimeout(() => cb(ghepCongTrinh(CONG_TRINH_THU.master, CONG_TRINH_THU.ffe))); return () => {}; },
     async mo(id) {
       const x = ds.get(id);
       if (!x) throw new Error("Dự án không còn trên server.");

@@ -84,6 +84,12 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
    - mỗi lần lưu tăng số bản và chép bản cũ vào **Lịch sử**; khôi phục được bản bất kỳ (bản hiện tại vào lịch sử trước);
    - người khác vừa lưu trước anh → app **không ghi đè**, hỏi: mở bản mới của họ, hoặc vẫn lưu đè (bản của họ vẫn nằm trong Lịch sử);
    - rời trang khi chưa lưu thì trình duyệt hỏi lại. Tính toán vẫn chạy trên trình duyệt; dữ liệu chỉ lên server khi bấm Lưu.
+10. **Gắn công trình chung với app Dự toán / FF&E** (cùng Firebase, app điện chỉ đọc hai danh sách này):
+   - danh sách công trình = `baogia/main.projects` (app Dự toán) + `ffe_projects` (app FF&E), ghép theo tên như app FF&E (một công trình mang hai mã khác nhau vẫn là một dòng);
+   - khi **Lưu lên server** chọn công trình (gợi ý theo tên dự án); dự án đang mở thì bấm **Gắn công trình / Đổi công trình** trên thanh dự án. Khung tên chỉ điền ô đang trống (tên dự án, chủ đầu tư);
+   - thanh dự án có nút **Mở FF&E ↗** mở thẳng bảng kê FF&E của công trình (`FFE_URL` trong `app/firebase-config.mjs`; công trình chỉ có bên Dự toán thì FF&E tự tạo bảng kê rỗng khi mở);
+   - danh sách dự án ghi công trình, tìm được theo tên công trình; nút **Theo công trình…** mở sơ đồ điện của công trình (chưa có thì tạo dự án trống gắn công trình đó);
+   - link `…/dien/app/?congTrinh=<mã Dự toán | mã FF&E | tên>` làm việc tương tự — app khác có thể trỏ sang.
 
 **Cài đặt Firebase cho dự án chung** (làm một lần, trên project `measure-and-make`):
 - Firestore → Rules: cho phép người đã đăng nhập đọc/ghi collection `dien_projects` (nếu rule hiện tại chưa mở):
@@ -95,7 +101,8 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
   ```
 - Authentication → Settings → Authorized domains: thêm `spec-ffe.vercel.app`. Nếu API key có giới hạn theo trang web (Google Cloud → Credentials) thì thêm `https://spec-ffe.vercel.app/*`.
 - Cấu hình nằm ở `app/firebase-config.mjs` (API key web của Firebase là công khai; bảo mật nằm ở rule và đăng nhập).
-- Dữ liệu: `dien_projects/{id}` giữ tên, tóm tắt, `phienBan`, `updatedBy/At` và toàn bộ dữ liệu dự án dạng chuỗi JSON `duAnJson`; `dien_projects/{id}/history` giữ các bản cũ.
+- Dữ liệu: `dien_projects/{id}` giữ tên, tóm tắt, `congTrinh` (liên kết công trình chung), `phienBan`, `updatedBy/At` và toàn bộ dữ liệu dự án dạng chuỗi JSON `duAnJson`; `dien_projects/{id}/history` giữ các bản cũ.
+- Gắn công trình cần quyền **đọc** `baogia/main` và `ffe_projects` cho người đã đăng nhập — app FF&E đang đọc hai chỗ này bằng cùng tài khoản nên thường đã có. Không đọc được thì danh sách dự án báo lỗi, các phần khác vẫn chạy.
 - Test tự động chạy với `?kho=thu` (kho trong bộ nhớ, đăng nhập bằng mật khẩu `thu`), không chạm Firebase.
 
 **Điện nhẹ đợt 1 — mạng LAN / Wi-Fi, camera, tủ rack** (`engine/dien-nhe.mjs`, `template/dien-nhe.mjs`):
@@ -162,7 +169,7 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 79 test
+npm test                                               # 82 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
 python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu + bo-quy-tac.xlsx (cần node)
 ```

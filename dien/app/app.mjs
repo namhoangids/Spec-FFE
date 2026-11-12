@@ -7,6 +7,8 @@ import { apDungBocKhoi, docBocKhoi, xuatBaoCaoBocKhoi } from "../engine/boc-khoi
 import { docExcel } from "../engine/doc-excel.mjs";
 import { chuCap } from "../engine/sang-ban-ve.mjs";
 import { xuatExcel } from "../engine/xuat-excel.mjs";
+import * as CT from "./cong-trinh.mjs";
+import { FFE_URL } from "./firebase-config.mjs";
 import { LoiXungDot, loiDangNhap, taoKho } from "./kho.mjs";
 import * as NL from "./nhap-lieu.mjs";
 
@@ -20,6 +22,9 @@ const tb = (t) => (t ? `${t.loai} ${t.soCuc} ${t.in}A${t.idn ? ` ${t.idn}mA` : t
 const S = {
   ten: "", duAnGoc: null, duAn: null, kq: null, bo: null, to: [], chon: 0, view: "ve", bocKhoi: null,
   kho: null, khoLoi: "", nguoiDung: null, ds: [], tim: "", duAnId: null, phienBan: null, chuaLuu: false, ngheDs: null,
+  // Công trình dùng chung với app Dự toán / FF&E (chỉ đọc); ?congTrinh=<mã hoặc tên> mở thẳng dự án điện của công trình
+  congTrinh: [], ngheCt: null, ctLoi: "", ctSan: false, dsSan: false,
+  linkCt: new URLSearchParams(location.search).get("congTrinh") || "",
 };
 
 // --- Nạp file -------------------------------------------------------------------
@@ -526,12 +531,71 @@ function veDsServer() {
     return;
   }
   const t = S.tim.trim().toLowerCase();
-  const ds = S.ds.filter((d) => !t || [d.ten, d.project, d.client, d.updatedBy].join(" ").toLowerCase().includes(t));
-  box.innerHTML = `<div class="dau"><h2>Dự án chung của team</h2><span class="sp"></span><input type="search" id="timDa" placeholder="Tìm dự án…" value="${esc(S.tim)}"></div>
-    ${ds.length ? ds.map((d) => `<button class="dong" data-mo="${esc(d.id)}"><span class="ten"><b>${esc(d.ten)}</b><span class="crumb">${esc([d.client, `${d.soTu} tủ · ${d.soMach} mạch`].filter(Boolean).join(" · "))}</span></span>
+  const ds = S.ds.filter((d) => !t || [d.ten, d.project, d.client, d.updatedBy, d.congTrinh?.ten].join(" ").toLowerCase().includes(t));
+  box.innerHTML = `<div class="dau"><h2>Dự án chung của team</h2><span class="sp"></span>
+    ${S.congTrinh.length ? '<button class="btn btn-sm" id="tuCt" title="Mở hoặc tạo sơ đồ điện của một công trình trong danh sách chung (Dự toán / FF&amp;E)">Theo công trình…</button>' : ""}
+    <input type="search" id="timDa" placeholder="Tìm dự án / công trình…" value="${esc(S.tim)}"></div>
+    ${S.ctLoi ? `<div class="rong">${esc(S.ctLoi)}</div>` : ""}
+    ${ds.length ? ds.map((d) => `<button class="dong" data-mo="${esc(d.id)}"><span class="ten"><b>${esc(d.ten)}</b><span class="crumb">${esc([d.congTrinh ? `Công trình: ${d.congTrinh.ten}` : "", d.client, `${d.soTu} tủ · ${d.soMach} mạch`].filter(Boolean).join(" · "))}</span></span>
       <span class="crumb">bản ${d.phienBan} · ${fmtLuc(d.updatedAt)}${d.updatedBy ? ` · ${esc(d.updatedBy)}` : ""}</span></button>`).join("")
       : `<div class="rong">${S.ds.length ? "Không có dự án khớp." : "Chưa có dự án nào. Mở file Excel / ví dụ / dự án trống rồi bấm \"Lưu lên server\"."}</div>`}`;
   $("timDa").addEventListener("input", (e) => { S.tim = e.target.value; veDsServer(); $("timDa").focus(); $("timDa").setSelectionRange(S.tim.length, S.tim.length); });
+  $("tuCt")?.addEventListener("click", theoCongTrinh);
+}
+
+// --- Công trình dùng chung (app Dự toán / FF&E) ------------------------------------------------------------
+function chonCongTrinhHtml(chon) {
+  if (!S.congTrinh.length) return S.ctLoi ? `<p class="crumb" style="margin:0">${esc(S.ctLoi)}</p>` : "";
+  return `<label>Công trình (dùng chung với app Dự toán / FF&amp;E)<select name="ct"><option value="">— Không gắn —</option>
+    ${S.congTrinh.map((c) => `<option value="${esc(c.key)}"${c.key === chon ? " selected" : ""}>${esc(c.ten)}${c.client ? ` — ${esc(c.client)}` : ""}${c.ffeId ? ` · FF&E ${c.soHangMuc} hạng mục` : ""}</option>`).join("")}
+  </select></label><p class="crumb" style="margin:0">Khung tên chỉ điền ô đang trống (tên dự án, chủ đầu tư).</p>`;
+}
+
+/** Gắn / bỏ gắn công trình vào dữ liệu nguồn, điền khung tên ô trống, tính lại */
+function apCongTrinh(ct) {
+  const cu = S.duAnGoc.congTrinh?.key || "";
+  const r = CT.ganCongTrinh(S.duAnGoc, ct);
+  if ((ct?.key || "") === cu && !r.daDien.length) return;
+  S.duAnGoc = r.duAn;
+  if (S.duAnId) S.chuaLuu = true;
+  tinhVaVe(S.duAnGoc, { giuChon: true });
+}
+
+async function doiCongTrinh() {
+  if (!S.congTrinh.length) return loi(S.ctLoi || "Chưa tải được danh sách công trình chung.");
+  let ct = null;
+  const v = await hop(`<h2>Gắn công trình</h2>${chonCongTrinhHtml(S.duAnGoc.congTrinh?.key)}`, [["huy", "Hủy"], ["ok", "Gắn", true]],
+    { onSubmit: (_, f) => { ct = S.congTrinh.find((c) => c.key === f.ct.value) || null; } });
+  if (v === "ok") apCongTrinh(ct);
+}
+
+/** Mở sơ đồ điện của công trình đã có trên server; chưa có thì tạo dự án trống gắn công trình đó */
+async function moTheoCongTrinh(ct) {
+  const coSan = S.ds.find((d) => CT.cungCongTrinh(d.congTrinh, ct));
+  if (coSan) return moDuAn(coSan.id);
+  if (S.chuaLuu && !confirm("Dự án đang mở có thay đổi chưa lưu. Bỏ thay đổi để tạo dự án mới?")) return;
+  const duAn = CT.ganCongTrinh(NL.duAnTrong(), ct).duAn;
+  Object.assign(S, { ten: ct.ten, duAnGoc: duAn, bocKhoi: null, duAnId: null, phienBan: null, chuaLuu: false });
+  tinhVaVe(duAn);
+  chonView("nl");
+}
+
+async function theoCongTrinh() {
+  let ct = null;
+  const v = await hop(`<h2>Sơ đồ điện theo công trình</h2>${chonCongTrinhHtml("")}
+    <p class="crumb" style="margin:0">Công trình đã có sơ đồ điện thì mở bản trên server; chưa có thì tạo dự án trống gắn công trình đó.</p>`,
+  [["huy", "Hủy"], ["ok", "Mở", true]], { onSubmit: (_, f) => { ct = S.congTrinh.find((c) => c.key === f.ct.value) || null; if (!ct) throw new Error("Chọn một công trình."); } });
+  if (v === "ok") moTheoCongTrinh(ct);
+}
+
+/** ?congTrinh=<mã Dự toán / mã FF&E / tên>: chạy một lần khi đã đăng nhập và có cả hai danh sách */
+function xuLyLinkCongTrinh() {
+  if (!S.linkCt || !S.ctSan || !S.dsSan) return;
+  const x = S.linkCt;
+  S.linkCt = "";
+  const ct = CT.timCongTrinh(S.congTrinh, x);
+  if (!ct) return loi(`Không tìm thấy công trình "${x}" trong danh sách chung (app Dự toán / FF&E).`);
+  moTheoCongTrinh(ct);
 }
 $("dsServer").addEventListener("click", (e) => { const b = e.target.closest("[data-mo]"); if (b) moDuAn(b.dataset.mo); });
 
@@ -551,11 +615,16 @@ function veDuAn() {
   const box = $("duan");
   if (!S.duAnGoc) { box.innerHTML = ""; return; }
   const trangThai = S.duAnId ? `bản ${S.phienBan}${S.chuaLuu ? ' · <span class="chuaLuu">chưa lưu</span>' : " · đã lưu"}` : "chưa có trên server";
+  const ct = S.duAnGoc.congTrinh, ffe = CT.linkFfe(ct, FFE_URL);
   box.innerHTML = `<b>${esc(S.ten)}</b><span class="trangthai">${trangThai}</span>
+    ${ct ? `<span class="trangthai" id="ctDangGan" title="Công trình dùng chung với app Dự toán / FF&amp;E">Công trình: <b>${esc(ct.ten)}</b></span>` : ""}
+    ${ffe ? `<a class="btn btn-sm" id="moFfe" href="${esc(ffe)}" target="_blank" rel="noopener" title="Mở bảng kê FF&amp;E của công trình (tab mới)">Mở FF&amp;E ↗</a>` : ""}
+    ${S.nguoiDung ? `<button class="btn btn-sm" id="ganCt">${ct ? "Đổi công trình" : "Gắn công trình"}</button>` : ""}
     <button class="btn btn-sm${S.chuaLuu || !S.duAnId ? " btn-primary" : ""}" id="luu" ${S.duAnId && !S.chuaLuu ? "disabled" : ""} title="Ctrl+S">${S.duAnId ? "Lưu" : "Lưu lên server"}</button>
     ${S.duAnId ? `<button class="btn btn-sm" id="lichSu">Lịch sử</button><button class="btn btn-sm" id="doiTen">Đổi tên</button>` : ""}
     <button class="btn btn-sm" id="dong" title="Đóng dự án, về danh sách">Đóng</button>`;
   $("luu").addEventListener("click", luu);
+  $("ganCt")?.addEventListener("click", doiCongTrinh);
   $("lichSu")?.addEventListener("click", xemLichSu);
   $("doiTen")?.addEventListener("click", doiTen);
   $("dong").addEventListener("click", dongDuAn);
@@ -568,11 +637,17 @@ async function luu() {
   try {
     loi("");
     if (!S.duAnId) {
-      let ten = S.duAnGoc.info?.project || S.ten;
+      let ten = S.duAnGoc.info?.project || S.ten, ct = null;
+      const goiY = S.duAnGoc.congTrinh || CT.timCongTrinh(S.congTrinh, ten) || CT.timCongTrinh(S.congTrinh, S.ten);
       const v = await hop(`<h2>Lưu lên server</h2><label>Tên dự án<input name="ten" value="${esc(ten)}" required></label>
+        ${chonCongTrinhHtml(goiY?.key)}
         <p class="crumb" style="margin:0">Cả team (tài khoản M&amp;M) sẽ thấy và sửa được dự án này. Mỗi lần lưu giữ lại bản cũ trong Lịch sử.</p>`,
-      [["huy", "Hủy"], ["ok", "Lưu", true]], { onSubmit: (_, f) => { ten = f.ten.value.trim(); if (!ten) throw new Error("Nhập tên dự án."); } });
+      [["huy", "Hủy"], ["ok", "Lưu", true]], { onSubmit: (_, f) => {
+        ten = f.ten.value.trim(); if (!ten) throw new Error("Nhập tên dự án.");
+        ct = f.ct ? S.congTrinh.find((c) => c.key === f.ct.value) || null : S.duAnGoc.congTrinh || null;
+      } });
       if (v !== "ok") return;
+      if (S.congTrinh.length || !ct) apCongTrinh(ct);
       const r = await S.kho.taoMoi(ten, S.duAnGoc);
       Object.assign(S, { duAnId: r.id, phienBan: r.phienBan, ten, chuaLuu: false });
     } else {
@@ -647,8 +722,14 @@ async function ketNoiKho() {
     S.kho.ngheNguoiDung((u) => {
       S.nguoiDung = u;
       S.ngheDs?.(); S.ngheDs = null; S.ds = [];
-      if (u) S.ngheDs = S.kho.ngheDanhSach((ds) => { S.ds = ds; veDsServer(); }, (e) => { S.khoLoi = e.message; veDsServer(); });
+      S.ngheCt?.(); S.ngheCt = null; Object.assign(S, { congTrinh: [], ctLoi: "", ctSan: false, dsSan: false });
+      if (u) {
+        S.ngheDs = S.kho.ngheDanhSach((ds) => { S.ds = ds; S.dsSan = true; veDsServer(); xuLyLinkCongTrinh(); }, (e) => { S.khoLoi = e.message; veDsServer(); });
+        S.ngheCt = S.kho.ngheCongTrinh?.((ds) => { S.congTrinh = ds; S.ctSan = true; S.ctLoi = ""; veDsServer(); veDuAn(); xuLyLinkCongTrinh(); },
+          (e) => { S.ctLoi = String(e); veDsServer(); }) ?? null;
+      }
       veTaiKhoan();
+      veDuAn();
     });
   } catch (e) {
     console.warn(e);

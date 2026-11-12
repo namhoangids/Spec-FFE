@@ -12,3 +12,7 @@ export const FIREBASE_CONFIG = {
 
 // Phiên bản SDK compat, cùng bản app M&M đang dùng
 export const FIREBASE_SDK = "https://www.gstatic.com/firebasejs/10.13.2";
+
+// App FF&E (repo measure-and-make-apps, GitHub Pages) — nút "Mở FF&E" trên thanh dự án mở thẳng bảng kê của công trình
+// đã gắn (#/<mã dự án>/schedule). Để trống "" thì ẩn nút.
+export const FFE_URL = "https://namhoangids.github.io/measure-and-make-apps/ffe-schedule-app.html";
