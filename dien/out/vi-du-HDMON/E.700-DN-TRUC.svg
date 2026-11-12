@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<rect width="100%" height="100%" fill="#fff"/>
+<polygon points="9.81,290.741 417.093,290.741 417.093,12.073 9.81,12.073" fill="none" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<line x1="350.606" y1="12.073" x2="350.606" y2="290.741" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
+<text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ TRỤC ĐIỆN NHẸ (CÁP MẠNG Cat6)</text>
+<text x="15.81" y="269.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">GHI CHÚ:</text>
+<text x="15.81" y="273.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">1. Cáp ngang Cat6 U/UTP 4 đôi, link cố định ≤ 90 m (ANSI/TIA-568). Nhãn cổng &lt;Tầng rack&gt;-&lt;Rack&gt;-PP&lt;n&gt;-&lt;cổng&gt; (TIA-606); bảng đấu nối cổng: file dien-nhe.xlsx, sheet Dau noi.</text>
+<text x="15.81" y="277.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2. Tổng: 12 ổ data, 9 ổ TV (IPTV), 7 AP Wi-Fi, 9 camera, 2 thiết bị chuông cửa IP, 1 bộ điều khiển ACS — 40 link Cat6. AP, camera, chuông cửa IP cấp nguồn PoE từ switch tại rack; ổ TV là ổ mạng (IPTV).</text>
+<text x="15.81" y="281.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">3. Thiết bị ghi theo chủng loại, chưa gắn hãng. Nguyên lý mạng xem E.701; tủ rack xem E.702; âm thanh E.703; kiểm soát ra vào, chuông cửa E.704; KNX E.705.</text>
+<line x1="15.81" y1="31.876" x2="344.606" y2="31.876" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="70.687" x2="344.606" y2="70.687" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="109.497" x2="344.606" y2="109.497" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="148.308" x2="344.606" y2="148.308" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="187.119" x2="344.606" y2="187.119" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="225.93" x2="344.606" y2="225.93" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="15.81" y1="264.741" x2="344.606" y2="264.741" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<line x1="33.81" y1="31.876" x2="33.81" y2="264.741" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="24.81" y="52.531" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T6</text>
+<text x="24.81" y="91.342" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T5</text>
+<text x="24.81" y="130.153" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T4</text>
+<text x="24.81" y="168.964" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T3</text>
+<text x="24.81" y="207.775" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T2</text>
+<text x="24.81" y="246.585" font-family="Arial, Helvetica, sans-serif" font-size="3.492" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T1</text>
+<polygon points="56.81,260.741 74.81,260.741 74.81,248.741 56.81,248.741" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="56.81,260.741 74.81,260.741 74.81,248.741 56.81,248.741" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="65.81" y="253.581" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">R1</text>
+<text x="65.81" y="258.471" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">27U ĐỨNG</text>
+<text x="65.81" y="263.691" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(232,86,42)">NGUỒN T1 / DN1</text>
+<line x1="35.81" y1="254.741" x2="56.81" y2="254.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="56.81,254.741 54.61,253.841 54.61,255.641" fill="rgb(40,79,128)" stroke="none"/>
+<text x="35.81" y="253.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">INTERNET (ISP)</text>
+<line x1="65.81" y1="248.741" x2="65.81" y2="35.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="65.81" y1="35.876" x2="111.81" y2="35.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="35.876" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="35.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">1×Cat6 ổ data · 1×Cat6 AP · 1×Cat6 camera</text>
+<line x1="111.81" y1="35.876" x2="111.81" y2="42.376" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,51.376 133.81,51.376 133.81,42.376 89.81,42.376" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="46.256" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">P.thờ, sân thượng</text>
+<text x="111.81" y="49.886" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 DATA · 1 AP · 1 CAM</text>
+<line x1="65.81" y1="74.687" x2="159.81" y2="74.687" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="74.687" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="73.937" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera</text>
+<line x1="111.81" y1="74.687" x2="111.81" y2="81.187" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,90.187 133.81,90.187 133.81,81.187 89.81,81.187" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="85.067" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Các phòng ngủ</text>
+<text x="111.81" y="88.697" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 DATA · 2 TV</text>
+<line x1="159.81" y1="74.687" x2="159.81" y2="81.187" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="137.81,90.187 181.81,90.187 181.81,81.187 137.81,81.187" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="159.81" y="85.067" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sảnh tầng, hành lang</text>
+<text x="159.81" y="88.697" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 AP · 1 CAM</text>
+<line x1="65.81" y1="113.497" x2="159.81" y2="113.497" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="113.497" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="112.747" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera</text>
+<line x1="111.81" y1="113.497" x2="111.81" y2="119.997" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,128.997 133.81,128.997 133.81,119.997 89.81,119.997" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="123.877" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Các phòng ngủ</text>
+<text x="111.81" y="127.507" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 DATA · 2 TV</text>
+<line x1="159.81" y1="113.497" x2="159.81" y2="119.997" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="137.81,128.997 181.81,128.997 181.81,119.997 137.81,119.997" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="159.81" y="123.877" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sảnh tầng, hành lang</text>
+<text x="159.81" y="127.507" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 AP · 1 CAM</text>
+<line x1="65.81" y1="152.308" x2="159.81" y2="152.308" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="152.308" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="151.558" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera</text>
+<line x1="111.81" y1="152.308" x2="111.81" y2="158.808" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,167.808 133.81,167.808 133.81,158.808 89.81,158.808" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="162.688" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Các phòng ngủ</text>
+<text x="111.81" y="166.318" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 DATA · 2 TV</text>
+<line x1="159.81" y1="152.308" x2="159.81" y2="158.808" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="137.81,167.808 181.81,167.808 181.81,158.808 137.81,158.808" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="159.81" y="162.688" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sảnh tầng, hành lang</text>
+<text x="159.81" y="166.318" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 AP · 1 CAM</text>
+<line x1="65.81" y1="191.119" x2="159.81" y2="191.119" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="191.119" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="190.369" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2×Cat6 ổ data · 2×Cat6 TV · 1×Cat6 AP · 1×Cat6 camera</text>
+<line x1="111.81" y1="191.119" x2="111.81" y2="197.619" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,206.619 133.81,206.619 133.81,197.619 89.81,197.619" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="201.499" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Các phòng ngủ</text>
+<text x="111.81" y="205.129" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 DATA · 2 TV</text>
+<line x1="159.81" y1="191.119" x2="159.81" y2="197.619" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="137.81,206.619 181.81,206.619 181.81,197.619 137.81,197.619" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="159.81" y="201.499" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sảnh tầng, hành lang</text>
+<text x="159.81" y="205.129" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 AP · 1 CAM</text>
+<line x1="65.81" y1="229.93" x2="207.81" y2="229.93" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<circle cx="65.81" cy="229.93" r="0.6" fill="rgb(40,79,128)" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="67.81" y="229.18" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">3×Cat6 ổ data · 1×Cat6 TV · 2×Cat6 AP · 4×Cat6 camera · 2×Cat6 chuông · 1 cửa ACS (cáp riêng)</text>
+<line x1="111.81" y1="229.93" x2="111.81" y2="236.43" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="89.81,245.43 133.81,245.43 133.81,236.43 89.81,236.43" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="111.81" y="240.31" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sảnh, P.khách</text>
+<text x="111.81" y="243.863" font-family="Arial, Helvetica, sans-serif" font-size="2.159" text-anchor="middle" fill="rgb(232,86,42)">2 DATA · 1 TV · 1 AP · 1 CAM · 1 CHUÔNG</text>
+<line x1="159.81" y1="229.93" x2="159.81" y2="236.43" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="137.81,245.43 181.81,245.43 181.81,236.43 137.81,236.43" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="159.81" y="240.31" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Bếp, P.ăn</text>
+<text x="159.81" y="243.94" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 DATA · 1 AP</text>
+<line x1="207.81" y1="229.93" x2="207.81" y2="236.43" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="185.81,245.43 229.81,245.43 229.81,236.43 185.81,236.43" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="207.81" y="240.31" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">Sân trước, cổng, gara</text>
+<text x="207.81" y="243.94" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">3 CAM · 1 CHUÔNG · 1 CỬA ACS</text>
+<text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
+<text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>
+<text x="361.142" y="38.224" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Company info:</text>
+<line x1="361.142" y1="43.682" x2="411.099" y2="43.682" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="46.035" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Director:</text>
+<line x1="361.142" y1="51.675" x2="411.099" y2="51.675" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="54.028" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Design:</text>
+<line x1="361.142" y1="59.668" x2="411.099" y2="59.668" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="62.021" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Check by:</text>
+<line x1="361.142" y1="67.661" x2="411.099" y2="67.661" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="70.015" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Drawing title:</text>
+<line x1="361.142" y1="75.836" x2="411.099" y2="75.836" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="78.189" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Key plan:</text>
+<line x1="361.142" y1="113.985" x2="411.099" y2="113.985" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="116.338" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project notes:</text>
+<text x="361.142" y="210.983" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Client:</text>
+<line x1="361.142" y1="216.442" x2="411.099" y2="216.442" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="218.976" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Address:</text>
+<line x1="361.142" y1="224.98" x2="411.099" y2="224.98" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="226.97" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project:</text>
+<line x1="361.142" y1="232.791" x2="411.099" y2="232.791" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="235.326" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Made by:</text>
+<line x1="361.142" y1="240.966" x2="411.099" y2="240.966" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="243.137" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Date:</text>
+<line x1="361.142" y1="248.959" x2="411.099" y2="248.959" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="251.675" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Scale:</text>
+<line x1="361.142" y1="256.952" x2="411.099" y2="256.952" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="259.669" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project no:</text>
+<text x="361.142" y="120.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">1. All measurements must be</text>
+<text x="361.142" y="123.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">verified on-site before</text>
+<text x="361.142" y="127.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">construction begins.</text>
+<text x="361.142" y="133.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Do not scale this drawing.</text>
+<text x="361.142" y="137.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Dimensions to be read in</text>
+<text x="361.142" y="140.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conjunction with corresponding</text>
+<text x="361.142" y="143.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">architectural and structural</text>
+<text x="361.142" y="147.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">drawings. This drawing is</text>
+<text x="361.142" y="150.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">copyright or used with the</text>
+<text x="361.142" y="153.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">express authority of Indust</text>
+<text x="361.142" y="157.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Design.</text>
+<text x="361.142" y="163.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Ensure all foundations are</text>
+<text x="361.142" y="167.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">level and stable—verify soil</text>
+<text x="361.142" y="170.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conditions for adequate</text>
+<text x="361.142" y="173.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">support.</text>
+<text x="361.142" y="180.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">3. Coordinate electrical and</text>
+<text x="361.142" y="183.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">plumbing work with off-grid</text>
+<text x="361.142" y="187.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">solutions (if applicable, such</text>
+<text x="361.142" y="190.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">as solar power or composting</text>
+<text x="361.142" y="193.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">toilets)</text>
+<polygon points="361.142,289.833 411.099,289.833 411.099,269.85 361.142,269.85" fill="rgb(127,127,127)" stroke="none"/>
+<text x="386.12" y="42.502" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">22 Thanh Cong, Ba Dinh, Ha Noi</text>
+<text x="386.12" y="74.896" font-family="Arial, Helvetica, sans-serif" font-size="2.448" text-anchor="middle" fill="rgb(51,51,51)">SƠ ĐỒ TRỤC ĐIỆN NHẸ (CÁP MẠNG Cat6)</text>
+<text x="386.12" y="215.398" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">Mr. Tuấn</text>
+<text x="386.12" y="222.71" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">Long Biên - Hà Nội</text>
+<text x="386.12" y="231.384" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">MR. TUẤN - HDMON</text>
+<text x="386.12" y="246.689" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">November 09/11/2026</text>
+<text x="386.12" y="255.045" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">1:50</text>
+<text x="386.12" y="284.091" font-family="Arial, Helvetica, sans-serif" font-size="11.872" text-anchor="middle" fill="rgb(229,229,229)">E.700</text>
+</svg>

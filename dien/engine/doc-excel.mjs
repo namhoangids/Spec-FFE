@@ -2,6 +2,8 @@
 // Đọc theo TÊN SHEET và TIÊU ĐỀ CỘT (không theo vị trí), chấp nhận cả tên cột của bản v1.
 // Thư viện SheetJS được truyền vào (Node: gói `xlsx`; trình duyệt: window.XLSX) để file chạy được ở cả hai nơi.
 
+import { BANG_THEO_MA, THEO_MA, TRONG_CODE, datKhoa, docGiaTri } from "./danh-muc-quy-tac.mjs";
+
 const chuanHoa = (s) => String(s ?? "").toLowerCase().replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
 
 const COT_TU = {
@@ -39,28 +41,37 @@ const COT_MACH = {
   "ghi đè cáp": "ghiDeCap",
   "ghi đè ống": "ghiDeOng",
   "lý do ghi đè": "lyDo",
+  "điều khiển knx": "knx",
   "ghi chú": "ghiChu",
 };
 const SO_TU = new Set(["lCap", "ik", "ks"]);
+// Điện nhẹ: bảng thiết bị theo phòng (sheet Dien nhe) và danh sách tủ rack (sheet Tu rack)
+const COT_DN = {
+  "tầng": "tang", "phòng / khu vực": "phong", "ổ data": "data", "ổ tv": "tv", "ap wi-fi": "ap",
+  "camera trong nhà": "camTrong", "camera ngoài trời": "camNgoai", "cửa kiểm soát": "acs",
+  "nút gọi chuông cửa": "chuongNgoai", "màn hình chuông cửa": "chuongTrong", "loa": "loa",
+  "công suất tap mỗi loa": "loaW", "vùng âm thanh": "vungAm", "thiết bị knx": "knx", "tủ rack phục vụ": "rack",
+  "chiều dài cáp tb": "L", "ghi chú": "ghiChu",
+};
+const SO_DN = new Set(["data", "tv", "ap", "camTrong", "camNgoai", "acs", "chuongNgoai", "chuongTrong", "loa", "loaW", "knx", "L"]);
+const COT_RACK = {
+  "mã rack": "ma", "tầng": "tang", "vị trí": "viTri", "cấp nguồn từ tủ": "capTu", "mã lộ cấp nguồn": "maMach",
+  "chiều dài cáp nguồn": "lNguon", "chiều dài trục tới rack trung tâm": "lTruc", "rack trung tâm": "trungTam", "ghi chú": "ghiChu",
+};
+const SO_RACK = new Set(["lNguon", "lTruc"]);
 const SO_MACH = new Set(["soLuong", "congSuat", "cos", "L", "nhomOng"]);
 
 const DU_AN = {
   MA_DA: "projectNo", TEN_DA: "project", CHU_DAU_TU: "client", DIA_CHI: "address", CONG_TY: "companyInfo",
   LOAI_CT: "loaiCongTrinh", GIAM_DOC: "director", THIET_KE: "design", CHU_TRI: "design", KIEM_TRA: "checkBy",
-  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", REV: "rev",
-  UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
+  NGUOI_VE: "madeBy", NGAY: "date", TY_LE: "scale", SO_BV_DAU: "soBanVeDau", SO_BV_TONG: "soBanVeTong", SO_BV_DN: "soBanVeDienNhe", REV: "rev",
+  UF: "uf", UD: "ud", NOI_DAT: "noiDat", IK_NGUON: "ikNguon", MBA_KVA: "mbaKva", MBA_UK: "mbaUk", DU_MAX: "duMax", BANG_GIA: "bangGia", CHIET_KHAU: "chietKhau",
 };
-const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "duMax", "chietKhau"]);
+const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "mbaKva", "mbaUk", "duMax", "chietKhau"]);
 
-// Mã tham số sheet Quy tac → khóa trong bộ quy tắc (hàm biến đổi đơn vị nếu cần)
-const QUY_TAC = {
-  UF: ["uf"], UD: ["ud"], RHO: ["rho"], LAMBDA: ["lambda", (v) => v / 1000],
-  K1_PVC: ["k1.PVC"], K1_XLPE: ["k1.XLPE"], DU_MAX: ["duMax"], DU_CS: ["duChieuSang"], DU_TU: ["duThanhCai"],
-  KS_NHA: ["ks.Nhà ở / biệt thự"], KS_CANHO: ["ks.Căn hộ"], K_IN: ["kIn"], K_CHONLOC: ["kChonLoc"],
-  IN_MCB_MAX: ["inMaxMcb"], LECH_PHA: ["lechPha"], DP_VO: ["duPhongVo"], DP_CB: ["cbDuPhong"],
-  CT_NGUONG: ["ctNguong"], IK_MD: ["ikMacDinh"], IK_CANHO: ["ikMacDinh"], L_MD: ["lMacDinh"],
-  LAP_DAY: ["lapDay"], ONG_MIN: ["ongToiThieu"], L_CANHBAO: ["lCanhBao"], IB_IN: ["ibIn"],
-};
+// Sheet Quy tac: mã tham số, bảng tra và quy tắc trong code lấy từ danh mục engine/danh-muc-quy-tac.mjs.
+// Mã cũ không còn trong danh mục nhưng vẫn đọc cho file nhập liệu bản trước.
+const MA_CU = { IK_CANHO: "IK_MD" };
 
 /** Số từ ô Excel: số giữ nguyên; chuỗi "0,85" → 0.85; trống/không đọc được → null. */
 export function docSo(v) {
@@ -147,13 +158,33 @@ export function docExcel(XLSX, data) {
   let soDong = 0, soChot = 0;
   const qt = sheet("Quy tac");
   if (qt) {
-    const dat = (path, v) => {
-      const [a, b] = path.split(/\.(.+)/);
-      if (b) (quyTac[a] ||= {})[b] = v; else quyTac[a] = v;
+    const dat = (path, v) => datKhoa(quyTac, path, v);
+    const maD = new Set(TRONG_CODE.map((x) => x.ma));
+    let bangB = null, cotChot = 6, bangC = null;
+    const xongBang = () => {
+      if (bangC?.dong.length) dat(bangC.def.khoa, bangC.def.doc(bangC.dong));
+      bangC = null;
     };
-    let bangB = null;
     for (const row of qt) {
       const a = String(row?.[0] ?? "").trim();
+      // Bảng tra (C2): dòng tiêu đề có mã bảng ở cột A, dòng kế là tiêu đề cột, các dòng sau (cột A trống) là số liệu
+      if (bangC) {
+        const trong = !row || row.every((x) => x == null || x === "");
+        if (!a && !trong) {
+          if (!bangC.daQuaTieuDe) { bangC.daQuaTieuDe = true; continue; }
+          bangC.dong.push({ nhan: row[1], gt: row.slice(2, 2 + bangC.soCot).map((x) => docSo(x)) });
+          continue;
+        }
+        xongBang();
+      }
+      if (BANG_THEO_MA.has(a)) {
+        const def = BANG_THEO_MA.get(a);
+        bangC = { def, dong: [], daQuaTieuDe: false, soCot: Array.isArray(def.cot) ? def.cot.length : 40 };
+        soDong++; if (daChot(row[cotChot])) soChot++;
+        continue;
+      }
+      if (chuanHoa(a) === "mã") { const i = row.findIndex((h) => chuanHoa(h).startsWith("chốt")); if (i >= 0) cotChot = i; continue; }
+      if (maD.has(a)) { soDong++; if (daChot(row[cotChot])) soChot++; continue; }
       if (chuanHoa(a) === "loại mạch") { bangB = row.map(chuanHoa); continue; }
       if (bangB) {
         if (!a) { bangB = null; continue; }
@@ -169,17 +200,27 @@ export function docExcel(XLSX, data) {
         soDong++; if (daChot(row[bangB.findIndex((h) => h.startsWith("chốt"))])) soChot++;
         continue;
       }
-      const ma = QUY_TAC[a];
-      if (!ma) continue;
-      const v = docSo(row[2]);
+      const ts = THEO_MA.get(MA_CU[a] ?? a);
+      if (!ts) continue;
+      const v = docGiaTri(ts, row[2], docSo);
       if (v == null) continue;
-      dat(ma[0], ma[1] ? ma[1](v) : v);
-      soDong++; if (daChot(row[6])) soChot++;
+      dat(ts.khoa, v);
+      soDong++; if (daChot(row[cotChot])) soChot++;
     }
+    xongBang();
     if (soDong && soChot === soDong) quyTac.trangThai = "ĐÃ DUYỆT";
   } else {
     loiDoc.push("Không có sheet Quy tac — dùng bộ quy tắc mặc định của công cụ");
   }
 
-  return { info, panels, circuits, quyTac, loiDoc };
+  // --- Dien nhe, Tu rack (điện nhẹ) -----------------------------------------------------------
+  const dnRows = sheet("Dien nhe");
+  const phongDn = dnRows ? bangTheoTieuDe(dnRows, COT_DN, SO_DN, "Dien nhe", loiDoc)
+    .filter((p) => !/^tổng/i.test(String(p.tang ?? "")) && (p.phong || p.tang)) : [];
+  const rkRows = sheet("Tu rack");
+  const rack = rkRows ? bangTheoTieuDe(rkRows, COT_RACK, SO_RACK, "Tu rack", loiDoc).filter((r) => r.ma) : [];
+  for (const r of rack) r.trungTam = daChot(r.trungTam) || /trung tâm/i.test(String(r.trungTam ?? ""));
+  const kq = { info, panels, circuits, quyTac, loiDoc };
+  if (phongDn.length || rack.length) kq.dienNhe = { phong: phongDn.map(({ dong, ...p }) => p), rack: rack.map(({ dong, ...r }) => r) };
+  return kq;
 }

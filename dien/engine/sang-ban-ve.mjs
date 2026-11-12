@@ -37,7 +37,7 @@ export function soBanVe(dau = "E.601", i = 0) {
 const hoa = (s) => String(s ?? "").toLocaleUpperCase("vi");
 
 /** Thông tin khung tên chung của mọi tờ. */
-function khungTen(info, drawingNo, title) {
+export function khungTen(info, drawingNo, title) {
   return {
     drawingNo, title,
     companyInfo: info.companyInfo ?? "",
@@ -240,6 +240,7 @@ export function sangSoDoTong(kq, info = {}, o = {}) {
     cbTong: (({ type, poles, rating, breaking }) => `${type} ${poles} ${rating} ${breaking}`)(chuThietBi(t.cbTong)),
     capCap: chuCap(t.capNguon, { soPha: t.soPha }) || "—",
     du: !t.cha && t.capNguon?.chuaCoL ? "—" : so(t.duBus),
+    ik: t.ikTinh != null ? so(t.ikTinh, 1) : "—",
     soBanVe: soTo(t.ma),
   }));
   return {

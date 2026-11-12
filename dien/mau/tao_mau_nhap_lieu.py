@@ -148,6 +148,8 @@ COT_MACH = [
     ("Ghi đè cáp", 16, "Ví dụ: Cu/PVC 2(1x4)mm2. Công cụ vẫn kiểm Iz′ và sụt áp."),
     ("Ghi đè ống", 10, "Ví dụ: ỐNG PVC  Ø 25"),
     ("Lý do ghi đè", 22, "Bắt buộc khi có ghi đè — hiện trong danh sách ghi chú."),
+    ("Điều khiển KNX", 10, "Bật/tắt · Dimmer · Rèm: mạch điều khiển bằng actuator KNX đặt trong tủ (1 kênh / mạch; rèm: số kênh = số lượng). "
+                           "Công cụ chọn actuator, cộng module vào vỏ tủ. Trống = không KNX."),
     ("Ib tham khảo (A)", 8, "Chỉ để tham khảo. Công cụ tự tính lại Ib, chọn CB, cáp, RCD theo bộ quy tắc."),
     ("Ghi chú", 22, None),
 ]
@@ -171,69 +173,242 @@ DU_AN = [
     ("TY_LE", "Tỷ lệ (Scale)", ""),
     ("SO_BV_TONG", "Số bản vẽ sơ đồ cấp điện tổng", "Trống = liền trước tờ tủ đầu (E.601 → E.600)"),
     ("SO_BV_DAU", "Số bản vẽ tờ tủ đầu tiên", "Các tờ sau tăng dần theo thứ tự tủ: E.601, E.602…; tủ nhiều mạch tự ngắt thêm tờ"),
+    ("SO_BV_DN", "Số bản vẽ điện nhẹ (tờ đầu)", "Trống = E.700: E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… tủ rack"),
     ("REV", "Revision", ""),
     ("UF", "Điện áp pha Uf (V)", "Trống = theo sheet Quy tac"),
     ("UD", "Điện áp dây Ud (V)", "Trống = theo sheet Quy tac"),
-    ("NOI_DAT", "Sơ đồ nối đất", ""),
-    ("IK_NGUON", "Ik tại điểm đấu nối (kA)", "Lấy từ điện lực / tòa nhà"),
+    ("NOI_DAT", "Sơ đồ nối đất", "Trống = TN-S. TN: kiểm Ik1 min cuối mạch ≥ ngưỡng cắt từ; TT: mạch phải có RCD"),
+    ("IK_NGUON", "Ik tại điểm đấu nối (kA)", "Lấy từ điện lực / tòa nhà. Ik từng tủ tự tính theo tổng trở cáp"),
+    ("MBA_KVA", "Máy biến áp riêng (kVA)", "Chỉ khi công trình có trạm riêng: Ik tính từ MBA thay cho Ik điểm đấu"),
+    ("MBA_UK", "Uk máy biến áp (%)", "Trống = 4% (≤ 630 kVA) / 6% (lớn hơn)"),
     ("DU_MAX", "Sụt áp cộng dồn tối đa (%)", "Trống = theo sheet Quy tac"),
     ("BANG_GIA", "Bảng giá Schneider áp dụng", "Tên/ngày bảng giá, dùng cho BOQ (GĐ2)"),
     ("CHIET_KHAU", "Chiết khấu (%)", "Dùng cho BOQ (GĐ2)"),
 ]
 
-QUY_TAC_A = [
-    ("UF", "Điện áp pha Uf", 220, "V", "Lưới hạ áp Việt Nam (có thể chọn 230)"),
-    ("UD", "Điện áp dây Ud", 380, "V", "Có thể chọn 400"),
-    ("RHO", "Điện trở suất đồng ρ (ở nhiệt độ làm việc)", 0.0225, "Ω·mm²/m", "Dùng tính sụt áp"),
-    ("LAMBDA", "Điện kháng đơn vị dây λ", 0.08, "mΩ/m", "Dùng tính sụt áp"),
-    ("K1_PVC", "Hệ số nhiệt độ k1 — cách điện PVC", 0.94, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
-    ("K1_XLPE", "Hệ số nhiệt độ k1 — cách điện XLPE", 0.96, "", "IEC 60364-5-52, bảng B.52.14, 35 °C"),
-    ("DU_MAX", "Sụt áp cộng dồn tối đa (từ nguồn)", 5, "%", "Đề xuất nội bộ"),
-    ("DU_CS", "Sụt áp tối đa — mạch chiếu sáng", 3, "%", "Đề xuất nội bộ"),
-    ("DU_TU", "Sụt áp cộng dồn tối đa tới thanh cái mỗi tủ", 2, "%",
-     "Dùng chọn cáp cấp tủ, chừa phần cho mạch nhánh"),
-    ("KS_NHA", "Kđt mạch cuối — hồ sơ nhà ở / biệt thự", 0.7, "", "Hoặc dùng bảng Ks theo số mạch (mục 6.3)"),
-    ("KS_CANHO", "Kđt mạch cuối — hồ sơ căn hộ", 0.7, "", "Kỹ sư chốt"),
-    ("K_IN", "Hệ số chọn In (In ≥ k·Ib)", 1.25, "", "Đề xuất nội bộ"),
-    ("K_CHONLOC", "Tỷ số chọn lọc sơ bộ (In tổng ≥ k·In mạch ra lớn nhất)", 1.6, "",
-     "Sơ bộ; kiểm tra lại theo bảng phối hợp Schneider"),
-    ("IN_MCB_MAX", "In lớn nhất dùng MCB (lớn hơn dùng MCCB)", 63, "A", ""),
-    ("LECH_PHA", "Độ lệch pha tối đa (Smax − Smin)/Smax", 15, "%", "Vượt thì cảnh báo"),
-    ("DP_VO", "Chỗ trống dự phòng trong vỏ tủ", 20, "%", "Tính trên tổng module"),
-    ("DP_CB", "Số CB dự phòng tối thiểu mỗi tủ", 2, "cái", "Thiếu thì ghi chú"),
-    ("CT_NGUONG", "Ngưỡng In tổng dùng đồng hồ đa năng + CT", 63, "A", "Đề xuất nội bộ"),
-    ("IK_MD", "Ik mặc định khi chưa có số liệu", 6, "kA", "Giá trị gắn cờ, phải xác nhận"),
-    ("L_MD", "Chiều dài mạch dùng khi thiếu số liệu", 20, "m", "Gắn cờ cảnh báo"),
-    ("LAP_DAY", "Hệ số lấp đầy ống tối đa", 40, "%", "Chọn đường kính ống"),
-    ("ONG_MIN", "Đường kính ống nhỏ nhất", 20, "mm", "Bản vẽ mẫu E.601 dùng Ø20 cho mạch nhánh"),
-    ("L_CANHBAO", "Chiều dài mạch cần kiểm tra lại", 50, "m", "Cảnh báo"),
-    ("IB_IN", "Ngưỡng cảnh báo Ib/In", 90, "%", "Cảnh báo"),
-    # Điện nhẹ (GĐ3)
-    ("ELV_DP_CONG", "Điện nhẹ — dự phòng cổng switch", 20, "%", ""),
-    ("ELV_POE_AP", "Điện nhẹ — công suất PoE mỗi AP", 20, "W", "Thường 15–25 W, theo thiết bị chọn"),
-    ("ELV_POE_CAM", "Điện nhẹ — công suất PoE mỗi camera", 10, "W", "Thường 5–13 W, theo thiết bị chọn"),
-    ("ELV_POE_K", "Điện nhẹ — hệ số dự trữ ngân sách PoE", 1.2, "", ""),
-    ("ELV_CAT6", "Điện nhẹ — chiều dài tối đa cáp Cat6 (link cố định)", 90, "m", "TIA-568"),
-    ("ELV_BITRATE", "CCTV — bitrate mỗi camera", 4, "Mbps", "4 MP, H.265"),
-    ("ELV_NGAY_LUU", "CCTV — số ngày lưu", 30, "ngày", ""),
-    ("ELV_AMPLI_K", "Âm thanh — hệ số công suất ampli", 1.25, "", "Ampli ≥ k · Σ công suất tap loa"),
-    ("ELV_RACK_K", "Tủ rack — hệ số dự phòng U", 1.3, "", ""),
-    ("ELV_UPS_K", "UPS — hệ số dự phòng", 1.25, "", "VA ≥ ΣW / PF · k"),
-    ("KNX_MAX", "KNX — số thiết bị tối đa mỗi đoạn line", 64, "thiết bị", "Theo chuẩn KNX"),
-]
-QUY_TAC_B = [
-    # loại mạch, cosφ, In tối thiểu, đường cong, RCD, tiết diện tối thiểu
-    ("Chiếu sáng trong nhà", 0.90, 10, "C", "Không (khu ướt: 30 mA)", 1.5),
-    ("Chiếu sáng ngoài nhà", 0.90, 10, "C", "30 mA", 1.5),
-    ("Ổ cắm thông thường", 0.85, 16, "C", "30 mA", 2.5),
-    ("Khu ướt (WC, bình nóng lạnh)", 1.00, 16, "C", "30 mA", 2.5),
-    ("Bếp từ, lò nướng", 0.95, 16, "C", "30 mA", 2.5),
-    ("Điều hòa", 0.90, 16, "C", "Tùy chọn", 2.5),
-    ("Động cơ (bơm, quạt)", 0.80, 10, "C", "Không", 2.5),
-    ("Thiết bị điện nhẹ (rack, NVR, KNX)", 0.90, 10, "C", "Tùy chọn", 1.5),
-    ("Dự phòng", 0.90, 16, "C", "Không", 2.5),
-]
-assert [r[0] for r in QUY_TAC_B] == LOAI_MACH
+C_GD = "FCE4D6"       # nền ô "Nguồn gốc" của các giá trị em giả định — cần xem kỹ
+FILL_GD = PatternFill("solid", fgColor=C_GD)
+FILL_BANG = PatternFill("solid", fgColor="DDEBF7")
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def doc_danh_muc(du_an_json=None):
+    """Danh mục bộ quy tắc + giá trị hiện tại + giả định của agent, lấy từ code (mau/xuat-danh-muc-quy-tac.mjs)."""
+    import json
+    import subprocess
+
+    lenh = ["node", os.path.join(HERE, "xuat-danh-muc-quy-tac.mjs")] + ([du_an_json] if du_an_json else [])
+    dm = json.loads(subprocess.run(lenh, check=True, capture_output=True, text=True, encoding="utf-8").stdout)
+    assert [x["ten"] for x in dm["loaiMach"]][: len(LOAI_MACH)] == LOAI_MACH, "Danh sách loại mạch lệch với engine/quy-tac.mjs"
+    return dm
+
+
+HEAD_A = ["Mã", "Tham số", "Đề xuất", "Đơn vị", "Căn cứ / ghi chú", "Nguồn gốc", "Ý kiến KS điện", "Chốt (✔)"]
+
+
+def build_quy_tac(wb, dm, index=None):
+    """Sheet "Quy tac": A1–A4 thông số, B loại mạch, C dãy cỡ + bảng tra, D quy tắc trong code.
+    Trả về (qt_row, rules_first, rules_last) — các ô sheet Mach / Du an tham chiếu tới."""
+    qt = wb.create_sheet("Quy tac", index) if index is not None else wb.create_sheet("Quy tac")
+    nguon = dm["nguon"]
+    qt["A1"] = f"BỘ QUY TẮC TÍNH TOÁN — {dm['trangThai']} — phiên bản {dm['phienBan']}"
+    qt["A1"].font = F_TITLE
+    qt["A2"] = ("Công cụ đọc cột 'Đề xuất' (phần A, C1), các cột của bảng B và số liệu các bảng tra (C2) khi tính. "
+                "Kỹ sư điện sửa giá trị nếu không đồng ý, ghi ý kiến và đánh ✔ ở cột 'Chốt'; khi mọi dòng đã chốt, "
+                "bộ quy tắc của file được ghi là ĐÃ DUYỆT. ★ = nên soát trước. Ô 'Nguồn gốc' tô cam: giá trị em giả định, cần xem kỹ.")
+    qt["A2"].font = F_NOTE
+    qt["A2"].alignment = Alignment(wrap_text=True, vertical="top")
+    qt.merge_cells("A2:H2")
+    qt.row_dimensions[2].height = 42
+    row = 4
+
+    def tieu_de(text):
+        nonlocal row
+        qt.cell(row=row, column=1, value=text).font = F_SUB
+        row += 1
+
+    def dong_head():
+        nonlocal row
+        for c, h in enumerate(HEAD_A, start=1):
+            qt.cell(row=row, column=c, value=h)
+        style_header(qt, row, len(HEAD_A))
+        row += 1
+
+    def dong_ts(ma, ten, gia_tri, don_vi, can_cu, ng, uu_tien=False, nhap=True):
+        nonlocal row
+        put(qt, row, 1, ma)
+        put(qt, row, 2, ("★ " if uu_tien else "") + ten, font=F_BOLD if uu_tien else F_BASE)
+        put(qt, row, 3, gia_tri, font=F_INPUT if nhap else F_BASE, fill=FILL_INPUT if nhap else None)
+        put(qt, row, 4, don_vi)
+        put(qt, row, 5, can_cu)
+        put(qt, row, 6, nguon.get(ng, ng), fill=FILL_GD if ng == "GD" else None)
+        put(qt, row, 7, None, fill=FILL_REVIEW)
+        put(qt, row, 8, None, fill=FILL_REVIEW, align=CENTER)
+        row += 1
+
+    qt_row = {}
+    tieu_de("A. Thông số")
+    dong_head()
+    for nhom in ["A1", "A2", "A3", "A4"]:
+        qt.cell(row=row, column=2, value=dm["nhom"][nhom]).font = F_BOLD
+        row += 1
+        for x in [x for x in dm["thamSo"] if x["nhom"] == nhom]:
+            qt_row[x["ma"]] = row
+            dong_ts(x["ma"], x["ten"], x["giaTri"], x["donVi"], x["canCu"], x["nguon"], x["uuTien"])
+    row += 1
+
+    tieu_de("B. Quy tắc theo loại mạch")
+    head_b = ["Loại mạch", "cosφ", "In tối thiểu (A)", "Đường cong", "RCD",
+              "Tiết diện tối thiểu Cu (mm²)", "Dòng sản phẩm Schneider (KS chốt)", "Ý kiến KS điện", "Chốt (✔)"]
+    for c, h in enumerate(head_b, start=1):
+        qt.cell(row=row, column=c, value=h)
+    style_header(qt, row, len(head_b))
+    row += 1
+    rules_first = row
+    for lm in dm["loaiMach"]:
+        put(qt, row, 1, lm["ten"])
+        for c, v in enumerate([lm["cos"], lm["inMin"], lm["curve"], lm["rcd"], lm["sMin"]], start=2):
+            put(qt, row, c, v, font=F_INPUT, fill=FILL_INPUT, fmt="0.00" if c == 2 else None)
+        put(qt, row, 7, None, fill=FILL_INPUT)
+        put(qt, row, 8, None, fill=FILL_REVIEW)
+        put(qt, row, 9, None, fill=FILL_REVIEW, align=CENTER)
+        row += 1
+    rules_last = row - 1
+    add_list_validation(qt, f"E{rules_first}:E{rules_last}", '"30 mA,Không,Tùy chọn"')
+    row += 1
+    qt.cell(row=row, column=1, value=(
+        "RCD 30 mA: IEC 60364-4-41 (ổ cắm, thiết bị ngoài nhà) và IEC 60364-7-701 (mọi mạch trong khu vực có bồn tắm/vòi sen). "
+        "Công cụ áp theo cả loại mạch lẫn 'Loại khu vực' trong sheet Mach (xem KV_RCD).")).font = F_NOTE
+    row += 2
+
+    tieu_de("C. Dãy cỡ chuẩn và bảng tra")
+    dong_head()
+    qt.cell(row=row, column=2, value=dm["nhom"]["C1"]).font = F_BOLD
+    row += 1
+    for x in [x for x in dm["thamSo"] if x["nhom"] == "C1"]:
+        qt_row[x["ma"]] = row
+        dong_ts(x["ma"], x["ten"], x["giaTri"], x["donVi"], x["canCu"], x["nguon"], x["uuTien"])
+    row += 1
+    qt.cell(row=row, column=2, value="C2. Bảng tra — sửa số trong bảng; ý kiến và Chốt ghi ở dòng tên bảng").font = F_BOLD
+    row += 1
+    for b in dm["bang"]:
+        dong_ts(b["ma"], b["ten"], "(bảng dưới)", "", b["canCu"], b["nguon"], b["uuTien"], nhap=False)
+        qt.cell(row=row - 1, column=1).fill = FILL_BANG
+        qt.cell(row=row - 1, column=2).fill = FILL_BANG
+        put(qt, row, 1, None)
+        put(qt, row, 2, b["nhanCot"], font=F_BOLD, fill=FILL_CALC)
+        for c, h in enumerate(b["cot"], start=3):
+            put(qt, row, c, h, font=F_BOLD, fill=FILL_CALC, align=CENTER)
+        row += 1
+        for d in b["dong"]:
+            put(qt, row, 1, None)
+            put(qt, row, 2, d[0] if d[0] != "" else None)
+            for c, v in enumerate(d[1:], start=3):
+                put(qt, row, c, v, font=F_INPUT, fill=FILL_INPUT)
+            row += 1
+        row += 1
+
+    tieu_de("D. Quy tắc còn nằm trong code (chưa tách thành thông số) — ghi ý kiến, em sửa code")
+    dong_head()
+    for x in dm["trongCode"]:
+        dong_ts(x["ma"], x["ten"], x["giaTri"], "", x["canCu"], x["nguon"], nhap=False)
+
+    set_widths(qt, [16, 46, 30, 12, 40, 22, 30, 10, 9, 9, 9, 9, 9])
+    qt.freeze_panes = "C4"
+    return qt_row, rules_first, rules_last
+
+
+def build_bo_quy_tac(path, dm):
+    """File gửi kỹ sư duyệt: Huong dan + Quy tac (giống file nhập liệu) + Gia dinh agent."""
+    wb = Workbook()
+    hd = wb.active
+    hd.title = "Huong dan"
+    build_quy_tac(wb, dm)
+
+    # --- Gia dinh agent ---------------------------------------------------------
+    ga = wb.create_sheet("Gia dinh agent")
+    ga["A1"] = "SỐ LIỆU GIẢ ĐỊNH CỦA AGENT — dùng khi lập bản nháp từ mô tả công trình (agent/phu-tai-dien-hinh.mjs)"
+    ga["A1"].font = F_TITLE
+    ga["A2"] = ("Các số này chỉ dùng để gợi ý đầu vào; kết quả luôn ghi 'giả định'. Phần này không được công cụ đọc lại: "
+                "anh/KS ghi ý kiến và đánh ✔, em sửa thư viện theo.")
+    ga["A2"].font = F_NOTE
+    r = 4
+    for b in dm["giaDinh"]:
+        ga.cell(row=r, column=1, value=b["ten"]).font = F_SUB
+        r += 1
+        head = b["cot"] + ["Ý kiến KS điện", "Chốt (✔)"]
+        for c, h in enumerate(head, start=1):
+            ga.cell(row=r, column=c, value=h)
+        style_header(ga, r, len(head))
+        r += 1
+        for d in b["dong"]:
+            for c, v in enumerate(d, start=1):
+                put(ga, r, c, v if v != "" else None, font=F_BASE if c == 1 else F_INPUT, fill=None if c == 1 else FILL_INPUT)
+            for c in range(len(d) + 1, len(b["cot"]) + 1):
+                put(ga, r, c, None)
+            put(ga, r, len(b["cot"]) + 1, None, fill=FILL_REVIEW)
+            put(ga, r, len(b["cot"]) + 2, None, fill=FILL_REVIEW, align=CENTER)
+            r += 1
+        r += 1
+    set_widths(ga, [44, 16, 16, 30, 18, 16, 28, 10, 10])
+    ga.freeze_panes = "A4"
+
+    # --- Huong dan --------------------------------------------------------------
+    hd["A1"] = "BỘ QUY TẮC TÍNH TOÁN SƠ ĐỒ NGUYÊN LÝ TỦ ĐIỆN & ĐIỆN NHẸ — CHỜ KỸ SƯ ĐIỆN DUYỆT"
+    hd["A1"].font = F_TITLE
+    so_ts = len([x for x in dm["thamSo"] if x["nhom"] != "C1"])
+    so_ds = len([x for x in dm["thamSo"] if x["nhom"] == "C1"])
+    hd["A2"] = (f"Trạng thái: {dm['trangThai']} · phiên bản {dm['phienBan']} · {so_ts} thông số, {len(dm['loaiMach'])} loại mạch, "
+                f"{so_ds} dãy cỡ chuẩn, {len(dm['bang'])} bảng tra, {len(dm['trongCode'])} quy tắc trong code, "
+                f"{len(dm['giaDinh'])} bảng giả định của agent.")
+    hd["A2"].font = F_NOTE
+    dong = [
+        ("Cách duyệt", None),
+        ("1", "Sheet Quy tac, phần A và C1: không đồng ý thì sửa thẳng ô 'Đề xuất' (nền vàng), ghi lý do ở 'Ý kiến KS điện', đánh ✔ ở 'Chốt'."),
+        ("2", "Phần B (loại mạch): sửa cosφ, In tối thiểu, đường cong, RCD, tiết diện tối thiểu; ghi dòng sản phẩm Schneider nếu muốn chốt."),
+        ("3", "Phần C2 (bảng tra): sửa số trong bảng (thêm/bớt dòng được, giữ dòng trống giữa các bảng); ý kiến và ✔ ghi ở dòng tên bảng."),
+        ("4", "Phần D: quy tắc đang viết trong code. Ghi ý kiến nếu cần đổi; em sẽ sửa code (hoặc tách thành thông số)."),
+        ("5", "Sheet Gia dinh agent: số liệu agent dùng để lập bản nháp từ mô tả công trình. Ghi ý kiến; em sửa thư viện."),
+        ("6", "Gửi lại file cho em. Em đưa các giá trị đã chốt vào bộ mặc định của công cụ (phiên bản 1.0, ĐÃ DUYỆT); "
+              "từ đó mọi dự án dùng bộ mới. Từng dự án vẫn ghi đè được ở sheet Quy tac của file nhập liệu."),
+        ("7", "Sheet Quy tac ở đây giống sheet Quy tac trong file nhập liệu: công cụ đọc được cả hai."),
+        ("Nguồn gốc", None),
+    ]
+    for k, v in dm["nguon"].items():
+        dong.append((v, {"TC": "Theo tiêu chuẩn (IEC / TCVN / TIA / KNX) — chủ yếu kiểm số liệu chép đúng.",
+                         "TL": "Thông lệ thiết kế hoặc catalogue điển hình — kiểm theo thực tế công ty và hãng chọn.",
+                         "GD": "Em tự chọn khi chưa có số liệu — cần kỹ sư xem kỹ và chốt."}[k]))
+    dong.append(("★ Nên soát trước", None))
+    for x in dm["thamSo"]:
+        if x["uuTien"]:
+            gt = str(x["giaTri"]).replace(".", ",") if isinstance(x["giaTri"], float) else x["giaTri"]
+            dong.append((x["ma"], f"{x['ten']}: {gt} {x['donVi']}".strip() + f" — {dm['nguon'][x['nguon']]}"))
+    for b in dm["bang"]:
+        if b["uuTien"]:
+            dong.append((b["ma"], f"Bảng {b['ten']} — {dm['nguon'][b['nguon']]}"))
+    dong.append(("D18–D20", "Cách tính số line KNX (≤ 53 thiết bị/line với số mặc định), kênh KNX theo mạch, chiều dài dây bus — em giả định"))
+    r = 4
+    for k, v in dong:
+        if v is None:
+            hd.cell(row=r, column=1, value=k).font = F_SUB
+            r += 1
+            continue
+        a = put(hd, r, 1, k)
+        put(hd, r, 2, v)
+        if k == dm["nguon"]["GD"]:
+            a.fill = FILL_GD
+        r += 1
+    set_widths(hd, [28, 120])
+
+    for ws in wb.worksheets:
+        ws.page_setup.orientation = "landscape"
+        ws.page_setup.paperSize = ws.PAPERSIZE_A4
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.page_setup.fitToWidth = 1
+        ws.page_setup.fitToHeight = 0
+    wb.active = 0
+    wb.save(path)
+    return path
 
 
 def build(path, du_lieu):
@@ -268,59 +443,7 @@ def build(path, du_lieu):
     dm.freeze_panes = "A2"
 
     # --- Quy tac ---------------------------------------------------------------
-    qt = wb.create_sheet("Quy tac")
-    qt["A1"] = "BỘ QUY TẮC MẶC ĐỊNH — CHỜ KỸ SƯ ĐIỆN NỘI BỘ DUYỆT (GĐ0)"
-    qt["A1"].font = F_TITLE
-    qt["A2"] = ("Công cụ đọc cột 'Đề xuất' của bảng A và các cột của bảng B khi tính. Kỹ sư điện ghi ý kiến "
-                "và đánh dấu ✔ ở cột 'Chốt'; khi mọi dòng đã chốt, bảng tính ghi bộ quy tắc là ĐÃ DUYỆT.")
-    qt["A2"].font = F_NOTE
-    qt["A4"] = "A. Thông số chung"
-    qt["A4"].font = F_SUB
-    head_a = ["Mã", "Tham số", "Đề xuất", "Đơn vị", "Căn cứ / ghi chú", "Ý kiến KS điện", "Chốt (✔)"]
-    for c, h in enumerate(head_a, start=1):
-        qt.cell(row=5, column=c, value=h)
-    style_header(qt, 5, len(head_a))
-    row = 6
-    qt_row = {}
-    for code, name, val, unit, note in QUY_TAC_A:
-        put(qt, row, 1, code)
-        put(qt, row, 2, name)
-        put(qt, row, 3, val, font=F_INPUT, fill=FILL_INPUT)
-        put(qt, row, 4, unit)
-        put(qt, row, 5, note)
-        put(qt, row, 6, None, fill=FILL_REVIEW)
-        put(qt, row, 7, None, fill=FILL_REVIEW, align=CENTER)
-        qt_row[code] = row
-        row += 1
-    row += 1
-    qt.cell(row=row, column=1, value="B. Quy tắc theo loại mạch").font = F_SUB
-    row += 1
-    head_b = ["Loại mạch", "cosφ", "In tối thiểu (A)", "Đường cong", "RCD",
-              "Tiết diện tối thiểu Cu (mm²)", "Dòng sản phẩm Schneider (KS chốt)", "Ý kiến KS điện", "Chốt (✔)"]
-    for c, h in enumerate(head_b, start=1):
-        qt.cell(row=row, column=c, value=h)
-    style_header(qt, row, len(head_b))
-    row += 1
-    rules_first = row
-    for rule in QUY_TAC_B:
-        for c, v in enumerate(rule, start=1):
-            if c == 1:
-                put(qt, row, c, v)
-            else:
-                put(qt, row, c, v, font=F_INPUT, fill=FILL_INPUT, fmt="0.00" if c == 2 else None)
-        put(qt, row, 7, None, fill=FILL_INPUT)
-        put(qt, row, 8, None, fill=FILL_REVIEW)
-        put(qt, row, 9, None, fill=FILL_REVIEW, align=CENTER)
-        row += 1
-    rules_last = row - 1
-    add_list_validation(qt, f"E{rules_first}:E{rules_last}", '"30 mA,Không,Không (khu ướt: 30 mA),Tùy chọn"')
-    row += 1
-    qt.cell(row=row, column=1, value=(
-        "Căn cứ RCD 30 mA: IEC 60364-4-41 (ổ cắm, thiết bị ngoài nhà) và IEC 60364-7-701 "
-        "(mọi mạch trong khu vực có bồn tắm/vòi sen). Công cụ áp theo cả loại mạch lẫn 'Loại khu vực' "
-        "trong sheet Mach. Bảng Iz, hệ số nhóm k2, cỡ vỏ tủ, số module thiết bị: xem dien/engine/quy-tac.mjs.")).font = F_NOTE
-    set_widths(qt, [30, 46, 14, 12, 40, 28, 30, 28, 10])
-    qt.freeze_panes = "A6"
+    qt_row, rules_first, rules_last = build_quy_tac(wb, du_lieu.get("danh_muc") or doc_danh_muc())
     rng_loai = f"'Quy tac'!$A${rules_first}:$A${rules_last}"
     rng_cos = f"'Quy tac'!$B${rules_first}:$B${rules_last}"
 
@@ -400,6 +523,7 @@ def build(path, du_lieu):
     add_list_validation(mc, f"{k['Loại khu vực']}2:{k['Loại khu vực']}{last}", ref["Loại khu vực"])
     add_list_validation(mc, f"{k['Số pha']}2:{k['Số pha']}{last}", ref["Số pha mạch"])
     add_list_validation(mc, f"{k['Pha (trống = tự cân)']}2:{k['Pha (trống = tự cân)']}{last}", ref["Pha"])
+    add_list_validation(mc, f"{k['Điều khiển KNX']}2:{k['Điều khiển KNX']}{last}", '"Bật/tắt,Dimmer,Rèm"')
     set_widths(mc, [w for _, w, _ in COT_MACH])
     mc.freeze_panes = "C2"
 
@@ -408,7 +532,7 @@ def build(path, du_lieu):
     head_dn = ["Tầng", "Phòng / khu vực", "Ổ data", "Ổ TV", "AP Wi-Fi", "Camera trong nhà",
                "Camera ngoài trời", "Cửa kiểm soát (ACS)", "Nút gọi chuông cửa (ngoài)",
                "Màn hình chuông cửa (trong)", "Loa (số lượng)", "Công suất tap mỗi loa (W)",
-               "Vùng âm thanh", "Thiết bị KNX (số lượng)", "Tủ rack phục vụ", "Ghi chú"]
+               "Vùng âm thanh", "Thiết bị KNX (số lượng)", "Tủ rack phục vụ", "Chiều dài cáp TB (m)", "Ghi chú"]
     for c, h in enumerate(head_dn, start=1):
         dn.cell(row=1, column=c, value=h)
     style_header(dn, 1, len(head_dn), height=48)
@@ -420,7 +544,7 @@ def build(path, du_lieu):
         for c in range(1, len(head_dn) + 1):
             v = data[c - 1] if data else None
             put(dn, r, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT,
-                align=CENTER if 3 <= c <= 12 or c == 14 else None)
+                align=CENTER if 3 <= c <= 12 or c in (14, 16) else None)
     tot = 2 + n_elv
     put(dn, tot, 1, "Tổng", font=F_BOLD, fill=FILL_CALC)
     put(dn, tot, 2, None, fill=FILL_CALC)
@@ -433,8 +557,25 @@ def build(path, du_lieu):
     put(dn, tot + 1, 3, f"=SUMPRODUCT(K2:K{tot - 1},L2:L{tot - 1})", font=F_BOLD, fill=FILL_CALC, align=CENTER)
     dn.merge_cells(start_row=tot, start_column=1, end_row=tot, end_column=2)
     dn.merge_cells(start_row=tot + 1, start_column=1, end_row=tot + 1, end_column=2)
-    set_widths(dn, [6, 24, 8, 7, 8, 10, 10, 11, 12, 12, 9, 11, 11, 11, 10, 28])
+    set_widths(dn, [6, 24, 8, 7, 8, 10, 10, 11, 12, 12, 9, 11, 11, 11, 10, 10, 28])
     dn.freeze_panes = "C2"
+
+    # --- Tu rack (điện nhẹ) ------------------------------------------------------
+    rk = wb.create_sheet("Tu rack", 4)
+    head_rk = ["Mã rack", "Tầng", "Vị trí", "Cấp nguồn từ tủ", "Mã lộ cấp nguồn (trống = tự thêm)", "Chiều dài cáp nguồn (m)",
+               "Chiều dài trục tới rack trung tâm (m)", "Rack trung tâm", "Ghi chú"]
+    for c, h in enumerate(head_rk, start=1):
+        rk.cell(row=1, column=c, value=h)
+    style_header(rk, 1, len(head_rk), height=48)
+    racks = du_lieu.get("rack", [])
+    for i in range(10):
+        data = racks[i] if i < len(racks) else None
+        for c in range(1, len(head_rk) + 1):
+            v = data[c - 1] if data else None
+            put(rk, 2 + i, c, v if v != "" else None, font=F_INPUT, fill=FILL_INPUT, align=CENTER if c in (2, 6, 7, 8) else None)
+    add_list_validation(rk, "H2:H11", '"Có,Không"')
+    set_widths(rk, [9, 7, 18, 12, 16, 12, 14, 10, 34])
+    rk.freeze_panes = "B2"
 
     # --- Huong dan -------------------------------------------------------------
     hd = wb.create_sheet("Huong dan", 0)
@@ -453,8 +594,13 @@ def build(path, du_lieu):
                     "(mã theo cột 'Mã lộ cấp', vị trí theo cột 'Đặt sau lộ')."),
         ("Mach", "Mỗi dòng là một lộ ra. Bắt buộc: Mã tủ, Mã lộ, Loại mạch, Phụ tải, Công suất, Chiều dài. "
                  "Để trống Pha thì công cụ tự cân pha."),
-        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng (dùng ở GĐ3)."),
-        ("Quy tac", "Bộ quy tắc mặc định đề xuất. Công cụ dùng các giá trị trong sheet này khi tính."),
+        ("Dien nhe", "Số lượng thiết bị điện nhẹ theo tầng/phòng và tủ rack phục vụ: ổ data, ổ TV (IPTV), AP Wi-Fi, camera, "
+                     "chuông cửa IP, cửa kiểm soát ra vào, loa 100 V (vùng), thiết bị KNX tại phòng. Công cụ tính switch, PoE, "
+                     "patch panel, NVR, rack, UPS, ampli, bộ điều khiển ACS, actuator KNX và vẽ tờ E.7xx."),
+        ("Tu rack", "Mỗi dòng một tủ rack: tầng đặt, tủ điện cấp nguồn (công cụ tự thêm mạch 'DNn' vào tủ đó nếu để trống mã lộ), "
+                    "chiều dài trục về rack trung tâm (> 90 m thì dùng cáp quang)."),
+        ("Quy tac", "Bộ quy tắc (CHƯA DUYỆT): thông số, loại mạch, dãy cỡ, bảng tra, quy tắc trong code. Công cụ dùng các giá trị "
+                    "trong sheet này khi tính — sửa ở đây là ghi đè cho riêng dự án. Bản để kỹ sư duyệt: mau/bo-quy-tac.xlsx."),
         ("Danh muc", "Các danh sách chọn."),
         ("Công cụ tự làm", None),
         ("1", "Tính Ib, chọn CB/RCBO (loại, số cực, In, đường cong, Icu), cáp (Iz′, sụt áp cộng dồn, tiết diện tối thiểu, PE), ống."),
@@ -512,7 +658,7 @@ def mach(t, ma, loai, phu_tai, w, l, kv="Khô", sl=None, cos=None, pha3=False, *
          "Số pha": "3P" if pha3 else "1P", "Chiều dài (m)": l}
     ten = {"pha": "Pha (trống = tự cân)", "chung": "Số mạch chung ống", "nhom": "Nhóm RCD (ghi đè)",
            "tb": "Ghi đè thiết bị", "cap": "Ghi đè cáp", "ong": "Ghi đè ống", "ly_do": "Lý do ghi đè",
-           "gc": "Ghi chú"}
+           "gc": "Ghi chú", "knx": "Điều khiển KNX"}
     d.update({ten[k]: v for k, v in kw.items()})
     return d
 
@@ -548,11 +694,12 @@ DB_T1 = {
         mach("DB-T1", "DP2", "Dự phòng", "DỰ PHÒNG", None, None, tb="MCB 1P 20A", ly_do="Dự phòng cho ổ cắm bếp"),
     ],
     "dien_nhe": [
-        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", ""],
-        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", ""],
-        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", ""],
-        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", "AP và loa loại ngoài trời"],
+        ["T1", "Sảnh", 0, 0, 1, 1, 0, 1, 1, 0, 2, 6, "Vùng 1", 4, "R1", 12, ""],
+        ["T1", "P.khách", 2, 1, 1, 0, 0, 0, 0, 1, 4, 6, "Vùng 1", 8, "R1", 15, ""],
+        ["T1", "Bếp, P.ăn", 1, 1, 0, 0, 0, 0, 0, 0, 2, 6, "Vùng 2", 6, "R1", 18, ""],
+        ["T1", "Sân vườn, cổng", 0, 0, 1, 0, 4, 0, 0, 0, 4, 10, "Vùng 3", 2, "R1", 35, "AP và loa loại ngoài trời"],
     ],
+    "rack": [["R1", "T1", "Gầm cầu thang", "DB-T1", "", 5, "", "Có", "Rack trung tâm"]],
 }
 
 # Ví dụ dựng theo cấu trúc bộ bản vẽ mẫu E.601–E.606 (dự án HDMON): tủ T1 ở tầng 1 cấp cho các tủ tầng
@@ -638,7 +785,27 @@ HDMON = {
             ("DP", "Dự phòng", "DỰ PHÒNG", None, None),
         ]),
     ],
+    # Điện nhẹ (giả định): 1 rack ở T1, cáp ngang tính từ rack lên các tầng (≈ 3,6 m/tầng + tuyến ngang)
+    # Cột: tầng, phòng, data, TV, AP, cam trong, cam ngoài, ACS, nút gọi, màn hình, loa, W/loa, vùng, KNX, rack, L, ghi chú
+    "dien_nhe": [
+        ["T1", "Sảnh, P.khách", 2, 1, 1, 1, 0, 0, 0, 1, 4, 6, "Vùng 1 – khách", 3, "R1", 15, GD],
+        ["T1", "Bếp, P.ăn", 1, 0, 1, 0, 0, 0, 0, 0, 2, 6, "Vùng 2 – bếp", 2, "R1", 18, GD],
+        ["T1", "Sân trước, cổng, gara", 0, 0, 0, 0, 3, 1, 1, 0, 2, 10, "Vùng 3 – sân", 1, "R1", 30, f"Camera, loa ngoài trời; cửa cổng có ACS — {GD}"],
+        *[dong for k in range(2, 6) for dong in (
+            [f"T{k}", "Các phòng ngủ", 2, 2, 0, 0, 0, 0, 0, 0, 0, None, "", 4, "R1", 14 + 5 * k, GD],
+            [f"T{k}", "Sảnh tầng, hành lang", 0, 0, 1, 1, 0, 0, 0, 0, 0, None, "", 1, "R1", 12 + 5 * k, GD])],
+        ["T6", "P.thờ, sân thượng", 1, 0, 1, 0, 1, 0, 0, 0, 2, 10, "Vùng 4 – sân thượng", 2, "R1", 45, GD],
+    ],
+    "rack": [["R1", "T1", "Phòng kỹ thuật T1", "T1", "", 8, "", "Có", f"Rack trung tâm — {GD}"]],
 }
+
+# KNX (giả định): mạch chiếu sáng điều khiển bật/tắt (L2 tủ T1: dimmer), mạch rèm điều khiển rèm
+for _m in HDMON["mach"]:
+    _ma = _m.get("Mã lộ") or ""
+    if _ma.startswith("L"):
+        _m["Điều khiển KNX"] = "Dimmer" if (_m["Mã tủ"], _ma) == ("T1", "L2") else "Bật/tắt"
+    elif _ma.startswith("R"):
+        _m["Điều khiển KNX"] = "Rèm"
 
 
 # ---------------------------------------------------------------------------
@@ -649,6 +816,7 @@ _INFO_SANG_MA = {
     "companyInfo": "CONG_TY", "loaiCongTrinh": "LOAI_CT", "director": "GIAM_DOC", "design": "THIET_KE",
     "checkBy": "KIEM_TRA", "madeBy": "NGUOI_VE", "date": "NGAY", "scale": "TY_LE", "soBanVeTong": "SO_BV_TONG",
     "soBanVeDau": "SO_BV_DAU", "rev": "REV", "uf": "UF", "ud": "UD", "noiDat": "NOI_DAT", "ikNguon": "IK_NGUON",
+    "mbaKva": "MBA_KVA", "mbaUk": "MBA_UK", "soBanVeDienNhe": "SO_BV_DN",
     "duMax": "DU_MAX", "bangGia": "BANG_GIA", "chietKhau": "CHIET_KHAU",
 }
 _TU_SANG_COT = {
@@ -661,13 +829,19 @@ _MACH_SANG_COT = {
     "tu": "Mã tủ", "ma": "Mã lộ", "loai": "Loại mạch", "phuTai": "Phụ tải (chữ trên bản vẽ)", "khuVuc": "Loại khu vực",
     "soLuong": "Số lượng", "congSuat": "Công suất / đv (W)", "cos": "cosφ (trống = mặc định)",
     "pha": "Pha (trống = tự cân)", "L": "Chiều dài (m)", "nhomOng": "Số mạch chung ống", "nhomRcd": "Nhóm RCD (ghi đè)",
-    "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè",
+    "ghiDeThietBi": "Ghi đè thiết bị", "ghiDeCap": "Ghi đè cáp", "ghiDeOng": "Ghi đè ống", "lyDo": "Lý do ghi đè", "knx": "Điều khiển KNX",
     "ghiChu": "Ghi chú",
 }
 
 
+_DN_COT = ["tang", "phong", "data", "tv", "ap", "camTrong", "camNgoai", "acs", "chuongNgoai", "chuongTrong", "loa", "loaW",
+           "vungAm", "knx", "rack", "L", "ghiChu"]
+_RACK_COT = ["ma", "tang", "viTri", "capTu", "maMach", "lNguon", "lTruc", "trungTam", "ghiChu"]
+
+
 def tu_json(du_an):
-    """Đổi dữ liệu dự án JSON sang dạng du_lieu của build(). Sheet Quy tac luôn ghi bộ mặc định."""
+    """Đổi dữ liệu dự án JSON sang dạng du_lieu của build(). Sheet Quy tac lấy bộ mặc định + ghi đè quyTac của dự án
+    (main truyền danh_muc đọc từ chính file JSON)."""
     info = du_an.get("info", {})
     tu = []
     for p in du_an.get("panels", []):
@@ -684,7 +858,9 @@ def tu_json(du_an):
         "du_an": {_INFO_SANG_MA[k]: v for k, v in info.items() if k in _INFO_SANG_MA},
         "tu": tu,
         "mach": mach,
-        "dien_nhe": [],
+        "dien_nhe": [[p.get(k, "") if p.get(k) is not None else "" for k in _DN_COT] for p in (du_an.get("dienNhe") or {}).get("phong", [])],
+        "rack": [[("Có" if r.get("trungTam") else "") if k == "trungTam" else (r.get(k) if r.get(k) is not None else "") for k in _RACK_COT]
+                 for r in (du_an.get("dienNhe") or {}).get("rack", [])],
     }
 
 
@@ -697,8 +873,11 @@ if __name__ == "__main__":
         vao = sys.argv[2]
         ra = sys.argv[3] if len(sys.argv) > 3 else os.path.splitext(vao)[0] + ".xlsx"
         with open(vao, encoding="utf-8") as f:
-            print(build(ra, tu_json(json.load(f))))
+            du = tu_json(json.load(f))
+        du["danh_muc"] = doc_danh_muc(vao)
+        print(build(ra, du))
     else:
-        here = os.path.dirname(os.path.abspath(__file__))
-        print(build(os.path.join(here, "nhap-lieu-tu-dien.xlsx"), DB_T1))
-        print(build(os.path.join(here, "vi-du-HDMON.xlsx"), HDMON))
+        dm = doc_danh_muc()
+        print(build(os.path.join(HERE, "nhap-lieu-tu-dien.xlsx"), {**DB_T1, "danh_muc": dm}))
+        print(build(os.path.join(HERE, "vi-du-HDMON.xlsx"), {**HDMON, "danh_muc": dm}))
+        print(build_bo_quy_tac(os.path.join(HERE, "bo-quy-tac.xlsx"), dm))

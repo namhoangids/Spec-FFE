@@ -39,6 +39,8 @@ Mỗi dự án một thư mục: `dien/du-an/<ma-du-an>/`, tên không dấu, n�
 - Liệt kê theo tầng: tên phòng, loại phòng, diện tích nếu đọc được. Đánh dấu WC có tắm, bếp, khu ngoài nhà (sân, ban công, sân thượng).
 - Chỗ nào không chắc thì ghi "chưa chắc" và hỏi lại. Không đoán rồi im lặng.
 
+**Có file bóc khối AutoCAD (DATAEXTRACTION, .xlsx/.csv):** sau khi có `du-an.json`, chạy lệnh tạo bộ kèm `--boc-khoi <file>` (xem `tham-khao.md` § 8). Đọc `out/boc-khoi.xlsx`: báo anh công suất mạch đổi bao nhiêu, mạch mới nào cần chiều dài, block nào chưa nhận diện được. Có block điện nhẹ thì xem sheet `Dien nhe`: phòng nào số đổi, phòng mới cần chiều dài cáp ngang, phòng cũ không có block. Dùng `out/du-an.json` (đã áp bóc khối) làm bản gốc cho các lần sửa sau.
+
 **Hỏi các điểm chính trong một lượt**, tối đa 5 câu. Có công cụ AskUserQuestion thì dùng, kèm lựa chọn và đề xuất mặc định. Chỉ hỏi những gì anh chưa nói:
 1. Loại công trình (biệt thự / nhà phố / căn hộ), số tầng, các phòng chính từng tầng (nếu chưa có mặt bằng).
 2. Nguồn 1 pha hay 3 pha; tủ tổng đặt ở tầng nào; mỗi tầng có tủ riêng không.
@@ -82,6 +84,10 @@ python3 mau/tao_mau_nhap_lieu.py --tu-json du-an/<ma>/du-an.json du-an/<ma>/nhap
 - mạch nào phải tăng tiết diện (vì Iz′ hay vì sụt áp) — nêu cho anh;
 - ống nào lấp đầy > 33 % hoặc có ≥ 5 dây — đề xuất nâng 1 cỡ (`ghiDeOng` + `lyDo`), chờ anh đồng ý.
 
+**Soát ngắn mạch** trong sheet "Ngan mach" theo [`tham-khao.md`](tham-khao.md) § 9: mạch nào **không tự cắt nguồn** khi chạm vỏ (cảnh báo `Ik1 min … < ngưỡng cắt từ`) — nêu cho anh kèm các đề xuất của công cụ, chờ anh chọn rồi mới ghi đè. Hỏi Ik tại điểm đấu / máy biến áp / sơ đồ nối đất nếu anh chưa nói (ghi vào `info`: `ikNguon`, `mbaKva`, `noiDat`).
+
+**Điện nhẹ** (nếu anh cần mạng, Wi-Fi, camera, TV, chuông cửa, kiểm soát ra vào, âm thanh, KNX): thêm `"dienNhe": true` / `"knx": true` vào `mo-ta.json` để agent gợi ý theo phòng, hoặc sửa `dienNhe` trong `du-an.json` theo [`tham-khao.md`](tham-khao.md) § 10; KNX đánh dấu ở từng mạch (`knx`). Chạy lại bước 3. Báo anh: các tờ E.7xx, switch/PoE/NVR/UPS từng rack, ampli và vùng loa, bộ điều khiển ACS, actuator KNX đã vào tủ nào (và tủ nào vượt vỏ), các mạch nguồn `DNn` đã thêm, cảnh báo Cat6 > 90 m. Số thiết bị agent gợi ý là giả định — hỏi anh vị trí rack, dimmer, vùng âm thanh, cửa kiểm soát.
+
 Khi anh hỏi "tính tiết diện / chọn ống thế nào": trình bày theo § 6–7 và bảng của sheet "Cap va ong" (Ib → In → các cỡ đã thử → S chọn → số dây → lấp đầy → ống). Không tự nhẩm số khác với công cụ.
 
 ## 4. Báo kết quả
@@ -97,6 +103,8 @@ Báo ngắn, theo thứ tự:
 - ảnh `E.600` và 1–2 tờ tủ trong `out/xem-truoc/`;
 - `nhap-lieu.xlsx`;
 - `out/bang-tinh.xlsx`;
+- `out/thuyet-minh.docx` (thuyết minh tính toán; `out/thuyet-minh.html` là cùng nội dung để xem / in PDF);
+- `out/boq.xlsx` (BOQ điện: khối lượng + khung đơn giá ở sheet "Bang gia"; có bảng giá thì chạy lệnh tạo bộ kèm `--bang-gia <file.xlsx>`);
 - file DXF anh cần.
 
 Muốn gửi cả bộ: nén `out/` thành một file zip trước khi gửi:
@@ -124,6 +132,9 @@ Sau đó chạy lại bước 3 và báo **phần thay đổi**: CB, cáp, tờ 
 ## 6. Lưu và chia sẻ
 
 - **Phiên cloud bị xóa khi hết hạn.** Đề nghị anh commit + push thư mục `dien/du-an/<ma>/`. Chỉ làm khi anh đồng ý, và theo đúng nhánh của phiên.
+- **Dự án chung trên web:** web app (`/dien/app/`) lưu dự án lên server của team (Firebase `measure-and-make`, đăng nhập bằng tài khoản app M&M). Agent không tự đăng nhập được, nên trao đổi qua file:
+  - đưa lên server: anh tải `du-an/<ma>/du-an.json` (hoặc `nhap-lieu.xlsx`) lên web app bằng nút "Tải file Excel…" (nhận cả `.json`), rồi bấm **Lưu lên server**;
+  - lấy từ server về cho agent: anh mở dự án trên web, bấm **JSON dự án**, gửi file đó vào phiên.
 - **Dropbox:** chép khi anh đã dặn và connector Dropbox có trong phiên. Chép được file chữ (DXF R12, SVG, HTML, MD); file Excel/ZIP không chép được qua connector. Kiểm kích thước file sau khi chép.
 - **Bản skill trên Dropbox của anh:** `/Claude/6. So do nguyen ly tu dien/AI Agent ve so do/Skill/` chứa `SKILL.md` và `tham-khao.md` — bản dùng chung giữa các phiên.
   - **Đầu phiên** (có connector Dropbox): đọc 2 file này bằng `fetch`. Nếu khác bản trong repo (`.claude/skills/so-do-nguyen-ly/`), báo anh chỗ khác và hỏi lấy bản nào; bản trên Dropbox mới hơn thì chép vào repo.

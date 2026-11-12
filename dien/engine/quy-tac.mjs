@@ -6,7 +6,7 @@
 
 export const QUY_TAC = {
   trangThai: "CHƯA DUYỆT",
-  phienBan: "0.1 (09/11/2026)",
+  phienBan: "0.2 (12/11/2026)",
 
   // --- Thông số chung -----------------------------------------------------
   uf: 220,                 // V — điện áp pha
@@ -36,6 +36,62 @@ export const QUY_TAC = {
   soCucTong: { goc3P: "4P", con3P: "3P", tu1P: "2P" },
   spdTuGoc: true,          // SPD loại 2 tại tủ gốc (tủ tổng)
   denBaoPha: true,         // đèn báo pha cho tủ 3 pha
+
+  // --- Ngắn mạch: phương pháp tổng trở (IEC 60909-0 rút gọn, Schneider Electrical Installation Guide chương G) ---
+  noiDat: "TN-S",          // sơ đồ nối đất mặc định khi dự án không khai (TN-S | TN-C-S | TT)
+  nganMach: {
+    cMax: 1.05, cMin: 0.95,     // hệ số điện áp IEC 60909 cho lưới hạ áp (Ik max / Ik min)
+    rho20: 0.01851,             // Ω·mm²/m — đồng ở 20 °C, dùng tính Ik max
+    kRhoMin: 1.25,              // ρ khi tính Ik min = 1,25 · ρ20 (dây nóng lên lúc sự cố)
+    sscTrungThe: 500,           // MVA — công suất ngắn mạch lưới trung thế trước máy biến áp
+    ukMba: [[630, 4], [Infinity, 6]],   // % — Uk mặc định theo cỡ MBA (kVA): ≤ 630 → 4 %, lớn hơn → 6 %
+    rtZt: 0.3,                  // Rt / Zt của MBA (thay cho tổn hao ngắn mạch khi chưa có catalogue)
+    kVongNguon: 2,              // nguồn lấy từ Ik điểm đấu hạ áp: tổng trở vòng pha–PE phía nguồn = 2 × tổng trở pha
+    imMccb: 10,                 // ngưỡng cắt từ MCCB nhiệt–từ = 10 × In (ghi đè từng thiết bị bằng "Im=…A")
+    saiSoMccb: 0.2,             // sai số ngưỡng cắt từ MCCB ±20 %
+    duongCong: { B: [3, 5], C: [5, 10], D: [10, 20] },   // ngưỡng cắt từ MCB/RCBO (× In) [dưới, trên] — IEC 60898-1
+  },
+
+  // --- Điện nhẹ (mục 8): mạng LAN / Wi-Fi, camera, tủ rack. Thiết bị ghi theo chủng loại, chưa gắn hãng ---
+  dienNhe: {
+    duPhongCong: 20,            // % — dự phòng cổng switch
+    poeAp: 20, poeCam: 10,      // W — công suất PoE mỗi AP / camera
+    kPoe: 1.2,                  // hệ số dự trữ ngân sách PoE
+    cat6Max: 90,                // m — chiều dài tối đa link cố định Cat6 (TIA-568)
+    lMacDinh: 30,               // m — chiều dài cáp ngang khi thiếu số liệu (có gắn cờ)
+    bitrate: 4, ngayLuu: 30,    // CCTV: Mbps mỗi camera (4 MP, H.265), số ngày lưu
+    hddTB: 8,                   // TB — dung lượng mỗi ổ cứng NVR
+    ppCong: 24,                 // cổng mỗi patch panel
+    kRack: 1.3,                 // hệ số dự phòng U tủ rack
+    kUps: 1.25, pfUps: 0.9,     // UPS: VA ≥ ΣW / PF · k
+    switchThuong: [[8, 8], [16, 12], [24, 18], [48, 35]],                       // [cổng, W]
+    switchPoe: [[8, 120, 15], [16, 240, 25], [24, 370, 35], [48, 740, 60]],     // [cổng, ngân sách PoE W, W tự dùng]
+    nvr: [[4, 1, 1], [8, 1, 1], [16, 2, 1], [32, 4, 2], [64, 8, 2]],            // [kênh, số khay ổ cứng, U]
+    rackU: [6, 9, 12, 15, 20, 27, 42], rackTreoMax: 15,                         // ≤ 15U: tủ treo tường
+    upsVA: [1000, 1500, 2000, 3000, 6000, 10000],
+    congSuat: { router: 20, modem: 10, nvr: 15, hdd: 8 },                       // W
+    // Chuông cửa IP (qua switch PoE)
+    poeChuongNgoai: 6, poeChuongTrong: 8,       // W — nút gọi ngoài trời / màn hình trong nhà
+    // Kiểm soát ra vào: bộ điều khiển 4/2/1 cửa, mỗi bộ có nguồn 12 V + ắc quy, lắp cạnh tủ rack
+    acsBoDieuKhien: [4, 2, 1], acsW: 40,
+    // Âm thanh nền 100 V: ampli ≥ k · Σ công suất tap loa; ≤ 6 vùng thì dùng 1 ampli mixer chọn vùng
+    loaWMacDinh: 6, kAmpli: 1.25, ampliW: [60, 120, 240, 360, 480, 650], ampliVungMax: 6,
+    kTieuThuAmpli: 1.5,         // công suất điện ampli ≈ 1,5 × công suất ra (mạch nguồn riêng, không qua UPS)
+    nguonNhacW: 20,
+    // KNX: actuator đặt trong tủ điện (module tính vào vỏ tủ), nguồn bus + giao diện IP ở tủ gốc
+    knx: {
+      maThietBi: 10,            // mA — dòng bus mỗi thiết bị
+      thietBiLine: 64,          // thiết bị tối đa mỗi line
+      kNguon: 1.2,              // nguồn bus ≥ k · Σ mA
+      duPhongKenh: 20,          // % dự phòng kênh actuator
+      busMax: 1000,             // m — chiều dài dây bus tối đa mỗi line
+      batTat: [[4, 4], [8, 8], [12, 12]],   // [kênh, module]
+      dimmer: [[2, 4], [4, 8]],
+      rem: [[4, 4], [8, 8]],
+      nguon: [[160, 2], [320, 4], [640, 4]], // [mA, module]
+      ip: 2,                    // module giao diện IP / IP router
+    },
+  },
 
   // --- Theo loại mạch (mục 6.3) ------------------------------------------
   // rcd: "30mA" bắt buộc · "khong" không cần · "tuy_chon" không đặt mặc định
@@ -91,15 +147,23 @@ export const QUY_TAC = {
   dkCap4Loi: { 1.5: 10.5, 2.5: 11.5, 4: 12.8, 6: 14.0, 10: 16.6, 16: 19.6, 25: 23.8, 35: 26.5, 50: 30.4, 70: 35.0, 95: 40.0 },
 };
 
+const laDoiTuong = (x) => x != null && typeof x === "object" && !Array.isArray(x);
+/** Gộp sâu: object con gộp từng khóa; mảng và giá trị đơn thì thay cả. */
+function gopSau(goc, ghiDe) {
+  const kq = { ...goc };
+  for (const [k, v] of Object.entries(ghiDe || {})) {
+    if (v === undefined) continue;
+    kq[k] = laDoiTuong(v) && laDoiTuong(goc?.[k]) ? gopSau(goc[k], v) : v;
+  }
+  return kq;
+}
+
 /** Gộp quy tắc mặc định với thông số ghi đè (từ sheet Du an / Quy tac). */
 export function taoQuyTac(ghiDe = {}) {
+  const { loaiMach: lmGhiDe, ...conLai } = ghiDe || {};
   const loaiMach = { ...QUY_TAC.loaiMach };
-  for (const [k, v] of Object.entries(ghiDe.loaiMach || {})) loaiMach[k] = { ...(QUY_TAC.loaiMach[k] || { cos: 0.9, inMin: 16, curve: "C", rcd: "khong", sMin: 2.5 }), ...v };
-  return {
-    ...QUY_TAC, ...ghiDe, loaiMach,
-    k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) },
-    ks: { ...QUY_TAC.ks, ...(ghiDe.ks || {}) },
-  };
+  for (const [k, v] of Object.entries(lmGhiDe || {})) loaiMach[k] = { ...(QUY_TAC.loaiMach[k] || { cos: 0.9, inMin: 16, curve: "C", rcd: "khong", sMin: 2.5 }), ...v };
+  return { ...gopSau(QUY_TAC, conLai), loaiMach };
 }
 
 /** Định mức tiêu chuẩn nhỏ nhất ≥ x. */

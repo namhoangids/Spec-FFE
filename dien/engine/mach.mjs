@@ -110,10 +110,14 @@ export function docThietBi(s, rule) {
   const [, loai, cuc, n, In, curve, icu, idn] = m;
   const soCuc = `${cuc}P${n ? "+N" : ""}`;
   const key = loai === "MCCB" ? "MCCB" : `${loai}-${soCuc}`;
+  // Ngưỡng cắt từ chỉnh định (MCCB): "Im=800A", "Im 8xIn", "Im=8In"
+  const im = String(s).toUpperCase().replace(/,/g, ".").match(/\bIM\s*[=:]?\s*(\d+(?:\.\d+)?)\s*(X\s*IN|IN|A)?\b/);
+  const imA = im ? (/IN/.test(im[2] || "") || (!im[2] && +im[1] < 50) ? +im[1] * +In : +im[1]) : null;
   return {
     loai, soCuc, in: +In, curve: curve || (loai === "MCCB" ? "" : "C"), icu: icu ? +icu : null,
     idn: idn ? +idn : loai === "RCBO" || loai === "RCCB" ? 30 : null,
     module: rule.module[key] ?? (+cuc + (n ? 1 : 0)),
+    ...(imA ? { im: imA } : {}),
   };
 }
 

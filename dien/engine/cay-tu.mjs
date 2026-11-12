@@ -3,6 +3,7 @@
 
 import { canPha } from "./can-pha.mjs";
 import { kiemTra } from "./kiem-tra.mjs";
+import { kiemTraNganMach, tinhNganMach } from "./ngan-mach.mjs";
 import {
   canRcd, chonCap, chonIcu, chonOng, chonThietBi, docThietBi, docTietDien, dongLamViec, kiemCap,
 } from "./mach.mjs";
@@ -10,17 +11,31 @@ import { dinhMucToiThieu, heSoTuCon, taoQuyTac } from "./quy-tac.mjs";
 import { chonCbTong, demModule, tongHopTu } from "./tu.mjs";
 
 /**
+ * Tính hai lượt: lượt 1 lấy Ik tủ con theo tủ trên (an toàn) để chọn thiết bị và cáp; tính ngắn mạch theo tổng trở
+ * từ cáp đã chọn (ngan-mach.mjs); lượt 2 chọn lại thiết bị (Icu, MCB/MCCB) theo Ik3 max tại thanh cái từng tủ.
+ * Cáp chỉ phụ thuộc In, Ib, L (không phụ thuộc Ik) nên lượt 2 ra cùng cáp, cùng Ik → hội tụ.
  * @param {object} duAn — { info, panels, circuits } (xem doc-excel.mjs)
  * @param {object} [ghiDeQuyTac] — ghi đè thông số quy tắc
- * @returns {{ quyTac, tu: object[], canhBao: object[] }}
+ * @returns {{ quyTac, tu: object[], canhBao: object[], nganMach }}
  */
 export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
+  const info = duAn.info || {};
+  const luot1 = tinhMotLuot(duAn, ghiDeQuyTac, null);
+  if (!luot1.tu.length) return luot1;
+  const kq = tinhMotLuot(duAn, ghiDeQuyTac, tinhNganMach(luot1, info).ikTheoTu);
+  kq.nganMach = tinhNganMach(kq, info);
+  kiemTraNganMach(kq, kq.nganMach);
+  return kq;
+}
+
+function tinhMotLuot(duAn, ghiDeQuyTac, ikTheoTu) {
   const info = duAn.info || {};
   const rule = taoQuyTac({
     ...ghiDeQuyTac,
     ...(info.uf ? { uf: info.uf } : {}),
     ...(info.ud ? { ud: info.ud } : {}),
     ...(info.duMax ? { duMax: info.duMax } : {}),
+    ...(info.noiDat ? { noiDat: String(info.noiDat).trim() } : {}),
   });
   const canhBao = [];
   const ghi = (muc, tu, mach, noiDung) => canhBao.push({ muc, tu: tu ?? "", mach: mach ?? "", noiDung });
@@ -44,12 +59,15 @@ export function tinhDuAn(duAn, ghiDeQuyTac = duAn.quyTac || {}) {
 
   const ksMacDinh = rule.ks[info.loaiCongTrinh] ?? rule.ks["Nhà ở / biệt thự"];
 
-  // Ik tại từng tủ (dữ liệu nhập): tủ không ghi lấy theo tủ trên (an toàn), tủ gốc lấy Ik nguồn
+  // Ik tại từng tủ: nhập ở tủ → dùng; lượt 2 → Ik3 max tính theo tổng trở; lượt 1 → tủ con lấy theo tủ trên (an toàn),
+  // tủ gốc lấy Ik nguồn (có máy biến áp riêng thì Ik tại đầu cực MBA). Cảnh báo thiếu Ik do kiemTraNganMach ghi.
   const ganIk = (t, ikCha) => {
+    const tinh = ikTheoTu?.get(t.ma);
     if (t.ik) { t.ikTinh = t.ik; t.ikNguon = "nhập"; }
+    else if (tinh != null) { t.ikTinh = tinh; t.ikNguon = "tính theo tổng trở"; }
     else if (ikCha != null) { t.ikTinh = ikCha; t.ikNguon = "theo tủ trên"; }
     else if (info.ikNguon) { t.ikTinh = info.ikNguon; t.ikNguon = "Ik nguồn"; }
-    else { t.ikTinh = rule.ikMacDinh; t.ikNguon = "mặc định"; ghi("canhbao", t.ma, "", `Thiếu Ik — dùng mặc định ${rule.ikMacDinh} kA`); }
+    else { t.ikTinh = rule.ikMacDinh; t.ikNguon = "mặc định"; }
     for (const c of t.con) ganIk(tuMap.get(c), t.ikTinh);
   };
   for (const g of goc) ganIk(g, null);

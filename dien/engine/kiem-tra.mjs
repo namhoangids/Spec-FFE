@@ -67,7 +67,7 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
       if (m.ghiDe?.cap && !/(^|[^A-Z])P?E\s*\(|\+\s*P?E\s*\d/i.test(m.ghiDe.cap)) {
         bao("canhbao", t, m, `Cáp ghi đè "${m.ghiDe.cap}" không có dây bảo vệ PE — mọi mạch cần dây PE (IEC 60364-5-54)`);
       }
-      if (!duPhong && m.L > rule.lCanhBao) bao("canhbao", t, m, `Mạch dài ${so(m.L, 0)} m (> ${rule.lCanhBao} m) — kiểm tra lại sụt áp và Ik cuối đường dây`);
+      if (!duPhong && m.L > rule.lCanhBao) bao("canhbao", t, m, `Mạch dài ${so(m.L, 0)} m (> ${rule.lCanhBao} m) — kiểm tra lại tuyến dây và sụt áp`);
       if (m.lThieu) bao("canhbao", t, m, `Thiếu chiều dài — đang dùng mặc định ${rule.lMacDinh} m`);
 
       // Ghi đè
@@ -105,7 +105,9 @@ export function kiemTra(thuTu, tuMap, rule, ghi) {
       const coMccb = cb?.loai === "MCCB" || t.mach.some((m) => m.thietBi?.loai === "MCCB");
       if (coMccb) bao("ghichu", t, null, "Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)");
       if (t.module.voTu == null) {
-        bao("canhbao", t, null, `Cần ${so(t.module.can, 1)} module (đã gồm ${rule.duPhongVo}% dự phòng) — vượt vỏ lớn nhất ${rule.voTu.at(-1)} module`);
+        const knx = (t.thietBiThem || []).filter((x) => /KNX/.test(x.ten)).reduce((a, x) => a + x.module, 0);
+        bao("canhbao", t, null, `Cần ${so(t.module.can, 1)} module (đã gồm ${rule.duPhongVo}% dự phòng) — vượt vỏ lớn nhất ${rule.voTu.at(-1)} module` +
+          (knx ? `; trong đó ${knx} module thiết bị KNX — có thể đặt actuator KNX ở tủ riêng cạnh tủ này` : ""));
       }
     }
     const soDuPhong = t.mach.filter((m) => m.kieu?.duPhong).length;

@@ -9,7 +9,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script type="importmap">
-{ "imports": { "@tarikjabiri/dxf": "https://cdn.jsdelivr.net/npm/@tarikjabiri/dxf@2.10.0/+esm" } }
+{ "imports": {
+  "@tarikjabiri/dxf": "https://cdn.jsdelivr.net/npm/@tarikjabiri/dxf@2.10.0/+esm",
+  "docx": "https://cdn.jsdelivr.net/npm/docx@9.15.0/+esm"
+} }
 </script>
 <style>
 /* Bộ nhận diện measure&make: chữ xanh than #22333B, điểm nhấn cam #F15A22, font Montserrat.
@@ -57,7 +60,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .brand{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em}
 .crumb{font-size:12px;color:var(--ink-3)}
 .toolbar{display:flex;align-items:center;gap:8px;padding:9px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.toolbar .sp{flex:1}
+/* Cụm nút tải kết quả: dồn phải; thiếu chỗ thì cả cụm xuống hàng (không để lẻ một nút) */
+.toolbar .ra{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end}
 .btn{display:inline-flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;padding:6px 12px;border:1px solid var(--line-2);white-space:nowrap;text-decoration:none;color:inherit}
 .btn:hover{border-color:var(--ink-4)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -135,10 +139,56 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
   /* Montserrat rộng hơn Barlow Condensed: thu nhỏ chút cho thanh nút và tiêu đề khỏi xuống quá nhiều dòng */
   .btn{font-size:12px;padding:5px 9px}
   .btn-sm{font-size:11.5px;padding:4px 8px}
+  .toolbar .ra{margin-left:0;justify-content:flex-start}
   .phead h2{font-size:20px}
   .stat .v{font-size:16px}
 }
 @media(max-width:700px){ .topbar .crumb{display:none} }
+/* --- Dự án chung (server), nhập liệu trên web, hộp thoại --- */
+.topbar .sp{flex:1}
+.duan{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.duan b{font-weight:600}
+.tk{display:flex;align-items:center;gap:8px}
+.chuaLuu{color:var(--accent);font-weight:600}
+.trangthai{font-size:12px;color:var(--ink-3)}
+.ds-server{margin:0 0 22px;border:1px solid var(--line-2);background:var(--surface)}
+.ds-server .dau{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ds-server .dau h2{font-size:15px;margin:0}
+.ds-server .dau .sp{flex:1}
+.ds-server input[type=search]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);min-width:0;width:200px}
+.ds-server .dong{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+.ds-server .dong:hover{background:var(--panel)}
+.ds-server .dong .ten{flex:1;min-width:0}
+.ds-server .dong .ten b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ds-server .rong{padding:14px 12px;color:var(--ink-3);font-size:13px}
+.empty .box{max-width:640px}
+.nhaplieu h3{font-size:14px;margin:0}
+.nl-dau{display:flex;align-items:center;gap:10px;margin:14px 0 6px}
+.nl-info{border:1px solid var(--line);padding:8px 12px;background:var(--panel)}
+.nl-info summary{cursor:pointer;font-weight:600;font-size:13px}
+.nl-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px 14px;margin-top:10px}
+.nl-form label{display:flex;flex-direction:column;gap:2px}
+.nl-form input,.nl-form select{font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink)}
+table.nl td{padding:2px 3px;vertical-align:middle}
+table.nl th{white-space:nowrap}
+table.nl input,table.nl select{font:inherit;font-size:12.5px;padding:3px 4px;border:1px solid transparent;background:transparent;color:var(--ink);max-width:100%}
+table.nl input:hover,table.nl select:hover{border-color:var(--line-2)}
+table.nl input:focus,table.nl select:focus{border-color:var(--accent);background:var(--surface);outline:none}
+table.nl tr.chon td{background:var(--sel)}
+table.nl td.kq{font-size:11.5px;color:var(--ink-2)}
+table.nl .btn-sm{padding:2px 6px;margin-left:2px}
+dialog#hop{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);padding:0;width:min(520px,calc(100vw - 32px));box-shadow:var(--shadow)}
+dialog#hop::backdrop{background:rgba(18,25,29,.45)}
+#hop form{display:flex;flex-direction:column;gap:12px;padding:20px}
+#hop h2{font-size:17px}
+#hop label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink-3)}
+#hop input,#hop textarea{font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink)}
+#hop .nut{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+#hop .loi-hop{color:var(--danger);font-size:13px;min-height:1em}
+#hop .ls{max-height:50vh;overflow:auto;border:1px solid var(--line)}
+#hop .ls .dong{display:flex;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);font-size:13px}
+#hop .ls .dong span{flex:1}
+@media(max-width:700px){ .ds-server input[type=search]{width:100%} }
 </style>
 </head>
 <body>
@@ -146,37 +196,50 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
   <header class="topbar">
     <span class="brand">Sơ đồ nguyên lý tủ điện</span>
     <span class="crumb">Indust · MVP — Excel → tự tính → bộ bản vẽ theo template E.601</span>
+    <span class="sp"></span>
+    <div class="duan" id="duan"></div>
+    <div class="tk" id="tk"><span class="crumb">Đang kết nối máy chủ…</span></div>
   </header>
 
   <div class="toolbar">
-    <label class="btn btn-primary" for="file">Tải file Excel…</label>
-    <input id="file" type="file" accept=".xlsx,.xls" class="hide">
+    <label class="btn btn-primary" for="file" title="Excel nhập liệu (.xlsx) hoặc du-an.json">Tải file Excel…</label>
+    <input id="file" type="file" accept=".xlsx,.xls,.json" class="hide">
     <button class="btn" id="vidu">Chạy ví dụ HDMON</button>
     <a class="btn" href="../mau/nhap-lieu-tu-dien.xlsx" download>File nhập liệu mẫu</a>
-    <span class="sp"></span>
-    <button class="btn" id="zip" disabled>Tải cả bộ (ZIP)</button>
-    <button class="btn" id="xlsx" disabled>Bảng tính Excel</button>
-    <button class="btn" id="nhan" disabled>In nhãn</button>
-    <button class="btn" id="nhanxlsx" disabled>Nhãn Excel</button>
-    <button class="btn" id="json" disabled>JSON dự án</button>
+    <button class="btn" id="bk" disabled title="Bảng DATAEXTRACTION từ mặt bằng AutoCAD (.csv / .xlsx)">Nạp bóc khối…</button>
+    <input id="bkfile" type="file" accept=".csv,.xlsx,.xls" class="hide">
+    <div class="ra" role="group" aria-label="Tải kết quả">
+      <button class="btn" id="zip" disabled>Tải cả bộ (ZIP)</button>
+      <button class="btn" id="xlsx" disabled>Bảng tính Excel</button>
+      <button class="btn" id="tmword" disabled>Thuyết minh Word</button>
+      <button class="btn" id="tmxem" disabled>Xem thuyết minh</button>
+      <button class="btn" id="nhan" disabled>In nhãn</button>
+      <button class="btn" id="nhanxlsx" disabled>Nhãn Excel</button>
+      <button class="btn" id="boq" disabled>BOQ Excel</button>
+      <button class="btn hide" id="bkxlsx">Báo cáo bóc khối</button>
+      <button class="btn" id="json" disabled>JSON dự án</button>
+    </div>
   </div>
 
   <div id="err" class="err hide" role="alert"></div>
 
   <section id="empty" class="empty">
     <div class="box">
+      <div class="ds-server" id="dsServer"></div>
       <h1>Từ bảng phụ tải ra cả bộ sơ đồ</h1>
-      <p>Nhập phụ tải vào file Excel mẫu, tải lên đây. Công cụ tính trên máy anh, không gửi dữ liệu đi đâu.</p>
+      <p>Nhập phụ tải vào file Excel mẫu rồi tải lên đây, hoặc mở dự án chung của team ở trên. Công cụ tính ngay trên trình duyệt; dữ liệu chỉ lên server khi anh bấm <b>Lưu lên server</b>.</p>
       <ol>
         <li>Chọn CB/RCBO, cáp, ống cho từng mạch; cân pha A/B/C.</li>
         <li>Tổng hợp từng tủ, chọn CB tổng, cáp cấp, vỏ tủ; tính cả cây tủ từ tủ tầng lên tủ tổng.</li>
         <li>Vẽ sơ đồ cấp điện tổng và mỗi tủ một tờ theo template E.601 (tủ quá 18 lộ tự ngắt tờ), kèm danh sách lỗi / cảnh báo.</li>
         <li>In nhãn: danh mục mạch dán cánh tủ và nhãn cáp.</li>
+        <li>Thuyết minh tính toán (Word và trang in): căn cứ, phương pháp, phụ tải, chọn CB/cáp từng mạch, kết luận.</li>
       </ol>
       <div class="drop" id="drop">
         <label class="btn btn-primary" for="file">Chọn file Excel…</label>
         <button class="btn" id="vidu2">Chạy ví dụ HDMON</button>
-        <span class="crumb">hoặc kéo thả file vào đây</span>
+        <button class="btn" id="trong">Dự án trống</button>
+        <span class="crumb">hoặc kéo thả file Excel / du-an.json vào đây</span>
       </div>
     </div>
   </section>
@@ -198,6 +261,7 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
             <button data-view="bang" aria-pressed="false">Bảng tính</button>
             <button data-view="kt" aria-pressed="false">Kiểm tra</button>
             <button data-view="tatca" aria-pressed="false">Cả dự án</button>
+            <button data-view="nl" aria-pressed="false">Nhập liệu</button>
           </div>
           <span class="sp"></span>
           <button class="btn btn-sm" id="dl-dxf">DXF 2007</button>
@@ -209,6 +273,7 @@ tr.loi td{background:var(--danger-bg)} tr.canhbao td{background:var(--warn-bg)}
     </div>
   </div>
 </div>
+<dialog id="hop"><form method="dialog" id="hopND"></form></dialog>
 <script type="module" src="./app.mjs"></script>
 </body>
 </html>

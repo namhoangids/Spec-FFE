@@ -511,10 +511,58 @@ Chốt ngày 07/11/2026.
   - Gợi ý đầu vào (`dien/agent/goi-y-dau-vao.mjs`): tự chia mạch, ước phụ tải theo bảng điển hình, ghi rõ giả định.
   - Chạy công cụ ra cả bộ bản vẽ, rồi sửa tiếp theo lời người dùng.
   - Cùng đợt: bộ cân pha tính theo đúng hệ số đồng thời của từng mạch; tủ nhiều tờ chia đều số lộ giữa các tờ.
+- **Thuyết minh tính toán (11/11/2026):** `dien/engine/thuyet-minh.mjs` và `thuyet-minh-docx.mjs`.
+  - Dựng nội dung một lần, xuất ra **Word** (`thuyet-minh.docx`, sửa được) và **trang HTML** in ra PDF.
+  - Trình bày theo mẫu văn bản Indust Design (như "Yêu cầu bàn giao mặt bằng"): Arial, cam / xanh than, khối thông tin 3×2, dòng "Cách dùng", đề mục 01–06 có vạch cam, bảng băng màu, chân trang "Indust Design | … | Working Document".
+  - Gồm 6 mục: căn cứ thiết kế; nguồn và giải pháp cấp điện; phương pháp tính (ghi kèm tham số bộ quy tắc); tổng hợp phụ tải; chi tiết từng tủ; kiểm tra và kết luận (lỗi, cảnh báo, ghi đè có lý do, giả định, ô ký).
+  - Bảng từng mạch đặt trang ngang. Mạch phải tăng tiết diện có ghi lý do (các cỡ đã thử, Iz′, ΔU).
+  - Có trong web app (nút **Thuyết minh Word**, **Xem thuyết minh**, và trong ZIP), lệnh tạo bộ và skill agent.
+
+- **Khung BOQ (11/11/2026):** `dien/engine/boq.mjs`, file `boq.xlsx` trong mỗi bộ.
+  - Bóc khối lượng: thiết bị đóng cắt (kể cả CB dự phòng, RCBO nhóm, CB tổng); vỏ tủ; SPD, đèn báo pha, đồng hồ + CT, ATS; dây đơn, dây PE, cáp nhiều lõi; ống, máng. Dây, cáp, ống cộng hao hụt (mặc định 5%).
+  - Cáp cấp tủ con chỉ tính một lần ở lộ cấp của tủ trên. Tủ gốc chưa có chiều dài cáp nguồn thì BOQ ghi rõ "chưa tính".
+  - Khung đơn giá: sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu); sheet `BOQ` tra giá bằng công thức nên điền giá là thành tiền tự tính. Lệnh tạo bộ nhận `--bang-gia file.xlsx` để nạp bảng giá có sẵn.
+
+- **Khung bóc khối (11/11/2026):** `dien/engine/boc-khoi.mjs`, đọc bảng DATAEXTRACTION (.csv/.xlsx) từ mặt bằng AutoCAD.
+  - Block có thuộc tính `TU` / `MACH` / `CS`: công suất mạch = Σ số lượng × W, mạch chưa có thì tạo mới kèm cảnh báo cần chiều dài.
+  - Block chỉ có tên: quy đổi qua bảng `quy-doi-block.mjs` (bảng mẫu, ký tự `*`), đếm số lượng theo loại / layer / phòng.
+  - Block lạ được liệt kê và cảnh báo, không bỏ qua. Báo cáo `boc-khoi.xlsx`; BOQ thêm nhóm E thiết bị điện.
+  - Có trong lệnh tạo bộ (`--boc-khoi`, `--quy-doi`) và web app (nút **Nạp bóc khối…**). Còn chờ file DATAEXTRACTION thật và thư viện block của team để chỉnh bảng quy đổi.
+
+- **Dự án chung trên web (11/11/2026):** `dien/app/kho.mjs`, `nhap-lieu.mjs`, `firebase-config.mjs`.
+  - Lưu dự án lên Firestore project `measure-and-make` (collection `dien_projects`), đăng nhập bằng tài khoản app M&M. Cả team đã đăng nhập xem và sửa được mọi dự án.
+  - Mỗi lần lưu tăng số bản, ghi người sửa, chép bản cũ vào lịch sử; khôi phục được bản bất kỳ. Người khác vừa lưu trước thì app không ghi đè mà hỏi lại.
+  - Chế độ **Nhập liệu**: sửa khung tên, bảng tủ, bảng mạch ngay trên web; thêm / xóa / nhân bản / di chuyển mạch; tính lại cả bộ ngay khi sửa.
+  - Cần làm một lần trên Firebase console: rule cho `dien_projects` và thêm domain `spec-ffe.vercel.app` (xem `dien/README.md`).
+
+- **Ngắn mạch theo tổng trở và chọn lọc CB (11/11/2026):** `dien/engine/ngan-mach.mjs`.
+  - Nguồn: từ Ik tại điểm đấu, hoặc từ máy biến áp riêng (kVA, Uk). Ik3 max tại thanh cái từng tủ tính theo tổng trở cáp, thay cho cách "lấy Ik tủ trên"; tính 2 lượt để chọn lại Icu.
+  - Ik1 min cuối mạch (vòng pha – PE): sơ đồ TN kiểm tự cắt nguồn theo ngưỡng cắt từ của CB (MCCB mặc định 10·In, ghi đè `Im=…A`). Không đạt thì RCD đảm nhận, hoặc cảnh báo kèm đề xuất tiết diện / đường cong B / RCBO. Sơ đồ TT: mạch phải có RCD.
+  - Chọn lọc vùng ngắn mạch giữa CB tổng / lộ cấp tủ trên và các CB phía sau: toàn phần hoặc một phần tới Is (theo dòng).
+  - Có trong bảng tính (sheet `Ngan mach`), thuyết minh (mục 3.4), E.600 (cột Ik), web app.
+
+- **Điện nhẹ đợt 1 — mạng LAN / Wi-Fi, camera, tủ rack (11/11/2026):** `dien/engine/dien-nhe.mjs`, `dien/template/dien-nhe.mjs`.
+  - Đầu vào: sheet `Dien nhe` (thêm cột chiều dài cáp TB) và sheet mới `Tu rack`.
+  - Tính theo mục 8: switch (cổng + 20%, PoE), patch panel, NVR (kênh, dung lượng, khay ổ), cỡ tủ (U × 1,3), UPS (ΣW / 0,9 × 1,25), mã cổng TIA-606, Cat6 ≤ 90 m, trục Cat6 / quang.
+  - Nguồn rack tự thành mạch `DNn` trong tủ điện cấp, có tham chiếu chéo.
+  - Bản vẽ E.700 sơ đồ trục, E.701 nguyên lý mạng & camera, E.702… mặt đứng tủ rack (theo phong cách E.601).
+  - File `dien-nhe.xlsx` (bảng đấu nối cổng), BOQ nhóm F, thuyết minh mục 06, web app. Thiết bị ghi theo chủng loại, chưa gắn hãng.
+
+- **Điện nhẹ đợt 2 — IPTV, chuông cửa IP, kiểm soát ra vào, âm thanh 100 V, KNX (11/11/2026):**
+  - Truyền hình và chuông cửa đều qua mạng IP: ổ TV là link Cat6 vào switch thường; nút gọi ngoài trời và màn hình trong nhà là link PoE.
+  - ACS: bộ điều khiển 4 / 2 / 1 cửa (một link Cat6, nguồn 12 V ắc quy tính vào UPS) lắp cạnh rack; thiết bị và cáp từng cửa; liên động báo cháy ghi chú.
+  - Âm thanh 100 V theo vùng: ampli mixer khi ≤ 6 vùng, không thì ampli từng vùng; ampli ≥ 1,25 × Σ tap loa; nguồn ampli là mạch riêng `DNn` trong tủ điện, không qua UPS.
+  - KNX: cột `Điều khiển KNX` ở sheet `Mach`; actuator suy từ các mạch đánh dấu (+ 20% kênh), đặt trong tủ điện của mạch và tính vào module vỏ tủ; nguồn bus, giao diện IP ở tủ gốc; số line theo 64 thiết bị / dòng bus / 1000 m dây bus.
+  - Tờ mới: nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX; `dien-nhe.xlsx` thêm 3 sheet; BOQ nhóm F, thuyết minh 6.x mở rộng.
+  - Nhập liệu điện nhẹ trên web (bảng phòng, bảng tủ rack, cột KNX ở bảng mạch); agent gợi ý thiết bị điện nhẹ theo loại phòng khi mô tả có `dienNhe` / `knx`.
+
+- **Bóc khối điện nhẹ (12/11/2026):** block điện nhẹ trên mặt bằng AutoCAD (ổ data, TV, AP, camera, chuông, đầu đọc ACS, loa, phím KNX; thuộc tính `TANG`, `PHONG`, `RACK`, `VUNG`, `CS`) tự điền bảng điện nhẹ theo phòng; không sửa mạch điện; BOQ không đếm hai lần. GĐ3 xong phần tính toán và bóc khối.
+- **Bộ quy tắc để duyệt (12/11/2026):** `dien/mau/bo-quy-tac.xlsx` đủ mọi thông số, bảng tra, quy tắc trong code và giả định của agent; công cụ đọc lại được.
 
 **Tiếp theo (GĐ2 đợt 2):**
-- **BOQ:** dựng khung trước; khi có file bảng giá Schneider (Excel) thì nạp vào để tự điền mã hàng và đơn giá.
-- **Bóc khối:** nhập CSV `DATAEXTRACTION` từ mặt bằng AutoCAD. Đọc được cả block chỉ có tên (dùng bảng quy đổi tên block → loại phụ tải) lẫn block có thuộc tính chuẩn.
+- **Điện nhẹ:** gắn hãng thiết bị khi team chốt; phát hành hồ sơ điện nhẹ của 1 dự án thật.
+- **BOQ:** khi có file bảng giá Schneider (Excel) thì quy đổi sang sheet `Bang gia` (khóa → mã hàng, đơn giá, chiết khấu) để tự điền giá.
+- **Bóc khối:** đối chiếu với file DATAEXTRACTION thật của team; chuẩn hóa thuộc tính block (`TU`, `MACH`, `CS`, `PHONG`) và cập nhật bảng quy đổi theo thư viện block công ty.
 - **Khung tên và layer:** áp khung tên, layer của công ty khi có file DWG.
 
 ---

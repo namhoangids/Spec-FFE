@@ -1,4 +1,4 @@
-GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
+GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.2 (12/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
 GHI CHÚ	T1		In tổng 100 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
 GHI CHÚ	T1		Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)
 GHI CHÚ	T1		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
@@ -14,3 +14,11 @@ GHI CHÚ	T5		Tủ có 0 CB dự phòng (quy tắc ≥ 2)
 GHI CHÚ	T5		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
 GHI CHÚ	T6		Tủ có 1 CB dự phòng (quy tắc ≥ 2)
 GHI CHÚ	T6		Kđt mạch cuối = 0,70 theo hồ sơ quy tắc — chưa chốt
+GHI CHÚ	T1		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 5,01 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,80 kA (ngưỡng cắt từ dưới 800 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T2		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,89 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A); Lộ S5 tủ T1 ↔ tủ T2: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T3		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,98 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S6 tủ T1 ↔ tủ T3: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T4		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 2,34 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S7 tủ T1 ↔ tủ T4: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T5		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 2,05 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A); Lộ S8 tủ T1 ↔ tủ T5: một phần, tới Is ≈ 0,20 kA (ngưỡng cắt từ dưới 200 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ	T6		Chọn lọc ngắn mạch — Ik3 max tại thanh cái 1,82 kA. CB tổng ↔ các lộ ra: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A); Lộ S9 tủ T1 ↔ tủ T6: một phần, tới Is ≈ 0,16 kA (ngưỡng cắt từ dưới 160 A). Tính theo dòng; giới hạn thực tra bảng phối hợp của hãng
+GHI CHÚ			Kiểm soát ra vào: liên động với tủ báo cháy để mở khóa cửa thoát nạn khi có cháy (điểm giao tiếp — hệ báo cháy ngoài phạm vi)
+GHI CHÚ			Bố cục E.705: SƠ ĐỒ TOPOLOGY KNX: 12 nhóm — bước 26.7 mm hẹp

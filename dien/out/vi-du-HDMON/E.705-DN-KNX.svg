@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<rect width="100%" height="100%" fill="#fff"/>
+<polygon points="9.81,290.741 417.093,290.741 417.093,12.073 9.81,12.073" fill="none" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<line x1="350.606" y1="12.073" x2="350.606" y2="290.741" stroke="rgb(190,190,190)" stroke-width="0.25"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="rgb(0,179,179)" stroke="none"/>
+<polygon points="26.704,17.523 29.974,17.523 29.974,20.611 33.062,20.611 33.062,23.881 29.974,23.881 29.974,26.969 26.704,26.969 26.704,23.881 23.616,23.881 23.616,20.611 26.704,20.611" fill="none" stroke="rgb(0,0,0)" stroke-width="0.25"/>
+<text x="33.426" y="20.066" font-family="Arial, Helvetica, sans-serif" font-size="3.771" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">SƠ ĐỒ TOPOLOGY KNX</text>
+<text x="78.208" y="194.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">THIẾT BỊ KNX THEO TỦ VÀ THEO TẦNG</text>
+<polygon points="78.208,201.741 282.208,201.741 282.208,196.741 78.208,196.741" fill="rgb(238,238,238)" stroke="none"/>
+<line x1="78.208" y1="196.741" x2="282.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="201.741" x2="282.208" y2="201.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="206.741" x2="282.208" y2="206.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="211.741" x2="282.208" y2="211.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="216.741" x2="282.208" y2="216.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="221.741" x2="282.208" y2="221.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="226.741" x2="282.208" y2="226.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="231.741" x2="282.208" y2="231.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="236.741" x2="282.208" y2="236.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="241.741" x2="282.208" y2="241.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="246.741" x2="282.208" y2="246.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="251.741" x2="282.208" y2="251.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="256.741" x2="282.208" y2="256.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="261.741" x2="282.208" y2="261.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="266.741" x2="282.208" y2="266.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="78.208" y1="266.741" x2="78.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="100.208" y1="266.741" x2="100.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="134.208" y1="266.741" x2="134.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="264.208" y1="266.741" x2="264.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="282.208" y1="266.741" x2="282.208" y2="196.741" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="89.208" y="200.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ / TẦNG</text>
+<text x="117.208" y="200.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">KÊNH BT · DIM · RÈM</text>
+<text x="199.208" y="200.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">ACTUATOR / THIẾT BỊ</text>
+<text x="273.208" y="200.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">MODULE</text>
+<text x="89.208" y="205.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="117.208" y="205.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">1 · 1 · 1</text>
+<text x="135.208" y="205.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, dimmer 2 kênh, rèm 4 kênh</text>
+<text x="273.208" y="205.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">12</text>
+<text x="89.208" y="210.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T2</text>
+<text x="117.208" y="210.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 · 0 · 1</text>
+<text x="135.208" y="210.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, rèm 4 kênh</text>
+<text x="273.208" y="210.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="89.208" y="215.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T3</text>
+<text x="117.208" y="215.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">3 · 0 · 1</text>
+<text x="135.208" y="215.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, rèm 4 kênh</text>
+<text x="273.208" y="215.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="89.208" y="220.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T4</text>
+<text x="117.208" y="220.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">3 · 0 · 1</text>
+<text x="135.208" y="220.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, rèm 4 kênh</text>
+<text x="273.208" y="220.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="89.208" y="225.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T5</text>
+<text x="117.208" y="225.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 · 0 · 1</text>
+<text x="135.208" y="225.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, rèm 4 kênh</text>
+<text x="273.208" y="225.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="89.208" y="230.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T6</text>
+<text x="117.208" y="230.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">2 · 0 · 1</text>
+<text x="135.208" y="230.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">bật/tắt 4 kênh, rèm 4 kênh</text>
+<text x="273.208" y="230.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">8</text>
+<text x="89.208" y="235.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="117.208" y="235.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">hệ thống</text>
+<text x="135.208" y="235.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">Nguồn bus KNX 640 mA (line 1), Giao diện IP KNX</text>
+<text x="273.208" y="235.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">6</text>
+<text x="89.208" y="240.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T1</text>
+<text x="135.208" y="240.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">6 phím bấm / cảm biến (Sảnh, P.khách, Bếp, P.ăn, Sân trước, cổng, gara)</text>
+<text x="89.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T2</text>
+<text x="135.208" y="245.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">5 phím bấm / cảm biến (Các phòng ngủ, Sảnh tầng, hành lang)</text>
+<text x="89.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T3</text>
+<text x="135.208" y="250.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">5 phím bấm / cảm biến (Các phòng ngủ, Sảnh tầng, hành lang)</text>
+<text x="89.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T4</text>
+<text x="135.208" y="255.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">5 phím bấm / cảm biến (Các phòng ngủ, Sảnh tầng, hành lang)</text>
+<text x="89.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T5</text>
+<text x="135.208" y="260.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">5 phím bấm / cảm biến (Các phòng ngủ, Sảnh tầng, hành lang)</text>
+<text x="89.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">T6</text>
+<text x="135.208" y="265.091" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2 phím bấm / cảm biến (P.thờ, sân thượng)</text>
+<text x="78.208" y="273.741" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">GHI CHÚ:</text>
+<text x="78.208" y="277.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">1. Mỗi mạch chiếu sáng / rèm đánh dấu KNX là 1 kênh actuator (rèm: số kênh = số lượng); số kênh + 20% dự phòng. Actuator đặt trong tủ điện của mạch, đã tính vào số module và cỡ vỏ tủ.</text>
+<text x="78.208" y="281.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">2. Line ≤ 64 thiết bị, dây bus ≤ 1000 m/line; nguồn bus ≥ 1,2 × Σ dòng (10 mA/thiết bị). Nguồn bus và giao diện IP đặt ở tủ T1.</text>
+<text x="78.208" y="285.591" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="start" fill="rgb(232,86,42)">3. Dây bus KNX J-Y(St)Y 2×2×0,8 đi riêng ống với cáp điện; chiều dài ước tính ≈ 442 m (Σ chiều dài phòng + cáp cấp tủ).</text>
+<polygon points="157.208,44.876 203.208,44.876 203.208,34.876 157.208,34.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="157.208,44.876 203.208,44.876 203.208,34.876 157.208,34.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="39.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">GIAO DIỆN IP KNX</text>
+<text x="180.208" y="43.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">tủ T1</text>
+<polygon points="157.208,60.876 203.208,60.876 203.208,50.876 157.208,50.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="157.208,60.876 203.208,60.876 203.208,50.876 157.208,50.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="180.208" y="55.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">1 LINE · NGUỒN BUS 640 mA</text>
+<text x="180.208" y="59.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">42 thiết bị · 504 mA/line</text>
+<line x1="180.208" y1="44.876" x2="180.208" y2="47.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="180.208" y1="50.876" x2="180.208" y2="47.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<polygon points="21.06,90.876 45.293,90.876 45.293,80.876 21.06,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="21.06,90.876 45.293,90.876 45.293,80.876 21.06,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="33.176" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T1</text>
+<text x="33.176" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · DIM2 · RÈM4</text>
+<polygon points="47.793,90.876 72.026,90.876 72.026,80.876 47.793,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="47.793,90.876 72.026,90.876 72.026,80.876 47.793,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="59.909" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T2</text>
+<text x="59.909" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · RÈM4</text>
+<polygon points="74.526,90.876 98.759,90.876 98.759,80.876 74.526,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="74.526,90.876 98.759,90.876 98.759,80.876 74.526,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="86.642" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T3</text>
+<text x="86.642" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · RÈM4</text>
+<polygon points="101.259,90.876 125.492,90.876 125.492,80.876 101.259,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="101.259,90.876 125.492,90.876 125.492,80.876 101.259,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="113.375" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T4</text>
+<text x="113.375" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · RÈM4</text>
+<polygon points="127.992,90.876 152.225,90.876 152.225,80.876 127.992,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="127.992,90.876 152.225,90.876 152.225,80.876 127.992,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="140.108" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T5</text>
+<text x="140.108" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · RÈM4</text>
+<polygon points="154.725,90.876 178.958,90.876 178.958,80.876 154.725,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="154.725,90.876 178.958,90.876 178.958,80.876 154.725,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="166.841" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">TỦ T6</text>
+<text x="166.841" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">BT4 · RÈM4</text>
+<polygon points="20.21,93.876 179.808,93.876 179.808,73.876 20.21,73.876" fill="none" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="21.71" y="77.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BUS KNX — ACTUATOR TRONG TỦ ĐIỆN</text>
+<polygon points="181.458,90.876 205.691,90.876 205.691,80.876 181.458,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="181.458,90.876 205.691,90.876 205.691,80.876 181.458,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="193.574" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T1: 6 THIẾT BỊ</text>
+<text x="193.574" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="208.191,90.876 232.424,90.876 232.424,80.876 208.191,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="208.191,90.876 232.424,90.876 232.424,80.876 208.191,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="220.307" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T2: 5 THIẾT BỊ</text>
+<text x="220.307" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="234.924,90.876 259.157,90.876 259.157,80.876 234.924,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="234.924,90.876 259.157,90.876 259.157,80.876 234.924,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="247.04" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T3: 5 THIẾT BỊ</text>
+<text x="247.04" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="261.657,90.876 285.89,90.876 285.89,80.876 261.657,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="261.657,90.876 285.89,90.876 285.89,80.876 261.657,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="273.773" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T4: 5 THIẾT BỊ</text>
+<text x="273.773" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="288.39,90.876 312.623,90.876 312.623,80.876 288.39,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="288.39,90.876 312.623,90.876 312.623,80.876 288.39,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="300.506" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T5: 5 THIẾT BỊ</text>
+<text x="300.506" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="315.123,90.876 339.356,90.876 339.356,80.876 315.123,80.876" fill="rgb(238,238,238)" stroke="none"/>
+<polygon points="315.123,90.876 339.356,90.876 339.356,80.876 315.123,80.876" fill="none" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="327.239" y="85.076" font-family="Arial, Helvetica, sans-serif" font-size="2.793" font-weight="bold" text-anchor="middle" fill="rgb(0,0,0)">T6: 2 THIẾT BỊ</text>
+<text x="327.239" y="89.126" font-family="Arial, Helvetica, sans-serif" font-size="2.374" text-anchor="middle" fill="rgb(232,86,42)">phím bấm, cảm biến</text>
+<polygon points="180.608,93.876 340.206,93.876 340.206,73.876 180.608,73.876" fill="none" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="182.108" y="77.726" font-family="Arial, Helvetica, sans-serif" font-size="2.374" font-weight="bold" text-anchor="start" fill="rgb(0,0,0)">BUS KNX — THIẾT BỊ TẠI PHÒNG</text>
+<line x1="180.208" y1="60.876" x2="180.208" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="33.176" y1="64.876" x2="327.239" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="33.176" y1="80.876" x2="33.176" y2="78.066" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="33.176" y1="75.686" x2="33.176" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="59.909" y1="80.876" x2="59.909" y2="78.066" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="59.909" y1="75.686" x2="59.909" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="86.642" y1="80.876" x2="86.642" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="113.375" y1="80.876" x2="113.375" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="140.108" y1="80.876" x2="140.108" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="166.841" y1="80.876" x2="166.841" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="193.574" y1="80.876" x2="193.574" y2="78.066" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="193.574" y1="75.686" x2="193.574" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="220.307" y1="80.876" x2="220.307" y2="78.066" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="220.307" y1="75.686" x2="220.307" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="247.04" y1="80.876" x2="247.04" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="273.773" y1="80.876" x2="273.773" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="300.506" y1="80.876" x2="300.506" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<line x1="327.239" y1="80.876" x2="327.239" y2="64.876" stroke="rgb(40,79,128)" stroke-width="0.25"/>
+<text x="386.029" y="25.879" font-family="Arial, Helvetica, sans-serif" font-size="8.659" text-anchor="middle" fill="rgb(0,0,0)">Indust</text>
+<text x="386.029" y="29.876" font-family="Arial, Helvetica, sans-serif" font-size="2.095" text-anchor="middle" fill="rgb(0,0,0)">i n t e r i o r</text>
+<text x="361.142" y="38.224" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Company info:</text>
+<line x1="361.142" y1="43.682" x2="411.099" y2="43.682" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="46.035" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Director:</text>
+<line x1="361.142" y1="51.675" x2="411.099" y2="51.675" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="54.028" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Design:</text>
+<line x1="361.142" y1="59.668" x2="411.099" y2="59.668" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="62.021" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Check by:</text>
+<line x1="361.142" y1="67.661" x2="411.099" y2="67.661" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="70.015" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Drawing title:</text>
+<line x1="361.142" y1="75.836" x2="411.099" y2="75.836" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="78.189" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Key plan:</text>
+<line x1="361.142" y1="113.985" x2="411.099" y2="113.985" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="116.338" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project notes:</text>
+<text x="361.142" y="210.983" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Client:</text>
+<line x1="361.142" y1="216.442" x2="411.099" y2="216.442" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="218.976" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Address:</text>
+<line x1="361.142" y1="224.98" x2="411.099" y2="224.98" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="226.97" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project:</text>
+<line x1="361.142" y1="232.791" x2="411.099" y2="232.791" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="235.326" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Made by:</text>
+<line x1="361.142" y1="240.966" x2="411.099" y2="240.966" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="243.137" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Date:</text>
+<line x1="361.142" y1="248.959" x2="411.099" y2="248.959" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="251.675" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Scale:</text>
+<line x1="361.142" y1="256.952" x2="411.099" y2="256.952" stroke="rgb(124,124,124)" stroke-width="0.25"/>
+<text x="361.142" y="259.669" font-family="Arial, Helvetica, sans-serif" font-size="2.514" text-anchor="start" fill="rgb(149,149,149)">Project no:</text>
+<text x="361.142" y="120.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">1. All measurements must be</text>
+<text x="361.142" y="123.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">verified on-site before</text>
+<text x="361.142" y="127.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">construction begins.</text>
+<text x="361.142" y="133.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Do not scale this drawing.</text>
+<text x="361.142" y="137.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Dimensions to be read in</text>
+<text x="361.142" y="140.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conjunction with corresponding</text>
+<text x="361.142" y="143.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">architectural and structural</text>
+<text x="361.142" y="147.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">drawings. This drawing is</text>
+<text x="361.142" y="150.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">copyright or used with the</text>
+<text x="361.142" y="153.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">express authority of Indust</text>
+<text x="361.142" y="157.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">Design.</text>
+<text x="361.142" y="163.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">2. Ensure all foundations are</text>
+<text x="361.142" y="167.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">level and stable—verify soil</text>
+<text x="361.142" y="170.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">conditions for adequate</text>
+<text x="361.142" y="173.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">support.</text>
+<text x="361.142" y="180.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">3. Coordinate electrical and</text>
+<text x="361.142" y="183.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">plumbing work with off-grid</text>
+<text x="361.142" y="187.193" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">solutions (if applicable, such</text>
+<text x="361.142" y="190.526" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">as solar power or composting</text>
+<text x="361.142" y="193.86" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="start" fill="rgb(51,51,51)">toilets)</text>
+<polygon points="361.142,289.833 411.099,289.833 411.099,269.85 361.142,269.85" fill="rgb(127,127,127)" stroke="none"/>
+<text x="386.12" y="42.502" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">22 Thanh Cong, Ba Dinh, Ha Noi</text>
+<text x="386.12" y="75.219" font-family="Arial, Helvetica, sans-serif" font-size="3.352" text-anchor="middle" fill="rgb(51,51,51)">SƠ ĐỒ TOPOLOGY KNX</text>
+<text x="386.12" y="215.398" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">Mr. Tuấn</text>
+<text x="386.12" y="222.71" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">Long Biên - Hà Nội</text>
+<text x="386.12" y="231.384" font-family="Arial, Helvetica, sans-serif" font-size="4.19" font-weight="bold" text-anchor="middle" fill="rgb(255,163,31)">MR. TUẤN - HDMON</text>
+<text x="386.12" y="246.689" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">November 09/11/2026</text>
+<text x="386.12" y="255.045" font-family="Arial, Helvetica, sans-serif" font-size="2.793" text-anchor="middle" fill="rgb(51,51,51)">1:50</text>
+<text x="386.12" y="284.091" font-family="Arial, Helvetica, sans-serif" font-size="11.872" text-anchor="middle" fill="rgb(229,229,229)">E.705</text>
+</svg>

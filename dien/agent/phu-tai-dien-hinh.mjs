@@ -85,3 +85,33 @@ export const CHIEU_DAI = {
 };
 
 export const DU_PHONG_MOI_TU = 2;    // số CB dự phòng thêm vào mỗi tủ (quy tắc ≥ 2)
+
+/**
+ * Điện nhẹ điển hình theo loại phòng — dùng khi mô tả có "dienNhe": true (và "knx": true cho cột knx).
+ *  data, tv (ổ IPTV), ap, camTrong, camNgoai, loa (loa 100 V), knx (phím bấm / cảm biến KNX)
+ * Bộ gợi ý còn: bảo đảm mỗi tầng ≥ 1 AP / DIEN_NHE.apM2 m² trong nhà; 1 nút gọi chuông + 1 cửa ACS ở cổng tầng gốc;
+ * 1 màn hình chuông ở phòng khách / sảnh mỗi tầng có.
+ */
+export const DIEN_NHE_PHONG = {
+  "phòng khách": { data: 2, tv: 1, ap: 1, loa: 4, knx: 2 },
+  "phòng ngủ": { data: 1, tv: 1, knx: 1 },
+  "phòng ăn": { loa: 2, knx: 1 },
+  "bếp": { data: 1, loa: 2, knx: 1 },
+  "wc": {},
+  "sảnh, hành lang": { ap: 1, camTrong: 1, knx: 1 },
+  "phòng làm việc": { data: 2, knx: 1 },
+  "phòng thờ": { knx: 1 },
+  "phòng giải trí": { data: 1, tv: 1, ap: 1, loa: 4, knx: 1 },
+  "giặt phơi": {},
+  "kho": {},
+  "gara": { camTrong: 1, knx: 1 },
+  "phòng kỹ thuật": { data: 1 },
+  "ban công": {},
+  "ngoài nhà": { camNgoai: 2, loa: 2, knx: 1 },
+};
+export const DIEN_NHE = {
+  loaW: 6, loaWNgoai: 10,   // W tap mỗi loa trong nhà / ngoài trời
+  apM2: 80,                 // m² sàn trong nhà mỗi AP
+  lNgang: 12, lNgoai: 25,   // m cáp ngang từ trục tới phòng / ra khu ngoài nhà (cộng chênh tầng × chiều cao tầng)
+  lNguonRack: 8,            // m cáp từ tủ điện tới tủ rack (rack đặt cùng tầng tủ tổng)
+};
