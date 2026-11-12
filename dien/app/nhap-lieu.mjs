@@ -274,9 +274,10 @@ export function veNhapLieu(duAn, maTu, kq) {
     <p class="crumb">Sửa ô rồi bấm Tab / Enter hoặc bấm ra ngoài: bản vẽ, bảng tính, thuyết minh, BOQ tính lại ngay. Rê chuột lên dòng tô màu để xem lỗi / cảnh báo. Lộ cấp tủ con do công cụ tự tạo theo bảng tủ.</p>`;
   }
   const dienNhe = duAn.dienNhe?.phong?.length || duAn.dienNhe?.rack?.length
-    ? `<p class="crumb">Điện nhẹ (mạng, camera, TV, chuông cửa, ACS, âm thanh, KNX): chọn một tờ E.7xx trong cây rồi mở chế độ Nhập liệu để sửa bảng phòng và bảng tủ rack. Cột KNX của bảng mạch đánh dấu mạch điều khiển bằng actuator KNX.</p>`
+    ? `<div class="nl-dau"><h3>Điện nhẹ</h3><button class="btn btn-sm btn-primary" data-lenh="moDienNhe">Nhập liệu điện nhẹ →</button></div>
+      <p class="crumb">Mạng, camera, TV, chuông cửa, ACS, âm thanh, KNX: bảng thiết bị theo phòng và bảng tủ rack (nhánh Điện nhẹ, các tờ E.7xx). Cột KNX của bảng mạch đánh dấu mạch điều khiển bằng actuator KNX.</p>`
     : `<div class="nl-dau"><h3>Điện nhẹ</h3><button class="btn btn-sm" data-lenh="themDienNhe">+ Thêm điện nhẹ</button></div>
-      <p class="crumb">Dự án chưa có điện nhẹ. Bấm để thêm một tủ rack và một phòng mẫu, rồi sửa ở các tờ E.7xx.</p>`;
+      <p class="crumb">Dự án chưa có điện nhẹ. Bấm để thêm một tủ rack và một phòng mẫu; bảng nhập liệu điện nhẹ mở ra ngay.</p>`;
   return `<div class="nhaplieu">${info}${bangTu}${bangMach}${dienNhe}</div>`;
 }
 
