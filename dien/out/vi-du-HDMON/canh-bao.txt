@@ -1,4 +1,4 @@
-GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
+GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.2 (12/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
 GHI CHÚ	T1		In tổng 100 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
 GHI CHÚ	T1		Tủ có MCCB — chọn tủ sắt theo mẫu bố trí (MCCB không tính vào số module)
 GHI CHÚ	T1		Tủ có 0 CB dự phòng (quy tắc ≥ 2)

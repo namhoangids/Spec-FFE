@@ -15,6 +15,18 @@ Phương án tổng thể: [`docs/phuong-an-so-do-nguyen-ly-tu-dien-dien-nhe.md`
 
 Kết quả xuất ra DXF, SVG và bảng tính. Bộ quy tắc **chưa duyệt**: kỹ sư điện cần chốt sheet `Quy tac`.
 
+**Duyệt bộ quy tắc:** file `mau/bo-quy-tac.xlsx` gửi kỹ sư điện. File có 3 sheet:
+- `Huong dan`: cách duyệt và các điểm nên soát trước (★);
+- `Quy tac`:
+  - A: các thông số chung, ngắn mạch, điện nhẹ, KNX;
+  - B: quy tắc theo loại mạch;
+  - C: dãy cỡ chuẩn và bảng tra (Iz, k2, vỏ tủ, ống, switch, NVR, actuator…);
+  - D: các quy tắc còn nằm trong code;
+  - mỗi dòng có cột "Nguồn gốc" (tiêu chuẩn / thông lệ / em giả định), "Ý kiến KS điện" và "Chốt";
+- `Gia dinh agent`: số liệu agent dùng khi lập bản nháp.
+
+Sheet `Quy tac` sinh từ `engine/danh-muc-quy-tac.mjs`, cùng một mẫu với sheet `Quy tac` của file nhập liệu, và công cụ đọc lại được cả bảng tra. Kỹ sư sửa giá trị và đánh ✔; khi mọi dòng đã chốt, file đó được ghi là ĐÃ DUYỆT. Sau khi duyệt, giá trị chốt được đưa vào `engine/quy-tac.mjs` (phiên bản 1.0).
+
 ## AI Agent vẽ sơ đồ (skill Claude Code)
 
 Trong Claude Code mở repo này, anh mô tả nhu cầu hoặc gửi ảnh/PDF mặt bằng. Có thể gõ `/so-do-nguyen-ly` hoặc nói thẳng, ví dụ "vẽ sơ đồ nguyên lý cho biệt thự 4 tầng…". Agent sẽ:
@@ -148,9 +160,9 @@ node tao-bo-ban-ve.mjs du-an.json out/x --bang-gia bang-gia.xlsx --hao-hut 5   #
 node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-thuoc-tinh.csv   # bóc khối AutoCAD
 node agent/goi-y-dau-vao.mjs agent/vi-du/mo-ta-biet-thu.json /tmp/du-an.json   # gợi ý đầu vào từ mô tả
 python3 mau/tao_mau_nhap_lieu.py --tu-json du-an.json nhap-lieu.xlsx           # dữ liệu dự án → Excel nhập liệu
-npm test                                               # 70 test
+npm test                                               # 75 test
 npm run kiem-tra-app                                   # test web app bằng Playwright
-python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu
+python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Excel mẫu + bo-quy-tac.xlsx (cần node)
 ```
 
 ## Thư mục
@@ -159,6 +171,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 |---|---|
 | `mau/nhap-lieu-tu-dien.xlsx` | **File Excel nhập liệu v2**, ví dụ là tủ DB-T1 trong phương án (mục 7) |
 | `mau/vi-du-HDMON.xlsx` | Ví dụ dựng theo bộ mẫu E.601–E.606: T1 cấp cho T2–T6. **Công suất và chiều dài là số giả định** |
+| `mau/bo-quy-tac.xlsx` | **Bộ quy tắc để kỹ sư điện duyệt**: thông số, loại mạch, bảng tra, quy tắc trong code, giả định của agent |
 | `mau/tao_mau_nhap_lieu.py` | Script tạo 2 file Excel trên |
 | `engine/` | **Lõi tính toán** (JavaScript thuần, chạy được cả trên Node và trình duyệt), xem bảng dưới |
 | `bo-ban-ve.mjs` | Phần dùng chung: dữ liệu dự án → kết quả tính → sơ đồ tổng + các tờ tủ (SVG/DXF) + nhãn |
@@ -173,6 +186,7 @@ python3 mau/tao_mau_nhap_lieu.py                       # tạo lại 2 file Exce
 
 | File | Việc làm (theo mục 6 của phương án) |
 |---|---|
+| `danh-muc-quy-tac.mjs` | Danh mục bộ quy tắc: mã, tên, đơn vị, căn cứ, nguồn gốc từng thông số và bảng tra — dùng sinh sheet `Quy tac` và đọc lại |
 | `quy-tac.mjs` | Bộ quy tắc mặc định (**chưa duyệt**): Uf/Ud, ρ, λ, k1 ở 35 °C, giới hạn ΔU (5% / chiếu sáng 3% / tới thanh cái tủ 2%), Kđt, hệ số chọn In 1,25, tỷ số chọn lọc 1,6, bảng Iz IEC 60364-5-52, k2, định mức CB, module, vỏ tủ, ống |
 | `mach.mjs` | Ib → CB/RCBO (theo loại mạch **và** loại khu vực) → cáp (Iz′, ΔU cộng dồn, tiết diện tối thiểu, PE) → ống; đọc thiết bị/cáp ghi đè |
 | `can-pha.mjs` | Cân pha A/B/C, giữ mạch đã khóa pha |

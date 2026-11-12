@@ -6,7 +6,7 @@
 
 export const QUY_TAC = {
   trangThai: "CHƯA DUYỆT",
-  phienBan: "0.1 (09/11/2026)",
+  phienBan: "0.2 (12/11/2026)",
 
   // --- Thông số chung -----------------------------------------------------
   uf: 220,                 // V — điện áp pha
@@ -147,17 +147,23 @@ export const QUY_TAC = {
   dkCap4Loi: { 1.5: 10.5, 2.5: 11.5, 4: 12.8, 6: 14.0, 10: 16.6, 16: 19.6, 25: 23.8, 35: 26.5, 50: 30.4, 70: 35.0, 95: 40.0 },
 };
 
+const laDoiTuong = (x) => x != null && typeof x === "object" && !Array.isArray(x);
+/** Gộp sâu: object con gộp từng khóa; mảng và giá trị đơn thì thay cả. */
+function gopSau(goc, ghiDe) {
+  const kq = { ...goc };
+  for (const [k, v] of Object.entries(ghiDe || {})) {
+    if (v === undefined) continue;
+    kq[k] = laDoiTuong(v) && laDoiTuong(goc?.[k]) ? gopSau(goc[k], v) : v;
+  }
+  return kq;
+}
+
 /** Gộp quy tắc mặc định với thông số ghi đè (từ sheet Du an / Quy tac). */
 export function taoQuyTac(ghiDe = {}) {
+  const { loaiMach: lmGhiDe, ...conLai } = ghiDe || {};
   const loaiMach = { ...QUY_TAC.loaiMach };
-  for (const [k, v] of Object.entries(ghiDe.loaiMach || {})) loaiMach[k] = { ...(QUY_TAC.loaiMach[k] || { cos: 0.9, inMin: 16, curve: "C", rcd: "khong", sMin: 2.5 }), ...v };
-  return {
-    ...QUY_TAC, ...ghiDe, loaiMach,
-    k1: { ...QUY_TAC.k1, ...(ghiDe.k1 || {}) },
-    ks: { ...QUY_TAC.ks, ...(ghiDe.ks || {}) },
-    nganMach: { ...QUY_TAC.nganMach, ...(ghiDe.nganMach || {}) },
-    dienNhe: { ...QUY_TAC.dienNhe, ...(ghiDe.dienNhe || {}) },
-  };
+  for (const [k, v] of Object.entries(lmGhiDe || {})) loaiMach[k] = { ...(QUY_TAC.loaiMach[k] || { cos: 0.9, inMin: 16, curve: "C", rcd: "khong", sMin: 2.5 }), ...v };
+  return { ...gopSau(QUY_TAC, conLai), loaiMach };
 }
 
 /** Định mức tiêu chuẩn nhỏ nhất ≥ x. */

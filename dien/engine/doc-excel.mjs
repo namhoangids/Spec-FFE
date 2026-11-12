@@ -2,6 +2,8 @@
 // Đọc theo TÊN SHEET và TIÊU ĐỀ CỘT (không theo vị trí), chấp nhận cả tên cột của bản v1.
 // Thư viện SheetJS được truyền vào (Node: gói `xlsx`; trình duyệt: window.XLSX) để file chạy được ở cả hai nơi.
 
+import { BANG_THEO_MA, THEO_MA, TRONG_CODE, datKhoa, docGiaTri } from "./danh-muc-quy-tac.mjs";
+
 const chuanHoa = (s) => String(s ?? "").toLowerCase().replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
 
 const COT_TU = {
@@ -67,18 +69,9 @@ const DU_AN = {
 };
 const SO_DU_AN = new Set(["uf", "ud", "ikNguon", "mbaKva", "mbaUk", "duMax", "chietKhau"]);
 
-// Mã tham số sheet Quy tac → khóa trong bộ quy tắc (hàm biến đổi đơn vị nếu cần)
-const QUY_TAC = {
-  UF: ["uf"], UD: ["ud"], RHO: ["rho"], LAMBDA: ["lambda", (v) => v / 1000],
-  K1_PVC: ["k1.PVC"], K1_XLPE: ["k1.XLPE"], DU_MAX: ["duMax"], DU_CS: ["duChieuSang"], DU_TU: ["duThanhCai"],
-  KS_NHA: ["ks.Nhà ở / biệt thự"], KS_CANHO: ["ks.Căn hộ"], K_IN: ["kIn"], K_CHONLOC: ["kChonLoc"],
-  IN_MCB_MAX: ["inMaxMcb"], LECH_PHA: ["lechPha"], DP_VO: ["duPhongVo"], DP_CB: ["cbDuPhong"],
-  CT_NGUONG: ["ctNguong"], IK_MD: ["ikMacDinh"], IK_CANHO: ["ikMacDinh"], L_MD: ["lMacDinh"], IM_MCCB: ["nganMach.imMccb"],
-  ELV_DP_CONG: ["dienNhe.duPhongCong"], ELV_POE_AP: ["dienNhe.poeAp"], ELV_POE_CAM: ["dienNhe.poeCam"], ELV_POE_K: ["dienNhe.kPoe"],
-  ELV_CAT6: ["dienNhe.cat6Max"], ELV_BITRATE: ["dienNhe.bitrate"], ELV_NGAY_LUU: ["dienNhe.ngayLuu"], ELV_RACK_K: ["dienNhe.kRack"],
-  ELV_UPS_K: ["dienNhe.kUps"],
-  LAP_DAY: ["lapDay"], ONG_MIN: ["ongToiThieu"], L_CANHBAO: ["lCanhBao"], IB_IN: ["ibIn"],
-};
+// Sheet Quy tac: mã tham số, bảng tra và quy tắc trong code lấy từ danh mục engine/danh-muc-quy-tac.mjs.
+// Mã cũ không còn trong danh mục nhưng vẫn đọc cho file nhập liệu bản trước.
+const MA_CU = { IK_CANHO: "IK_MD" };
 
 /** Số từ ô Excel: số giữ nguyên; chuỗi "0,85" → 0.85; trống/không đọc được → null. */
 export function docSo(v) {
@@ -165,13 +158,33 @@ export function docExcel(XLSX, data) {
   let soDong = 0, soChot = 0;
   const qt = sheet("Quy tac");
   if (qt) {
-    const dat = (path, v) => {
-      const [a, b] = path.split(/\.(.+)/);
-      if (b) (quyTac[a] ||= {})[b] = v; else quyTac[a] = v;
+    const dat = (path, v) => datKhoa(quyTac, path, v);
+    const maD = new Set(TRONG_CODE.map((x) => x.ma));
+    let bangB = null, cotChot = 6, bangC = null;
+    const xongBang = () => {
+      if (bangC?.dong.length) dat(bangC.def.khoa, bangC.def.doc(bangC.dong));
+      bangC = null;
     };
-    let bangB = null;
     for (const row of qt) {
       const a = String(row?.[0] ?? "").trim();
+      // Bảng tra (C2): dòng tiêu đề có mã bảng ở cột A, dòng kế là tiêu đề cột, các dòng sau (cột A trống) là số liệu
+      if (bangC) {
+        const trong = !row || row.every((x) => x == null || x === "");
+        if (!a && !trong) {
+          if (!bangC.daQuaTieuDe) { bangC.daQuaTieuDe = true; continue; }
+          bangC.dong.push({ nhan: row[1], gt: row.slice(2, 2 + bangC.soCot).map((x) => docSo(x)) });
+          continue;
+        }
+        xongBang();
+      }
+      if (BANG_THEO_MA.has(a)) {
+        const def = BANG_THEO_MA.get(a);
+        bangC = { def, dong: [], daQuaTieuDe: false, soCot: Array.isArray(def.cot) ? def.cot.length : 40 };
+        soDong++; if (daChot(row[cotChot])) soChot++;
+        continue;
+      }
+      if (chuanHoa(a) === "mã") { const i = row.findIndex((h) => chuanHoa(h).startsWith("chốt")); if (i >= 0) cotChot = i; continue; }
+      if (maD.has(a)) { soDong++; if (daChot(row[cotChot])) soChot++; continue; }
       if (chuanHoa(a) === "loại mạch") { bangB = row.map(chuanHoa); continue; }
       if (bangB) {
         if (!a) { bangB = null; continue; }
@@ -187,13 +200,14 @@ export function docExcel(XLSX, data) {
         soDong++; if (daChot(row[bangB.findIndex((h) => h.startsWith("chốt"))])) soChot++;
         continue;
       }
-      const ma = QUY_TAC[a];
-      if (!ma) continue;
-      const v = docSo(row[2]);
+      const ts = THEO_MA.get(MA_CU[a] ?? a);
+      if (!ts) continue;
+      const v = docGiaTri(ts, row[2], docSo);
       if (v == null) continue;
-      dat(ma[0], ma[1] ? ma[1](v) : v);
-      soDong++; if (daChot(row[6])) soChot++;
+      dat(ts.khoa, v);
+      soDong++; if (daChot(row[cotChot])) soChot++;
     }
+    xongBang();
     if (soDong && soChot === soDong) quyTac.trangThai = "ĐÃ DUYỆT";
   } else {
     loiDoc.push("Không có sheet Quy tac — dùng bộ quy tắc mặc định của công cụ");

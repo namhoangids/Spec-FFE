@@ -4,7 +4,7 @@ CẢNH BÁO	CH		CB tổng ghi đè MCB 4P 63A (tự chọn MCCB 80A). Lý do: Th
 CẢNH BÁO	CH		In tổng 63 A < 1.6 × In mạch ra lớn nhất (40 A) — rủi ro mất chọn lọc
 CẢNH BÁO	CH		Thiếu Ik tại điểm đấu — tính ngắn mạch từ giá trị mặc định 6 kA; cần số liệu của điện lực / tòa nhà
 GHI CHÚ	CH		Tủ gốc không có chiều dài cáp cấp — cáp nguồn chọn theo Iz′, chưa kiểm sụt áp; sụt áp tính từ thanh cái tủ này
-GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.1 (09/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
+GHI CHÚ			Bộ quy tắc CHƯA DUYỆT (phiên bản 0.2 (12/11/2026)) — kỹ sư điện cần kiểm tra trước khi phát hành
 GHI CHÚ	CH	BT	Ghi đè thiết bị "RCBO 1P+N 40A 30mA". Lý do: Theo yêu cầu chủ nhà: hạ RCBO bếp từ xuống 40A (Ib ≈ 34,4 A < 40 A) để giảm CB tổng
 GHI CHÚ	CH	ACT	Ghi đè ống "ỐNG PVC  Ø 25". Lý do: Theo yêu cầu chủ nhà: 5 dây 4 mm² lấp 35,3% ống Ø20 — nâng Ø25 (≈21%) cho dễ kéo dây
 GHI CHÚ	CH		In tổng 63 A ≥ 63 A — theo quy tắc cần đồng hồ đa năng + CT (chưa vẽ trên sơ đồ)
