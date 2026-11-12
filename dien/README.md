@@ -139,7 +139,10 @@ Skill có trong mọi phiên Claude Code mở repo **sau khi PR được merge v
   - số line: mỗi line ≤ 64 thiết bị, dòng bus không vượt nguồn 640 mA, dây bus ≤ 1000 m; nhiều line thì mỗi line một IP router;
   - phím bấm / cảm biến lấy từ cột KNX của từng phòng; cáp bus J-Y(St)Y 2×2×0,8.
 - **Kết quả thêm:** tờ nguyên lý âm thanh, kiểm soát ra vào & chuông cửa, topology KNX (chỉ ra khi hệ đó có dữ liệu); `dien-nhe.xlsx` thêm sheet `Am thanh`, `ACS chuong`, `KNX`; BOQ nhóm F thêm ampli, loa, cáp loa, bộ điều khiển và thiết bị cửa, chuông, ổ TV, actuator, phím KNX, cáp bus; thuyết minh mục 06 có các tiểu mục từng hệ.
-- **Nhập liệu trên web:** ở tờ E.7xx, chế độ Nhập liệu sửa bảng phòng và bảng tủ rack (thêm / xóa dòng; đổi mã rack thì các phòng đi theo; không xóa được rack còn phòng). Dự án chưa có điện nhẹ thì bấm "Thêm điện nhẹ". Bảng mạch có cột KNX.
+- **Nhập liệu trên web:** ở tờ E.7xx, chế độ Nhập liệu sửa bảng phòng và bảng tủ rack (thêm / xóa dòng; đổi mã rack thì các phòng đi theo; không xóa được rack còn phòng). Bảng mạch có cột KNX.
+  - Danh sách tờ chia hai nhánh **Tủ điện** (E.6xx) và **Điện nhẹ** (E.7xx). Trên điện thoại, danh sách này là ô chọn "Tờ bản vẽ" có hai nhóm như vậy.
+  - Từ nhập liệu của tủ, nút "Nhập liệu điện nhẹ →" mở bảng điện nhẹ.
+  - Dự án chưa có điện nhẹ: bấm "+ Thêm điện nhẹ" (trong nhánh Điện nhẹ, trong ô chọn tờ, hoặc cuối trang nhập liệu tủ). Công cụ thêm một rack và một phòng mẫu, rồi mở ngay bảng nhập.
 - **Agent:** trong mô tả công trình thêm `"dienNhe": true` (hoặc `{ "tang": "T1", "acs": true }`) và `"knx": true`. Agent gợi ý số ổ data / TV / AP / camera / loa / chuông / cửa ACS theo loại phòng và diện tích (ghi "giả định"), đặt 1 rack ở tầng có tủ tổng; KNX thì đánh dấu mạch chiếu sáng, rèm và thêm phím ở từng phòng.
 - **Bóc khối điện nhẹ (12/11/2026):** block ổ data / TV / AP / camera / chuông / đầu đọc ACS / loa / phím KNX trên mặt bằng tự điền bảng điện nhẹ theo phòng (xem mục web app bước 7 và tham-khao § 8). Ví dụ: `node tao-bo-ban-ve.mjs du-an/can-ho-3pn-3-pha/du-an.json out/x --boc-khoi mau/vi-du-boc-khoi/boc-khoi-dien-nhe.csv`.
 - **Đợt sau:** gắn hãng thiết bị khi team chốt.

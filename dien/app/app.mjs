@@ -143,45 +143,60 @@ function capDo(t) {
 
 const tuCua = (x) => S.kq.tu.find((t) => t.ma === x.ma);
 
+/** Thông tin hiển thị một tờ trong cây / ô chọn: số bản vẽ, tên, độ lùi, số lỗi / cảnh báo */
+function thongTinTo(x) {
+  if (x.loai === "dn") {
+    // Tờ điện nhẹ: lỗi / cảnh báo của rack ghi ở tờ rack đó
+    const ma = x.ma.startsWith("RACK-") ? x.ma.slice(5) : null;
+    return { no: x.du.sheet.drawingNo, ten: x.ten, lui: 0, l: ma ? demDn(ma, "loi") : 0, c: ma ? demDn(ma, "canhbao") : 0 };
+  }
+  const tong = x.loai === "tong";
+  const t = tong ? null : tuCua(x);
+  // Lỗi/cảnh báo ghi ở tờ đầu của tủ; tờ tổng mang các mục chung của dự án
+  const ma = tong ? "" : x.thu === 0 ? t.ma : null;
+  return {
+    no: x.du.sheet.drawingNo,
+    ten: tong ? "Sơ đồ tổng" : `${t.ten}${x.tong > 1 ? ` (${x.thu + 1}/${x.tong})` : ""}`,
+    lui: tong ? 0 : capDo(t) + (x.thu > 0 ? 1 : 0),
+    l: ma == null ? 0 : dem(ma, "loi"), c: ma == null ? 0 : dem(ma, "canhbao"),
+  };
+}
+
+/**
+ * Danh sách tờ chia hai nhánh "Tủ điện" (E.6xx) và "Điện nhẹ" (E.7xx). Máy tính: cây bên trái; điện thoại: ô chọn
+ * (#chonTo, nhóm theo nhánh) thay cho dải nút cuộn ngang. Dự án chưa có điện nhẹ: nhánh Điện nhẹ có mục "+ Thêm điện nhẹ".
+ */
 function veCay() {
-  $("tree").innerHTML = S.to.map((x, i) => {
-    if (x.loai === "dn") {
-      // Tờ điện nhẹ: lỗi / cảnh báo của rack ghi ở tờ rack đó
-      const ma = x.ma.startsWith("RACK-") ? x.ma.slice(5) : null;
-      const l = ma ? demDn(ma, "loi") : 0, c = ma ? demDn(ma, "canhbao") : 0;
-      return `<button class="node" data-i="${i}" aria-current="${i === S.chon}" style="padding-left:16px">
-        <span class="no">${esc(x.du.sheet.drawingNo)}</span><span class="nm">${esc(x.ten)}</span>
-        ${l ? `<span class="dot loi" title="${l} lỗi">${l}</span>` : ""}${c ? `<span class="dot canhbao" title="${c} cảnh báo">${c}</span>` : ""}
-      </button>`;
-    }
-    const tong = x.loai === "tong";
-    const t = tong ? null : tuCua(x);
-    const ten = tong ? "Sơ đồ tổng" : `${t.ten}${x.tong > 1 ? ` (${x.thu + 1}/${x.tong})` : ""}`;
-    // Lỗi/cảnh báo ghi ở tờ đầu của tủ; tờ tổng mang các mục chung của dự án
-    const ma = tong ? "" : x.thu === 0 ? t.ma : null;
-    const l = ma == null ? 0 : dem(ma, "loi"), c = ma == null ? 0 : dem(ma, "canhbao");
-    const lui = tong ? 0 : capDo(t) + (x.thu > 0 ? 1 : 0);
-    return `<button class="node" data-i="${i}" aria-current="${i === S.chon}" style="padding-left:${16 + lui * 14}px">
-      <span class="no">${esc(x.du.sheet.drawingNo)}</span><span class="nm">${esc(ten)}</span>
-      ${l ? `<span class="dot loi" title="${l} lỗi">${l}</span>` : ""}${c ? `<span class="dot canhbao" title="${c} cảnh báo">${c}</span>` : ""}
+  const ds = S.to.map((x, i) => ({ i, ...thongTinTo(x), dn: x.loai === "dn" }));
+  const dien = ds.filter((d) => !d.dn), nhe = ds.filter((d) => d.dn);
+  const nut = (d) => `<button class="node" data-i="${d.i}" aria-current="${d.i === S.chon}" style="padding-left:${16 + d.lui * 14}px">
+      <span class="no">${esc(d.no)}</span><span class="nm">${esc(d.ten)}</span>
+      ${d.l ? `<span class="dot loi" title="${d.l} lỗi">${d.l}</span>` : ""}${d.c ? `<span class="dot canhbao" title="${d.c} cảnh báo">${d.c}</span>` : ""}
     </button>`;
-  }).join("");
+  $("tree").innerHTML = `<div class="nhanh">Tủ điện</div>${dien.map(nut).join("")}
+    <div class="nhanh">Điện nhẹ</div>${nhe.length ? nhe.map(nut).join("")
+      : `<button class="node them" data-them="1" title="Thêm một tủ rack và một phòng mẫu, mở bảng nhập liệu điện nhẹ">+ Thêm điện nhẹ</button>`}`;
+  const opt = (d) => `<option value="${d.i}"${d.i === S.chon ? " selected" : ""}>${esc(d.no)} · ${esc(d.ten)}${d.l ? ` · ${d.l} lỗi` : ""}${d.c ? ` · ${d.c} cảnh báo` : ""}</option>`;
+  $("chonTo").innerHTML = `<optgroup label="Tủ điện">${dien.map(opt).join("")}</optgroup>
+    <optgroup label="Điện nhẹ">${nhe.length ? nhe.map(opt).join("") : `<option value="them">+ Thêm điện nhẹ</option>`}</optgroup>`;
+}
+function chonTo(i) {
+  S.chon = i;
+  veCay();
+  veTu();
 }
 $("tree").addEventListener("click", (e) => {
   const b = e.target.closest(".node");
   if (!b) return;
-  S.chon = +b.dataset.i;
-  veCay();
-  veTu();
+  if (b.dataset.them) themDienNhe();
+  else chonTo(+b.dataset.i);
+});
+$("chonTo").addEventListener("change", (e) => {
+  if (e.target.value === "them") themDienNhe();
+  else chonTo(+e.target.value);
 });
 
-for (const b of document.querySelectorAll("[data-view]")) {
-  b.addEventListener("click", () => {
-    S.view = b.dataset.view;
-    for (const x of document.querySelectorAll("[data-view]")) x.setAttribute("aria-pressed", String(x === b));
-    veTu();
-  });
-}
+for (const b of document.querySelectorAll("[data-view]")) b.addEventListener("click", () => chonView(b.dataset.view));
 
 function veTu() {
   const x = S.to[S.chon];
@@ -391,18 +406,30 @@ function veNhapLieu(maTu) {
   if (giu) pane.querySelector(`[data-dong="${giu.dong}"][data-k="${giu.k}"]${giu.i != null ? `[data-i="${giu.i}"]` : ""}`)?.focus();
 }
 
-/** Áp một thay đổi dữ liệu nguồn: đánh dấu chưa lưu, tính lại cả bộ, giữ tờ đang xem (chọn sang tủ chiTu nếu có). */
-function apSua(duAnMoi, { chonTu = null } = {}) {
+/**
+ * Áp một thay đổi dữ liệu nguồn: đánh dấu chưa lưu, tính lại cả bộ, giữ tờ đang xem
+ * (chọn sang tủ chonTu nếu có; chonDn: sang tờ điện nhẹ đầu tiên).
+ */
+function apSua(duAnMoi, { chonTu = null, chonDn = false } = {}) {
   S.duAnGoc = duAnMoi;
   S.chuaLuu = true;
   try {
     loi("");
     tinhVaVe(duAnMoi, { giuChon: true });
-    if (chonTu) {
-      const i = S.to.findIndex((x) => x.loai === "tu" && x.ma === chonTu);
-      if (i >= 0) { S.chon = i; veCay(); veTu(); }
-    }
+    const i = chonTu ? S.to.findIndex((x) => x.loai === "tu" && x.ma === chonTu) : chonDn ? S.to.findIndex((x) => x.loai === "dn") : -1;
+    if (i >= 0) chonTo(i);
   } catch (e) { console.error(e); loi(`Dữ liệu chưa tính được: ${e.message}`); veDuAn(); }
+}
+
+/** Thêm khung điện nhẹ (1 rack, 1 phòng mẫu) rồi mở ngay bảng nhập liệu điện nhẹ ở tờ E.7xx đầu tiên */
+function themDienNhe() {
+  datView("nl");
+  apSua(NL.themDienNhe(S.duAnGoc), { chonDn: true });
+}
+/** Từ nhập liệu tủ / tờ tổng sang bảng nhập liệu điện nhẹ (giữ chế độ Nhập liệu) */
+function moDienNhe() {
+  const i = S.to.findIndex((x) => x.loai === "dn");
+  if (i >= 0) chonTo(i);
 }
 
 $("pane").addEventListener("change", (e) => {
@@ -439,7 +466,8 @@ $("pane").addEventListener("click", (e) => {
     case "xoaMach": if (confirm(`Xóa mạch ${S.duAnGoc.circuits[i].ma || ""}?`)) apSua(NL.xoaMach(S.duAnGoc, i)); break;
     case "len": apSua(NL.diChuyenMach(S.duAnGoc, i, -1).duAn); break;
     case "xuong": apSua(NL.diChuyenMach(S.duAnGoc, i, 1).duAn); break;
-    case "themDienNhe": apSua(NL.themDienNhe(S.duAnGoc)); break;
+    case "themDienNhe": themDienNhe(); break;
+    case "moDienNhe": moDienNhe(); break;
     case "themPhongDn": apSua(NL.themPhongDn(S.duAnGoc, Number.isFinite(i) ? i : null)); break;
     case "xoaPhongDn": if (confirm(`Xóa dòng "${S.duAnGoc.dienNhe.phong[i].phong || ""}"?`)) apSua(NL.xoaPhongDn(S.duAnGoc, i)); break;
     case "themRack": apSua(NL.themRack(S.duAnGoc).duAn); break;
@@ -456,9 +484,13 @@ $("trong").addEventListener("click", () => {
   tinhVaVe(S.duAnGoc);
   chonView("nl");
 });
-function chonView(v) {
+/** Đặt chế độ xem (nút bấm sáng) mà chưa vẽ lại; chonView: đặt rồi vẽ lại tờ đang chọn */
+function datView(v) {
   S.view = v;
   for (const x of document.querySelectorAll("[data-view]")) x.setAttribute("aria-pressed", String(x.dataset.view === v));
+}
+function chonView(v) {
+  datView(v);
   veTu();
 }
 
@@ -467,11 +499,14 @@ function chonView(v) {
 // =====================================================================================================
 const fmtLuc = (d) => (d ? `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}` : "");
 
-/** Hộp thoại: nội dung HTML + các nút [giá trị, nhãn, chính?]; trả về giá trị nút bấm (Esc → ""). onSubmit trả false để giữ hộp mở. */
+/**
+ * Hộp thoại: nội dung HTML + các nút [giá trị, nhãn, chính?]; trả về giá trị nút bấm (Esc → ""). onSubmit trả false để giữ hộp mở.
+ * Nút "huy" mang formnovalidate: bấm Hủy khi ô bắt buộc (email, mật khẩu, tên) còn trống vẫn đóng được hộp.
+ */
 function hop(html, nut, { onSubmit } = {}) {
   const dlg = $("hop"), form = $("hopND");
   form.innerHTML = `${html}<div class="loi-hop" id="hopLoi"></div><div class="nut">${nut.map(([v, t, chinh]) =>
-    `<button class="btn${chinh ? " btn-primary" : ""}" value="${v}">${esc(t)}</button>`).join("")}</div>`;
+    `<button class="btn${chinh ? " btn-primary" : ""}" value="${v}"${v === "huy" ? " formnovalidate" : ""}>${esc(t)}</button>`).join("")}</div>`;
   return new Promise((ok) => {
     let daXong = false;
     form.onsubmit = async (e) => {

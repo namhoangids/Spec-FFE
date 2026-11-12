@@ -62,6 +62,7 @@ try {
   assert.match(nodes.slice(7).join(" "), /E\.700[\s\S]*E\.701[\s\S]*E\.702[\s\S]*E\.703[\s\S]*Âm thanh[\s\S]*E\.704[\s\S]*E\.705[\s\S]*KNX/, "tờ điện nhẹ E.700–E.705");
   assert.match(nodes[0], /E\.600\s+Sơ đồ tổng/);
   assert.match(nodes[1], /E\.601\s+T1/);
+  assert.deepEqual(await page.locator("#tree .nhanh").allInnerTexts(), ["TỦ ĐIỆN", "ĐIỆN NHẸ"], "cây chia nhánh Tủ điện / Điện nhẹ");
   assert.match(await page.locator("#stats").innerText(), /lỗi\s+0/i);
   assert.equal(await page.locator("#pane svg").count(), 1, "có bản vẽ SVG");
   assert.match(await page.locator("#phead").innerText(), /SƠ ĐỒ NGUYÊN LÝ CẤP ĐIỆN TỔNG/);
@@ -168,6 +169,10 @@ try {
 
   // --- Dự án chung trên server (kho bộ nhớ) -----------------------------------------------------
   const nut = (re) => page.locator("#hop button", { hasText: re });
+  const hopDong = () => page.waitForFunction(() => !document.querySelector("#hop").open);
+  await page.click("#tk button");                                         // Hủy khi ô email / mật khẩu còn trống → đóng
+  await nut(/^Hủy$/).click();
+  await hopDong();
   await page.click("#tk button");                                         // Đăng nhập
   await page.fill("#hop input[name=email]", "ky.su@vi.du");
   await page.fill("#hop input[name=pass]", "sai");
@@ -176,6 +181,11 @@ try {
   await page.fill("#hop input[name=pass]", "thu");
   await nut(/^Đăng nhập$/).click();
   await page.waitForSelector("#tk >> text=ky.su@vi.du");
+  assert.match(await page.locator("#duan").innerText(), /chưa có trên server/);
+  await page.click("#luu");                                               // Hủy khi ô tên trống → đóng
+  await page.fill("#hop input[name=ten]", "");
+  await nut(/^Hủy$/).click();
+  await hopDong();
   assert.match(await page.locator("#duan").innerText(), /chưa có trên server/);
   await page.click("#luu");                                               // Lưu lên server (tạo mới)
   await page.fill("#hop input[name=ten]", "HDMON thử");
@@ -203,6 +213,13 @@ try {
   await page.fill("#hop input[name=gc]", "sửa công suất");
   await nut(/^Lưu$/).click();
   await page.waitForSelector("#duan >> text=bản 2");
+
+  // Từ nhập liệu tủ sang nhập liệu điện nhẹ (nút "Nhập liệu điện nhẹ →")
+  await page.click("[data-view=nl]");
+  await page.click('#pane [data-lenh="moDienNhe"]');
+  assert.match(await page.locator("#phead").innerText(), /E\.700/);
+  assert.equal(await page.locator("#pane table.nl").count(), 2, "bảng phòng + bảng rack");
+  await page.click("#tree .node >> nth=3");
 
   // Xung đột: người khác lưu trước → app không ghi đè, mở bản mới
   await page.evaluate(() => window.__khoThu.luuThay("p1", (d) => { d.info.client = "NGƯỜI KHÁC SỬA"; return d; }));
@@ -238,12 +255,27 @@ try {
   const tran = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   assert.ok(tran <= 1, `cuộn ngang ${tran}px`);
   if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai.png") });
+  // Điện thoại: ô chọn tờ chia nhóm thay cho cây (dải cuộn ngang giấu mất các tờ E.7xx)
+  assert.ok(await page.locator("#chonTo").isVisible() && !(await page.locator("#tree").isVisible()), "điện thoại dùng ô chọn tờ");
+  assert.deepEqual(await page.locator("#chonTo optgroup").evaluateAll((a) => a.map((g) => g.label)), ["Tủ điện", "Điện nhẹ"]);
+  const toDn = await page.locator('#chonTo optgroup[label="Điện nhẹ"] option').allInnerTexts();
+  assert.deepEqual(toDn.map((t) => t.slice(0, 5)), ["E.700", "E.701", "E.702", "E.703", "E.704", "E.705"], "nhóm Điện nhẹ đủ E.700–E.705");
+  await page.selectOption("#chonTo", { label: toDn[3] });
+  assert.match(await page.locator("#phead").innerText(), /E\.703/);
+  await page.selectOption("#chonTo", { label: toDn[0] });
+  assert.equal(await page.locator("#pane table.nl").count(), 2, "nhập liệu điện nhẹ trên điện thoại");
+  if (anh) await page.screenshot({ path: join(anh, "app-dien-thoai-dien-nhe.png") });
 
   // Nạp du-an.json (đầu ra của agent / lệnh tạo bộ) → dự án mới, chưa có trên server
   await page.click("#dong");
   await page.setInputFiles("#file", join(goc, "dien/du-an/can-ho-3pn-3-pha/du-an.json"));
   await page.waitForSelector("#duan >> text=chưa có trên server");
-  assert.match(await page.locator("#tree").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
+  assert.match(await page.locator("#chonTo").innerText(), /TỦ CĂN HỘ/, "đọc được tủ từ JSON");
+  // Dự án chưa có điện nhẹ: ô chọn tờ có "+ Thêm điện nhẹ" → thêm và mở ngay bảng nhập liệu điện nhẹ
+  await page.selectOption("#chonTo", "them");
+  await page.waitForSelector("#pane table.nl >> nth=1");
+  assert.match(await page.locator("#phead").innerText(), /E\.700/);
+  assert.equal(await page.locator("[data-view=nl]").getAttribute("aria-pressed"), "true");
 
   // Link ?congTrinh=<mã Dự toán>: công trình chưa có sơ đồ điện → dự án trống gắn công trình, khung tên điền sẵn
   await page.goto(`http://localhost:${port}/dien/app/?kho=thu&congTrinh=vp-abc`);
@@ -255,9 +287,15 @@ try {
   assert.match(await page.locator("#duan").innerText(), /Văn phòng ABC[\s\S]*chưa có trên server/);
   assert.match(await page.locator("#moFfe").getAttribute("href"), /#\/vp-abc\/schedule$/);
   assert.equal(await page.locator("[data-view=nl]").getAttribute("aria-pressed"), "true", "mở chế độ Nhập liệu");
+  // Máy tính, dự án trống: nhánh Điện nhẹ trong cây có "+ Thêm điện nhẹ"
+  await page.setViewportSize({ width: 1360, height: 900 });
+  await page.click("#tree .node.them");
+  await page.waitForSelector("#pane table.nl >> nth=1");
+  assert.match(await page.locator("#tree .node[aria-current=true]").innerText(), /E\.700/);
+  if (anh) await page.screenshot({ path: join(anh, "app-them-dien-nhe.png") });
 
   assert.deepEqual(loiTrang, [], "không có lỗi JavaScript");
-  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối (điện + điện nhẹ), dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON / gắn công trình FF&E), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
+  console.log(`✔ Web app: 13 tờ (sơ đồ tổng, 6 tủ, 6 tờ điện nhẹ), nhập liệu điện nhẹ (máy tính + điện thoại), hộp thoại Hủy, in nhãn 6 tủ, thuyết minh 7 mục (Word + trang in), BOQ ${boq.SheetNames.length} sheet, bóc khối (điện + điện nhẹ), dự án chung (lưu / sửa / xung đột / lịch sử / nạp JSON / gắn công trình FF&E), ZIP ${ten.length} file, bảng tính ${wb.SheetNames.length} sheet, không lỗi JS`);
 } finally {
   await browser.close();
   server.close();
